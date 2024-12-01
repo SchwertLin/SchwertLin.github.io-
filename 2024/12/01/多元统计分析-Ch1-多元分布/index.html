@@ -1,331 +1,874 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="【挑战20天学完多元统计分析，让我们说：DDL是最佳生产力！】 Ch1 多元分布[TOC] 1.0 预备知识1.0.1 随机变量$X$随机变量$X$期望、矩、方差：    期望 $E(X)&#x3D;\begin{cases}\int^{\infty}_{-\infty}tf(t)dt,\quad &amp;若X连续;\\sum_ix_iP{X&#x3D;x_i},\quad &amp;若X离散;">
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="【挑战20天学完多元统计分析，让我们说：DDL是最佳生产力！】 Ch1 多元分布 [TOC] 1.0 预备知识 1.0.1 随机变量\(X\) 随机变量\(X\)期望、矩、方差：        期望 \(E(X)&#x3D;\begin{cases}\int^{\infty}_{-\infty}tf(t)dt,\quad &amp;若X连续;\\\sum_ix_iP\{X&#x3D;x_">
 <meta property="og:type" content="article">
 <meta property="og:title" content="多元统计分析-Ch1 多元分布">
 <meta property="og:url" content="http://example.com/2024/12/01/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90-Ch1-%E5%A4%9A%E5%85%83%E5%88%86%E5%B8%83/index.html">
 <meta property="og:site_name" content="Schwertlilien">
-<meta property="og:description" content="【挑战20天学完多元统计分析，让我们说：DDL是最佳生产力！】 Ch1 多元分布[TOC] 1.0 预备知识1.0.1 随机变量$X$随机变量$X$期望、矩、方差：    期望 $E(X)&#x3D;\begin{cases}\int^{\infty}_{-\infty}tf(t)dt,\quad &amp;若X连续;\\sum_ix_iP{X&#x3D;x_i},\quad &amp;若X离散;">
+<meta property="og:description" content="【挑战20天学完多元统计分析，让我们说：DDL是最佳生产力！】 Ch1 多元分布 [TOC] 1.0 预备知识 1.0.1 随机变量\(X\) 随机变量\(X\)期望、矩、方差：        期望 \(E(X)&#x3D;\begin{cases}\int^{\infty}_{-\infty}tf(t)dt,\quad &amp;若X连续;\\\sum_ix_iP\{X&#x3D;x_">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241128173119356.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241201094117103.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241201094132212.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241201095141147.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241201101835469.png">
 <meta property="article:published_time" content="2024-12-01T09:00:33.000Z">
-<meta property="article:modified_time" content="2024-12-01T09:03:21.689Z">
+<meta property="article:modified_time" content="2024-12-01T14:32:21.518Z">
 <meta property="article:author" content="Schwertlilien">
 <meta property="article:tag" content="多元统计分析">
 <meta property="article:tag" content="笔记">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241128173119356.png"><title>多元统计分析-Ch1 多元分布 - MEOW - 可爱明亮的Hexo主题</title><link rel="shortcut icon" href="/img/site-icon.png">
+<meta name="twitter:card" content="summary"><title>多元统计分析-Ch1 多元分布 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
 <link rel="stylesheet" href="/css/style.css" id="dm-light">
 
 
 <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-<meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
-<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>MEOW</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">Hexo主题「Meow」展示站。本主题尤其适用于发布原创小说、同人二创等文学作品。</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>多元统计分析-Ch1 多元分布</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2024-12-01</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2024-12-01</time></div>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>多元统计分析-Ch1 多元分布</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2024-12-01</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2024-12-01</time></div>
 
 <div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90/">多元统计分析</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
-<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约5.7K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><p>【挑战20天学完多元统计分析，让我们说：DDL是最佳生产力！】</p>
-<h1 id="Ch1-多元分布"><a href="#Ch1-多元分布" class="headerlink" title="Ch1 多元分布"></a>Ch1 多元分布</h1><p>[TOC]</p>
-<h2 id="1-0-预备知识"><a href="#1-0-预备知识" class="headerlink" title="1.0 预备知识"></a>1.0 预备知识</h2><h3 id="1-0-1-随机变量-X"><a href="#1-0-1-随机变量-X" class="headerlink" title="1.0.1 随机变量$X$"></a>1.0.1 随机变量$X$</h3><p>随机变量$X$期望、矩、方差：</p>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约5.4K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><p>【挑战20天学完多元统计分析，让我们说：DDL是最佳生产力！】</p>
+<h1 id="ch1-多元分布">Ch1 多元分布</h1>
+<p>[TOC]</p>
+<h2 id="预备知识">1.0 预备知识</h2>
+<h3 id="随机变量x">1.0.1 随机变量<span
+class="math inline">\(X\)</span></h3>
+<p>随机变量<span class="math inline">\(X\)</span>期望、矩、方差：</p>
 <table>
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 88%" />
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>期望</th>
-<th>$E(X)&#x3D;\begin{cases}\int^{\infty}_{-\infty}tf(t)dt,\quad &amp;若X连续;\\sum_ix_iP{X&#x3D;x_i},\quad &amp;若X离散;\end{cases}$</th>
+<th><span
+class="math inline">\(E(X)=\begin{cases}\int^{\infty}_{-\infty}tf(t)dt,\quad
+&amp;若X连续;\\\sum_ix_iP\{X=x_i\},\quad
+&amp;若X离散;\end{cases}\)</span></th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr class="odd">
 <td><strong>矩</strong></td>
-<td><strong>$E(X^k)\begin{cases}\int^{\infty}_{-\infty}t^kf(t)dt,\quad &amp;若X连续;\\sum_ix_i^kP{X&#x3D;x_i},\quad &amp;若X离散;\end{cases}$</strong></td>
+<td><strong><span
+class="math inline">\(E(X^k)=\begin{cases}\int^{\infty}_{-\infty}t^kf(t)dt,\quad
+&amp;若X连续;\\\sum_ix_i^kP\{X=x_i\},\quad
+&amp;若X离散;\end{cases}\)</span></strong></td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>方差</strong></td>
-<td><strong>$Var(X)&#x3D;E\left[(X-E(X))^2\right]&#x3D;E(X^2)-(E(X))^2$</strong></td>
+<td><strong><span
+class="math inline">\(Var(X)=E\left[(X-E(X))^2\right]=E(X^2)-(E(X))^2\)</span></strong></td>
 </tr>
-</tbody></table>
-<h3 id="1-0-2-随机向量-X-X-1-X-2-dots-X-p-’"><a href="#1-0-2-随机向量-X-X-1-X-2-dots-X-p-’" class="headerlink" title="1.0.2 随机向量$X&#x3D;(X_1,X_2,\dots,X_p)’$"></a>1.0.2 随机向量$X&#x3D;(X_1,X_2,\dots,X_p)’$</h3><p>令$x&#x3D;(x_1,x_2,\dots,x_p)’$，$X_1,X_2,\dots,X_p$相互独立，当且仅当$F(x_1,x_2,\dots,x_p)&#x3D;\prod^p_{i&#x3D;1}F_i(x_i),\forall x\in \mathbb{R}^p$，其中$F_i(x_i)$是$X_i$的边缘<strong>分布</strong>函数。</p>
+</tbody>
+</table>
+<h3 id="随机向量xx_1x_2dotsx_p">1.0.2 随机向量<span
+class="math inline">\(X=(X_1,X_2,\dots,X_p)&#39;\)</span></h3>
+<p>令<span
+class="math inline">\(x=(x_1,x_2,\dots,x_p)&#39;\)</span>，<span
+class="math inline">\(X_1,X_2,\dots,X_p\)</span>相互独立，当且仅当<span
+class="math inline">\(F(x_1,x_2,\dots,x_p)=\prod^p_{i=1}F_i(x_i),\forall
+x\in \mathbb{R}^p\)</span>，其中<span
+class="math inline">\(F_i(x_i)\)</span>是<span
+class="math inline">\(X_i\)</span>的边缘<strong>分布</strong>函数。</p>
 <table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 69%" />
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th><strong>联合分布函数</strong></th>
-<th>$\begin{align}F(x_1,x_2\dots,x_p)&amp;&#x3D;P{X_1\le x_1,X_2\le x_2,\dots,X_p\le x_p}\&amp;&#x3D;P(X\le x)\end{align}$</th>
+<th><span
+class="math inline">\(\begin{align}F(x_1,x_2\dots,x_p)&amp;=P\{X_1\le
+x_1,X_2\le x_2,\dots,X_p\le x_p\}\\&amp;=P(X\le
+x)\end{align}\)</span></th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr class="odd">
 <td><strong>联合概率密度函数(非负)</strong></td>
-<td>存在$f(t_1,t_2,\dots,t_p)$满足下式：$F(x_1,x_2\dots,x_p)&#x3D;\int^{x_1}<em>{-\infty}\int^{x_2}</em>{-\infty}\dots\int^{x_p}_{-\infty}f(t_1,t_2,\dots,t_p)dt_1dt_2\dots d_p$</td>
+<td>存在<span
+class="math inline">\(f(t_1,t_2,\dots,t_p)\)</span>满足下式：<span
+class="math inline">\(F(x_1,x_2\dots,x_p)=\int^{x_1}_{-\infty}\int^{x_2}_{-\infty}\dots\int^{x_p}_{-\infty}f(t_1,t_2,\dots,t_p)dt_1dt_2\dots
+d_p\)</span></td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>边缘分布</strong></td>
-<td>(也就是选取随机向量中的部分、构成的分布)。$X$的$q$个分量($q&lt;p$)$X^{(1)}&#x3D;(X_1,X_2,\dots,X_q)’$的分布称为边缘分布。$P{X^{(1)}\le u}&#x3D;P{X_1\le u_1,\dots,X_q\le u_q}&#x3D;F(u_1,\dots,u_q,+\infty,\dots +\infty)$</td>
+<td>(也就是选取随机向量中的部分、构成的分布)。<span
+class="math inline">\(X\)</span>的<span
+class="math inline">\(q\)</span>个分量(<span
+class="math inline">\(q&lt;p\)</span>)<span
+class="math inline">\(X^{(1)}=(X_1,X_2,\dots,X_q)&#39;\)</span>的分布称为边缘分布。<span
+class="math inline">\(P\{X^{(1)}\le u\}=P\{X_1\le u_1,\dots,X_q\le
+u_q\}=F(u_1,\dots,u_q,+\infty,\dots +\infty)\)</span></td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>边缘概率密度函数</strong></td>
-<td>对$X^{(1)}$: $g(u)&#x3D;\int_{\mathbb{R}^{p-q}}f(u,v)dv$</td>
+<td>对<span class="math inline">\(X^{(1)}\)</span>: <span
+class="math inline">\(g(u)=\int_{\mathbb{R}^{p-q}}f(u,v)dv\)</span></td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>条件密度</strong></td>
-<td>令$X&#x3D;(X^{(1)}{‘},X^{(2)}{‘})’$, $f(x)&#x3D;f(x^{(1)},x^{(2)})$。$X^{(2)}$在给定$X^{(1)}&#x3D;x^{(1)}$的条件密度为：$f(x^{(2)}</td>
+<td>令<span
+class="math inline">\(X=(X^{(1)}{&#39;},X^{(2)}{&#39;})&#39;\)</span>,
+<span class="math inline">\(f(x)=f(x^{(1)},x^{(2)})\)</span>。<span
+class="math inline">\(X^{(2)}\)</span>在给定<span
+class="math inline">\(X^{(1)}=x^{(1)}\)</span>的条件密度为：<span
+class="math inline">\(f(x^{(2)}|X^{(1)}=x^{(1)})=\frac{f(x^{(1)},x^{(2)})}{g(x^{(1)})}\)</span>，<span
+class="math inline">\(g(x^{(1)})\)</span>是<span
+class="math inline">\(X^{(1)}\)</span>的边缘概率密度函数。</td>
 </tr>
-</tbody></table>
-<h3 id="1-0-3-多元随机变量-随机向量"><a href="#1-0-3-多元随机变量-随机向量" class="headerlink" title="1.0.3 多元随机变量(随机向量)"></a>1.0.3 多元随机变量(随机向量)</h3><table>
+</tbody>
+</table>
+<h3 id="多元随机变量随机向量">1.0.3 多元随机变量(随机向量)</h3>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 69%" />
+</colgroup>
 <thead>
-<tr>
-<th>期望$E(X)$</th>
-<th>$E(X)&#x3D;(E(X_1),E(X_2),\dots,E(X_p))’$</th>
+<tr class="header">
+<th>期望<span class="math inline">\(E(X)\)</span></th>
+<th><span
+class="math inline">\(E(X)=(E(X_1),E(X_2),\dots,E(X_p))&#39;\)</span></th>
 </tr>
 </thead>
-<tbody><tr>
-<td><strong>协方差$Cov(X)$</strong></td>
-<td><strong>$Cov(X)&#x3D;E\left[(X-E(X))(X-E(X))’\right]$</strong></td>
+<tbody>
+<tr class="odd">
+<td><strong>协方差<span
+class="math inline">\(Cov(X)\)</span></strong></td>
+<td><strong><span
+class="math inline">\(Cov(X)=E\left[(X-E(X))(X-E(X))&#39;\right]\)</span></strong></td>
 </tr>
-<tr>
-<td><strong>协方差$Cov(X,Y)$</strong></td>
-<td><strong>$Cov(X,Y)&#x3D;E\left[(X-E(X))(Y-E(Y))’\right]$</strong></td>
+<tr class="even">
+<td><strong>协方差<span
+class="math inline">\(Cov(X,Y)\)</span></strong></td>
+<td><strong><span
+class="math inline">\(Cov(X,Y)=E\left[(X-E(X))(Y-E(Y))&#39;\right]\)</span></strong></td>
 </tr>
-</tbody></table>
-<h3 id="1-0-4-矩阵知识"><a href="#1-0-4-矩阵知识" class="headerlink" title="1.0.4 矩阵知识"></a>1.0.4 矩阵知识</h3><p>一些运算：</p>
+</tbody>
+</table>
+<h3 id="矩阵知识">1.0.4 矩阵知识</h3>
+<p>一些运算：</p>
 <ul>
-<li><p>$E(tr(AXB))&#x3D;tr(AE(X)B)$：期望和trace的计算等级相同。</p>
-</li>
-<li><p>$Cov(AX)&#x3D;ACov(X)A’$</p>
+<li><p><span
+class="math inline">\(E(tr(AXB))=tr(AE(X)B)\)</span>：期望和trace的计算等级相同。</p></li>
+<li><p><span class="math inline">\(Cov(AX)=ACov(X)A&#39;\)</span></p>
 <blockquote>
-<p>$$<br>\begin{align}<br>Cov(AX)&amp;&#x3D;E\left[(AX-E(AX))(AX-E(AX))’\right]\<br>&amp;&#x3D;E\left[A(X-E(X))(X-E(X))’A’\right]\<br>&amp;&#x3D;AE\left[(X-E(X))(X-E(X))’\right]A’\<br>&amp;&#x3D;ACov(X)A’<br>\end{align}<br>$$</p>
-</blockquote>
-</li>
-<li><p>$Cov(AX,BY)&#x3D;ACov(X,Y)B’$</p>
-</li>
-<li><p>$E(X’AX)&#x3D;(E(X))’A(E(X))+tr(ACov(X))$：二次型，此公式将期望值分解为常数项（期望向量的二次型）和随机项（协方差矩阵与 A 的迹）。</p>
+<p><span class="math display">\[
+\begin{align}
+Cov(AX)&amp;=E\left[(AX-E(AX))(AX-E(AX))&#39;\right]\\
+&amp;=E\left[A(X-E(X))(X-E(X))&#39;A&#39;\right]\\
+&amp;=AE\left[(X-E(X))(X-E(X))&#39;\right]A&#39;\\
+&amp;=ACov(X)A&#39;
+\end{align}
+\]</span></p>
+</blockquote></li>
+<li><p><span
+class="math inline">\(Cov(AX,BY)=ACov(X,Y)B&#39;\)</span></p></li>
+<li><p><span
+class="math inline">\(E(X&#39;AX)=(E(X))&#39;A(E(X))+tr(ACov(X))\)</span>：二次型，此公式将期望值分解为常数项（期望向量的二次型）和随机项（协方差矩阵与
+A 的迹）。</p>
 <blockquote>
-<p>$$<br>\begin{align}<br>E(X’AX)&amp;&#x3D;E(\sum_{i,j}X_iA_{ij}X_j)\<br>&amp;&#x3D;\sum_{i,j}A_{ij}E(X_iX_j)\<br>&amp;&#x3D;\sum_{i,j}A_{ij}(E(X_i)E(X_j)+Cov(X_i,X_j)\<br>&amp;&#x3D;(E(X))’A(E(X))+tr(ACov(X))<br>\end{align}<br>$$</p>
-</blockquote>
-</li>
+<p><span class="math display">\[
+\begin{align}
+E(X&#39;AX)&amp;=E(\sum_{i,j}X_iA_{ij}X_j)\\
+&amp;=\sum_{i,j}A_{ij}E(X_iX_j)\\
+&amp;=\sum_{i,j}A_{ij}(E(X_i)E(X_j)+Cov(X_i,X_j)\\
+&amp;=(E(X))&#39;A(E(X))+tr(ACov(X))
+\end{align}
+\]</span></p>
+</blockquote></li>
 </ul>
 <p>分块矩阵：</p>
-<p>$A&#x3D;\begin{pmatrix}A_{11}&amp;A_{12}\A_{21}&amp;A_{22}\end{pmatrix}$，其中$A_{11}$是非退化的方阵(可逆，满秩)。</p>
-<p>记$A_{2|1}&#x3D;A_{22}-A_{21}A_{11}^{-1}A_{12}$，则有$|A|&#x3D;|A_{11}|·|A_{2|1}|$。<br>$$<br>A^{-1}&#x3D;\begin{pmatrix}<br>I&amp;A_{11}^{-1}A_{12}\<br>0&amp; I<br>\end{pmatrix}\begin{pmatrix}<br>A_{11}^{-1}&amp;0\<br>0&amp;A_{2|1}^{-1}<br>\end{pmatrix}\begin{pmatrix}<br>I&amp;0\<br>-A_{21}A_{11}^{-1}&amp;I<br>\end{pmatrix}<br>$$</p>
-<p>记$A^{-1}&#x3D;\begin{pmatrix}B_{11}&amp;B_{12}\B_{21}&amp;B_{22}\end{pmatrix}$, 则有：</p>
+<p><span
+class="math inline">\(A=\begin{pmatrix}A_{11}&amp;A_{12}\\A_{21}&amp;A_{22}\end{pmatrix}\)</span>，其中<span
+class="math inline">\(A_{11}\)</span>是非退化的方阵(可逆，满秩)。</p>
+<p>记<span
+class="math inline">\(A_{2|1}=A_{22}-A_{21}A_{11}^{-1}A_{12}\)</span>，则有<span
+class="math inline">\(|A|=|A_{11}|·|A_{2|1}|\)</span>。 <span
+class="math display">\[
+A^{-1}=\begin{pmatrix}
+I&amp;A_{11}^{-1}A_{12}\\
+0&amp; I
+\end{pmatrix}\begin{pmatrix}
+A_{11}^{-1}&amp;0\\
+0&amp;A_{2|1}^{-1}
+\end{pmatrix}\begin{pmatrix}
+I&amp;0\\
+-A_{21}A_{11}^{-1}&amp;I
+\end{pmatrix}
+\]</span></p>
+<p>记<span
+class="math inline">\(A^{-1}=\begin{pmatrix}B_{11}&amp;B_{12}\\B_{21}&amp;B_{22}\end{pmatrix}\)</span>,
+则有：</p>
 <ul>
-<li>$B_{11}&#x3D;(A_{11}-A_{12}A_{22}^{-1}A_{21})^{-1}$</li>
-<li>$B_{22}&#x3D;(A_{22}-A_{21}A_{11}^{-1}A_{12})^{-1}$</li>
-<li>$B_{12}&#x3D;-A_{11}^{-1}A_{12}(A_{22}-A_{21}A_{11}^{-1}A_{12})^{-1}$</li>
-<li>$B_{21}&#x3D;-(A_{22}-A_{21}A_{11}^{-1}A_{12})^{-1}A_{21}A_{11}^{-1}$</li>
+<li><span
+class="math inline">\(B_{11}=(A_{11}-A_{12}A_{22}^{-1}A_{21})^{-1}\)</span></li>
+<li><span
+class="math inline">\(B_{22}=(A_{22}-A_{21}A_{11}^{-1}A_{12})^{-1}\)</span></li>
+<li><span
+class="math inline">\(B_{12}=-A_{11}^{-1}A_{12}(A_{22}-A_{21}A_{11}^{-1}A_{12})^{-1}\)</span></li>
+<li><span
+class="math inline">\(B_{21}=-(A_{22}-A_{21}A_{11}^{-1}A_{12})^{-1}A_{21}A_{11}^{-1}\)</span></li>
 </ul>
-<p><img src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241128173119356.png" alt="image-20241128173119356"></p>
-<h3 id="1-0-5-多元特征函数"><a href="#1-0-5-多元特征函数" class="headerlink" title="1.0.5 多元特征函数"></a>1.0.5 多元特征函数</h3><p>(<strong>特征函数与概率分布函数一一对应</strong>)随机向量$X&#x3D;(X_1,\dots,X_p)’$的特征函数为：<br>$$<br>\phi(t)&#x3D;\phi(t_1,\dots,t_p)&#x3D;E[e^{i(t_1X_1+\dots+t_pX_p)}]&#x3D;E[e^{it’X}]<br>$$<br>其中, $t&#x3D;(t_1,\dots,t_p)’\in\mathbb{R}^p$, $i$是虚数单位($i^2&#x3D;-1$)</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241128173119356.png"
+alt="image-20241128173119356" />
+<figcaption aria-hidden="true">image-20241128173119356</figcaption>
+</figure>
+<h3 id="多元特征函数">1.0.5 多元特征函数</h3>
+<p>(<strong>特征函数与概率分布函数一一对应</strong>)随机向量<span
+class="math inline">\(X=(X_1,\dots,X_p)&#39;\)</span>的特征函数为：
+<span class="math display">\[
+\phi(t)=\phi(t_1,\dots,t_p)=E[e^{i(t_1X_1+\dots+t_pX_p)}]=E[e^{it&#39;X}]
+\]</span> 其中, <span
+class="math inline">\(t=(t_1,\dots,t_p)&#39;\in\mathbb{R}^p\)</span>,
+<span class="math inline">\(i\)</span>是虚数单位(<span
+class="math inline">\(i^2=-1\)</span>)</p>
 <p>性质：</p>
-<ol>
-<li>对正整数$k_1,\dots,k_p$, 如果$E(X_1^{k_1}\dots X_p^{k_p})$存在, 则</li>
-<li>对$0&lt;k&lt;p$, 分量$X^{(1)}&#x3D;(X_1,\dots,X_k)’$的特征函数是$\phi(t_1,\dots,t_k,0,\dots,0)$.</li>
-<li>记$X_1,\dots,X_p$的边缘特征函数分别为$\phi_1(t_1),\dots,\phi_p(t_p)$, 记$X&#x3D;(X_1,\dots,X_p)’$的特征函数是$\phi(t_1,\dots,t_p)$, 则$X_1,\dots,X_p$相互独立的充分必要条件是：$\phi(t_1,\dots,t_p)&#x3D;\phi_1(t_1)\dots\phi_p(t_p)$.</li>
-<li>设$p$维随机向量$Y_1,\dots,Y_m$的特征函数分别为$\phi^{(1)}(t),\dots,\phi^{(m)}(t)$, 如果$Y_1,\dots,Y_m$相互独立, 则随机向量和 $Y_1+\dots+Y_m$的特征函数为: $\phi(y)&#x3D;\phi^{(1)}(t)\dots\phi^{(m)}(t)$.</li>
+<ol type="1">
+<li>对正整数<span class="math inline">\(k_1,\dots,k_p\)</span>,
+如果<span class="math inline">\(E(X_1^{k_1}\dots
+X_p^{k_p})\)</span>存在, 则</li>
+<li>对<span class="math inline">\(0&lt;k&lt;p\)</span>, 分量<span
+class="math inline">\(X^{(1)}=(X_1,\dots,X_k)&#39;\)</span>的特征函数是<span
+class="math inline">\(\phi(t_1,\dots,t_k,0,\dots,0)\)</span>.</li>
+<li>记<span
+class="math inline">\(X_1,\dots,X_p\)</span>的边缘特征函数分别为<span
+class="math inline">\(\phi_1(t_1),\dots,\phi_p(t_p)\)</span>, 记<span
+class="math inline">\(X=(X_1,\dots,X_p)&#39;\)</span>的特征函数是<span
+class="math inline">\(\phi(t_1,\dots,t_p)\)</span>, 则<span
+class="math inline">\(X_1,\dots,X_p\)</span>相互独立的充分必要条件是：<span
+class="math inline">\(\phi(t_1,\dots,t_p)=\phi_1(t_1)\dots\phi_p(t_p)\)</span>.</li>
+<li>设<span class="math inline">\(p\)</span>维随机向量<span
+class="math inline">\(Y_1,\dots,Y_m\)</span>的特征函数分别为<span
+class="math inline">\(\phi^{(1)}(t),\dots,\phi^{(m)}(t)\)</span>,
+如果<span class="math inline">\(Y_1,\dots,Y_m\)</span>相互独立,
+则随机向量和 <span
+class="math inline">\(Y_1+\dots+Y_m\)</span>的特征函数为: <span
+class="math inline">\(\phi(y)=\phi^{(1)}(t)\dots\phi^{(m)}(t)\)</span>.</li>
 </ol>
 <blockquote>
 <p>Q:<strong>我个人感觉这个地方是不是写错了？Y怎么会是p维向量？那角标不应该是p吗？</strong></p>
-<p>A: 在这里，$Y_1, \dots, Y_m$ 是独立的随机向量，每个 $Y_i$ 依然是 $p$ 维的，所以 $Y_1, \dots, Y_m$ 是多个 $p$ 维向量</p>
+<p>A: 在这里，<span class="math inline">\(Y_1, \dots, Y_m\)</span>
+是独立的随机向量，每个 <span class="math inline">\(Y_i\)</span> 依然是
+<span class="math inline">\(p\)</span> 维的，所以 <span
+class="math inline">\(Y_1, \dots, Y_m\)</span> 是多个 <span
+class="math inline">\(p\)</span> 维向量</p>
 </blockquote>
-<h2 id="1-1-一元正态分布"><a href="#1-1-一元正态分布" class="headerlink" title="1.1 一元正态分布"></a>1.1 一元正态分布</h2><p>【分布密度】若随机变量$X$的概率密度函数为：<br>$$<br>p(x)&#x3D;\frac{1}{\sqrt{2\pi}\sigma}\exp\left{-\frac{(x-\mu)^2}{2\sigma^2}\right}<br>$$<br>其中$-\infty&lt;x,\mu&lt;\infty,\sigma^2&gt;0$，则称随机变量X服从正态分布。记为$X\overset{d}{\sim}N(\mu,\sigma^2)$, 其中$\mu$是均值, $\sigma^2$是方差。</p>
-<h2 id="1-2-多元正态分布"><a href="#1-2-多元正态分布" class="headerlink" title="1.2 多元正态分布"></a>1.2 多元正态分布</h2><p>【分布密度】若$p$元随机向量$X$服从参数为$\mu,\Sigma$的多元正态分布，其概率密度函数为：<br>$$<br>p(x)&#x3D;(2\pi)^{-\frac p 2}|\Sigma|^{-\frac 1 2}\exp\left{-\frac 1 2 (x-\mu)’\Sigma^{-1}(x-\mu)\right}<br>$$<br>其中$\mu\in\mathbb{R}^p$，$\Sigma$为p阶正定矩阵，记为$X\overset{d}{\sim}N_p(\mu,\Sigma)$。</p>
+<h2 id="一元正态分布">1.1 一元正态分布</h2>
+<p>【分布密度】若随机变量<span
+class="math inline">\(X\)</span>的概率密度函数为： <span
+class="math display">\[
+p(x)=\frac{1}{\sqrt{2\pi}\sigma}\exp\left\{-\frac{(x-\mu)^2}{2\sigma^2}\right\}
+\]</span> 其中<span
+class="math inline">\(-\infty&lt;x,\mu&lt;\infty,\sigma^2&gt;0\)</span>，则称随机变量X服从正态分布。记为<span
+class="math inline">\(X\overset{d}{\sim}N(\mu,\sigma^2)\)</span>,
+其中<span class="math inline">\(\mu\)</span>是均值, <span
+class="math inline">\(\sigma^2\)</span>是方差。</p>
+<h2 id="多元正态分布">1.2 多元正态分布</h2>
+<p>【分布密度】若<span class="math inline">\(p\)</span>元随机向量<span
+class="math inline">\(X\)</span>服从参数为<span
+class="math inline">\(\mu,\Sigma\)</span>的多元正态分布，其概率密度函数为：
+<span class="math display">\[
+p(x)=(2\pi)^{-\frac p 2}|\Sigma|^{-\frac 1 2}\exp\left\{-\frac 1 2
+(x-\mu)&#39;\Sigma^{-1}(x-\mu)\right\}
+\]</span> 其中<span
+class="math inline">\(\mu\in\mathbb{R}^p\)</span>，<span
+class="math inline">\(\Sigma\)</span>为p阶正定矩阵，记为<span
+class="math inline">\(X\overset{d}{\sim}N_p(\mu,\Sigma)\)</span>。</p>
 <blockquote>
-<p>d 代表服从分布(distribution)，$\Sigma$是多元正态分布的<strong>方差</strong>。</p>
+<p>d 代表服从分布(distribution)，<span
+class="math inline">\(\Sigma\)</span>是多元正态分布的<strong>方差</strong>。</p>
 </blockquote>
-<p><strong>p元标准正态分布：</strong>$X\overset{d}{\sim}N_p(0,I_p)$</p>
-<p><strong>定理1：</strong>设p元随机向量$X&#x3D;\mu+AY$, 其中$\mu\in\mathbb{R}^k, A$为$k\times p$的行满秩矩阵，$k\le p$, 随机向量$Y\overset{d}{\sim}N_p(0,I_p)$, 则$X\overset{d}{\sim}N_k(\mu,\Sigma)$, 其中$\Sigma&#x3D;AA’&gt;0$.</p>
+<p><strong>p元标准正态分布：</strong><span
+class="math inline">\(X\overset{d}{\sim}N_p(0,I_p)\)</span></p>
+<p><strong>定理1：</strong>设p元随机向量<span
+class="math inline">\(X=\mu+AY\)</span>, 其中<span
+class="math inline">\(\mu\in\mathbb{R}^k, A\)</span>为<span
+class="math inline">\(k\times p\)</span>的行满秩矩阵，<span
+class="math inline">\(k\le p\)</span>, 随机向量<span
+class="math inline">\(Y\overset{d}{\sim}N_p(0,I_p)\)</span>, 则<span
+class="math inline">\(X\overset{d}{\sim}N_k(\mu,\Sigma)\)</span>,
+其中<span class="math inline">\(\Sigma=AA&#39;&gt;0\)</span>.</p>
 <blockquote>
-<p><strong>证明</strong>：随机向量 $X$的特征函数定义为：<br>$$<br>\phi_X(t) &#x3D; \mathbb{E} \left[ e^{i t^T X} \right]<br>$$<br>其中，$t \in\mathbb{R}^k$是与 $X $同维度的向量。</p>
-<p>代入 $X &#x3D; \mu + AY$到特征函数的定义中，得到：<br>$$<br>\phi_X(t) &#x3D; \mathbb{E} \left[ e^{i t^T (\mu + A Y)} \right]&#x3D; e^{i t^T \mu} \mathbb{E} \left[ e^{i t^T A Y} \right]<br>$$<br>由于 $Y $是 $p$维标准正态随机向量，$Y \sim N_p(0, I_p) $，其特征函数为：<br>$$<br>\phi_Y(t) &#x3D; \mathbb{E} \left[ e^{i t^T Y} \right] &#x3D; e^{-\frac{1}{2} t^T t}<br>$$<br>这里 $t\in \mathbb{R}^p$是与 $Y $同维度的向量。</p>
-<p>$$<br>\phi_X(t) &#x3D; e^{i t^T \mu}\mathbb{E} \left[ e^{i t^T A Y} \right]&#x3D; e^{i t^T \mu}e^{-\frac{1}{2} (A^T t)^T (A^T t)}\<br>&#x3D;e^{i t^T \mu}e^{-\frac{1}{2} t^T A A^T t}<br>$$<br>我们知道，一个 $k$维正态分布 $N_k(\mu,\Sigma) $的特征函数为：<br>$$<br>\phi(t) &#x3D; e^{i t^T \mu} e^{-\frac{1}{2} t^T \Sigma t}&#x3D;e^{i t^T \mu}e^{-\frac{1}{2} t^T A A^T t}<br>$$</p>
-<p>因此，$X $服从 $N_k(\mu, \Sigma)$分布，即：<br>$$<br>X \overset{d}{\sim} N_k(\mu, \Sigma)<br>$$</p>
-<p>如何产生$N_p(\mu,\Sigma)$的(伪)随机数？–&#x3D;&#x3D;Cholesky 分解&#x3D;&#x3D;</p>
-<p>生成的标准正态分布随机向量 $Z\overset{d}{\sim}N_p(0,I_p)$可以通过下列变换得到目标分布$X &#x3D; \mu + L Z, \Sigma&#x3D;LL’$, L 是 Cholesky 分解得到的下三角矩阵，Z是标准正态随机向量。</p>
+<p><strong>证明</strong>：随机向量 <span
+class="math inline">\(X\)</span>的特征函数定义为： <span
+class="math display">\[
+\phi_X(t) = \mathbb{E} \left[ e^{i t^T X} \right]
+\]</span> 其中，<span class="math inline">\(t
+\in\mathbb{R}^k\)</span>是与 $X $同维度的向量。</p>
+<p>代入 <span class="math inline">\(X = \mu +
+AY\)</span>到特征函数的定义中，得到： <span class="math display">\[
+\phi_X(t) = \mathbb{E} \left[ e^{i t^T (\mu + A Y)} \right]= e^{i t^T
+\mu} \mathbb{E} \left[ e^{i t^T A Y} \right]
+\]</span> 由于 $Y $是 <span
+class="math inline">\(p\)</span>维标准正态随机向量，$Y N_p(0, I_p)
+$，其特征函数为： <span class="math display">\[
+\phi_Y(t) = \mathbb{E} \left[ e^{i t^T Y} \right] = e^{-\frac{1}{2} t^T
+t}
+\]</span> 这里 <span class="math inline">\(t\in
+\mathbb{R}^p\)</span>是与 $Y $同维度的向量。</p>
+<p><span class="math display">\[
+\phi_X(t) = e^{i t^T \mu}\mathbb{E} \left[ e^{i t^T A Y} \right]= e^{i
+t^T \mu}e^{-\frac{1}{2} (A^T t)^T (A^T t)}\\
+=e^{i t^T \mu}e^{-\frac{1}{2} t^T A A^T t}
+\]</span> 我们知道，一个 <span
+class="math inline">\(k\)</span>维正态分布 $N_k(,) $的特征函数为： <span
+class="math display">\[
+\phi(t) = e^{i t^T \mu} e^{-\frac{1}{2} t^T \Sigma t}=e^{i t^T
+\mu}e^{-\frac{1}{2} t^T A A^T t}
+\]</span></p>
+<p>因此，$X $服从 <span class="math inline">\(N_k(\mu,
+\Sigma)\)</span>分布，即： <span class="math display">\[
+X \overset{d}{\sim} N_k(\mu, \Sigma)
+\]</span></p>
+<p>如何产生<span
+class="math inline">\(N_p(\mu,\Sigma)\)</span>的(伪)随机数？--==Cholesky
+分解==</p>
+<p>生成的标准正态分布随机向量 <span
+class="math inline">\(Z\overset{d}{\sim}N_p(0,I_p)\)</span>可以通过下列变换得到目标分布<span
+class="math inline">\(X = \mu + L Z, \Sigma=LL&#39;\)</span>, L 是
+Cholesky 分解得到的下三角矩阵，Z是标准正态随机向量。</p>
 </blockquote>
-<h3 id="1-2-2-性质"><a href="#1-2-2-性质" class="headerlink" title="1.2.2 性质"></a>1.2.2 性质</h3><table>
+<h3 id="性质">1.2.2 性质</h3>
+<table>
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 77%" />
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>性质</th>
-<th>说明: $X\overset{d}{\sim}N(\mu,\Sigma)$</th>
+<th>说明: <span
+class="math inline">\(X\overset{d}{\sim}N(\mu,\Sigma)\)</span></th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr class="odd">
 <td>1.密度函数</td>
-<td>$p(x)&#x3D;(2\pi)^{-\frac p 2}|\Sigma|^{-\frac 1 2}\exp\left{-\frac 1 2 (x-\mu)’\Sigma^{-1}(x-\mu)\right}$</td>
+<td><span class="math inline">\(p(x)=(2\pi)^{-\frac p
+2}\|\Sigma\|^{-\frac 1 2}\exp\left\{-\frac 1 2
+(x-\mu)&#39;\Sigma^{-1}(x-\mu)\right\}\)</span></td>
 </tr>
-<tr>
+<tr class="even">
 <td>2.特征函数</td>
-<td>$E(\exp(it’X))&#x3D;\exp{it’\mu-\frac{t’\Sigma t}2}$</td>
+<td><span
+class="math inline">\(E(\exp(it&#39;X))=\exp\{it&#39;\mu-\frac{t&#39;\Sigma
+t}2\}\)</span></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>3.期望方差</td>
-<td>$E(X)&#x3D;\mu,Cov(X)&#x3D;\Sigma$</td>
+<td><span class="math inline">\(E(X)=\mu,Cov(X)=\Sigma\)</span></td>
 </tr>
-<tr>
+<tr class="even">
 <td>4.线性变换</td>
-<td>$Y&#x3D;\eta+AX,\eta\in\mathbb{R}^k,A_{k\times p}, Y\overset{d}{\sim}N_k(\eta+A\mu,A\Sigma A’)$</td>
+<td><span class="math inline">\(Y=\eta+AX,\eta\in\mathbb{R}^k,A_{k\times
+p}, Y\overset{d}{\sim}N_k(\eta+A\mu,A\Sigma A&#39;)\)</span></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>5.相互独立</td>
-<td>设$X_1,\dots,X_k$相互独立，$X_i\overset{d}{\sim}N_p(\mu_i,\Sigma_i),1\le i\le k$, 则$\sum^k_{i&#x3D;1}\alpha_iX_i\overset{d}{\sim}N_p(\sum^k_{i&#x3D;1}\alpha_i\mu_i,\sum^k_{i&#x3D;1}\alpha^2_i\Sigma_i)$</td>
+<td>设<span class="math inline">\(X_1,\dots,X_k\)</span>相互独立，<span
+class="math inline">\(X_i\overset{d}{\sim}N_p(\mu_i,\Sigma_i),1\le i\le
+k\)</span>, 则<span
+class="math inline">\(\sum^k_{i=1}\alpha_iX_i\overset{d}{\sim}N_p(\sum^k_{i=1}\alpha_i\mu_i,\sum^k_{i=1}\alpha^2_i\Sigma_i)\)</span></td>
 </tr>
-<tr>
+<tr class="even">
 <td>6.卡方分布</td>
-<td><strong>$\Sigma&gt;0$</strong>, 则$(X-\mu)’\Sigma^{-1}(X-\mu)\overset{d}{\sim}\chi^2_p$, 其中$\chi^2_p$是自由度为p的卡方分布。</td>
+<td><strong><span class="math inline">\(\Sigma&gt;0\)</span></strong>,
+则<span
+class="math inline">\((X-\mu)&#39;\Sigma^{-1}(X-\mu)\overset{d}{\sim}\chi^2_p\)</span>,
+其中<span
+class="math inline">\(\chi^2_p\)</span>是自由度为p的卡方分布。</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>7.矩阵分解</td>
-<td>$X&#x3D;\begin{pmatrix}X_1^{(q)}\X_2^{(p-q)}\end{pmatrix},\mu&#x3D;\begin{pmatrix}\mu_1\\mu_2\end{pmatrix},\Sigma&#x3D;\begin{pmatrix}\Sigma_{11}&amp;\Sigma_{12}\\Sigma_{21}&amp;\Sigma_{22}\end{pmatrix}$,则$X_1^{(q)}\overset{d}{\sim}N_q(\mu_1,\Sigma_{11}),X_2^{(p-q)}overset{d}{\sim}N_{p-q}(\mu_2,\Sigma_{22})$</td>
+<td><span
+class="math inline">\(X=\begin{pmatrix}X_1^{(q)}\\X_2^{(p-q)}\end{pmatrix},\mu=\begin{pmatrix}\mu_1\\\mu_2\end{pmatrix},\Sigma=\begin{pmatrix}\Sigma_{11}&amp;\Sigma_{12}\\\Sigma_{21}&amp;\Sigma_{22}\end{pmatrix}\)</span>,则<span
+class="math inline">\(X_1^{(q)}\overset{d}{\sim}N_q(\mu_1,\Sigma_{11}),X_2^{(p-q)}overset{d}{\sim}N_{p-q}(\mu_2,\Sigma_{22})\)</span></td>
 </tr>
-<tr>
+<tr class="even">
 <td>8.分量独立性</td>
-<td>$X&#x3D;\begin{pmatrix} X_1^{(q_1)}\\vdots\X_k^{(q_k)}\end{pmatrix},\Sigma&#x3D;\begin{pmatrix}\Sigma_{11}&amp;\ldots&amp;\Sigma_{1k}\\vdots&amp;\ddots&amp;\vdots\ \Sigma_{k1}&amp;\ldots&amp;\Sigma_{kk}\end{pmatrix}$,则$X_i^{(q_i)},X_j^{(q_j)}(1\le i&lt;j\le k)$相互独立的<strong>充要条件</strong>是$Cov(X_i^{q_i},X_j^{(q_j)})&#x3D;\Sigma_{ij}&#x3D;0$.</td>
+<td><span class="math inline">\(X=\begin{pmatrix}
+X_1^{(q_1)}\\\vdots\\X_k^{(q_k)}\end{pmatrix},\Sigma=\begin{pmatrix}\Sigma_{11}&amp;\ldots&amp;\Sigma_{1k}\\\vdots&amp;\ddots&amp;\vdots\\
+\Sigma_{k1}&amp;\ldots&amp;\Sigma_{kk}\end{pmatrix}\)</span>,则<span
+class="math inline">\(X_i^{(q_i)},X_j^{(q_j)}(1\le i&lt;j\le
+k)\)</span>相互独立的<strong>充要条件</strong>是<span
+class="math inline">\(Cov(X_i^{q_i},X_j^{(q_j)})=\Sigma_{ij}=0\)</span>.</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>9.条件分布</td>
-<td>$(X_1</td>
+<td><span
+class="math inline">\((X_1|X_2=x_2)\overset{d}{\sim}N_q(\mu_{1|2},\Sigma_{1|2})\)</span>,其中<span
+class="math inline">\(\mu_{1|2}=E(X_1|X_2=x_2)=\mu_1+\Sigma_{12}\Sigma_{22}^{-1}(x_2-\mu_2)\)</span>,<span
+class="math inline">\(\Sigma_{1|2}=Cov(X_1|X_2=x_2)=\Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\)</span>.<span
+class="math inline">\((\Sigma_{1|2}\le\Sigma_{11})\)</span></td>
 </tr>
-<tr>
+<tr class="even">
 <td>10.变量的独立分解</td>
-<td>令$Y_1&#x3D;X_1,Y_2&#x3D;X_2-\Sigma_{21}\Sigma_{11}^{-1}X_1$;$Z_2&#x3D;X_2,Z_1&#x3D;X_1-\Sigma_{12}\Sigma_{22}^{-1}X_2$;则$Y_1$与$Y_2$相互独立，$Z_1$与$Z_2$相互独立，且$Y_1\overset{d}{\sim}N_q(\mu_1,\Sigma_{11}),Y_2\overset{d}{\sim}N_{p-q}(\mu_2-\Sigma_{21}\Sigma_{11}^{-1}\mu_1,\Sigma_{2</td>
+<td>令<span
+class="math inline">\(Y_1=X_1,Y_2=X_2-\Sigma_{21}\Sigma_{11}^{-1}X_1\)</span>;<span
+class="math inline">\(Z_2=X_2,Z_1=X_1-\Sigma_{12}\Sigma_{22}^{-1}X_2\)</span>;则<span
+class="math inline">\(Y_1\)</span>与<span
+class="math inline">\(Y_2\)</span>相互独立，<span
+class="math inline">\(Z_1\)</span>与<span
+class="math inline">\(Z_2\)</span>相互独立，且<span
+class="math inline">\(Y_1\overset{d}{\sim}N_q(\mu_1,\Sigma_{11}),Y_2\overset{d}{\sim}N_{p-q}(\mu_2-\Sigma_{21}\Sigma_{11}^{-1}\mu_1,\Sigma_{2|1})\)</span>,
+<span
+class="math inline">\(Z_2\overset{d}{\sim}N_{p-q}(\mu_2,\Sigma_{22}),Z_1\overset{d}{\sim}N_q(\mu_1-\Sigma_{12}\Sigma_{22}^{-1}\mu_2,\Sigma_{1\|2}\)</span>,<span
+class="math inline">\((\Sigma_{2|1}=\Sigma_{22}-\Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12})\)</span></td>
 </tr>
-</tbody></table>
-<h2 id="1-3-相关系数"><a href="#1-3-相关系数" class="headerlink" title="1.3 相关系数"></a>1.3 相关系数</h2><table>
+</tbody>
+</table>
+<h2 id="相关系数">1.3 相关系数</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 66%" />
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>定义</th>
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
-<td>相关系数$p_{ij}$</td>
-<td>$X_i$与$X_j$：$p_{ij}&#x3D;\frac{Cov(X_i,X_j)}{\sqrt{Var(X_i)}\sqrt{Var(X_j)}}&#x3D;\frac{\sigma_{ij}}{\sqrt{\sigma_{ii}}\sqrt{\sigma_{jj}}}$</td>
+<tbody>
+<tr class="odd">
+<td>相关系数<span class="math inline">\(p_{ij}\)</span></td>
+<td><span class="math inline">\(X_i\)</span>与<span
+class="math inline">\(X_j\)</span>：<span
+class="math inline">\(p_{ij}=\frac{Cov(X_i,X_j)}{\sqrt{Var(X_i)}\sqrt{Var(X_j)}}=\frac{\sigma_{ij}}{\sqrt{\sigma_{ii}}\sqrt{\sigma_{jj}}}\)</span></td>
 </tr>
-<tr>
+<tr class="even">
 <td>相关矩阵R</td>
-<td>$R&#x3D;\begin{pmatrix}\rho_{11}&amp;\ldots&amp;\rho_{1p}\\vdots &amp;&amp;\vdots\ \rho_{p1}&amp;\ldots&amp;\rho_{pp}\end{pmatrix}&#x3D;diag(\sigma_{11}^{-\frac 1 2},\dots,\sigma_{pp}^{-\frac 1 2})\begin{pmatrix}\sigma_{11}&amp;\ldots&amp;\sigma_{1p}\\vdots &amp;&amp;\vdots\ \sigma_{p1}&amp;\ldots&amp;\sigma_{pp}\end{pmatrix}diag(\sigma_{11}^{-\frac 1 2},\dots,\sigma_{pp}^{-\frac 1 2})$</td>
+<td><span
+class="math inline">\(R=\begin{pmatrix}\rho_{11}&amp;\ldots&amp;\rho_{1p}\\\vdots
+&amp;&amp;\vdots\\
+\rho_{p1}&amp;\ldots&amp;\rho_{pp}\end{pmatrix}=diag(\sigma_{11}^{-\frac
+1 2},\dots,\sigma_{pp}^{-\frac 1
+2})\begin{pmatrix}\sigma_{11}&amp;\ldots&amp;\sigma_{1p}\\\vdots
+&amp;&amp;\vdots\\
+\sigma_{p1}&amp;\ldots&amp;\sigma_{pp}\end{pmatrix}diag(\sigma_{11}^{-\frac
+1 2},\dots,\sigma_{pp}^{-\frac 1 2})\)</span></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>偏相关系数</td>
-<td>$X&#x3D;\begin{pmatrix}X_1^{(q)}\X_2^{(p-q)}\end{pmatrix},\mu&#x3D;\begin{pmatrix}\mu_1\\mu_2\end{pmatrix},\Sigma&#x3D;\begin{pmatrix}\Sigma_{11}&amp;\Sigma_{12}\\Sigma_{21}&amp;\Sigma_{22}\end{pmatrix}$, 则$(X_1^{(q)}|X_2^{(p-q)})\overset{d}{\sim}N_q(\mu_{1</td>
+<td><span
+class="math inline">\(X=\begin{pmatrix}X_1^{(q)}\\X_2^{(p-q)}\end{pmatrix},\mu=\begin{pmatrix}\mu_1\\\mu_2\end{pmatrix},\Sigma=\begin{pmatrix}\Sigma_{11}&amp;\Sigma_{12}\\\Sigma_{21}&amp;\Sigma_{22}\end{pmatrix}\)</span>,
+则<span
+class="math inline">\((X_1^{(q)}\|X_2^{(p-q)})\overset{d}{\sim}N_q(\mu_{1|2},\Sigma_{1|2})\)</span>.
+在给定<span class="math inline">\(X_2^{(p-q)}\)</span>的条件下，<span
+class="math inline">\(X_i\)</span>与<span
+class="math inline">\(X_j\)</span>的条件相关系数<span
+class="math inline">\(\rho_{(ij)|(1|2)}=\frac{\sigma_{(ij)|(1|2)}}{\sqrt{\sigma_{(ii)|(1|2)}}\sqrt{\sigma_{(jj)|(1|2)}}}\)</span></td>
 </tr>
-<tr>
-<td>精度矩阵$(k_{ij})_{p\times p}$</td>
-<td>设随机向量$X$，有$Cov(X)&#x3D;\Sigma&gt;0$, 那么称$K&#x3D;\Sigma^{-1}$为$X$的精度矩阵。</td>
+<tr class="even">
+<td>精度矩阵<span class="math inline">\((k_{ij})_{p\times
+p}\)</span></td>
+<td>设随机向量<span class="math inline">\(X\)</span>，有<span
+class="math inline">\(Cov(X)=\Sigma&gt;0\)</span>, 那么称<span
+class="math inline">\(K=\Sigma^{-1}\)</span>为<span
+class="math inline">\(X\)</span>的精度矩阵。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <blockquote>
 <p>偏相关系数是图模型和因果推断中的重要统计量，可以由特征函数+期望+方差，可以通过<strong>偏相关系数判别多元正态随机向量分量之间的条件独立性</strong>。</p>
 </blockquote>
 <p><strong>精度矩阵的性质：</strong></p>
-<ol>
-<li><p>若$X&#x3D;(X_1,\dots,X_p)’\overset{d}{\sim}N_p(\mu,\Sigma),\Sigma&gt;0,K&#x3D;\Sigma^{-1}&#x3D;(k_{ij})<em>{p\times p}$, 则$k</em>{ii}&#x3D;(Var(X_i|X_{(-i)}))^{-1},1\le i\le p$, 其中$X_{(-i)}&#x3D;(X_1,\dots,X_{i-1},X_{(i+1)},\dots,X_p)’,1\le i\le p$, 设$X\overset{d}{\sim}N_p(\mu,\Sigma),\Sigma&gt;0$, 有如下分解：</p>
-<p>$X\begin{pmatrix}X_1^{(p_1)}\X_2^{(p_2)}\X_3^{(p_3)}\end{pmatrix},\Sigma&#x3D;\begin{pmatrix}\Sigma_{11}&amp;\Sigma_{12}&amp;\Sigma_{13}\\Sigma_{21}&amp;\Sigma_{22}&amp;\Sigma_{23}\\Sigma_{31}&amp;\Sigma_{32}&amp;\Sigma_{33}\end{pmatrix},K&#x3D;\begin{pmatrix}K_{11}&amp;K_{12}&amp;K_{13}\K_{21}&amp;K_{22}&amp;K_{23}\K_{31}&amp;K_{32}&amp;K_{33}\end{pmatrix}$</p>
-</li>
-<li><p>在$X_3$给定的条件下，$X_1$与$X_2$相互条件独立的充要条件是$K_{12}&#x3D;0$($K_{12}$是精度矩阵 $K$ 中的元素，表示在给定其他所有变量的条件下，$X_1$ 和$X_2$ 的关系的强度。)</p>
+<ol type="1">
+<li><p>若<span
+class="math inline">\(X=(X_1,\dots,X_p)&#39;\overset{d}{\sim}N_p(\mu,\Sigma),\Sigma&gt;0,K=\Sigma^{-1}=(k_{ij})_{p\times
+p}\)</span>, 则<span
+class="math inline">\(k_{ii}=(Var(X_i|X_{(-i)}))^{-1},1\le i\le
+p\)</span>, 其中<span
+class="math inline">\(X_{(-i)}=(X_1,\dots,X_{i-1},X_{(i+1)},\dots,X_p)&#39;,1\le
+i\le p\)</span>, 设<span
+class="math inline">\(X\overset{d}{\sim}N_p(\mu,\Sigma),\Sigma&gt;0\)</span>,
+有如下分解：</p>
+<p><span
+class="math inline">\(X\begin{pmatrix}X_1^{(p_1)}\\X_2^{(p_2)}\\X_3^{(p_3)}\end{pmatrix},\Sigma=\begin{pmatrix}\Sigma_{11}&amp;\Sigma_{12}&amp;\Sigma_{13}\\\Sigma_{21}&amp;\Sigma_{22}&amp;\Sigma_{23}\\\Sigma_{31}&amp;\Sigma_{32}&amp;\Sigma_{33}\end{pmatrix},K=\begin{pmatrix}K_{11}&amp;K_{12}&amp;K_{13}\\K_{21}&amp;K_{22}&amp;K_{23}\\K_{31}&amp;K_{32}&amp;K_{33}\end{pmatrix}\)</span></p></li>
+<li><p>在<span class="math inline">\(X_3\)</span>给定的条件下，<span
+class="math inline">\(X_1\)</span>与<span
+class="math inline">\(X_2\)</span>相互条件独立的充要条件是<span
+class="math inline">\(K_{12}=0\)</span>(<span
+class="math inline">\(K_{12}\)</span>是精度矩阵 <span
+class="math inline">\(K\)</span>
+中的元素，表示在给定其他所有变量的条件下，<span
+class="math inline">\(X_1\)</span> 和<span
+class="math inline">\(X_2\)</span> 的关系的强度。)</p>
 <blockquote>
-<p>证明：<br>$$<br>\begin{align}<br>\Sigma_{12|3}&amp;\overset{\text{定义}}{&#x3D;}Cov((X_1,X_2)|X_3)\<br>&amp;\overset{\text{性质9}}{&#x3D;}\begin{pmatrix}\Sigma_{11}&amp; \Sigma_{12}\\Sigma_{21}&amp;\Sigma_{22}\end{pmatrix}-\begin{pmatrix}\Sigma_{13}\\Sigma_{23}\end{pmatrix}\Sigma_{33}^{-1}\begin{pmatrix}\Sigma_{31}&amp; \Sigma_{32}\end{pmatrix}\<br>&amp;\overset{\text{矩阵运算}}{&#x3D;}\begin{pmatrix}\Sigma_{11}-\Sigma_{13}\Sigma_{33}^{-1}\Sigma_{31}&amp;\Sigma_{12}-\Sigma_{13}\Sigma_{33}^{-1}\Sigma_{32}\\Sigma_{21}-\Sigma_{23}\Sigma_{33}^{-1}\Sigma_{31}&amp;\Sigma_{22}-\Sigma_{23}\Sigma_{33}^{-1}\Sigma_{32}\end{pmatrix}\<br>&amp;\overset{\text{分块矩阵运算}}{&#x3D;}\begin{pmatrix}K_{11}&amp;K_{12}\K_{21}&amp;K_{22}\end{pmatrix}^{-1}<br>\end{align}<br>$$<br>由(分量独立性)：$X&#x3D;\begin{pmatrix} X_1^{(q_1)}\\vdots\X_k^{(q_k)}\end{pmatrix},\Sigma&#x3D;\begin{pmatrix}\Sigma_{11}&amp;\ldots&amp;\Sigma_{1k}\\vdots&amp;\ddots&amp;\vdots\ \Sigma_{k1}&amp;\ldots&amp;\Sigma_{kk}\end{pmatrix}$, 则$X_i^{(q_i)},X_j^{(q_j)}(1\le i&lt;j\le k)$相互独立的<strong>充要条件</strong>是$Cov(X_i^{q_i},X_j^{(q_j)})&#x3D;\Sigma_{ij}&#x3D;0$.</p>
-<p>则$X_1$与$X_2$条件独立的充要条件为$\Sigma_{12}-\Sigma_{13}\Sigma_{33}^{-1}\Sigma_{32}&#x3D;0$,$K_{12}&#x3D;0$;则推广有$K_{13}&#x3D;0,K_{23}&#x3D;0$.</p>
-<p>无量纲：<strong>因为精度矩阵的数值与变量的量纲有关</strong>，所以进行标准化处理。令$C&#x3D;\begin{pmatrix}c_{11}&amp;\ldots&amp;c_{1p}\\vdots &amp;\ddots&amp;\vdots\ c_{p1}&amp;\ldots&amp;c_{pp}\end{pmatrix}\overset{\Delta}{&#x3D;}diag(k_{11}^{-\frac 1 2},\dots,k_{pp}^{-\frac 1 2})\begin{pmatrix}k_{11}&amp;\ldots&amp;k_{1p}\\vdots &amp;\ddots&amp;\vdots\ k_{p1}&amp;\ldots&amp;k_{pp}\end{pmatrix}diag(k_{11}^{-\frac 1 2},\dots,k_{pp}^{-\frac 1 2})$</p>
-<p>$C&#x3D;\begin{pmatrix}C_{11}&amp;C_{12}&amp;C_{13}\C_{21}&amp;C_{22}&amp;C_{23}\ C_{31}&amp;C_{32}&amp;C_{33}\end{pmatrix}$,(将得到的C根据$X_1,X_2,X_3$分块)。</p>
-<p>在给定$X_3$的条件下，$X_1$与$X_2$条件独立的充要条件$C_{12}&#x3D;0$.</p>
-</blockquote>
-</li>
+<p>证明： <span class="math display">\[
+\begin{align}
+\Sigma_{12|3}&amp;\overset{\text{定义}}{=}Cov((X_1,X_2)|X_3)\\
+&amp;\overset{\text{性质9}}{=}\begin{pmatrix}\Sigma_{11}&amp;
+\Sigma_{12}\\\Sigma_{21}&amp;\Sigma_{22}\end{pmatrix}-\begin{pmatrix}\Sigma_{13}\\\Sigma_{23}\end{pmatrix}\Sigma_{33}^{-1}\begin{pmatrix}\Sigma_{31}&amp;
+\Sigma_{32}\end{pmatrix}\\
+&amp;\overset{\text{矩阵运算}}{=}\begin{pmatrix}\Sigma_{11}-\Sigma_{13}\Sigma_{33}^{-1}\Sigma_{31}&amp;\Sigma_{12}-\Sigma_{13}\Sigma_{33}^{-1}\Sigma_{32}\\\Sigma_{21}-\Sigma_{23}\Sigma_{33}^{-1}\Sigma_{31}&amp;\Sigma_{22}-\Sigma_{23}\Sigma_{33}^{-1}\Sigma_{32}\end{pmatrix}\\
+&amp;\overset{\text{分块矩阵运算}}{=}\begin{pmatrix}K_{11}&amp;K_{12}\\K_{21}&amp;K_{22}\end{pmatrix}^{-1}
+\end{align}
+\]</span> 由(分量独立性)：<span class="math inline">\(X=\begin{pmatrix}
+X_1^{(q_1)}\\\vdots\\X_k^{(q_k)}\end{pmatrix},\Sigma=\begin{pmatrix}\Sigma_{11}&amp;\ldots&amp;\Sigma_{1k}\\\vdots&amp;\ddots&amp;\vdots\\
+\Sigma_{k1}&amp;\ldots&amp;\Sigma_{kk}\end{pmatrix}\)</span>, 则<span
+class="math inline">\(X_i^{(q_i)},X_j^{(q_j)}(1\le i&lt;j\le
+k)\)</span>相互独立的<strong>充要条件</strong>是<span
+class="math inline">\(Cov(X_i^{q_i},X_j^{(q_j)})=\Sigma_{ij}=0\)</span>.</p>
+<p>则<span class="math inline">\(X_1\)</span>与<span
+class="math inline">\(X_2\)</span>条件独立的充要条件为<span
+class="math inline">\(\Sigma_{12}-\Sigma_{13}\Sigma_{33}^{-1}\Sigma_{32}=0\)</span>,<span
+class="math inline">\(K_{12}=0\)</span>;则推广有<span
+class="math inline">\(K_{13}=0,K_{23}=0\)</span>.</p>
+<p>无量纲：<strong>因为精度矩阵的数值与变量的量纲有关</strong>，所以进行标准化处理。令<span
+class="math inline">\(C=\begin{pmatrix}c_{11}&amp;\ldots&amp;c_{1p}\\\vdots
+&amp;\ddots&amp;\vdots\\
+c_{p1}&amp;\ldots&amp;c_{pp}\end{pmatrix}\overset{\Delta}{=}diag(k_{11}^{-\frac
+1 2},\dots,k_{pp}^{-\frac 1
+2})\begin{pmatrix}k_{11}&amp;\ldots&amp;k_{1p}\\\vdots
+&amp;\ddots&amp;\vdots\\
+k_{p1}&amp;\ldots&amp;k_{pp}\end{pmatrix}diag(k_{11}^{-\frac 1
+2},\dots,k_{pp}^{-\frac 1 2})\)</span></p>
+<p><span
+class="math inline">\(C=\begin{pmatrix}C_{11}&amp;C_{12}&amp;C_{13}\\C_{21}&amp;C_{22}&amp;C_{23}\\
+C_{31}&amp;C_{32}&amp;C_{33}\end{pmatrix}\)</span>,(将得到的C根据<span
+class="math inline">\(X_1,X_2,X_3\)</span>分块)。</p>
+<p>在给定<span class="math inline">\(X_3\)</span>的条件下，<span
+class="math inline">\(X_1\)</span>与<span
+class="math inline">\(X_2\)</span>条件独立的充要条件<span
+class="math inline">\(C_{12}=0\)</span>.</p>
+</blockquote></li>
 </ol>
-<h3 id="1-3-1-练习"><a href="#1-3-1-练习" class="headerlink" title="1.3.1 练习"></a>1.3.1 练习</h3><p><img src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241201094117103.png" alt="image-20241201094117103"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241201094132212.png" alt="image-20241201094132212"></p>
-<p>对于$\hat{E}(Y|X_1,X_2,X_3,X_4)&#x3D;\mu_Y+\Sigma_{YX}\Sigma_{XX}^{-1}(X-\mu_X)$：<br>$$<br>\begin{align}<br>\hat{E}(Y|X)&amp;&#x3D;\mu_Y+\Sigma_{YX}\Sigma_{XX}^{-1}(X-\mu_X)\<br>&amp;&#x3D;95.423+\begin{pmatrix}56.689&amp;176.381&amp;-47.556&amp;-190.9\end{pmatrix}\begin{pmatrix}31.941&amp; 19.314&amp; -28.663&amp;-22.308\<br>              19.314&amp; 223.515&amp; -12.811&amp;-233.923\<br>              -28.663&amp; -12.811&amp; 37.87&amp;2.923\<br>              -22.308&amp; -233.923&amp; 2.923&amp; 258.615\end{pmatrix}^{-1}\begin{pmatrix}X_1-7.462\X_2-48.154\X_3-11.769\X_4-30\end{pmatrix}\<br>&amp;&#x3D;95.423+\begin{pmatrix}-2.06871&amp; -2.83557 &amp;-3.51512&amp; -3.44172\end{pmatrix}\begin{pmatrix}X_1-7.462\X_2-48.154\X_3-11.769\X_4-30\end{pmatrix}\<br>&amp;&#x3D;95.423-2.069(X_1-7.462)-2.836(X_2-48.154)-3.515(X_3-11.769)-3.442(X_4-30)<br>\end{align}<br>$$<br><img src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241201095141147.png" alt="image-20241201095141147"></p>
-<p>预测：计算y关于$(x_1,x_2)$的条件期望，从而用$(x_1,x_2)$预测$y$:</p>
-<p><img src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241201101835469.png" alt="image-20241201101835469"></p>
-<h2 id="1-4-矩阵多元正态分布"><a href="#1-4-矩阵多元正态分布" class="headerlink" title="1.4 矩阵多元正态分布"></a>1.4 矩阵多元正态分布</h2><h3 id="1-4-0-矩阵拉直和Kronecker积"><a href="#1-4-0-矩阵拉直和Kronecker积" class="headerlink" title="1.4.0 矩阵拉直和Kronecker积"></a>1.4.0 矩阵拉直和Kronecker积</h3><p><strong>矩阵拉直</strong>：记$X&#x3D;(x_1,\dots,x_p)是$$n\times p$的矩阵。矩阵拉直运算，是将矩阵按<strong>列</strong>拉直为向量$vec(X)&#x3D;\begin{pmatrix}x_1\\vdots\x_p\end{pmatrix}_{np\times 1}$</p>
-<p><strong>Kronecker积</strong>：令$A&#x3D;(a_{ij})<em>{n\times p},B</em>{m\times q}$，A和B的Kronecker积记为：$A\otimes B&#x3D;(a_{ij}B)_{nm\times pq}$</p>
+<h3 id="练习">1.3.1 练习</h3>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241201094117103.png"
+alt="image-20241201094117103" />
+<figcaption aria-hidden="true">image-20241201094117103</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241201094132212.png"
+alt="image-20241201094132212" />
+<figcaption aria-hidden="true">image-20241201094132212</figcaption>
+</figure>
+<p>对于<span
+class="math inline">\(\hat{E}(Y|X_1,X_2,X_3,X_4)=\mu_Y+\Sigma_{YX}\Sigma_{XX}^{-1}(X-\mu_X)\)</span>：
+<span class="math display">\[
+\begin{align}
+\hat{E}(Y|X)&amp;=\mu_Y+\Sigma_{YX}\Sigma_{XX}^{-1}(X-\mu_X)\\
+&amp;=95.423+\begin{pmatrix}56.689&amp;176.381&amp;-47.556&amp;-190.9\end{pmatrix}\begin{pmatrix}31.941&amp;
+19.314&amp; -28.663&amp;-22.308\\
+              19.314&amp; 223.515&amp; -12.811&amp;-233.923\\
+              -28.663&amp; -12.811&amp; 37.87&amp;2.923\\
+              -22.308&amp; -233.923&amp; 2.923&amp;
+258.615\end{pmatrix}^{-1}\begin{pmatrix}X_1-7.462\\X_2-48.154\\X_3-11.769\\X_4-30\end{pmatrix}\\
+&amp;=95.423+\begin{pmatrix}-2.06871&amp; -2.83557 &amp;-3.51512&amp;
+-3.44172\end{pmatrix}\begin{pmatrix}X_1-7.462\\X_2-48.154\\X_3-11.769\\X_4-30\end{pmatrix}\\
+&amp;=95.423-2.069(X_1-7.462)-2.836(X_2-48.154)-3.515(X_3-11.769)-3.442(X_4-30)
+\end{align}
+\]</span> <img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241201095141147.png"
+alt="image-20241201095141147" /></p>
+<p>预测：计算y关于<span
+class="math inline">\((x_1,x_2)\)</span>的条件期望，从而用<span
+class="math inline">\((x_1,x_2)\)</span>预测<span
+class="math inline">\(y\)</span>:</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241201101835469.png"
+alt="image-20241201101835469" />
+<figcaption aria-hidden="true">image-20241201101835469</figcaption>
+</figure>
+<h2 id="矩阵多元正态分布">1.4 矩阵多元正态分布</h2>
+<h3 id="矩阵拉直和kronecker积">1.4.0 矩阵拉直和Kronecker积</h3>
+<p><strong>矩阵拉直</strong>：记<span
+class="math inline">\(X=(x_1,\dots,x_p)是\)</span><span
+class="math inline">\(n\times
+p\)</span>的矩阵。矩阵拉直运算，是将矩阵按<strong>列</strong>拉直为向量<span
+class="math inline">\(vec(X)=\begin{pmatrix}x_1\\\vdots\\x_p\end{pmatrix}_{np\times
+1}\)</span></p>
+<p><strong>Kronecker积</strong>：令<span
+class="math inline">\(A=(a_{ij})_{n\times p},B_{m\times
+q}\)</span>，A和B的Kronecker积记为：<span class="math inline">\(A\otimes
+B=(a_{ij}B)_{nm\times pq}\)</span></p>
 <blockquote>
-<p>令$X&#x3D;\begin{pmatrix} 1 &amp; 2 \ 3 &amp; 4 \ 5 &amp; 6 \end{pmatrix},vec(X)&#x3D;\begin{pmatrix} 1 \ 3 \ 5 \ 2 \ 4 \ 6 \end{pmatrix}$</p>
-<p>令$A &#x3D; \begin{pmatrix} 1 &amp; 2 \ 3 &amp; 4 \end{pmatrix}, \quad B &#x3D; \begin{pmatrix} 0 &amp; 5 \ 6 &amp; 7 \end{pmatrix}$</p>
-<p>$A \otimes B$ 的计算步骤如下： </p>
-<p>$<br>A \otimes B &#x3D;<br>\begin{pmatrix}<br>0 &amp; 5 &amp; \vert &amp; 0 &amp; 10 \<br>6 &amp; 7 &amp; \vert &amp; 12 &amp; 14 \<br>\hline<br>0 &amp; 15 &amp; \vert &amp; 0 &amp; 20 \<br>18 &amp; 21 &amp; \vert &amp; 24 &amp; 28<br>\end{pmatrix}<br>$</p>
+<p>令<span class="math inline">\(X=\begin{pmatrix} 1 &amp; 2 \\ 3 &amp;
+4 \\ 5 &amp; 6 \end{pmatrix},vec(X)=\begin{pmatrix} 1 \\ 3 \\ 5 \\ 2 \\
+4 \\ 6 \end{pmatrix}\)</span></p>
+<p>令<span class="math inline">\(A = \begin{pmatrix} 1 &amp; 2 \\ 3
+&amp; 4 \end{pmatrix}, \quad B = \begin{pmatrix} 0 &amp; 5 \\ 6 &amp; 7
+\end{pmatrix}\)</span></p>
+<p><span class="math inline">\(A \otimes B\)</span> 的计算步骤如下：</p>
+$ A B =
+<span class="math display">\[\begin{pmatrix}
+0 &amp; 5 &amp; \vert &amp; 0 &amp; 10 \\
+6 &amp; 7 &amp; \vert &amp; 12 &amp; 14 \\
+\hline
+0 &amp; 15 &amp; \vert &amp; 0 &amp; 20 \\
+18 &amp; 21 &amp; \vert &amp; 24 &amp; 28
+\end{pmatrix}\]</span>
+<p>$</p>
 </blockquote>
 <p><strong>拉直运算和Kronecker积的性质</strong></p>
 <table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 93%" />
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>性质</th>
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr class="odd">
 <td>1</td>
-<td>对任意实数$\lambda$，有$(\lambda A)\otimes B &#x3D; A\otimes(\lambda B)&#x3D;\lambda(A\otimes B)$</td>
+<td>对任意实数<span class="math inline">\(\lambda\)</span>，有<span
+class="math inline">\((\lambda A)\otimes B = A\otimes(\lambda
+B)=\lambda(A\otimes B)\)</span></td>
 </tr>
-<tr>
+<tr class="even">
 <td>2</td>
-<td>$A\otimes(B + C)&#x3D;A\otimes B+A\otimes C$，$(B + C)\otimes A &#x3D; B\otimes A+C\otimes A$</td>
+<td><span class="math inline">\(A\otimes(B + C)=A\otimes B+A\otimes
+C\)</span>，<span class="math inline">\((B + C)\otimes A = B\otimes
+A+C\otimes A\)</span></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>3</td>
-<td>$(A\otimes B)\otimes C &#x3D; A\otimes(B\otimes C)$</td>
+<td><span class="math inline">\((A\otimes B)\otimes C =
+A\otimes(B\otimes C)\)</span></td>
 </tr>
-<tr>
+<tr class="even">
 <td>4</td>
-<td>$(A\otimes B)’&#x3D;A’\otimes B’$</td>
+<td><span class="math inline">\((A\otimes B)&#39;=A&#39;\otimes
+B&#39;\)</span></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>5</td>
-<td>$(A\otimes B)(C\otimes D)&#x3D;(AC)\otimes(BD)$</td>
+<td><span class="math inline">\((A\otimes B)(C\otimes
+D)=(AC)\otimes(BD)\)</span></td>
 </tr>
-<tr>
+<tr class="even">
 <td>6</td>
-<td>若$A$和$B$都是非奇异的方阵，则$(A\otimes B)^{-1}&#x3D;A^{-1}\otimes B^{-1}$</td>
+<td>若<span class="math inline">\(A\)</span>和<span
+class="math inline">\(B\)</span>都是非奇异的方阵，则<span
+class="math inline">\((A\otimes B)^{-1}=A^{-1}\otimes
+B^{-1}\)</span></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>7</td>
-<td>$\text{tr}(A\otimes B)&#x3D;\text{tr}(A)\cdot\text{tr}(B)$，$\text{tr}(C’D)&#x3D;({vec}(C))’({vec}(D))$</td>
+<td><span class="math inline">\(\text{tr}(A\otimes
+B)=\text{tr}(A)\cdot\text{tr}(B)\)</span>，<span
+class="math inline">\(\text{tr}(C&#39;D)=({vec}(C))&#39;({vec}(D))\)</span></td>
 </tr>
-<tr>
+<tr class="even">
 <td>8</td>
-<td>若$A$和$B$分别是$n$和$m$阶方阵，则$\vert A\otimes B\vert&#x3D;\vert A\vert^{n}\cdot\vert B\vert^{m}$</td>
+<td>若<span class="math inline">\(A\)</span>和<span
+class="math inline">\(B\)</span>分别是<span
+class="math inline">\(n\)</span>和<span
+class="math inline">\(m\)</span>阶方阵，则<span
+class="math inline">\(\vert A\otimes B\vert=\vert A\vert^{n}\cdot\vert
+B\vert^{m}\)</span></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>9</td>
-<td>若$A$、$Y$和$B$分别是$n\times p$、$p\times q$和$q\times m$的矩阵，则${vec}(AYB)&#x3D;(B’\otimes A){vec}(Y)$。(如果我们对矩阵 $Y$ 进行线性变换 $AYB$，那么其 <strong>“拉直”</strong> 形式（即按列展开）将受到 Kronecker积的影响。)</td>
+<td>若<span class="math inline">\(A\)</span>、<span
+class="math inline">\(Y\)</span>和<span
+class="math inline">\(B\)</span>分别是<span
+class="math inline">\(n\times p\)</span>、<span
+class="math inline">\(p\times q\)</span>和<span
+class="math inline">\(q\times m\)</span>的矩阵，则<span
+class="math inline">\({vec}(AYB)=(B&#39;\otimes
+A){vec}(Y)\)</span>。(如果我们对矩阵 <span
+class="math inline">\(Y\)</span> 进行线性变换 <span
+class="math inline">\(AYB\)</span>，那么其 <strong>“拉直”</strong>
+形式（即按列展开）将受到 Kronecker积的影响。)</td>
 </tr>
-</tbody></table>
-<h3 id="1-4-1-矩阵分布"><a href="#1-4-1-矩阵分布" class="headerlink" title="1.4.1 矩阵分布"></a>1.4.1 矩阵分布</h3><p>设 $X_1, \cdots, X_n$ i.i.d.(独立同分布, independent and identically distributed)，$X_i &#x3D; (x_{i1}, \cdots, x_{ip})’ \stackrel{d}{&#x3D;} N_p(\mu, \Sigma)$，即 $X_1, \cdots, X_n$ 是来自 $p$ 元正态总体 $N_p(\mu, \Sigma)$ 的独立样本。 </p>
-<p>记 $X&#x3D;(X_1, \cdots, X_n)$，则 $X$ 是一个 $p\times n$ 的随机矩阵。 </p>
-<p>随机矩阵的期望：$E(X)&#x3D;(\mu, \cdots, \mu)&#x3D;\mu\cdot 1_n’$， 其中 $1_n&#x3D;(1, \cdots, 1)’$。 </p>
-<p>矩阵的拉直运算：$\text{vec}(X)&#x3D;\text{vec}((X_1, \cdots, X_n)) &#x3D;  \begin{pmatrix} X_1\ \vdots\ X_n \end{pmatrix}_{(np)\times 1}$</p>
-<p>随机矩阵的协方差阵：$Cov(X)&#x3D;Cov(vec(X))$</p>
+</tbody>
+</table>
+<h3 id="矩阵分布">1.4.1 矩阵分布</h3>
+<p>设 <span class="math inline">\(X_1, \cdots, X_n\)</span>
+i.i.d.(独立同分布, independent and identically distributed)，<span
+class="math inline">\(X_i = (x_{i1}, \cdots, x_{ip})&#39;
+\stackrel{d}{=} N_p(\mu, \Sigma)\)</span>，即 <span
+class="math inline">\(X_1, \cdots, X_n\)</span> 是来自 <span
+class="math inline">\(p\)</span> 元正态总体 <span
+class="math inline">\(N_p(\mu, \Sigma)\)</span> 的独立样本。</p>
+<p>记 <span class="math inline">\(X=(X_1, \cdots, X_n)\)</span>，则
+<span class="math inline">\(X\)</span> 是一个 <span
+class="math inline">\(p\times n\)</span> 的随机矩阵。</p>
+<p>随机矩阵的期望：<span class="math inline">\(E(X)=(\mu, \cdots,
+\mu)=\mu\cdot 1_n&#39;\)</span>， 其中 <span
+class="math inline">\(1_n=(1, \cdots, 1)&#39;\)</span>。</p>
+<p>矩阵的拉直运算：<span
+class="math inline">\(\text{vec}(X)=\text{vec}((X_1, \cdots, X_n)) =
+\begin{pmatrix} X_1\\ \vdots\\ X_n \end{pmatrix}_{(np)\times
+1}\)</span></p>
+<p>随机矩阵的协方差阵：<span
+class="math inline">\(Cov(X)=Cov(vec(X))\)</span></p>
 <p><strong>随机矩阵的分布：随机矩阵拉直后的随机向量的分布。</strong></p>
-<p>矩阵$X$的运算 由于$X&#x3D;(X_1,\cdots,X_n)$，有<br>$$<br>E(\text{vec}(X)) &#x3D;  \begin{pmatrix} \mu\ \vdots\ \mu \end{pmatrix}, \quad \text{Cov}(\text{vec}(X)) &#x3D;  \begin{pmatrix} \Sigma &amp; 0 &amp; \cdots &amp; 0\ 0 &amp; \Sigma &amp; \cdots &amp; 0\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots\ 0 &amp; 0 &amp; \cdots &amp; \Sigma \end{pmatrix}<br>$$<br>即$E(\text{vec}(X)) &#x3D; 1_n \otimes \mu$，$\text{Cov}(\text{vec}(X)) &#x3D; I_n \otimes \Sigma$，其中$I_n$是$n$阶单位阵。</p>
+<p>矩阵<span class="math inline">\(X\)</span>的运算 由于<span
+class="math inline">\(X=(X_1,\cdots,X_n)\)</span>，有 <span
+class="math display">\[
+E(\text{vec}(X)) =  \begin{pmatrix} \mu\\ \vdots\\ \mu \end{pmatrix},
+\quad \text{Cov}(\text{vec}(X)) =  \begin{pmatrix} \Sigma &amp; 0 &amp;
+\cdots &amp; 0\\ 0 &amp; \Sigma &amp; \cdots &amp; 0\\ \vdots &amp;
+\vdots &amp; \ddots &amp; \vdots\\ 0 &amp; 0 &amp; \cdots &amp; \Sigma
+\end{pmatrix}
+\]</span> 即<span class="math inline">\(E(\text{vec}(X)) = 1_n \otimes
+\mu\)</span>，<span class="math inline">\(\text{Cov}(\text{vec}(X)) =
+I_n \otimes \Sigma\)</span>，其中<span
+class="math inline">\(I_n\)</span>是<span
+class="math inline">\(n\)</span>阶单位阵。</p>
 <blockquote>
-<p>是因为$X_1, \cdots, X_n$ 独立同分布，所以它们的$\mu,\Sigma$都是一样的。</p>
+<p>是因为<span class="math inline">\(X_1, \cdots, X_n\)</span>
+独立同分布，所以它们的<span
+class="math inline">\(\mu,\Sigma\)</span>都是一样的。</p>
 </blockquote>
-<h4 id="随机矩阵拉直运算的性质-转置"><a href="#随机矩阵拉直运算的性质-转置" class="headerlink" title="随机矩阵拉直运算的性质(转置)"></a>随机矩阵拉直运算的性质(转置)</h4><p>性质1：对 $n\times m$ 的随机矩阵 $Y$，若有<br>$$<br>E(\text{vec}(Y))&#x3D;\alpha\otimes\beta, \text{Cov}(\text{vec}(Y)) &#x3D; A\otimes B<br>$$<br>其中，$\alpha,\beta$ 分别是 $m$ 和 $n$ 维列向量，$A$ 和 $B$ 分别是 $m$ 和 $n$ 阶方阵，则<br>$$<br>E(\text{vec}(Y’))&#x3D;\beta\otimes\alpha, \text{Cov}(\text{vec}(Y’)) &#x3D; B\otimes A<br>$$</p>
-<p>由性质1，对上述随机矩阵 $X$ 有<br>$$<br>E(\text{vec}(X’))&#x3D;\mu\otimes 1_n, \text{Cov}(\text{vec}(X’))&#x3D;\Sigma\otimes I_n<br>$$<br>因此，对由 $n$ 个 $p$ 维正态总体的独立样本组成的随机矩阵 $X$， $\text{vec}(X)\stackrel{d}{\sim}N_{np}(1_n\otimes\mu, I_n\otimes\Sigma)$， $\text{vec}(X’)\stackrel{d}{\sim}N_{np}(\mu\otimes 1_n,\Sigma\otimes I_n)$。</p>
-<h3 id="1-4-3-矩阵正态分布"><a href="#1-4-3-矩阵正态分布" class="headerlink" title="1.4.3  矩阵正态分布"></a>1.4.3  矩阵正态分布</h3><blockquote>
+<h4 id="随机矩阵拉直运算的性质转置">随机矩阵拉直运算的性质(转置)</h4>
+<p>性质1：对 <span class="math inline">\(n\times m\)</span> 的随机矩阵
+<span class="math inline">\(Y\)</span>，若有 <span
+class="math display">\[
+E(\text{vec}(Y))=\alpha\otimes\beta, \text{Cov}(\text{vec}(Y)) =
+A\otimes B
+\]</span> 其中，<span class="math inline">\(\alpha,\beta\)</span> 分别是
+<span class="math inline">\(m\)</span> 和 <span
+class="math inline">\(n\)</span> 维列向量，<span
+class="math inline">\(A\)</span> 和 <span
+class="math inline">\(B\)</span> 分别是 <span
+class="math inline">\(m\)</span> 和 <span
+class="math inline">\(n\)</span> 阶方阵，则 <span
+class="math display">\[
+E(\text{vec}(Y&#39;))=\beta\otimes\alpha, \text{Cov}(\text{vec}(Y&#39;))
+= B\otimes A
+\]</span></p>
+<p>由性质1，对上述随机矩阵 <span class="math inline">\(X\)</span> 有
+<span class="math display">\[
+E(\text{vec}(X&#39;))=\mu\otimes 1_n,
+\text{Cov}(\text{vec}(X&#39;))=\Sigma\otimes I_n
+\]</span> 因此，对由 <span class="math inline">\(n\)</span> 个 <span
+class="math inline">\(p\)</span> 维正态总体的独立样本组成的随机矩阵
+<span class="math inline">\(X\)</span>， <span
+class="math inline">\(\text{vec}(X)\stackrel{d}{\sim}N_{np}(1_n\otimes\mu,
+I_n\otimes\Sigma)\)</span>， <span
+class="math inline">\(\text{vec}(X&#39;)\stackrel{d}{\sim}N_{np}(\mu\otimes
+1_n,\Sigma\otimes I_n)\)</span>。</p>
+<h3 id="矩阵正态分布">1.4.3 矩阵正态分布</h3>
+<blockquote>
 <p>矩阵正态分布是指矩阵的每一列或每一行都服从正态分布，且这些列或行之间可能具有某种协方差结构。</p>
 <p><strong>矩阵正态分布的一个重要特性是它的“拉直”形式也是正态分布。</strong></p>
 </blockquote>
-<p>假设矩阵 $X$ 是一个 $n \times p$ 的矩阵，它的“拉直”（vectorization）形式 $\text{vec}(X)$ 也就是把矩阵按列展开成一个向量。如果这个向量服从正态分布，我们就说矩阵 $X$ 服从 <strong>矩阵正态分布</strong>。更具体地：</p>
+<p>假设矩阵 <span class="math inline">\(X\)</span> 是一个 <span
+class="math inline">\(n \times p\)</span>
+的矩阵，它的“拉直”（vectorization）形式 <span
+class="math inline">\(\text{vec}(X)\)</span>
+也就是把矩阵按列展开成一个向量。如果这个向量服从正态分布，我们就说矩阵
+<span class="math inline">\(X\)</span> 服从
+<strong>矩阵正态分布</strong>。更具体地：</p>
 <ul>
-<li>如果 $\text{vec}(X)\stackrel{d}{\sim}N_{np}(1_n\otimes\mu, I_n\otimes\Sigma)$，我们说矩阵 $X$ 服从矩阵正态分布，记为：$X\stackrel{d}{\sim}N_{p\times n}(\mu\cdot 1_n’,I_n\otimes\Sigma)$。</li>
+<li>如果 <span
+class="math inline">\(\text{vec}(X)\stackrel{d}{\sim}N_{np}(1_n\otimes\mu,
+I_n\otimes\Sigma)\)</span>，我们说矩阵 <span
+class="math inline">\(X\)</span> 服从矩阵正态分布，记为：<span
+class="math inline">\(X\stackrel{d}{\sim}N_{p\times n}(\mu\cdot
+1_n&#39;,I_n\otimes\Sigma)\)</span>。</li>
 </ul>
-<p>一般地，记 $n\times p$ 的正态随机矩阵为 $X\stackrel{d}{\sim}N_{n\times p}(B,\Sigma\otimes V)$，其中<br>$$<br>\begin{cases}<br>B&#x3D; E(X)&#x3D;\mu\cdot 1_n’\<br>\Sigma\otimes V&#x3D;\text{Cov}(\text{vec}(X))&#x3D;I_n\otimes\Sigma<br>\end{cases}<br>$$<br>$\Sigma$ 和 $V$ 分别是 $p$ 和 $n$ 阶方阵(正定阵)，分别控制着$X$的行列之间的协方差结构。</p>
-<p>从这个分布，可以得到$X$的拉直形式$vec(X)$服从以下正态分布：<br>$$<br>\text{vec}(X)\stackrel{d}{\sim}N_{np}(\text{vec}(B),\Sigma\otimes V)<br>$$</p>
-<h4 id="密度函数"><a href="#密度函数" class="headerlink" title="密度函数"></a>密度函数</h4><p>矩阵正态分布的密度函数表示了矩阵 $X$ 出现某种特定值的概率。</p>
-<p>若 $X\stackrel{d}{\sim}N_{p\times n}(B, V\otimes\Sigma)$，其密度函数如下：<br>$$<br>\frac{1}{(2\pi)^{(np)&#x2F;2}|V\otimes\Sigma|^{1&#x2F;2}}\exp\left{-\frac{1}{2}(\text{vec}(X - B))’(V\otimes\Sigma)^{-1}(\text{vec}(X - B))\right}<br>$$<br> 上式等价于（用<strong>迹的性质</strong>进行简化）：<br>$$<br>\frac{1}{(2\pi)^{(np)&#x2F;2}|V|^{n&#x2F;2}|\Sigma|^{p&#x2F;2}}\exp\left{-\frac{1}{2}\text{tr}[(X - B)’\Sigma^{-1}(X - B)V^{-1}]\right}<br>$$<br> <strong>证明：</strong>(即证$(\text{vec}(X) - \text{vec}(B))’ (V \otimes \Sigma)^{-1} (\text{vec}(X) - \text{vec}(B)) &#x3D; \text{tr} \left[ (X - B)’ \Sigma^{-1} (X - B) V^{-1} \right]$)</p>
+<p>一般地，记 <span class="math inline">\(n\times p\)</span>
+的正态随机矩阵为 <span
+class="math inline">\(X\stackrel{d}{\sim}N_{n\times p}(B,\Sigma\otimes
+V)\)</span>，其中 <span class="math display">\[
+\begin{cases}
+B= E(X)=\mu\cdot 1_n&#39;\\
+\Sigma\otimes V=\text{Cov}(\text{vec}(X))=I_n\otimes\Sigma
+\end{cases}
+\]</span> <span class="math inline">\(\Sigma\)</span> 和 <span
+class="math inline">\(V\)</span> 分别是 <span
+class="math inline">\(p\)</span> 和 <span
+class="math inline">\(n\)</span> 阶方阵(正定阵)，分别控制着<span
+class="math inline">\(X\)</span>的行列之间的协方差结构。</p>
+<p>从这个分布，可以得到<span
+class="math inline">\(X\)</span>的拉直形式<span
+class="math inline">\(vec(X)\)</span>服从以下正态分布： <span
+class="math display">\[
+\text{vec}(X)\stackrel{d}{\sim}N_{np}(\text{vec}(B),\Sigma\otimes V)
+\]</span></p>
+<h4 id="密度函数">密度函数</h4>
+<p>矩阵正态分布的密度函数表示了矩阵 <span
+class="math inline">\(X\)</span> 出现某种特定值的概率。</p>
+<p>若 <span class="math inline">\(X\stackrel{d}{\sim}N_{p\times n}(B,
+V\otimes\Sigma)\)</span>，其密度函数如下： <span class="math display">\[
+\frac{1}{(2\pi)^{(np)/2}|V\otimes\Sigma|^{1/2}}\exp\left\{-\frac{1}{2}(\text{vec}(X
+- B))&#39;(V\otimes\Sigma)^{-1}(\text{vec}(X - B))\right\}
+\]</span> 上式等价于（用<strong>迹的性质</strong>进行简化）： <span
+class="math display">\[
+\frac{1}{(2\pi)^{(np)/2}|V|^{n/2}|\Sigma|^{p/2}}\exp\left\{-\frac{1}{2}\text{tr}[(X
+- B)&#39;\Sigma^{-1}(X - B)V^{-1}]\right\}
+\]</span> <strong>证明：</strong>(即证<span
+class="math inline">\((\text{vec}(X) - \text{vec}(B))&#39; (V \otimes
+\Sigma)^{-1} (\text{vec}(X) - \text{vec}(B)) = \text{tr} \left[ (X -
+B)&#39; \Sigma^{-1} (X - B) V^{-1} \right]\)</span>)</p>
 <blockquote>
-<p>利用Kronecker积的一个重要性质：$\text{vec}(AXB)&#x3D;(B’\otimes A)\text{vec}(X)$ 其中 $A$、$X$ 和 $B$ 分别是 $n\times p$、$p\times q$ 和 $q\times m$ 的矩阵。<br>$$<br>\begin{align}<br>右式&amp;&#x3D;\text{tr} \left[ (X - B)’ \Sigma^{-1} (X - B) V^{-1} \right]\<br>&amp;\overset{性质7}{&#x3D;}\left(vec(X-B)\right)’\left(vec(\Sigma^{-1} (X - B) V^{-1})\right)\<br>&amp;\overset{性质9}{&#x3D;}\left(vec(X-B)\right)’(\Sigma^{-1}\otimes V^{-1})vec(X-B)\<br>&amp;\overset{性质6}{&#x3D;}\left(vec(X-B)\right)’(\Sigma\otimes V)^{-1}vec(X-B)\<br>&amp;&#x3D;左式<br>\end{align}<br>$$</p>
+<p>利用Kronecker积的一个重要性质：<span
+class="math inline">\(\text{vec}(AXB)=(B&#39;\otimes
+A)\text{vec}(X)\)</span> 其中 <span
+class="math inline">\(A\)</span>、<span class="math inline">\(X\)</span>
+和 <span class="math inline">\(B\)</span> 分别是 <span
+class="math inline">\(n\times p\)</span>、<span
+class="math inline">\(p\times q\)</span> 和 <span
+class="math inline">\(q\times m\)</span> 的矩阵。 <span
+class="math display">\[
+\begin{align}
+右式&amp;=\text{tr} \left[ (X - B)&#39; \Sigma^{-1} (X - B) V^{-1}
+\right]\\
+&amp;\overset{性质7}{=}\left(vec(X-B)\right)&#39;\left(vec(\Sigma^{-1}
+(X - B) V^{-1})\right)\\
+&amp;\overset{性质9}{=}\left(vec(X-B)\right)&#39;(\Sigma^{-1}\otimes
+V^{-1})vec(X-B)\\
+&amp;\overset{性质6}{=}\left(vec(X-B)\right)&#39;(\Sigma\otimes
+V)^{-1}vec(X-B)\\
+&amp;=左式
+\end{align}
+\]</span></p>
 </blockquote>
-<h4 id="线性变换"><a href="#线性变换" class="headerlink" title="线性变换"></a>线性变换</h4><blockquote>
+<h4 id="线性变换">线性变换</h4>
+<blockquote>
 <p>如果矩阵服从正态分布，经过线性变换后，结果仍然服从矩阵正态分布，只是均值和协方差矩阵发生了变化。</p>
 </blockquote>
-<p>性质2：设 $p\times n$ 的矩阵 $X$ 服从矩阵正态分布 $X\stackrel{d}{\sim}N_{p\times n}(B, V\otimes\Sigma),(\Sigma_{p\times p}\geq0, V_{n\times n}\geq0)$。</p>
-<p>对其进行线性变换$ Y &#x3D; C + AX\Gamma,$ 其中 $C_{q\times m}, A_{q\times p}$ 和 $\Gamma_{n\times m}$ 是常数矩阵。</p>
-<p>则矩阵$Y$的分布将是：<br>$$<br>Y\stackrel{d}{\sim}N_{q\times m}((C + AB\Gamma), (\Gamma’V\Gamma)\otimes (A\Sigma A’))<br>$$<br>$C+AB\Gamma$：这是矩阵 $Y$ 的均值矩阵，表示了经过线性变换后的期望。</p>
-<p>$(\Gamma’ V \Gamma) \otimes (A \Sigma A’)$：这是矩阵 $Y$ 的协方差矩阵，表示了变换后的行列协方差结构。</p>
-</div><div class="post-end"><div class="post-prev"><a href="/2024/12/01/hello-world/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-reward" onclick="openPostReward()" title="赞赏"><i class="fa-regular fa-thumbs-up fa-xl fa-beat-fade"></i></div><div id="reward-panel" onclick="closePostReward()"><div class="reward-container"><p>如果您喜欢这篇文章，欢迎赞赏支持作者，谢谢&#128151;</p>
-<div class="reward-nav"><div class="reward-item"><img class="reward-img" src="/img/reward/wechat.jpg" title="Wechat" alt="Wechat"/><span>Wechat</span></div><div class="reward-item"><img class="reward-img" src="/img/reward/alipay.jpg" title="Alipay" alt="Alipay"/><span>Alipay</span></div></div></div></div><div class="post-next"><a href="/2023/05/11/conversation-search-paper-1/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#Ch1-%E5%A4%9A%E5%85%83%E5%88%86%E5%B8%83"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch1 多元分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#1-0-%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">1.0 预备知识</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#1-0-1-%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F-X"><span class="toc-content-number">1.1.1.</span> <span class="toc-content-text">1.0.1 随机变量$X$</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#1-0-2-%E9%9A%8F%E6%9C%BA%E5%90%91%E9%87%8F-X-X-1-X-2-dots-X-p-%E2%80%99"><span class="toc-content-number">1.1.2.</span> <span class="toc-content-text">1.0.2 随机向量$X&#x3D;(X_1,X_2,\dots,X_p)’$</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#1-0-3-%E5%A4%9A%E5%85%83%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F-%E9%9A%8F%E6%9C%BA%E5%90%91%E9%87%8F"><span class="toc-content-number">1.1.3.</span> <span class="toc-content-text">1.0.3 多元随机变量(随机向量)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#1-0-4-%E7%9F%A9%E9%98%B5%E7%9F%A5%E8%AF%86"><span class="toc-content-number">1.1.4.</span> <span class="toc-content-text">1.0.4 矩阵知识</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#1-0-5-%E5%A4%9A%E5%85%83%E7%89%B9%E5%BE%81%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.1.5.</span> <span class="toc-content-text">1.0.5 多元特征函数</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#1-1-%E4%B8%80%E5%85%83%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">1.1 一元正态分布</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#1-2-%E5%A4%9A%E5%85%83%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">1.2 多元正态分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#1-2-2-%E6%80%A7%E8%B4%A8"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">1.2.2 性质</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#1-3-%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">1.3 相关系数</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#1-3-1-%E7%BB%83%E4%B9%A0"><span class="toc-content-number">1.4.1.</span> <span class="toc-content-text">1.3.1 练习</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#1-4-%E7%9F%A9%E9%98%B5%E5%A4%9A%E5%85%83%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83"><span class="toc-content-number">1.5.</span> <span class="toc-content-text">1.4 矩阵多元正态分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#1-4-0-%E7%9F%A9%E9%98%B5%E6%8B%89%E7%9B%B4%E5%92%8CKronecker%E7%A7%AF"><span class="toc-content-number">1.5.1.</span> <span class="toc-content-text">1.4.0 矩阵拉直和Kronecker积</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#1-4-1-%E7%9F%A9%E9%98%B5%E5%88%86%E5%B8%83"><span class="toc-content-number">1.5.2.</span> <span class="toc-content-text">1.4.1 矩阵分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E9%9A%8F%E6%9C%BA%E7%9F%A9%E9%98%B5%E6%8B%89%E7%9B%B4%E8%BF%90%E7%AE%97%E7%9A%84%E6%80%A7%E8%B4%A8-%E8%BD%AC%E7%BD%AE"><span class="toc-content-number">1.5.2.1.</span> <span class="toc-content-text">随机矩阵拉直运算的性质(转置)</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#1-4-3-%E7%9F%A9%E9%98%B5%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83"><span class="toc-content-number">1.5.3.</span> <span class="toc-content-text">1.4.3  矩阵正态分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.5.3.1.</span> <span class="toc-content-text">密度函数</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%BA%BF%E6%80%A7%E5%8F%98%E6%8D%A2"><span class="toc-content-number">1.5.3.2.</span> <span class="toc-content-text">线性变换</span></a></li></ol></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<p>性质2：设 <span class="math inline">\(p\times n\)</span> 的矩阵 <span
+class="math inline">\(X\)</span> 服从矩阵正态分布 <span
+class="math inline">\(X\stackrel{d}{\sim}N_{p\times n}(B,
+V\otimes\Sigma),(\Sigma_{p\times p}\geq0, V_{n\times
+n}\geq0)\)</span>。</p>
+<p>对其进行线性变换$ Y = C + AX,$ 其中 <span
+class="math inline">\(C_{q\times m}, A_{q\times p}\)</span> 和 <span
+class="math inline">\(\Gamma_{n\times m}\)</span> 是常数矩阵。</p>
+<p>则矩阵<span class="math inline">\(Y\)</span>的分布将是： <span
+class="math display">\[
+Y\stackrel{d}{\sim}N_{q\times m}((C + AB\Gamma),
+(\Gamma&#39;V\Gamma)\otimes (A\Sigma A&#39;))
+\]</span> <span class="math inline">\(C+AB\Gamma\)</span>：这是矩阵
+<span class="math inline">\(Y\)</span>
+的均值矩阵，表示了经过线性变换后的期望。</p>
+<p><span class="math inline">\((\Gamma&#39; V \Gamma) \otimes (A \Sigma
+A&#39;)\)</span>：这是矩阵 <span class="math inline">\(Y\)</span>
+的协方差矩阵，表示了变换后的行列协方差结构。</p>
+</div><div class="post-end"><div class="post-prev"></div><div class="post-next"><a href="/2023/05/11/conversation-search-paper-1/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch1-%E5%A4%9A%E5%85%83%E5%88%86%E5%B8%83"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch1 多元分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">1.0 预备知识</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8Fx"><span class="toc-content-number">1.1.1.</span> <span class="toc-content-text">1.0.1 随机变量\(X\)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E9%9A%8F%E6%9C%BA%E5%90%91%E9%87%8Fxx_1x_2dotsx_p"><span class="toc-content-number">1.1.2.</span> <span class="toc-content-text">1.0.2 随机向量\(X&#x3D;(X_1,X_2,\dots,X_p)&#39;\)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%A4%9A%E5%85%83%E9%9A%8F%E6%9C%BA%E5%8F%98%E9%87%8F%E9%9A%8F%E6%9C%BA%E5%90%91%E9%87%8F"><span class="toc-content-number">1.1.3.</span> <span class="toc-content-text">1.0.3 多元随机变量(随机向量)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%9F%A9%E9%98%B5%E7%9F%A5%E8%AF%86"><span class="toc-content-number">1.1.4.</span> <span class="toc-content-text">1.0.4 矩阵知识</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%A4%9A%E5%85%83%E7%89%B9%E5%BE%81%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.1.5.</span> <span class="toc-content-text">1.0.5 多元特征函数</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E4%B8%80%E5%85%83%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">1.1 一元正态分布</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%A4%9A%E5%85%83%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">1.2 多元正态分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%80%A7%E8%B4%A8"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">1.2.2 性质</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">1.3 相关系数</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%BB%83%E4%B9%A0"><span class="toc-content-number">1.4.1.</span> <span class="toc-content-text">1.3.1 练习</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E7%9F%A9%E9%98%B5%E5%A4%9A%E5%85%83%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83"><span class="toc-content-number">1.5.</span> <span class="toc-content-text">1.4 矩阵多元正态分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%9F%A9%E9%98%B5%E6%8B%89%E7%9B%B4%E5%92%8Ckronecker%E7%A7%AF"><span class="toc-content-number">1.5.1.</span> <span class="toc-content-text">1.4.0 矩阵拉直和Kronecker积</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%9F%A9%E9%98%B5%E5%88%86%E5%B8%83"><span class="toc-content-number">1.5.2.</span> <span class="toc-content-text">1.4.1 矩阵分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E9%9A%8F%E6%9C%BA%E7%9F%A9%E9%98%B5%E6%8B%89%E7%9B%B4%E8%BF%90%E7%AE%97%E7%9A%84%E6%80%A7%E8%B4%A8%E8%BD%AC%E7%BD%AE"><span class="toc-content-number">1.5.2.1.</span> <span class="toc-content-text">随机矩阵拉直运算的性质(转置)</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%9F%A9%E9%98%B5%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83"><span class="toc-content-number">1.5.3.</span> <span class="toc-content-text">1.4.3 矩阵正态分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.5.3.1.</span> <span class="toc-content-text">密度函数</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%BA%BF%E6%80%A7%E5%8F%98%E6%8D%A2"><span class="toc-content-number">1.5.3.2.</span> <span class="toc-content-text">线性变换</span></a></li></ol></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
 <script>const GLOBAL_CONFIG = {
   comment: { theme: ''}
 }
@@ -361,8 +904,6 @@ if (darkMode.getMode() == "dark" && (true || true)) {
 <script src="/js/theme/copy.js"></script>
 <script>copyCode();
 </script>
-<script src="/js/theme/reward.js"></script>
-
 <script src="/js/jquery-3.7.1.min.js"></script>
 
 
