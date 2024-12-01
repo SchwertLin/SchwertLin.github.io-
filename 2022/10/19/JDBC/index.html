@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="JDBC即使用java语言操作关系型数据库的一套API。 本质：  官方定义的一套操作所有关系型数据库的规则，即接口； 各个数据库厂商去实现这套接口，提供数据库驱动jar包； 可以使用这套接口(JDBC)去编程，但是真正执行代码的是驱动jar包中的实现类。  好处：  各数据库厂商使用相同的接口，Java代码不需要针对不同数据库分别开发； 可以随时更换底层数据库，访问数据库的java代码基本不变。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JDBC">
+<meta property="og:url" content="http://example.com/2022/10/19/JDBC/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="JDBC即使用java语言操作关系型数据库的一套API。 本质：  官方定义的一套操作所有关系型数据库的规则，即接口； 各个数据库厂商去实现这套接口，提供数据库驱动jar包； 可以使用这套接口(JDBC)去编程，但是真正执行代码的是驱动jar包中的实现类。  好处：  各数据库厂商使用相同的接口，Java代码不需要针对不同数据库分别开发； 可以随时更换底层数据库，访问数据库的java代码基本不变。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2022/10/18/xr2twF.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/10/19/xyC8MR.png">
+<meta property="article:published_time" content="2022-10-19T13:13:41.000Z">
+<meta property="article:modified_time" content="2022-10-19T13:14:41.062Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="MYSQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2022/10/18/xr2twF.png"><title>JDBC - MEOW - 可爱明亮的Hexo主题</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>MEOW</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">Hexo主题「Meow」展示站。本主题尤其适用于发布原创小说、同人二创等文学作品。</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>JDBC</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2022-10-19</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2022-10-19</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/Java/">Java</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/MYSQL/">MYSQL</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约1.5K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="JDBC"><a href="#JDBC" class="headerlink" title="JDBC"></a>JDBC</h1><p>即使用java语言操作关系型数据库的一套API。</p>
+<p><strong>本质</strong>：</p>
+<ul>
+<li>官方定义的一套操作所有关系型数据库的规则，即接口；</li>
+<li>各个数据库厂商去实现这套接口，提供数据库驱动jar包；</li>
+<li>可以使用这套接口(JDBC)去编程，<strong>但是真正执行代码的是驱动jar包中的实现类</strong>。</li>
+</ul>
+<p><strong>好处</strong>：</p>
+<ul>
+<li>各数据库厂商使用相同的接口，Java代码不需要针对不同数据库分别开发；</li>
+<li>可以随时更换底层数据库，访问数据库的java代码基本不变。</li>
+</ul>
+<h2 id="大体步骤"><a href="#大体步骤" class="headerlink" title="大体步骤"></a>大体步骤</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//注册驱动</span></span><br><span class="line">Class.forName(<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>);<span class="comment">//由于导入的jar包是8.0之后的版本</span></span><br><span class="line"><span class="comment">//获取连接对象</span></span><br><span class="line">String url=<span class="string">&quot;jdbc:mysql://127.0.0.1:3306/bank_175?useUnicode=true&amp;characterEncoding=UTF-8&amp;userSSL=false&amp;serverTimezone=GMT%2B8&quot;</span>;</span><br><span class="line">String username=<span class="string">&quot;root&quot;</span>;</span><br><span class="line">String password=<span class="string">&quot;123456&quot;</span>;</span><br><span class="line">Connection conn= DriverManager.getConnection(url,username,password);</span><br><span class="line"><span class="comment">//定义sql语句</span></span><br><span class="line">String sql=<span class="string">&quot;update account_175 set balance=500.0 where account_number=&#x27;A_101&#x27; &quot;</span>;</span><br><span class="line"><span class="comment">//获取执行sql对象---这里会变更</span></span><br><span class="line">Statement stmt=conn.createStatement();</span><br><span class="line"><span class="comment">//执行sql</span></span><br><span class="line"><span class="type">int</span> count=stmt.executeUpdate(sql);</span><br><span class="line"><span class="comment">//处理结果，cnt=受影响的行数；</span></span><br><span class="line">System.out.println(<span class="string">&quot;受影响的行：&quot;</span>+count);</span><br><span class="line"><span class="comment">//释放资源</span></span><br><span class="line">stmt.close();</span><br><span class="line">conn.close();</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="JDBC-API"><a href="#JDBC-API" class="headerlink" title="JDBC API"></a>JDBC API</h2><h3 id="DriverManager"><a href="#DriverManager" class="headerlink" title="DriverManager"></a>DriverManager</h3><p>驱动管理类的作用：</p>
+<ul>
+<li>注册驱动</li>
+<li>获取数据库连接</li>
+</ul>
+<h4 id="1-注册驱动"><a href="#1-注册驱动" class="headerlink" title="1.注册驱动"></a>1.注册驱动</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//注册驱动</span></span><br><span class="line">Class.forName(<span class="string">&quot;com.mysql.cj.jdbc.Driver&quot;</span>);<span class="comment">//由于导入的jar包是8.0之后的版本</span></span><br></pre></td></tr></table></figure>
+
+<p>但是对于<code>MYSQL 5</code>之后的驱动包，可以省略注册驱动的步骤。自动加载jar包中如下的驱动类：</p>
+<blockquote>
+<p>然后你发现和上述代码中的字符串一模一样（）</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2022/10/18/xr2twF.png"></p>
+<h4 id="2-获取连接"><a href="#2-获取连接" class="headerlink" title="2.获取连接"></a>2.获取连接</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> Connection | getConnection(String url,String user,String password)</span><br></pre></td></tr></table></figure>
+
+<p><code>user</code>和<code>password</code>没啥好说的，即自己数据库用户账密（一般用的都是root）。<strong>所以主要就是url</strong>。</p>
+<p><code>url</code>，我们在计网中学过，它叫统一资源定位符。在这里，<code>url</code>是连接数据库的路径。</p>
+<blockquote>
+<ul>
+<li><strong>语法</strong>：<code>jdbc:mysql://ip地址(域名):端口号/数据库名称?参数键值对1&amp;参数键值对2...</code></li>
+<li><strong>示例</strong>：<code>jdbc:mysql://127.0.0.1:3306</code></li>
+<li><strong>细节</strong>：<ol>
+<li><code>jdbc:mysql://</code>表明是<code>JDBC</code>的<code>mysql</code>的协议。</li>
+<li>如果连接的是本机的<code>mysql</code>服务器，并且<code>mysql</code>服务器默认端口是3306（或许你自己改了，一般没改就是这个捏），那么可以简写成<code>jdbc:mysql:///数据库名称?参数键值对1&amp;参数键值对2...</code></li>
+<li>配置<code>useSSL=false</code>参数，禁用安全连接方式，解决警告提示。</li>
+</ol>
+</li>
+</ul>
+</blockquote>
+<h3 id="Connection"><a href="#Connection" class="headerlink" title="Connection"></a>Connection</h3><p>数据库连接对象的作用：</p>
+<ul>
+<li>获取执行SQL的对象</li>
+<li>管理事务</li>
+</ul>
+<h4 id="1-获取执行SQL的对象"><a href="#1-获取执行SQL的对象" class="headerlink" title="1.获取执行SQL的对象"></a>1.获取执行SQL的对象</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//普通执行SQL对象</span></span><br><span class="line">Statement <span class="title function_">createStatement</span><span class="params">()</span></span><br><span class="line"><span class="comment">//预编译SQL的执行对象：防止SQL注入</span></span><br><span class="line">PreparedStatement <span class="title function_">prepareStatement</span><span class="params">(sql)</span></span><br><span class="line"><span class="comment">//执行存储过程的对象</span></span><br><span class="line">CallableStatement <span class="title function_">prepareCall</span><span class="params">(sql)</span>    </span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-事务管理"><a href="#2-事务管理" class="headerlink" title="2.事务管理"></a>2.事务管理</h4><p><code>MYSQL</code>的事务管理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#mysql default下默认自动提交事务</span><br><span class="line">#开启事务</span><br><span class="line">begin;start transaction;</span><br><span class="line">#提交事务</span><br><span class="line">commit;</span><br><span class="line">#回滚事务</span><br><span class="line">rollback;</span><br></pre></td></tr></table></figure>
+
+<p><code>JDBC</code>的事务管理：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//开启事务--true:自动提交事务；false:手动提交事务，即开启事务</span></span><br><span class="line">setAutoCommit(<span class="type">boolean</span> autoCommit);</span><br><span class="line">setAutoCommit(<span class="literal">false</span>);<span class="comment">//开启事务！</span></span><br><span class="line"><span class="comment">//提交事务</span></span><br><span class="line">commit();</span><br><span class="line"><span class="comment">//回滚事务</span></span><br><span class="line">rollback();</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Statement"><a href="#Statement" class="headerlink" title="Statement"></a>Statement</h3><p><code>Statement</code>的作用：执行SQL语句。</p>
+<h4 id="1-执行SQL语句"><a href="#1-执行SQL语句" class="headerlink" title="1.执行SQL语句"></a>1.执行SQL语句</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">executeUpdate</span><span class="params">(sql)</span>;<span class="comment">//执行DML、DDL语句</span></span><br><span class="line"><span class="comment">//return: 1.DML语句影响行数 2.DDL语句执行后，执行成功【也可能】返回0</span></span><br><span class="line">ResultSet <span class="title function_">executeQuery</span><span class="params">(sql)</span>;<span class="comment">//执行DQL语句</span></span><br><span class="line"><span class="comment">//return:ResultSet结果集对象</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="ResultSet"><a href="#ResultSet" class="headerlink" title="ResultSet"></a>ResultSet</h3><p>结果集对象的作用：</p>
+<ul>
+<li>封装了DQL查询语句的结果</li>
+</ul>
+<h4 id="1-封装DQL查询语句的结果"><a href="#1-封装DQL查询语句的结果" class="headerlink" title="1.封装DQL查询语句的结果"></a>1.封装DQL查询语句的结果</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">ResultSet stmt.executeQuery(sql);<span class="comment">//执行DQL语句，返回ResultSet对象</span></span><br><span class="line"><span class="comment">//【获取查询结果】</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">next</span><span class="params">()</span>;</span><br><span class="line"><span class="comment">//将光标从当前行向前移动一行，判断当前行是否为有效行。</span></span><br><span class="line"><span class="comment">//return:</span></span><br><span class="line"><span class="comment">//	1.true:有效行、当前行有数据</span></span><br><span class="line"><span class="comment">//	2.false:无效行、当前行没有数据</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//【获取数据】</span></span><br><span class="line">xxx <span class="title function_">getXxx</span><span class="params">(params)</span>;</span><br><span class="line"><span class="comment">//xxx:数据类型,eg: int getInt(1),String getString(&quot;name&quot;)</span></span><br><span class="line"><span class="comment">//params:第几列,可选择int or String来选择</span></span><br><span class="line"><span class="comment">//	int:列的编号，从1开始</span></span><br><span class="line"><span class="comment">//	String:列的名称</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//【使用方法】</span></span><br><span class="line"><span class="keyword">while</span>(re.next())&#123;</span><br><span class="line">    rs.getXxx();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里可以将每一行的数据载入ArrayList。</p>
+<p>通过定义一个类：装载所有的schema捏。</p>
+</blockquote>
+<h3 id="PreparedStatement"><a href="#PreparedStatement" class="headerlink" title="PreparedStatement"></a>PreparedStatement</h3><p>PreparedStatement作用：</p>
+<ul>
+<li>预编译SQL语句并执行，预防SQL注入问题。</li>
+</ul>
+<blockquote>
+<p>SQL注入：通过操作输入事先定义好的SQL语句，用以达到执行代码对服务器进行攻击的方法。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//【获取PreparedStatement对象】</span></span><br><span class="line"><span class="comment">//SQL语句中的参数值使用&#x27;?&#x27;占位符来替代</span></span><br><span class="line">String sql=<span class="string">&quot;select * from user where username = ? and password =?&quot;</span>;</span><br><span class="line"><span class="comment">//通过Connection对象获取，并传入对应的sql语句</span></span><br><span class="line">PreparedStatement pstmt=conn.prepareStatement(sql);</span><br><span class="line"></span><br><span class="line"><span class="comment">//【设置参数值】</span></span><br><span class="line"><span class="comment">//PreparedStatement对象:setXxx(param1,param2):给?赋值</span></span><br><span class="line"><span class="comment">//Xxx:数据类型,eg:setInt(...)</span></span><br><span class="line"><span class="comment">//params:</span></span><br><span class="line"><span class="comment">//	param1:?的位置编号，从1开始</span></span><br><span class="line"><span class="comment">//	param2:?的值</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//【执行SQL】</span></span><br><span class="line">executeUpdate();</span><br><span class="line">executeQuery();</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-预编译SQL"><a href="#1-预编译SQL" class="headerlink" title="1.预编译SQL"></a>1.预编译SQL</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//开启预编译功能--加入url后面</span></span><br><span class="line">useSeverPrepStmts=<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>鹅鹅鹅，下面这个可能不需要捏。</p>
+</blockquote>
+<p>加入MYSQL的日志<code>my.ini</code>(重启完成)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">log-out=FILE</span><br><span class="line">general-log=1</span><br><span class="line">general_log_file=&quot;D:\mysql.log&quot;</span><br><span class="line">slow-query-log=1</span><br><span class="line">slow-query-log-file=&quot;D:\mysql_slow.log&quot;</span><br><span class="line">long_query_time=2</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="数据库连接池"><a href="#数据库连接池" class="headerlink" title="数据库连接池"></a>数据库连接池</h2><p>数据库连接池：是个容器，负责分配、管理数据库连接(<code>Connection</code>)。</p>
+<ul>
+<li>它允许应用程序重复使用一个现有的数据库连接，而不是重新建立一个；</li>
+<li>释放空间时间超过最大空闲时间的数据库连接来避免因为没有释放数据库而引起的数据库连接遗漏。</li>
+</ul>
+<p><strong>好处</strong></p>
+<ul>
+<li>资源重用</li>
+<li>提升系统响应速度</li>
+<li>避免数据库连接遗漏</li>
+</ul>
+<h4 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h4><p>标准接口：<code>DataSource</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//功能：获取连接</span></span><br><span class="line">Connection <span class="title function_">getConnection</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>常见的数据库连接池：</p>
+<ul>
+<li>DBCP</li>
+<li>C3P0</li>
+<li>Druid（One of Best）</li>
+</ul>
+</blockquote>
+<h4 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h4><ul>
+<li>导入jar包 druid-1.1.10.jar</li>
+<li>定义配置文件</li>
+<li>加载配置文件</li>
+<li>获取数据库连接池对象</li>
+<li>获取连接</li>
+</ul>
+<blockquote>
+<p>捣鼓半天，成功了。</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2022/10/19/xyC8MR.png"></p>
+</div><div class="post-end"><div class="post-prev"><a href="/2022/10/19/%E5%B5%8C%E5%85%A5%E5%BC%8F%E4%B8%8A%E6%9C%BA%E5%AE%9E%E9%AA%8C2/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-reward" onclick="openPostReward()" title="赞赏"><i class="fa-regular fa-thumbs-up fa-xl fa-beat-fade"></i></div><div id="reward-panel" onclick="closePostReward()"><div class="reward-container"><p>如果您喜欢这篇文章，欢迎赞赏支持作者，谢谢&#128151;</p>
+<div class="reward-nav"><div class="reward-item"><img class="reward-img" src="/img/reward/wechat.jpg" title="Wechat" alt="Wechat"/><span>Wechat</span></div><div class="reward-item"><img class="reward-img" src="/img/reward/alipay.jpg" title="Alipay" alt="Alipay"/><span>Alipay</span></div></div></div></div><div class="post-next"><a href="/2022/10/13/%E6%B5%81%E6%B0%B4%E7%BA%BF/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#JDBC"><span class="toc-content-number">1.</span> <span class="toc-content-text">JDBC</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%A4%A7%E4%BD%93%E6%AD%A5%E9%AA%A4"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">大体步骤</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#JDBC-API"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">JDBC API</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#DriverManager"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">DriverManager</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#1-%E6%B3%A8%E5%86%8C%E9%A9%B1%E5%8A%A8"><span class="toc-content-number">1.2.1.1.</span> <span class="toc-content-text">1.注册驱动</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#2-%E8%8E%B7%E5%8F%96%E8%BF%9E%E6%8E%A5"><span class="toc-content-number">1.2.1.2.</span> <span class="toc-content-text">2.获取连接</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#Connection"><span class="toc-content-number">1.2.2.</span> <span class="toc-content-text">Connection</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#1-%E8%8E%B7%E5%8F%96%E6%89%A7%E8%A1%8CSQL%E7%9A%84%E5%AF%B9%E8%B1%A1"><span class="toc-content-number">1.2.2.1.</span> <span class="toc-content-text">1.获取执行SQL的对象</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#2-%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86"><span class="toc-content-number">1.2.2.2.</span> <span class="toc-content-text">2.事务管理</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#Statement"><span class="toc-content-number">1.2.3.</span> <span class="toc-content-text">Statement</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#1-%E6%89%A7%E8%A1%8CSQL%E8%AF%AD%E5%8F%A5"><span class="toc-content-number">1.2.3.1.</span> <span class="toc-content-text">1.执行SQL语句</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#ResultSet"><span class="toc-content-number">1.2.4.</span> <span class="toc-content-text">ResultSet</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#1-%E5%B0%81%E8%A3%85DQL%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5%E7%9A%84%E7%BB%93%E6%9E%9C"><span class="toc-content-number">1.2.4.1.</span> <span class="toc-content-text">1.封装DQL查询语句的结果</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#PreparedStatement"><span class="toc-content-number">1.2.5.</span> <span class="toc-content-text">PreparedStatement</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#1-%E9%A2%84%E7%BC%96%E8%AF%91SQL"><span class="toc-content-number">1.2.5.1.</span> <span class="toc-content-text">1.预编译SQL</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">数据库连接池</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-content-number">1.3.0.1.</span> <span class="toc-content-text">实现</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="toc-content-number">1.3.0.2.</span> <span class="toc-content-text">使用步骤</span></a></li></ol></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: ''}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/theme/reward.js"></script>
+
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>

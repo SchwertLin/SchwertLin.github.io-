@@ -1,0 +1,189 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="2023.3.26[TOC] P4995 跳跳你是一只小跳蛙，你特别擅长在各种地方跳来跳去。 这一天，你和朋友小 F 一起出去玩耍的时候，遇到了一堆高矮不同的石头，其中第 $i$ 块的石头高度为 $h_i$，地面的高度是 $h_0 &#x3D; 0$。你估计着，从第 $i$ 块石头跳到第 $j$ 块石头上耗费的体力值为 $(h_i - h_j) ^ 2$，从地面跳到第 $i$ 块石头耗费的体力值是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2023.3.26">
+<meta property="og:url" content="http://example.com/2023/03/26/2023-3-26/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="2023.3.26[TOC] P4995 跳跳你是一只小跳蛙，你特别擅长在各种地方跳来跳去。 这一天，你和朋友小 F 一起出去玩耍的时候，遇到了一堆高矮不同的石头，其中第 $i$ 块的石头高度为 $h_i$，地面的高度是 $h_0 &#x3D; 0$。你估计着，从第 $i$ 块石头跳到第 $j$ 块石头上耗费的体力值为 $(h_i - h_j) ^ 2$，从地面跳到第 $i$ 块石头耗费的体力值是">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-03-26T03:05:09.000Z">
+<meta property="article:modified_time" content="2023-03-27T03:08:36.613Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="每天の学习日记">
+<meta name="twitter:card" content="summary"><title>2023.3.26 - MEOW - 可爱明亮的Hexo主题</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>MEOW</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">Hexo主题「Meow」展示站。本主题尤其适用于发布原创小说、同人二创等文学作品。</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>2023.3.26</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2023-03-26</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2023-03-27</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E6%AF%8F%E5%A4%A9%E3%81%AE%E5%AD%A6%E4%B9%A0%E6%97%A5%E8%AE%B0/">每天の学习日记</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约2.5K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="2023-3-26"><a href="#2023-3-26" class="headerlink" title="2023.3.26"></a>2023.3.26</h1><p>[TOC]</p>
+<h3 id="P4995-跳跳"><a href="#P4995-跳跳" class="headerlink" title="P4995 跳跳"></a><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4995">P4995 跳跳</a></h3><p>你是一只小跳蛙，你特别擅长在各种地方跳来跳去。</p>
+<p>这一天，你和朋友小 F 一起出去玩耍的时候，遇到了一堆高矮不同的石头，其中第 $i$ 块的石头高度为 $h_i$，地面的高度是 $h_0 &#x3D; 0$。你估计着，从第 $i$ 块石头跳到第 $j$ 块石头上耗费的体力值为 $(h_i - h_j) ^ 2$，从地面跳到第 $i$ 块石头耗费的体力值是 $(h_i) ^ 2$。</p>
+<p>为了给小 F 展现你超级跳的本领，你决定跳到每个石头上各一次，并最终停在任意一块石头上，并且小跳蛙想耗费<strong>尽可能多</strong>的体力值。</p>
+<p>当然，你只是一只小跳蛙，你只会跳，不知道怎么跳才能让本领更充分地展现。</p>
+<p>不过你有救啦！小 F 给你递来了一个写着 AK 的电脑，你可以使用计算机程序帮你解决这个问题，万能的计算机会告诉你怎么跳。</p>
+<p>那就请你——会写代码的小跳蛙——写下这个程序，为你 NOIp AK 踏出坚实的一步吧！</p>
+<blockquote>
+<p>这个题要求从地面上跳到一块石头上，然后再在不同的石头上跳来跳去，使得消耗的体力最大。</p>
+<p><strong>需要注意的是：只能由地面跳到石头上一次，然后不能先挑到地面上然后再跳到石头上。</strong></p>
+<p>然后我们跳的思路就是：先从地面上跳到最高的石头，再跳到最低的石头；再跳到次高的石头···</p>
+<p><strong>Main goal</strong>：使得每两次跳跃的石头的高度差max</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line"><span class="type">long</span> <span class="type">long</span> ans;</span><br><span class="line">vector &lt;<span class="type">int</span>&gt; a;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">max</span><span class="params">(vector&lt;<span class="type">int</span>&gt; &amp;a)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">auto</span> now_pos = <span class="built_in">max_element</span>(a.<span class="built_in">begin</span>(), a.<span class="built_in">end</span>());</span><br><span class="line">	<span class="type">int</span> now_index = now_pos - a.<span class="built_in">begin</span>();</span><br><span class="line">	<span class="comment">//cout &lt;&lt; &quot;max:&quot; &lt;&lt; now_index &lt;&lt; endl;</span></span><br><span class="line">	<span class="keyword">return</span> now_index;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">min</span><span class="params">(vector&lt;<span class="type">int</span>&gt; &amp;a)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">auto</span> now_pos = <span class="built_in">min_element</span>(a.<span class="built_in">begin</span>(), a.<span class="built_in">end</span>());</span><br><span class="line">	<span class="type">int</span> now_index = now_pos - a.<span class="built_in">begin</span>();</span><br><span class="line">	<span class="comment">//cout &lt;&lt; &quot;min:&quot; &lt;&lt; now_index &lt;&lt; endl;</span></span><br><span class="line">	<span class="keyword">return</span> now_index;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="type">bool</span> flag = <span class="literal">false</span>;</span><br><span class="line">	<span class="comment">//false:max-min(last)</span></span><br><span class="line">	<span class="comment">//true:min-max(last)</span></span><br><span class="line">	<span class="type">int</span> last = <span class="number">0</span>, index, num;</span><br><span class="line"></span><br><span class="line">	cin &gt;&gt; n;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">		cin &gt;&gt; num;</span><br><span class="line">		a.<span class="built_in">push_back</span>(num);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (!a.<span class="built_in">empty</span>()) &#123;</span><br><span class="line">		<span class="keyword">if</span> (!flag) &#123; <span class="comment">//取max</span></span><br><span class="line">			flag = <span class="literal">true</span>;</span><br><span class="line">			index = <span class="built_in">max</span>(a);</span><br><span class="line">			ans += (a[index] - last) * (a[index] - last);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			flag = <span class="literal">false</span>;</span><br><span class="line">			index = <span class="built_in">min</span>(a);</span><br><span class="line">			ans += (last - a[index]) * (last - a[index]);</span><br><span class="line">		&#125;</span><br><span class="line">		last = a[index];</span><br><span class="line">		a.<span class="built_in">erase</span>(a.<span class="built_in">begin</span>() + index);</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="P1090合并果子"><a href="#P1090合并果子" class="headerlink" title="P1090合并果子"></a><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1090">P1090合并果子</a></h3><p>在一个果园里，多多已经将所有的果子打了下来，而且按果子的不同种类分成了不同的堆。多多决定把所有的果子合成一堆。</p>
+<p>每一次合并，多多可以把两堆果子合并到一起，消耗的体力等于两堆果子的重量之和。可以看出，所有的果子经过 $n-1$ 次合并之后， 就只剩下一堆了。多多在合并果子时总共消耗的体力等于每次合并所耗体力之和。</p>
+<p>因为还要花大力气把这些果子搬回家，所以多多在合并果子时要尽可能地节省体力。假定每个果子重量都为 $1$ ，并且已知果子的种类 数和每种果子的数目，你的任务是设计出合并的次序方案，使多多耗费的体力最少，并输出这个最小的体力耗费值。</p>
+<p>例如有 $3$ 种果子，数目依次为 $1$ ， $2$ ， $9$ 。可以先将 $1$ 、 $2$ 堆合并，新堆数目为 $3$ ，耗费体力为 $3$ 。接着，将新堆与原先的第三堆合并，又得到新的堆，数目为 $12$ ，耗费体力为 $12$ 。所以多多总共耗费体力 $&#x3D;3+12&#x3D;15$ 。可以证明 $15$ 为最小的体力耗费值。</p>
+<blockquote>
+<p>和上面这个题差不多捏。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n, num, sum = <span class="number">0</span>;</span><br><span class="line">vector&lt;<span class="type">int</span>&gt; a;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	cin &gt;&gt; n;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">		cin &gt;&gt; num;</span><br><span class="line">		a.<span class="built_in">push_back</span>(num);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (a.<span class="built_in">size</span>() &gt; <span class="number">1</span>) &#123;</span><br><span class="line">		<span class="built_in">sort</span>(a.<span class="built_in">begin</span>(), a.<span class="built_in">end</span>());</span><br><span class="line">		<span class="type">int</span> cost = a[<span class="number">0</span>] + a[<span class="number">1</span>];</span><br><span class="line">		sum += cost;</span><br><span class="line">		a.<span class="built_in">erase</span>(a.<span class="built_in">begin</span>(), a.<span class="built_in">begin</span>() + <span class="number">2</span>);</span><br><span class="line">		a.<span class="built_in">push_back</span>(cost);</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果这么写T了，只有30分。改用优先队列，省去每次循环都要排序，然后过了。</p>
+<blockquote>
+<p>ps: 这里不是说优先队列就不用排序，只是在push的时候根据小根堆的结点来插入，会更快）</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> n, num, sum = <span class="number">0</span>;</span><br><span class="line">priority_queue&lt;<span class="type">int</span>, vector&lt;<span class="type">int</span>&gt;, greater&lt;<span class="type">int</span>&gt;&gt;q;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	cin &gt;&gt; n;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">		cin &gt;&gt; num;</span><br><span class="line">		q.<span class="built_in">push</span>(num);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (q.<span class="built_in">size</span>() &gt; <span class="number">1</span>) &#123;</span><br><span class="line">		<span class="type">int</span> cost = q.<span class="built_in">top</span>();</span><br><span class="line">		q.<span class="built_in">pop</span>();</span><br><span class="line">		cost += q.<span class="built_in">top</span>();</span><br><span class="line">		q.<span class="built_in">pop</span>();</span><br><span class="line">		q.<span class="built_in">push</span>(cost);</span><br><span class="line"></span><br><span class="line">		sum += cost;</span><br><span class="line">	&#125;</span><br><span class="line">	cout &lt;&lt; sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="P4447分组–受挫"><a href="#P4447分组–受挫" class="headerlink" title="P4447分组–受挫"></a><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4447">P4447分组</a>–受挫</h3><p>小可可的学校信息组总共有 $n$ 个队员，每个人都有一个实力值 $a_i$。现在，一年一度的编程大赛就要到了，小可可的学校获得了若干个参赛名额，教练决定把学校信息组的 $n$ 个队员分成若干个小组去参加这场比赛。</p>
+<p>但是每个队员都不会愿意与实力跟自己过于悬殊的队员组队，于是要求分成的每个小组的队员实力值连续，同时，一个队不需要两个实力相同的选手。举个例子：$[1, 2, 3, 4, 5]$ 是合法的分组方案，因为实力值连续；$[1, 2, 3, 5]$ 不是合法的分组方案，因为实力值不连续；$[0, 1, 1, 2]$ 同样不是合法的分组方案，因为出现了两个实力值为 $1$ 的选手。</p>
+<p>如果有小组内人数太少，就会因为时间不够而无法获得高分，于是小可可想让你给出一个合法的分组方案，满足所有人都恰好分到一个小组，使得人数最少的组人数最多，输出人数最少的组人数的最大值。</p>
+<p>注意：实力值可能是负数，分组的数量没有限制。</p>
+<blockquote>
+<p>噢我的上帝啊，瞧瞧“使得人数最少的组人数最多，输出人数最少的组人数的最大值”这句话多么拗口啊。</p>
+<p>但是这句话也是一个典型的二分答案。</p>
+</blockquote>
+<p>当我们看到最大值最小化，最小值最大化，以及一些连续性限制时，通常会想到使用二分答案来解决问题。具体来说，我们可以二分一个小组的人数，然后检查能否将所有队员分成若干个小组，满足每个小组的人数不超过二分得到的值，并且每个小组的队员实力值连续，且没有出现相同实力值的队员。</p>
+<p>由于要检查每个小组的队员实力值是否连续，我们需要将队员按照实力值排序。排序之后，我们可以使用一个二维数组 <code>groups</code> 来保存已经分好的小组，其中 <code>groups[i]</code> 表示第 $i$ 个小组中的队员实力值，从小到大排序。</p>
+<p>我们从左到右扫描排序后的队员实力值。如果遇到相同实力值的队员，就无法满足条件，因为一个小组中不能有两个实力值相同的队员。如果当前队员实力值和上一个小组的最大实力值连续，那么我们将其添加到上一个小组中，否则我们新开一个小组。</p>
+<p>在检查能否将所有队员分成若干个小组时，我们从前往后遍历小组，对于每个小组，我们需要检查：</p>
+<ol>
+<li>最小值是否小于当前二分得到的值减一，如果是，那么这个小组无法满足条件；</li>
+<li>当前组的人数是否超过二分得到的值，如果是，那么这个小组无法满足条件；</li>
+<li>最大值是否大于下一个小组的最小值加上当前二分得到的值减一，如果是，那么这个小组无法满足条件。</li>
+</ol>
+<p>如果所有小组都能满足条件，那么当前二分得到的值就是最小的满足条件的小组人数，否则我们需要增大小组人数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> n,num;</span><br><span class="line">vector&lt;<span class="type">int</span>&gt; vec;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        cin&gt;&gt;num;</span><br><span class="line">        vec.<span class="built_in">push_back</span>(num);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">sort</span>(vec.<span class="built_in">begin</span>(),vec.<span class="built_in">end</span>());</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="NovelNook"><a href="#NovelNook" class="headerlink" title="NovelNook"></a>NovelNook</h2><p>goal: online library management system</p>
+<blockquote>
+<p>The British Library</p>
+<p>provide info services to <code>academic,business,research and scientific communities</code>.</p>
+<ul>
+<li>access the catalog</li>
+<li>manage usr accounts</li>
+<li>borrow materials</li>
+<li>它还应该通过自动发送过期提醒和处理新材料等任务来简化图书馆的操作。</li>
+</ul>
+</blockquote>
+<h3 id="Catalog"><a href="#Catalog" class="headerlink" title="Catalog"></a>Catalog</h3><ul>
+<li>books</li>
+<li>ebooks</li>
+<li>DVDs</li>
+<li>CDs</li>
+</ul>
+<p>可以according to 标题、作者、主题和其他相关标准搜索</p>
+<h3 id="Usr-manage"><a href="#Usr-manage" class="headerlink" title="Usr manage"></a>Usr manage</h3><p>登录系统，允许用户：、</p>
+<ul>
+<li>创建账户</li>
+<li>查询借阅历史</li>
+<li>保存借出的items</li>
+</ul>
+<h3 id="system"><a href="#system" class="headerlink" title="system"></a>system</h3><ul>
+<li>auto 追踪checkout dates&#x2F;due dates</li>
+<li>send reminders</li>
+<li>assess late fees</li>
+<li>manage 每本书的 multiple copies –track their stats（location，availbility）</li>
+<li>处理新的materials</li>
+</ul>
+<h3 id="USR"><a href="#USR" class="headerlink" title="USR"></a>USR</h3><h4 id="reader"><a href="#reader" class="headerlink" title="reader"></a>reader</h4><p>他们借阅资料并使用图书馆的资源。他们可以登录系统查看他们的借阅历史，保存材料，并续借物品</p>
+<ul>
+<li>借阅资料</li>
+<li>使用library的resource</li>
+<li>查看借阅</li>
+<li>place holds on materials</li>
+<li>续借materials</li>
+</ul>
+<h4 id="Library-Staff"><a href="#Library-Staff" class="headerlink" title="Library Staff"></a>Library Staff</h4><p>负责管理图书馆的运作。他们可能能够向顾客检查材料，处理新材料，并管理目录</p>
+<ul>
+<li>check materials towards usr</li>
+<li>deal new materials</li>
+<li>manage catalog</li>
+</ul>
+<h4 id="Admin-programmer"><a href="#Admin-programmer" class="headerlink" title="Admin(programmer)"></a>Admin(programmer)</h4><p>建立和维护图书馆管理系统的用户。他们可能能够创建和删除用户帐户，为不同的用户角色设置权限，并管理系统的设置。</p>
+<ul>
+<li>创建用户</li>
+<li>删除用户</li>
+<li>set different rights</li>
+<li>管理系统的设置（deal with…）</li>
+</ul>
+<h4 id="Super-usr"><a href="#Super-usr" class="headerlink" title="Super usr"></a>Super usr</h4><p>这些用户拥有library staff和admin的所有权限。他们可能负责监督图书馆的运作，并确保系统平稳运行。</p>
+<h4 id="Guests-游客"><a href="#Guests-游客" class="headerlink" title="Guests(游客)"></a>Guests(游客)</h4><ul>
+<li>查看图书馆的目录</li>
+<li>搜索资料</li>
+</ul>
+<blockquote>
+<p>不能：</p>
+<ul>
+<li>借阅资料</li>
+<li>登录系统</li>
+</ul>
+</blockquote>
+</div><div class="post-end"><div class="post-prev"><a href="/2023/03/27/2023-3-27/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-reward" onclick="openPostReward()" title="赞赏"><i class="fa-regular fa-thumbs-up fa-xl fa-beat-fade"></i></div><div id="reward-panel" onclick="closePostReward()"><div class="reward-container"><p>如果您喜欢这篇文章，欢迎赞赏支持作者，谢谢&#128151;</p>
+<div class="reward-nav"><div class="reward-item"><img class="reward-img" src="/img/reward/wechat.jpg" title="Wechat" alt="Wechat"/><span>Wechat</span></div><div class="reward-item"><img class="reward-img" src="/img/reward/alipay.jpg" title="Alipay" alt="Alipay"/><span>Alipay</span></div></div></div></div><div class="post-next"><a href="/2023/03/25/2023-3-25/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#2023-3-26"><span class="toc-content-number">1.</span> <span class="toc-content-text">2023.3.26</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#P4995-%E8%B7%B3%E8%B7%B3"><span class="toc-content-number">1.0.1.</span> <span class="toc-content-text">P4995 跳跳</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#P1090%E5%90%88%E5%B9%B6%E6%9E%9C%E5%AD%90"><span class="toc-content-number">1.0.2.</span> <span class="toc-content-text">P1090合并果子</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#P4447%E5%88%86%E7%BB%84%E2%80%93%E5%8F%97%E6%8C%AB"><span class="toc-content-number">1.0.3.</span> <span class="toc-content-text">P4447分组–受挫</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#NovelNook"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">NovelNook</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#Catalog"><span class="toc-content-number">1.1.1.</span> <span class="toc-content-text">Catalog</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#Usr-manage"><span class="toc-content-number">1.1.2.</span> <span class="toc-content-text">Usr manage</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#system"><span class="toc-content-number">1.1.3.</span> <span class="toc-content-text">system</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#USR"><span class="toc-content-number">1.1.4.</span> <span class="toc-content-text">USR</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#reader"><span class="toc-content-number">1.1.4.1.</span> <span class="toc-content-text">reader</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#Library-Staff"><span class="toc-content-number">1.1.4.2.</span> <span class="toc-content-text">Library Staff</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#Admin-programmer"><span class="toc-content-number">1.1.4.3.</span> <span class="toc-content-text">Admin(programmer)</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#Super-usr"><span class="toc-content-number">1.1.4.4.</span> <span class="toc-content-text">Super usr</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#Guests-%E6%B8%B8%E5%AE%A2"><span class="toc-content-number">1.1.4.5.</span> <span class="toc-content-text">Guests(游客)</span></a></li></ol></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: ''}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/theme/reward.js"></script>
+
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>
