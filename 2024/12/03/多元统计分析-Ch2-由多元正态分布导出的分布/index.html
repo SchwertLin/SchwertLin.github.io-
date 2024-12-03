@@ -1,0 +1,975 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="【挑战20天学完多元统计分析，让我们说：DDL是最佳生产力！】  非常好矩阵分析，使我大脑旋转——  Ch2 由多元正态分布导出的分布 [TOC] 2.0 由一元正态分布导出的分布 应用： 1) 构造参数的置信区间； 2) 假设检验 2.0.1 卡方分布(对应Wishart分布) 设\(X&#x3D;(x_1,\cdots,x_n)\)，其中\(x_1,\cdots,x_n\) i.i.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多元统计分析-Ch2">
+<meta property="og:url" content="http://example.com/2024/12/03/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90-Ch2-%E7%94%B1%E5%A4%9A%E5%85%83%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83%E5%AF%BC%E5%87%BA%E7%9A%84%E5%88%86%E5%B8%83/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="【挑战20天学完多元统计分析，让我们说：DDL是最佳生产力！】  非常好矩阵分析，使我大脑旋转——  Ch2 由多元正态分布导出的分布 [TOC] 2.0 由一元正态分布导出的分布 应用： 1) 构造参数的置信区间； 2) 假设检验 2.0.1 卡方分布(对应Wishart分布) 设\(X&#x3D;(x_1,\cdots,x_n)\)，其中\(x_1,\cdots,x_n\) i.i.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241202162418298.png">
+<meta property="article:published_time" content="2024-12-03T13:31:33.000Z">
+<meta property="article:modified_time" content="2024-12-03T13:36:29.586Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="多元统计分析">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241202162418298.png"><title>多元统计分析-Ch2 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>多元统计分析-Ch2</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2024-12-03</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2024-12-03</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90/">多元统计分析</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约5.9K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><p>【挑战20天学完多元统计分析，让我们说：DDL是最佳生产力！】</p>
+<blockquote>
+<p>非常好矩阵分析，使我大脑旋转——</p>
+</blockquote>
+<h1 id="ch2-由多元正态分布导出的分布">Ch2 由多元正态分布导出的分布</h1>
+<p>[TOC]</p>
+<h2 id="由一元正态分布导出的分布">2.0 由一元正态分布导出的分布</h2>
+<p>应用： 1) 构造参数的置信区间； 2) 假设检验</p>
+<h3 id="卡方分布对应wishart分布">2.0.1 卡方分布(对应Wishart分布)</h3>
+<p>设<span class="math inline">\(X=(x_1,\cdots,x_n)\)</span>，其中<span
+class="math inline">\(x_1,\cdots,x_n\)</span>
+<strong>i.i.d.</strong>(独立同分布)，<span
+class="math inline">\(x_i\stackrel{d}{\sim}N_1(0,1)\)</span>，<span
+class="math inline">\(1\leq i\leq n\)</span>。</p>
+<p>则称随机变量<span class="math inline">\(Y = XX&#39;=\sum_{i =
+1}^{n}x_i^2\)</span>为服从自由度为<span
+class="math inline">\(n\)</span>的卡方分布，记为 ： <span
+class="math display">\[
+Y=\sum_{i = 1}^{n}x_i^2\stackrel{d}{\sim}\chi^2(n)
+\]</span></p>
+<p>密度函数为： <span class="math display">\[
+g_n(x)=\begin{cases}\frac{x^{\frac{n-2}{2}}e^{-\frac{x}{2}}}{2^{\frac n
+2}\Gamma(\frac n 2)}, &amp;\quad x&gt;0\\
+0, &amp;\quad x\le0
+\end{cases}
+\]</span> 期望方差： <span class="math display">\[
+X\sim\chi^2(n)\\E(X)=n,Cov(X)=2n
+\]</span></p>
+<h3 id="t分布对应t2分布">2.0.2 t分布(对应<span
+class="math inline">\(T^2\)</span>分布)</h3>
+<p>假设随机变量<span class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span><strong>相互独立</strong>，且<span
+class="math inline">\(X\stackrel{d}{\sim}N_1(0,1)\)</span>，<span
+class="math inline">\(Y\stackrel{d}{\sim}\chi^2(n)\)</span>，
+则称随机变量<span class="math inline">\(t =
+\frac{X}{\sqrt{Y/n}}\)</span>为服从自由度为<span
+class="math inline">\(n\)</span>的<span
+class="math inline">\(t\)</span>分布，记为： <span
+class="math display">\[
+t = \frac{X}{\sqrt{\frac Y n}}\stackrel{d}{\sim}t(n)
+\]</span></p>
+<p>密度函数： <span class="math display">\[
+t_n(x)=\frac{\Gamma\left(\frac{n +
+1}{2}\right)}{\Gamma\left(\frac{n}{2}\right)\sqrt{n\pi}}\left(1+\frac{x^2}{n}\right)^{-\frac{n
++ 1}{2}}, \quad -\infty&lt;x&lt;\infty
+\]</span></p>
+<h3 id="f分布对应wilks分布">2.0.3 F分布(对应Wilks分布)</h3>
+<p>假设随机变量<span class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span><strong>相互独立</strong>，且<span
+class="math inline">\(X\stackrel{d}{\sim}\chi^2(n)\)</span>，<span
+class="math inline">\(Y\stackrel{d}{\sim}\chi^2(m)\)</span>，
+则称随机变量<span
+class="math inline">\(F=\frac{X/n}{Y/m}\)</span>为服从自由度为<span
+class="math inline">\(n\)</span>和<span
+class="math inline">\(m\)</span>的<span
+class="math inline">\(F\)</span>分布，记为: <span
+class="math display">\[
+F = \frac{\frac X n}{\frac Y m}\stackrel{d}{\sim}F(n,m).
+\]</span></p>
+<p>密度函数： <span class="math display">\[
+f_{m,n}(x) =
+\begin{cases}
+\frac{\Gamma(\frac{m + n}{2})}{\Gamma(\frac{m}{2})\Gamma(\frac{n}{2})}
+m^{\frac{m}{2}} n^{\frac{n}{2}}
+x^{\frac{m}{2}-1}(n + mx)^{-\frac{m + n}{2}},  x &gt; 0 \\
+0, \text{其它}
+\end{cases}
+\]</span></p>
+<h3 id="gamma函数">2.0.4 <span
+class="math inline">\(\Gamma\)</span>函数</h3>
+<blockquote>
+<p>此处主要是对<span
+class="math inline">\(\Gamma\)</span>函数的解释，下文还有在Wilks分布--Beta分布中提及。</p>
+</blockquote>
+<p>Gamma 函数的定义为： <span class="math display">\[
+\Gamma(x) = \int_0^\infty t^{x-1} e^{-t} \, dt, \quad \text{对于} \ x
+&gt; 0
+\]</span> 与阶乘函数关系:</p>
+<ul>
+<li>对于正整数 <span class="math inline">\(n\)</span>，有：<span
+class="math inline">\(\Gamma(n) = (n-1)!\)</span></li>
+<li>对于非整数的 <span class="math inline">\(x\)</span>: <span
+class="math inline">\(\Gamma\left( \frac{1}{2} \right) =
+\sqrt{\pi}\)</span></li>
+</ul>
+<p>性质:</p>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 90%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>性质</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>递推</td>
+<td><span class="math inline">\(\Gamma(x+1) = x \Gamma(x), \quad
+\text{对于} \ x &gt; 0\)</span>, 这个关系与阶乘的递推性质相似，因为
+<span class="math inline">\(n! = n \times (n-1)!\)</span>。</td>
+</tr>
+<tr class="even">
+<td>阶乘</td>
+<td><span class="math inline">\(\Gamma(n) = (n-1)! \quad
+\text{对于正整数} \ n\)</span></td>
+</tr>
+<tr class="odd">
+<td>对称性</td>
+<td><span class="math inline">\(\Gamma\)</span>函数的反射公式：<span
+class="math inline">\(\Gamma(x) \Gamma(1-x) = \frac{\pi}{\sin(\pi x)},
+\quad 0 &lt; x &lt; 1\)</span></td>
+</tr>
+<tr class="even">
+<td>特殊值</td>
+<td><span class="math inline">\(\Gamma\left( \frac{1}{2} \right) =
+\sqrt{\pi}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="wishart分布">2.1 Wishart分布</h2>
+<h3 id="定义">2.1.1 定义</h3>
+<p>设随机向量<span
+class="math inline">\(X=(X_1,\cdots,X_n)\)</span>，其中<span
+class="math inline">\(X_1,\cdots,X_n\)</span>
+i.i.d.(独立同分布)，每个<span
+class="math inline">\(X_i\)</span>都遵循一个多维正态分布 <span
+class="math inline">\(X_i\stackrel{d}{\sim}N_p(0,\Sigma)\)</span>，<span
+class="math inline">\(1\leq i\leq n\)</span>。</p>
+<p><strong><span
+class="math inline">\(p\)</span>阶Wishart分布</strong>：称<span
+class="math inline">\(p\)</span>阶随机矩阵<span class="math inline">\(W
+= XX&#39;=\sum_{i = 1}^{n}X_iX_i&#39;\)</span>的分布为<span
+class="math inline">\(p\)</span>阶Wishart分布，记为 $ WW_p(n,)<span
+class="math inline">\(,
+其中\)</span>n$称为其<strong>自由度</strong>。</p>
+<blockquote>
+<p>【矩阵正态分布与Wishart分布】<strong>Wishart分布实际上是矩阵正态分布的一个特殊情况。</strong></p>
+<p>当你通过独立的正态随机向量生成矩阵<span
+class="math inline">\(X\)</span>后，矩阵 <span class="math inline">\(W =
+X X&#39;\)</span> 就是 Wishart分布的实例。</p>
+<p><strong>Wishart分布</strong>: <span class="math inline">\(W = X
+X&#39; \sim W_p(n, \Sigma)\)</span> 是矩阵<span
+class="math inline">\(X\)</span>与其转置 <span
+class="math inline">\(X&#39;\)</span> 的乘积，意味着<span
+class="math inline">\(X\)</span> 和 <span
+class="math inline">\(X&#39;\)</span> 都是<strong>矩阵正态分布</strong>,
+<span class="math inline">\(X\stackrel{d}{\sim}N_{p\times
+n}(0,I_n\otimes\Sigma), X&#39; \sim N_{n \times p}(0, \Sigma \otimes
+I_n)\)</span></p>
+</blockquote>
+<h3 id="密度函数">2.1.2 密度函数</h3>
+<p>当<strong><span class="math inline">\(\Sigma&gt;0\)</span>，<span
+class="math inline">\(n\geq p\)</span></strong>时，<span
+class="math inline">\(p\)</span>阶Wishart分布有密度函数: <span
+class="math display">\[
+f_p(W)=\frac{|W|^{\frac{(n - p -
+1)}2}\exp\left\{-\frac{1}{2}\text{tr}(\Sigma^{-1}W)\right\}}{2^{\frac{np}2}|\Sigma|^{\frac
+n 2}\pi^{\frac{p(p - 1)}{4}}\prod_{i = 1}^{p}\Gamma\left(\frac{n - i +
+1}{2}\right)}, \quad W&gt;0
+\]</span> 若记<span class="math inline">\(\Gamma_p(x)=\pi^{p(p -
+1)/4}\prod_{i = 1}^{p}\Gamma\left(x-\frac{i -
+1}{2}\right)\)</span>，并称之为<span
+class="math inline">\(p\)</span>维<span
+class="math inline">\(\Gamma\)</span>函数，则有 <span
+class="math display">\[
+f_p(W)=\frac{|W|^{\frac{(n - p -
+1)}2}\exp\left\{-\frac{1}{2}\text{tr}(\Sigma^{-1}W)\right\}}{2^{\frac{np}2}\Gamma_p\left(\frac{n}{2}\right)|\Sigma|^{\frac
+n2}}, \quad W&gt;0.
+\]</span> 当<span class="math inline">\(p =
+1\)</span>时，<strong>Wishart分布退化成<span
+class="math inline">\(\chi^2\)</span>分布</strong>（一元正态分布导出）。</p>
+<p>$ f_1(w)=2^{-n 2}^{-1}(n 2)<sup>{-n}w</sup>{2}{-}, w&gt;0. $ 即<span
+class="math inline">\(W =
+X&#39;X\stackrel{d}{\sim}\sigma^2\chi^2(n)\)</span>。</p>
+<blockquote>
+<p><strong>将Wishart分布转化为随机向量的分布</strong>：</p>
+<p><span class="math inline">\(W=XX&#39;=(w_{ij})_{p\times
+p}\)</span>对称 (<span class="math inline">\((XX&#39;)&#39;=XX&#39;,
+w_{ij}=w_{ji}\)</span>)，因此可以把W的分布展开成一个由<span
+class="math inline">\(\frac{p(p+1)}2\)</span>的元素组成的随机向量<span
+class="math inline">\((w_{11},\dots,w_{1p},w_{22},\dots,w_{2p},\dots,w_{pp})&#39;\)</span>的分布。(按每行的向量拉直)
+<span class="math display">\[
+W=\begin{pmatrix}
+w_{11}&amp;w_{12}&amp;\ldots&amp;w_{1p}\\
+w_{21}&amp;w_{22}&amp;\ldots&amp;w_{2p}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+w_{p1}&amp;w_{p2}&amp;\ldots&amp;w_{pp}\\
+\end{pmatrix}=\begin{pmatrix}
+w_{1*}\\w_{2*}\\\vdots\\w_{p*}
+\end{pmatrix}\overset{d}\sim\begin{pmatrix}
+w_{1*}&#39;\\w_{2*}&#39;\\\vdots\\w_{p*}&#39;
+\end{pmatrix}
+\]</span></p>
+</blockquote>
+<p>对前提条件的说明：要求自由度<span class="math inline">\(n\ge
+p\)</span>是为确保<span
+class="math inline">\(W&gt;0\)</span>(W正定)必成立。<span
+class="math inline">\(rank(W)=\min(n,p)=p\)</span></p>
+<ul>
+<li>当自由度 <span class="math inline">\(n\lt p\)</span>时，矩阵 <span
+class="math inline">\(X\)</span> 的列数不足以提供足够的信息来使得 <span
+class="math inline">\(W\)</span> 为正定矩阵。外积矩阵 <span
+class="math inline">\(W\)</span>
+可能会退化（奇异），导致它不是正定的（即存在零特征值）</li>
+<li>当 <span class="math inline">\(n \geq p\)</span>（自由度 <span
+class="math inline">\(n\)</span> 至少为矩阵维度 <span
+class="math inline">\(p\)</span>）矩阵 <span
+class="math inline">\(X\)</span> 具有足够的列，才能确保矩阵 <span
+class="math inline">\(W\)</span> 是 <strong>正定矩阵</strong>。</li>
+</ul>
+<blockquote>
+<p><strong>Q: 为什么W一定要是正定的？</strong></p>
+<p>A: <span class="math inline">\(W=XX&#39;\)</span>的形式确保了<span
+class="math inline">\(W\)</span>是对称的,
+但是对称与正定并不等价。正定要需要其主对角元素是大于0的。</p>
+<p>因为<span
+class="math inline">\(X\)</span>的列(n个)是独立同分布的，<span
+class="math inline">\(XX&#39;\)</span>一定满秩：<span
+class="math inline">\(rank(W)=p\)</span></p>
+<p>Ps: 联想到Cholesky分解：LU+对称=正定. A symmetric matrix A possessing
+an LU factorization in which each pivot is positive is said to be
+positive definite. <span class="math inline">\(A=LU=LDL^T=LD^{\frac 1
+2}D^{\frac 1 2}L^T=BB^T\)</span></p>
+<p>何时矩阵<span class="math inline">\(A\)</span>存在LU分解？</p>
+<ul>
+<li>将A通过基本初等变换转化为上三角矩阵U的过程中不能出现主元=0的情况。</li>
+<li>每个主子矩阵<span
+class="math inline">\(A_k\)</span>都是非奇异的。</li>
+</ul>
+</blockquote>
+<h3 id="分布性质">2.1.3 分布性质</h3>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 80%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>简要说明</th>
+<th>性质</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1.分布期望</td>
+<td>若 <span class="math inline">\(W \stackrel{d}{\sim}
+W_p(n,\Sigma)\)</span>，则 <span class="math inline">\(E(W) =
+n\Sigma\)</span></td>
+</tr>
+<tr class="even">
+<td>2.线性变换</td>
+<td>若 <span class="math inline">\(W \stackrel{d}{\sim}
+W_p(n,\Sigma)\)</span>，<span class="math inline">\(C\)</span> 是 <span
+class="math inline">\(k\times p\)</span> 阶矩阵，则 <span
+class="math inline">\(CWC&#39; \stackrel{d}{\sim} W_k(n,C\Sigma
+C&#39;)\)</span></td>
+</tr>
+<tr class="odd">
+<td>3.特征函数</td>
+<td>若 <span class="math inline">\(W \stackrel{d}{\sim}
+W_p(n,\Sigma)\)</span>，则 <span class="math inline">\(W\)</span>
+特征函数为 <span class="math display">\[E(e^{itr(TW)}) = |I_p - 2i\Sigma
+T|^{-n/2}\]</span> , 其中 <span class="math inline">\(T\)</span> 为
+<span class="math inline">\(p\)</span> 阶实对称阵</td>
+</tr>
+<tr class="even">
+<td>4.可加性</td>
+<td>若 <span class="math inline">\(W_1,\cdots,W_k\)</span>
+相互独立，<span class="math inline">\(W_i \stackrel{d}{\sim}
+W_p(n_i,\Sigma)\)</span>，<span class="math inline">\(1\leq i\leq
+k\)</span>，则 <span class="math display">\[\sum_{i = 1}^{k} W_i
+\stackrel{d}{\sim} W_p(\sum_{i = 1}^{k} n_i,\Sigma)\]</span></td>
+</tr>
+<tr class="odd">
+<td>5.矩阵二次型</td>
+<td>【详细见下】若 <span class="math inline">\(A\)</span>
+为幂等矩阵，则矩阵二次型 <span class="math inline">\(Q = XAX&#39;
+\stackrel{d}{\sim} W_p(m,\Sigma)\)</span>， 其中，<span
+class="math inline">\(m = \text{Rank}(A) = R(A) =
+\text{tr}(A)\)</span>。</td>
+</tr>
+<tr class="even">
+<td>6.独立分解</td>
+<td>【详细见下】 设 <span class="math inline">\(W \stackrel{d}{\sim}
+W_p(n,\Sigma)\)</span>，<span
+class="math inline">\(\Sigma&gt;0\)</span>，<span
+class="math inline">\(n\geq p\)</span>。 将 <span
+class="math inline">\(W\)</span> 和 <span
+class="math inline">\(\Sigma\)</span> 作如下相同的 <span
+class="math inline">\(q\)</span> 阶和 <span class="math inline">\((p -
+q)\)</span> 阶矩阵分块: <span class="math inline">\(W = \begin{pmatrix}
+W_{11} &amp; W_{12} \\ W_{21} &amp; W_{22} \end{pmatrix}, \quad \Sigma =
+\begin{pmatrix} \Sigma_{11} &amp; \Sigma_{12} \\ \Sigma_{21} &amp;
+\Sigma_{22} \end{pmatrix}.\)</span></td>
+</tr>
+<tr class="odd">
+<td>7.行列式</td>
+<td>设 <span class="math inline">\(W \stackrel{d}{\sim}
+W_p(n,\Sigma)\)</span>，<span
+class="math inline">\(\Sigma&gt;0\)</span>，<span
+class="math inline">\(n\geq p\)</span>。则 <span
+class="math display">\[|W|\stackrel{d}{=} |\Sigma|\prod_{i = 1}^{p}
+\gamma_i,\]</span> 其中，<span
+class="math inline">\(\gamma_1,\cdots,\gamma_p\)</span> 相互独立，<span
+class="math inline">\(\gamma_i \stackrel{d}{\sim} \chi^2(n - i +
+1)\)</span>，<span class="math inline">\(1\leq i\leq p\)</span></td>
+</tr>
+<tr class="even">
+<td>8.逆矩阵期望</td>
+<td>若 <span class="math inline">\(W \stackrel{d}{\sim}
+W_p(n,\Sigma)\)</span>，<span
+class="math inline">\(\Sigma&gt;0\)</span>，<span
+class="math inline">\(n&gt;(p + 1)\)</span>，则 <span
+class="math inline">\(E(W^{-1})=\frac{1}{n - p -
+1}\Sigma^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td>9.逆矩阵分布</td>
+<td>设 <span class="math inline">\(W \stackrel{d}{\sim}
+W_p(n,\Sigma)\)</span>，<span
+class="math inline">\(\Sigma&gt;0\)</span>，<span
+class="math inline">\(n\geq p\)</span>， 则对任意非零的 <span
+class="math inline">\(p\)</span> 维向量 <span
+class="math inline">\(a\)</span>，都有 <span
+class="math inline">\(\frac{a&#39;\Sigma^{-1}a}{a&#39;W^{-1}a}
+\stackrel{d}{\sim} \chi^2(n - p + 1)\)</span></td>
+</tr>
+<tr class="even">
+<td>10.Bartlett分解</td>
+<td>设 <span class="math inline">\(W \stackrel{d}{\sim} W_p(n,
+I_p)\)</span>，<span class="math inline">\(n\geq p\)</span>。将 <span
+class="math inline">\(W\)</span> 作分解 <span class="math inline">\(W =
+TT&#39;\)</span>，<span class="math inline">\(T\)</span>
+是对角元为正的下三角矩阵。 令 <span
+class="math inline">\(T=(t_{ij})_{p\times p}\)</span>，则 <span
+class="math inline">\(t_{11}, t_{21}, t_{22}, \cdots, t_{p1}, t_{p2},
+\cdots, t_{pp}\)</span> 相互独立，且 <span
+class="math inline">\(t_{ii}^2 \stackrel{d}{\sim} \chi^2(n - p +
+1)\)</span>,<span class="math inline">\(t_{ij} \stackrel{d}{\sim} N(0,
+1)\)</span> 对 <span class="math inline">\(1\leq j &lt; i\leq p\)</span>
+成立。</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Bartlett 分解: 将<span class="math inline">\(W\)</span>分解成<span
+class="math inline">\(TT&#39;\)</span>, 这个下三角矩阵 <span
+class="math inline">\(T\)</span>
+的对角线元素的平方服从卡方分布，非对角线元素服从标准正态分布，并且这些元素是相互独立的。</p>
+<p><strong>Q: Bartlett分解和Cholesky分解有什么关系？</strong></p>
+<p>A: 形式上相似，用处不同。</p>
+<ul>
+<li>相似：两者都涉及将矩阵分解为下三角矩阵与其转置的乘积。</li>
+</ul>
+<p>在 Bartlett 分解和 Cholesky 分解中，都有一个下三角矩阵 <span
+class="math inline">\(T\)</span> 或 <span
+class="math inline">\(L\)</span>，并且分解形式是 <span
+class="math inline">\(W = TT&#39;\)</span> 或 <span
+class="math inline">\(A = LL^T\)</span>。</p>
+<ul>
+<li><p>不同：</p>
+<ul>
+<li><strong>应用背景不同</strong>：Cholesky
+分解用于<strong>任意对称正定矩阵</strong>，而 Bartlett
+分解用于威尔奇分布（Wishart
+分布）矩阵，特别是当协方差矩阵是单位矩阵时。Bartlett
+分解涉及威尔奇分布的统计性质，如卡方分布和正态分布的关系。</li>
+<li><strong>元素的分布不同</strong>：在 Bartlett 分解中，<span
+class="math inline">\(T\)</span> 的元素有特定的概率分布（如 <span
+class="math inline">\(t_{ii}^2 \sim \chi^2(n - p + 1)\)</span> 和 <span
+class="math inline">\(t_{ij} \sim N(0,
+1)\)</span>），这些元素是相互独立的，而在 Cholesky 分解中，<span
+class="math inline">\(L\)</span>
+的元素是通过递归计算的，并没有类似的概率分布性质。</li>
+<li><strong>独立性</strong>：Bartlett 分解中的 <span
+class="math inline">\(T\)</span> 的元素是相互独立的，而 Cholesky 分解中
+<span class="math inline">\(L\)</span>的元素之间是有依赖关系的。</li>
+</ul></li>
+</ul>
+</blockquote>
+<h4 id="性质5矩阵二次型">性质5：矩阵二次型</h4>
+<blockquote>
+<p>首先介绍一下
+二次型、矩阵二次型是个什么，我们再谈Wishart分布与矩阵二次型之间的关联。</p>
+<p><strong>二次型</strong>：</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241202163338879.png"
+alt="image-20241202163338879" />
+<figcaption aria-hidden="true">image-20241202163338879</figcaption>
+</figure>
+<p>因为二次型是一个数值，所以转置就等于自身。 <span
+class="math display">\[
+f(x)=\frac{f(X)+f(X)^T}2=\frac{X^TA^TX+X^TA^TX}2=X^T(\frac{A^T+A}{2})X=X^TAX\\
+\frac{A^T+A}{2}=A
+\]</span> 上式说明<strong><span
+class="math inline">\(A\)</span>必是对称的</strong>。</p>
+<p><strong>矩阵二次型</strong>：若随机矩阵 <span class="math inline">\(X
+\stackrel{d}{\sim} N_{p\times n}(0, I_n \otimes \Sigma)\)</span>，或
+<span class="math inline">\(X&#39; \stackrel{d}{\sim} N_{n\times p}(0,
+\Sigma \otimes I_n)\)</span>，则称 <span class="math inline">\(Q =
+XAX&#39;\)</span> 为矩阵二次型，其中 <span
+class="math inline">\(A\)</span> 是 <span
+class="math inline">\(n\)</span> 阶对称方阵，<span
+class="math inline">\(A \geq 0\)</span>(表示<span
+class="math inline">\(A\)</span>是半正定的)。</p>
+<p>若 <span class="math inline">\(X=(X_1,\cdots,X_n)\)</span>，其中
+<span class="math inline">\(X_1,\cdots,X_n\)</span> i.i.d.，<span
+class="math inline">\(X_i \stackrel{d}{\sim}
+N_p(0,\Sigma)\)</span>，<span class="math inline">\(1 \leq i \leq
+n\)</span>， <span class="math inline">\(A=(a_{ij})_{n\times
+n}\)</span>，则 <span class="math display">\[
+Q = XAX&#39;=\sum_{i = 1}^{n} \sum_{j = 1}^{n} a_{ij}X_iX_j&#39;
+\]</span> 特别地，当 <span class="math inline">\(A = I_n\)</span>
+时，<span class="math inline">\(Q = XX&#39; \stackrel{d}{\sim}
+W_p(n,\Sigma)\)</span>。</p>
+</blockquote>
+<p>随机矩阵 <span class="math inline">\(X \stackrel{d}{\sim} N_{p\times
+n}(0, I_n \otimes \Sigma)\)</span>，矩阵二次型<span
+class="math inline">\(Q=XAX&#39;, A_{n}\)</span>.</p>
+<ol type="1">
+<li><p>若 <span class="math inline">\(A\)</span>
+为幂等矩阵(投影)，则矩阵二次型 <span class="math inline">\(Q = XAX&#39;
+\stackrel{d}{\sim} W_p(m,\Sigma)\)</span>， 其中，<span
+class="math inline">\(m = \text{Rank}(A) =dim\ R(A) =
+\text{tr}(A)\)</span></p>
+<blockquote>
+<p>(5.9.13) Projectors and Idempotents</p>
+<p>A linear operator P on V is a projector if and only if <span
+class="math inline">\(P^2 = P\)</span>.</p>
+<p>证明： 对称+幂等=正交投影,通过构造<span
+class="math inline">\(Y=XU\)</span>来证明<span
+class="math inline">\(Q\)</span>这个二次型服从自由度为n的Wishart分布。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241202161549153.png"
+alt="image-20241202161549153" />
+<figcaption aria-hidden="true">image-20241202161549153</figcaption>
+</figure>
+<p><img src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241202162418298.png" alt="image-20241202162418298" style="zoom:80%;" /></p>
+<p>由 <span class="math inline">\(A\)</span> 幂等+对称，所以<span
+class="math inline">\(A\)</span>是正交投影算子。</p>
+<p>(5.13.5)存在正交阵 <span class="math inline">\(U\)</span>，使得 <span
+class="math inline">\(A = U\begin{pmatrix} I_m &amp; 0 \\ 0 &amp; 0
+\end{pmatrix}U&#39;\)</span>，其中 <span class="math inline">\(m =
+Rank(A)\)</span>. 下面考虑矩阵正态分布的正交变换 <span
+class="math inline">\(Y = XU\)</span> 的分布。</p>
+<p>矩阵拉直的性质9：对矩阵 <span class="math inline">\(C_{n\times p},
+Z_{p\times q}, D_{q\times m}\)</span>，有 <span
+class="math display">\[\text{vec}(CZD)=(D&#39;\otimes
+C)\text{vec}(Z).\]</span></p>
+<p>期望：U是标准正交阵、不改变X的长度，只改变方向: <span
+class="math inline">\(E(Y)=E(XU)=E(X) = 0\)</span></p>
+<p>方差：<span class="math inline">\(Cov(AX)=ACov(X)A&#39;, (A\otimes
+B)&#39;=A&#39;\otimes B&#39;,(A\otimes B)(C\otimes D)=(AC\otimes
+BD)\)</span> <span class="math display">\[
+\begin{align*}
+\text{Cov}[\text{vec}(Y)]&amp;=\text{Cov}[\text{vec}(XU)]=\text{Cov}[\text{vec}(I_pXU)]\\
+&amp;=\text{Cov}[(U&#39;\otimes I_p)\text{vec}(X)]\\
+&amp;=(U&#39;\otimes I_p)\text{Cov}[\text{vec}(X)](U\otimes I_p)\\
+&amp;=(U&#39;\otimes I_p)(I_n\otimes\Sigma)(U\otimes I_p)\\
+&amp;=(U&#39;I_nU)\otimes(I_p\Sigma I_p)\\
+&amp;=I_n\otimes\Sigma. \end{align*}
+\]</span> 因此有 <span class="math inline">\(Y \stackrel{d}{\sim}
+N_{p\times n}(0, I_n \otimes \Sigma)\)</span>。 令 <span
+class="math inline">\(Y=(Y_1,\cdots,Y_n)\)</span>，可知 <span
+class="math inline">\(Y_1,\cdots,Y_n\)</span> 是独立同分布的 <span
+class="math inline">\(p\)</span> 维正态随机向量，均值为0，协方差为 <span
+class="math inline">\(\Sigma\)</span>。</p>
+<p>进而有， <span class="math display">\[
+Q = XAX&#39; = XU\begin{pmatrix} I_m &amp; 0 \\ 0 &amp; 0
+\end{pmatrix}U&#39;X&#39; = Y\begin{pmatrix} I_m &amp; 0 \\ 0 &amp; 0
+\end{pmatrix}Y&#39;=\sum_{i = 1}^{m} Y_iY_i&#39; \\
+Q\stackrel{d}{\sim} W_p(m,\Sigma)
+\]</span> 得证。</p>
+</blockquote></li>
+<li><p>设 <span class="math inline">\(Q = XAX&#39;\)</span>，<span
+class="math inline">\(Q_1 = XBX&#39;\)</span>，<span
+class="math inline">\(A\)</span> 和 <span
+class="math inline">\(B\)</span> 都是幂等矩阵。 若 <span
+class="math inline">\(Q_2 = Q - Q_1 \geq 0\)</span>，则 <span
+class="math inline">\(Q_2 \stackrel{d}{\sim} W_p(m -
+r,\Sigma)\)</span>， 其中，<span class="math inline">\(m =
+Rank(A)\)</span>，<span class="math inline">\(r = Rank(B)\)</span>，且
+<span class="math inline">\(Q_1\)</span> 与 <span
+class="math inline">\(Q_2\)</span> 相互独立。</p></li>
+<li><p>设 <span class="math inline">\(Q = XAX&#39;\)</span>，<span
+class="math inline">\(A\)</span> 为幂等矩阵。 则 <span
+class="math inline">\(P&#39;X&#39;\)</span> 与 <span
+class="math inline">\(Q\)</span> 独立的充要条件为 <span
+class="math inline">\(AP = 0\)</span>，其中 <span
+class="math inline">\(P\)</span> 是 <span class="math inline">\(n\times
+p\)</span> 的矩阵。</p>
+<blockquote>
+<p>证明：(个人推导，可能有误)</p>
+<p><span class="math inline">\(AP=0\)</span>表示矩阵 <span
+class="math inline">\(P\)</span> 中的列向量必须全部位于 <span
+class="math inline">\(A\)</span> 的零空间中，也就是说，矩阵 <span
+class="math inline">\(P\)</span> 中的所有列向量与 <span
+class="math inline">\(A\)</span> 所投影的子空间是正交的。 <span
+class="math display">\[
+\begin{align}
+\text{Cov}(P&#39;X&#39;, X A X&#39;) &amp;=\text{Cov}(P&#39;X&#39;, Q)
+\\
+&amp;= \mathbb{E}[(P&#39;X&#39; - \mathbb{E}[P&#39;X&#39;])(XAX&#39; -
+\mathbb{E}[XAX&#39;])]\\
+&amp;=E[P&#39; X&#39; X A X&#39;]-E[P&#39;X&#39;]E[XAX&#39;]\\
+&amp;=0
+\end{align}
+\]</span> 因为<span class="math inline">\(X \stackrel{d}{\sim}
+N_{p\times n}(0, I_n \otimes \Sigma),
+E(X)=E(X&#39;)=0，E(P&#39;X&#39;)=P&#39;E(X&#39;)=0\)</span> <span
+class="math display">\[
+\begin{align}
+E[P&#39; X&#39; X A X&#39;]&amp;=0\\
+&amp;=E[P&#39;X&#39;]E[XAX&#39;]\\
+&amp;=P&#39;E[X&#39;]E[X]AE[X&#39;]\\
+P&#39;A&amp;=0
+\end{align}
+\]</span> 因为<span class="math inline">\(P&#39;A=0\)</span>, <span
+class="math inline">\(A\)</span>是对称的，所以可以得到<span
+class="math inline">\(AP=0\)</span>.</p>
+<p>绷，感觉是个死循环，没法推。</p>
+</blockquote></li>
+</ol>
+<h4 id="性质6-独立分解">性质6: 独立分解</h4>
+<p>设 <span class="math inline">\(W \stackrel{d}{\sim}
+W_p(n,\Sigma)\)</span>，<span
+class="math inline">\(\Sigma&gt;0\)</span>，<span
+class="math inline">\(n\geq p\)</span>。 将 <span
+class="math inline">\(W\)</span> 和 <span
+class="math inline">\(\Sigma\)</span> 作如下相同的 <span
+class="math inline">\(q\)</span> 阶和 <span class="math inline">\((p -
+q)\)</span> 阶矩阵分块 <span class="math inline">\(W = \begin{pmatrix}
+W_{11} &amp; W_{12} \\ W_{21} &amp; W_{22} \end{pmatrix}, \quad \Sigma =
+\begin{pmatrix} \Sigma_{11} &amp; \Sigma_{12} \\ \Sigma_{21} &amp;
+\Sigma_{22} \end{pmatrix}.\)</span> <span class="math display">\[
+W =
+\begin{pmatrix}
+W_{11} &amp; W_{12} \\
+W_{21} &amp; W_{22}
+\end{pmatrix}=\begin{pmatrix}
+I&amp;0\\W_{21}W_{11}^{-1}&amp;I
+\end{pmatrix}\begin{pmatrix}
+W_{11}&amp;W_{12}\\
+0&amp;W_{22}-W_{21}W_{11}^{-1}W_{12}
+\end{pmatrix}
+\]</span>
+上方是我从矩阵分析中找出的分块矩阵的分解，感觉和下面的性质比较相关。则有：</p>
+<ul>
+<li>(独立性)<span
+class="math inline">\(W_{22}-W_{21}W_{11}^{-1}W_{12}\)</span> 与 <span
+class="math inline">\((W_{11}, W_{21})\)</span> 相互独立；</li>
+<li>(条件分布)<span class="math inline">\(W_{22}-W_{21}W_{11}^{-1}W_{12}
+\stackrel{d}{\sim} W_{p - q}((n -
+q),\Sigma_{2|1}),\Sigma_{2|1}=\Sigma_{22}-\Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12}\)</span>；</li>
+<li>(矩阵分布)<span class="math inline">\(W_{11} \stackrel{d}{\sim}
+W_q(n,\Sigma_{11})\)</span>；</li>
+<li>(条件下的分布)在 <span class="math inline">\(W_{11}\)</span>
+给定的条件下， <span class="math display">\[W_{21}W_{11}^{-\frac 12}
+\stackrel{d}{\sim} N_{(p - q)\times q}(\Sigma_{21}\Sigma_{11}^{-\frac
+12}W_{11}^{\frac 12}, I_q \otimes \Sigma_{2|1}).\]</span></li>
+</ul>
+<p>特别地，当 <span class="math inline">\(\Sigma_{21}=0\)</span> 时，有
+：</p>
+<ul>
+<li><span
+class="math inline">\(W_{22}-W_{21}W_{11}^{-1}W_{12}\)</span>，<span
+class="math inline">\(W_{11}\)</span> 与 <span
+class="math inline">\(W_{21}W_{11}^{-\frac 12}\)</span> 相互独立；</li>
+<li><span class="math inline">\(W_{22}-W_{21}W_{11}^{-1}W_{12}
+\stackrel{d}{\sim} W_{p - q}((n - q),\Sigma_{22})\)</span>；</li>
+<li><span class="math inline">\(W_{11} \stackrel{d}{\sim}
+W_q(n,\Sigma_{11})\)</span>；</li>
+<li><span class="math inline">\(W_{21}W_{11}^{-\frac 12}
+\stackrel{d}{\sim} N_{(p - q)\times q}(0, I_q \otimes
+\Sigma_{22})\)</span>。</li>
+</ul>
+<h2 id="hotelling-t2分布">2.2 Hotelling <span
+class="math inline">\(T^2\)</span>分布</h2>
+<blockquote>
+<p>Hotelling <span class="math inline">\(T^2\)</span>
+统计量是一个“无量纲”统计量，在进行假设检验时不需要显式地估计协方差矩阵
+<span class="math inline">\(\Sigma\)</span>，因为它已经被标准化为与
+<span class="math inline">\(\Sigma\)</span> 无关的形式。</p>
+</blockquote>
+<h3 id="定义-1">2.2.1 定义</h3>
+<p>Hotelling <span class="math inline">\(T^2\)</span>分布：设<span
+class="math inline">\(X\overset{d}{\sim}N_p(0,\Sigma),W\overset{d}{\sim}W_p(n,\Sigma)\)</span>，且<span
+class="math inline">\(X\)</span>和<span
+class="math inline">\(W\)</span>相互独立。记为<span
+class="math inline">\(T^2=nX&#39;W^{-1}X\)</span>.</p>
+<p>特别地，当<span
+class="math inline">\(p=1,\Sigma=1\)</span>时，Hotelling <span
+class="math inline">\(T^2\)</span>分布退化为一维正态分布情况中的<span
+class="math inline">\(t\)</span>分布的平方：<span
+class="math inline">\(t^2=nX&#39;WX=\frac{X^2}{\frac W
+n}\overset{d}{\sim}F(1,n)\)</span>(<strong><span
+class="math inline">\(t\)</span>分布的变量的平方服从第一自由度为1，第二自由度为n的F分布</strong>)
+<span class="math display">\[
+1D:t = \frac{X}{\sqrt{\frac Y n}}\stackrel{d}{\sim}t(n)
+\]</span> 假设<span class="math inline">\(\Sigma&gt;0\)</span>: (将<span
+class="math inline">\(X\)</span>用<span
+class="math inline">\(\Sigma^{-\frac 1 2}X\)</span>替换、<span
+class="math inline">\(W\)</span>用<span
+class="math inline">\(\Sigma^{-\frac 1 2}W\Sigma^{-\frac 1
+2}\)</span>替换) <span class="math display">\[
+\begin{align}
+T^2&amp;=nX&#39;W^{-1}X\\
+&amp;=n(\Sigma^{-\frac 1 2}X)&#39;(\Sigma^{-\frac 1 2}W\Sigma^{-\frac 1
+2})^{-1}(\Sigma^{-\frac 1 2}X)
+\end{align}
+\]</span> 通过标准化变换，发现<span class="math inline">\(\Sigma^{-\frac
+1 2}X\stackrel{d}{\sim}N_p(0,I_p), \Sigma^{-\frac 1 2}W\Sigma^{-\frac 1
+2}\stackrel{d}{\sim}W_p(n,I_p)\)</span>。</p>
+<p>所以Hotelling <span
+class="math inline">\(T^2\)</span>分布与协方差矩阵<span
+class="math inline">\(\Sigma\)</span>无关，仅依赖于样本数量n和维度p，记为<span
+class="math inline">\(T_p^2(n)\)</span>.</p>
+<h3 id="分布性质-1">2.2.2 分布性质</h3>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 81%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>性质</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1.相互独立</td>
+<td><span class="math inline">\(\frac{X&#39;W^{-1}X}{\chi^2(n - p + 1)}
+\stackrel{d}{=} \frac{\chi^2(p)}{\chi^2(n - p +
+1)}\)</span>,其中分子分母相互独立</td>
+</tr>
+<tr class="even">
+<td>2.<span class="math inline">\(T^2\)</span>与F分布</td>
+<td><span class="math inline">\(\frac{n - p + 1}{np}T_p^2(n)
+\stackrel{d}{=} \frac{\chi^2(p)/p}{\chi^2(n - p + 1)/(n - p + 1)}
+\stackrel{d}{\sim} F(p,(n - p + 1))\)</span></td>
+</tr>
+<tr class="odd">
+<td>3.密度函数</td>
+<td><span class="math inline">\(T_p^2(n)\)</span>的密度函数为<span
+class="math inline">\(p(t)=\frac{\Gamma((n + 1)/2)}{\Gamma(p/2)\Gamma((n
+- p + 1)/2)} \cdot \frac{(t/n)^{(p - 2)/2}}{(1 + t/n)^{(n +
+1)/2}}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h3 id="非中心的hotelling-t2分布">2.2.3 非中心的Hotelling <span
+class="math inline">\(T^2\)</span>分布</h3>
+<blockquote>
+<p><strong>Q：自由度是什么？</strong></p>
+<p>A：自由度通常代表可以自由选择或独立变化的数值的数量。假设你有一个样本数据集
+<span class="math inline">\(X_1, X_2, \dots, X_n\)</span>。</p>
+<p>如果你知 <span class="math inline">\(n-1\)</span>
+个数据点，并且要求样本的均值为某一特定值（比如
+0），那么最后一个数据点是由其他 <span
+class="math inline">\(n-1\)</span>个数据点决定的。因此，这样的数据集的自由度是<span
+class="math inline">\(n-1\)</span>，因为只有 <span
+class="math inline">\(n-1\)</span>个数据点可以自由变化。</p>
+<p><strong>Q：两个自由度？</strong></p>
+<p>A：对于一些非中心分布，比如<span
+class="math inline">\(T^2\)</span>、<span
+class="math inline">\(F\)</span>分布，通常有两个参数（注意不是自由度）。</p>
+<ul>
+<li><strong>第一个自由度</strong>：与 <strong>数据的维度</strong> 或
+<strong>分子部分的卡方分布</strong>
+相关，反映了数据的变化度、模型拟合的效果或者均值的偏离。</li>
+<li><strong>第二个自由度</strong>：与 <strong>误差的自由度</strong> 或
+<strong>分母部分的卡方分布</strong>
+相关，通常与样本大小、样本误差和模型的复杂度有关。（如果是基于样本方差的估计，需要-1：在计算样本的方差时，样本的均值是一个参数，因此计算样本方差时，只有<span
+class="math inline">\(n-1\)</span> 个数据点是自由变化的。）</li>
+<li><strong>非中心参数</strong>：不是自由度，而是参数，反映了样本均值的偏离程度，即数据的“非中心性”。</li>
+</ul>
+</blockquote>
+<p>定义：设<span
+class="math inline">\(X\stackrel{d}{\sim}N_{p}(\mu,\Sigma)\)</span>，<span
+class="math inline">\(W\stackrel{d}{\sim}W_{p}(n,\Sigma)\)</span>，且<span
+class="math inline">\(X\)</span>和<span
+class="math inline">\(W\)</span>相互独立。</p>
+<p>则<span
+class="math inline">\(T^{2}=nX&#39;W^{-1}X\)</span>的分布为非中心的Hotelling<span
+class="math inline">\(T^{2}\)</span>分布，记为<span
+class="math inline">\(T_{p}^{2}(n,a)\)</span>，其中<span
+class="math inline">\(a =
+\mu&#39;\Sigma^{-1}\mu\)</span>是非中心参数。</p>
+<p><strong>性质：</strong></p>
+<ol type="1">
+<li><span
+class="math inline">\(X&#39;W^{-1}X\stackrel{d}{=}\frac{\chi^{2}(p,a)}{\chi^{2}(n
+- p + 1)}\)</span></li>
+<li><span class="math inline">\(\frac{n - p +
+1}{np}T_{p}^{2}(n,a)\stackrel{d}{=}\frac{\chi^{2}(p,a)/p}{\chi^{2}(n - p
++ 1)/(n - p + 1)}\stackrel{d}{\sim}F(p,(n - p + 1),a)\)</span></li>
+</ol>
+<h2 id="wilks分布">2.3 Wilks分布</h2>
+<h3 id="定义-2">2.3.1 定义</h3>
+<p>定义：假设<span class="math inline">\(W_1 \stackrel{d}{\sim}
+W_p(n,\Sigma)\)</span>，<span class="math inline">\(W_2
+\stackrel{d}{\sim} W_p(m,\Sigma)\)</span>，<span
+class="math inline">\(\Sigma&gt;0\)</span>，<span
+class="math inline">\(n\geq p\)</span>，<span
+class="math inline">\(W_1\)</span>和<span
+class="math inline">\(W_2\)</span>相互独立。记 $ =, $ 则称<span
+class="math inline">\(\Lambda\)</span>的分布为Wilks分布，记为<span
+class="math inline">\(\Lambda_{p,n,m}\)</span>。</p>
+<blockquote>
+<p>由于: <span class="math display">\[
+\Lambda=\frac{|\Sigma^{-1/2}W_1\Sigma^{-1/2}|}{|\Sigma^{-1/2}W_1\Sigma^{-1/2}+\Sigma^{-1/2}W_2\Sigma^{-1/2}|},\\\begin{cases}
+\Sigma^{-1/2}W_1\Sigma^{-1/2} \stackrel{d}{\sim} W_p(n, I_p)
+\\
+\Sigma^{-1/2}W_2\Sigma^{-1/2} \stackrel{d}{\sim} W_p(m, I_p)\end{cases}
+\]</span> 故Wilks分布<span
+class="math inline">\(\Lambda_{p,n,m}\)</span>与<span
+class="math inline">\(\Sigma\)</span>无关。</p>
+</blockquote>
+<p><strong>F分布与Beta分布的关系</strong>：</p>
+<blockquote>
+<p><strong>Q: Beta分布？</strong></p>
+<p>A: 二项分布<span class="math inline">\(X\sim
+B(n,p)\)</span>可以看做是多次重复进行伯努利实验所得到的分布。在多次重复进行二项分布的实验中，我们想要知道p的所有可能取值的概率，这就是一个<strong>Beta分布</strong>。</p>
+<ul>
+<li><span class="math inline">\(B(\alpha, \beta)\)</span>
+的概率密度函数（PDF）为：</li>
+</ul>
+<p><span class="math display">\[
+f(x;\alpha, \beta) = \frac{x^{\alpha-1} (1-x)^{\beta-1}}{B(\alpha,
+\beta)}, \quad 0 \leq x \leq 1
+\]</span></p>
+<p>其中，<span class="math inline">\(B(\alpha, \beta)\)</span> 是 Beta
+函数，是一个归一化常数，确保积分为 1。 <span class="math display">\[
+\Gamma(x)=\int^{+\infty}_0 t^{x-1}e^{-t}dt\\
+B(\alpha,\beta)=\frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}=\int^1_0
+t^{\alpha-1}(1-t)^{\beta-1}dt
+\]</span> Beta分布由两个参数 <span class="math inline">\(\alpha\)</span>
+和<span class="math inline">\(\beta\)</span> 控制，这两个参数通常被称为
+<strong>形状参数</strong>。Beta
+分布广泛应用于统计学中，尤其是在贝叶斯统计和比例数据建模中。</p>
+<ul>
+<li>当 <span class="math inline">\(\alpha = \beta = 1\)</span> 时，Beta
+分布就是均匀分布。</li>
+<li>当 <span class="math inline">\(\alpha &gt; \beta\)</span>
+时，分布倾向于 1（右偏）。</li>
+<li>当 <span class="math inline">\(\alpha &lt; \beta\)</span>
+时，分布倾向于 0（左偏）。</li>
+</ul>
+</blockquote>
+<p>给定随机变量<span
+class="math inline">\(F\stackrel{d}{\sim}F(n,m)\)</span>，服从F分布(其中n,
+m 分别是分子的自由度和坟墓的自由度)。F 分布的性质之一是，它可以与 Beta
+分布建立联系。</p>
+<ol type="1">
+<li><span
+class="math display">\[\frac{\frac{n}{m}F(n,m)}{1+\frac{n}{m}F(n,m)}\stackrel{d}{=}B\left(\frac{n}{2},\frac{m}{2}\right),\]</span>
+其中<span
+class="math inline">\(B\left(\frac{n}{2},\frac{m}{2}\right)\)</span>是自由度为<span
+class="math inline">\(\left(\frac{n}{2},\frac{m}{2}\right)\)</span>的<span
+class="math inline">\(Beta\)</span>分布。</li>
+<li><span class="math display">\[\frac{1 -
+B\left(\frac{m}{2},\frac{n}{2}\right)}{B\left(\frac{m}{2},\frac{n}{2}\right)}\cdot\frac{m}{n}\stackrel{d}{=}F(n,m).\]</span></li>
+</ol>
+<h3 id="分布性质-2">2.3.2 分布性质</h3>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 81%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>性质</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><span class="math inline">\(\Lambda_{p,n,m} \stackrel{d}{=}
+B_1B_2\cdots B_p\)</span>，其中，<span class="math inline">\(B_1,
+B_2,\cdots, B_p\)</span> 相互独立， $ B_i B(,), 1ip. $ 因此它是<span
+class="math inline">\(p = 1\)</span>时<span
+class="math inline">\(Beta\)</span>分布的推广，而不是<span
+class="math inline">\(F\)</span>分布的直接推广</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><span class="math inline">\(\Lambda_{p,n,m} \stackrel{d}{=}
+\Lambda_{m,(n + m - p),p}\)</span></td>
+</tr>
+<tr class="odd">
+<td>3与F分布的关系</td>
+<td><span class="math inline">\(\begin{align}1.&amp;\frac{n}{m} \cdot
+\frac{1 - \Lambda_{1,n,m}}{\Lambda_{1,n,m}} \stackrel{d}{\sim}
+F(m,n)\\2.&amp;\frac{n + 1 - p}{p} \cdot \frac{1 -
+\Lambda_{p,n,1}}{\Lambda_{p,n,1}} \stackrel{d}{\sim} F(p,(n + 1 -
+p))\\3.&amp;\frac{n - 1}{m} \cdot \frac{1 -
+\sqrt{\Lambda_{2,n,m}}}{\sqrt{\Lambda_{2,n,m}}} \stackrel{d}{\sim}
+F(2m,2(n -
+1))\\4.&amp;\frac{n+1-p}{p}·\frac{1-\sqrt{\Lambda_{p,n,2}}}{\Lambda_{p,n,2}}
+\stackrel{d}{\sim} F(2n,2(n+1-p))\end{align}\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="总结">2.4 总结</h2>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 43%" />
+<col style="width: 21%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Wishart分布</th>
+<th>Hotelling <span class="math inline">\(T^2\)</span>分布</th>
+<th>Wilks分布</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1维下</td>
+<td><span class="math inline">\(\chi ^2\)</span>分布</td>
+<td>t分布<strong>平方</strong></td>
+<td>Beta分布</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>正态随机向量特殊二次型的分布</td>
+<td>常用于检验统计量的分布</td>
+<td>常用于似然比检验统计量的分布</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>样本离差阵是最常见的服从Wishart分布的随机矩阵</td>
+<td>计算需转化为F分布</td>
+<td>计算在很多情况下可以转化为F分布</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Q: 样本离差阵是什么</strong>？</p>
+<p>A: 样本离差阵<span
+class="math inline">\(A\)</span>是协方差矩阵的无偏估计。</p>
+<p>设<span class="math inline">\(X\)</span>为<span
+class="math inline">\(n\times p\)</span>的数据矩阵，<span
+class="math inline">\(E(X)=E(E(X_1),E(X_2),\ldots,E(X_p))\)</span> <span
+class="math display">\[
+\bar{X}=\frac 1 nX&#39;1_n\\
+A=X&#39;X-n\bar X\bar X&#39;=X&#39;(I_n-\frac 1 n 1_n1_n&#39;)X
+\]</span> 注意是<span class="math inline">\(1_n\)</span>.</p>
+</blockquote>
+<h3 id="作业">2.4.1 作业</h3>
+<p>若 <span class="math inline">\(W \stackrel{d}{\sim}
+W_{p}(n,\Sigma)\)</span>，<span class="math inline">\(\Sigma &gt;
+0\)</span>。<span class="math inline">\(A\)</span> 是 <span
+class="math inline">\(p\)</span> 阶常数方阵，试求 <span
+class="math inline">\(E(|AW|)\)</span>。 <span class="math display">\[
+E(|AW|)=|A|E(|W|)
+\]</span></p>
+<p>根据性质7：设 <span class="math inline">\(W \stackrel{d}{\sim}
+W_p(n,\Sigma)\)</span>，<span
+class="math inline">\(\Sigma&gt;0\)</span>，<span
+class="math inline">\(n\geq p\)</span>。则 <span
+class="math display">\[|W|\stackrel{d}{=} |\Sigma|\prod_{i = 1}^{p}
+\gamma_i,\]</span> 其中，<span
+class="math inline">\(\gamma_1,\cdots,\gamma_p\)</span> 相互独立，<span
+class="math inline">\(\gamma_i \stackrel{d}{\sim} \chi^2(n - i +
+1)\)</span>，<span class="math inline">\(1\leq i\leq p\)</span> <span
+class="math display">\[
+|A|E(|W|)=|A|E(|\Sigma|\prod_{i = 1}^{p} \gamma_i)\\
+=|A||\Sigma|\prod_{i = 1}^{p}E(\gamma_i)
+\]</span></p>
+<p>对于<span
+class="math inline">\(\gamma_i\sim\chi^2(n-i+1)\)</span>,其期望是<span
+class="math inline">\(E(\gamma_i)=n-i+1\)</span></p>
+<p>所以期望式子可以写成： <span class="math display">\[
+|A||\Sigma|\prod_{i=1}^{p}E(\gamma_i)\\
+=|A||\Sigma|\prod_{i=1}^{p}(n-i+1)
+\]</span></p>
+<blockquote>
+<p>找另外一个同学对了对答案，我这么写没什么问题，但是gpt每次都给我不同的答案，逆天。</p>
+</blockquote>
+</div><div class="post-end"><div class="post-prev"></div><div class="post-next"><a href="/2024/12/01/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90-Ch1-%E5%A4%9A%E5%85%83%E5%88%86%E5%B8%83/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch2-%E7%94%B1%E5%A4%9A%E5%85%83%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83%E5%AF%BC%E5%87%BA%E7%9A%84%E5%88%86%E5%B8%83"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch2 由多元正态分布导出的分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E7%94%B1%E4%B8%80%E5%85%83%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83%E5%AF%BC%E5%87%BA%E7%9A%84%E5%88%86%E5%B8%83"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">2.0 由一元正态分布导出的分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%8D%A1%E6%96%B9%E5%88%86%E5%B8%83%E5%AF%B9%E5%BA%94wishart%E5%88%86%E5%B8%83"><span class="toc-content-number">1.1.1.</span> <span class="toc-content-text">2.0.1 卡方分布(对应Wishart分布)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#t%E5%88%86%E5%B8%83%E5%AF%B9%E5%BA%94t2%E5%88%86%E5%B8%83"><span class="toc-content-number">1.1.2.</span> <span class="toc-content-text">2.0.2 t分布(对应\(T^2\)分布)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#f%E5%88%86%E5%B8%83%E5%AF%B9%E5%BA%94wilks%E5%88%86%E5%B8%83"><span class="toc-content-number">1.1.3.</span> <span class="toc-content-text">2.0.3 F分布(对应Wilks分布)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#gamma%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.1.4.</span> <span class="toc-content-text">2.0.4 \(\Gamma\)函数</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#wishart%E5%88%86%E5%B8%83"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">2.1 Wishart分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">2.1.1 定义</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.2.2.</span> <span class="toc-content-text">2.1.2 密度函数</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%88%86%E5%B8%83%E6%80%A7%E8%B4%A8"><span class="toc-content-number">1.2.3.</span> <span class="toc-content-text">2.1.3 分布性质</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%80%A7%E8%B4%A85%E7%9F%A9%E9%98%B5%E4%BA%8C%E6%AC%A1%E5%9E%8B"><span class="toc-content-number">1.2.3.1.</span> <span class="toc-content-text">性质5：矩阵二次型</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%80%A7%E8%B4%A86-%E7%8B%AC%E7%AB%8B%E5%88%86%E8%A7%A3"><span class="toc-content-number">1.2.3.2.</span> <span class="toc-content-text">性质6: 独立分解</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#hotelling-t2%E5%88%86%E5%B8%83"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">2.2 Hotelling \(T^2\)分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%AE%9A%E4%B9%89-1"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">2.2.1 定义</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%88%86%E5%B8%83%E6%80%A7%E8%B4%A8-1"><span class="toc-content-number">1.3.2.</span> <span class="toc-content-text">2.2.2 分布性质</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E9%9D%9E%E4%B8%AD%E5%BF%83%E7%9A%84hotelling-t2%E5%88%86%E5%B8%83"><span class="toc-content-number">1.3.3.</span> <span class="toc-content-text">2.2.3 非中心的Hotelling \(T^2\)分布</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#wilks%E5%88%86%E5%B8%83"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">2.3 Wilks分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%AE%9A%E4%B9%89-2"><span class="toc-content-number">1.4.1.</span> <span class="toc-content-text">2.3.1 定义</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%88%86%E5%B8%83%E6%80%A7%E8%B4%A8-2"><span class="toc-content-number">1.4.2.</span> <span class="toc-content-text">2.3.2 分布性质</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-content-number">1.5.</span> <span class="toc-content-text">2.4 总结</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%BD%9C%E4%B8%9A"><span class="toc-content-number">1.5.1.</span> <span class="toc-content-text">2.4.1 作业</span></a></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>
