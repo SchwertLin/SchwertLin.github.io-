@@ -1,0 +1,1405 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch5 相关分析 [TOC]  どうぞよろしくお願い～OvO  5.0 例：家庭特征与家庭消费之间的关系   image-20241213235458701  统计分析方法：典型相关分析  典型相关分析：研究两组变量之间相关性的一种统计分析方法，也是一种降维技术。  5.1 复相关系数  之前我们评估两个随机变量\(X,Y\)之间的相关程度，使用的是Pearson">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多元统计分析-Ch5-相关分析">
+<meta property="og:url" content="http://example.com/2024/12/15/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90-Ch5-%E7%9B%B8%E5%85%B3%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch5 相关分析 [TOC]  どうぞよろしくお願い～OvO  5.0 例：家庭特征与家庭消费之间的关系   image-20241213235458701  统计分析方法：典型相关分析  典型相关分析：研究两组变量之间相关性的一种统计分析方法，也是一种降维技术。  5.1 复相关系数  之前我们评估两个随机变量\(X,Y\)之间的相关程度，使用的是Pearson">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-15T03:04:28.000Z">
+<meta property="article:modified_time" content="2024-12-15T03:09:34.354Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="多元统计分析">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary"><title>多元统计分析-Ch5-相关分析 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>多元统计分析-Ch5-相关分析</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2024-12-15</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2024-12-15</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90/">多元统计分析</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约9.0K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch5-相关分析">Ch5 相关分析</h1>
+<p>[TOC]</p>
+<blockquote>
+<p>どうぞよろしくお願い～OvO</p>
+</blockquote>
+<h2 id="例家庭特征与家庭消费之间的关系">5.0
+例：家庭特征与家庭消费之间的关系</h2>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241213235458701.png"
+alt="image-20241213235458701" />
+<figcaption aria-hidden="true">image-20241213235458701</figcaption>
+</figure>
+<p>统计分析方法：<strong>典型相关分析</strong></p>
+<blockquote>
+<p>典型相关分析：研究两组变量之间相关性的一种统计分析方法，也是一种<strong>降维</strong>技术。</p>
+</blockquote>
+<h2 id="复相关系数">5.1 复相关系数</h2>
+<blockquote>
+<p>之前我们评估两个随机变量<span
+class="math inline">\(X,Y\)</span>之间的相关程度，使用的是Pearson相关系数：<span
+class="math inline">\(\rho(X,Y)=\frac{Cov(X,Y)}{\sqrt{Var(X)Var(Y)}}\)</span>.
+<strong>但当X 和 Y
+其中之一换成随机向量时，Pearson相关系数就不再适用。</strong></p>
+<p>为衡量随机变量和随机向量、随机向量和随机向量之间的相关程度，一个常用的方法就是<strong>采用线性投影，讲随机向量通过某个线性变化投影成一元随机变量</strong>，然后就可以采用两变量的相关系数来定义随机变量和随机向量、随机向量和随机向量之间的相关程度。</p>
+</blockquote>
+<p>相关关系：</p>
+<table>
+<thead>
+<tr class="header">
+<th>两个单变量之间</th>
+<th>一个单变量与一个向量之间</th>
+<th>两个向量之间</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>”一对一“</td>
+<td>”一对多“</td>
+<td>"多对多"</td>
+</tr>
+<tr class="even">
+<td>(简单)相关系数、偏相关系数</td>
+<td>复相关系数</td>
+<td>典型相关系数</td>
+</tr>
+</tbody>
+</table>
+<h3 id="总体复相关系数">5.1.1 总体复相关系数</h3>
+<p>设随机向量<span class="math inline">\(Y \sim N_p(\mu,
+\Sigma)\)</span>，其中<span
+class="math inline">\(\Sigma&gt;0\)</span>。</p>
+<p>将<span class="math inline">\(Y\)</span>，<span
+class="math inline">\(\mu\)</span>和<span
+class="math inline">\(\Sigma\)</span>分别剖分为： <span
+class="math display">\[
+Y = \begin{pmatrix} y_1 \\ Y_2 \end{pmatrix}, \quad \mu =
+\begin{pmatrix} \mu_1 \\ \mu_2 \end{pmatrix}, \quad \Sigma =
+\begin{pmatrix} \sigma_{11} &amp; \Sigma_{12} \\ \Sigma_{21} &amp;
+\Sigma_{22} \end{pmatrix}
+\]</span> 其中，<span class="math inline">\(y_1, \mu_1
+\in\mathbb{R}^1\)</span>；<span
+class="math inline">\(\sigma_{11}&gt;0\)</span>；<span
+class="math inline">\(Y_2, \mu_2, \Sigma_{21}=\Sigma_{12}&#39;
+\in\mathbb{R}^{p - 1}\)</span>；<span
+class="math inline">\(\Sigma_{22}\)</span>是<span
+class="math inline">\((p - 1)\)</span>阶正定阵。</p>
+<p>考虑<span class="math inline">\(y_1\)</span>与<span
+class="math inline">\(a&#39;Y_2\)</span>之间的简单相关系数，其中<span
+class="math inline">\(a \in\mathbb{R}^{p - 1}\)</span>， <span
+class="math display">\[
+\begin{align}
+\rho_{y_1,a&#39;Y_2} &amp;=
+\frac{\text{Cov}(y_1,a&#39;Y_2)}{\sqrt{\text{Var}(y_1)}\sqrt{\text{Var}(a&#39;Y_2)}}
+=
+\frac{\text{Cov}(y_1,Y_2)a}{\sqrt{\sigma_{11}}\sqrt{a&#39;\text{Var}(Y_2)a}}\\
+&amp;= \frac{\Sigma_{12}a}{\sqrt{\sigma_{11}}\sqrt{a&#39;\Sigma_{22}a}}
+\end{align}
+\]</span> 则定义<span class="math inline">\(y_1\)</span>与<span
+class="math inline">\(Y_2\)</span>的复相关系数为: <span
+class="math display">\[
+\rho_{y_1,Y_2} = \sup_{a \in R^{p - 1}} \rho_{y_1,a&#39;Y_2} =
+\frac{1}{\sqrt{\sigma_{11}}} \sup_{a \in R^{p - 1}}
+\frac{\Sigma_{12}a}{\sqrt{a&#39;\Sigma_{22}a}}
+\]</span> 由<span
+class="math inline">\(\rho_{y_1,Y_2}\)</span>的非负性、Cauchy -
+Schwarz不等式知 : <span class="math display">\[
+\rho_{y_1,Y_2} = \frac{1}{\sqrt{\sigma_{11}}} \sqrt{\sup_{a \in R^{p -
+1}} \frac{(\Sigma_{12}a)^2}{a&#39;\Sigma_{22}a}} =
+\sqrt{\frac{\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}}{\sigma_{11}}}
+\]</span> 上式在<span class="math inline">\(a =
+c\Sigma_{22}^{-1}\Sigma_{21}\)</span>达最大, c是任一非零常数。<span
+class="math inline">\(a =
+\Sigma_{22}^{-1}\Sigma_{21}\)</span>对应线性模型中的回归系数：<span
+class="math inline">\(y_1=a_0+a&#39;Y_2+\varepsilon\)</span>, <span
+class="math inline">\(E(y_1|Y_2)=a_0+a&#39;X,\varepsilon\)</span>是随机误差。<strong>这就是复相关系数的平方<span
+class="math inline">\(\rho^2(X,Y)\)</span>常被用于刻画线性模型拟合程度的一个原因。</strong></p>
+<p><strong>定理 1</strong>: 当<span class="math inline">\(a =
+\Sigma_{22}^{-1}\Sigma_{21}\)</span>时，<span
+class="math inline">\(y_1-a&#39;Y_2\)</span>的方差取得最小值：<span
+class="math inline">\(\sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}=\text{Var}(y_1|Y_2)\)</span>，<span
+class="math inline">\(y_1\)</span>与<span
+class="math inline">\(a&#39;Y_2+a_0\)</span>最接近，<span
+class="math inline">\(a+0=E(y_1)-a&#39;E(Y_2)\)</span>。</p>
+<p><span class="math inline">\(y_1\)</span>与<span
+class="math inline">\(a&#39;Y_2\)</span>的相关系数最大，为复相关系数<span
+class="math inline">\(\rho_{y_1,Y_2}\)</span>，本质上刻画了<span
+class="math inline">\(y_1\)</span>和<span
+class="math inline">\(Y_2\)</span>的线性相关程度。</p>
+<blockquote>
+<p><strong>证明</strong>： 对任意<span class="math inline">\(b
+\in\mathbb{R}^{p - 1}\)</span>，有 : <span class="math display">\[
+\begin{align*} \text{Var}(y_1 - b&#39;Y_2)&amp;=\text{Var}[(y_1 -
+a&#39;Y_2)+(a - b)&#39;Y_2]\\ &amp;=\text{Var}(y_1 - a&#39;Y_2)+(a -
+b)&#39;\text{Cov}(Y_2)(a - b)\\&amp;+2\text{Cov}[(y_1 - a&#39;Y_2),(a -
+b)&#39;Y_2] \end{align*}
+\]</span> 由于<span class="math inline">\(a =
+\Sigma_{22}^{-1}\Sigma_{21}\)</span>，则有: <span
+class="math display">\[
+\begin{align*} \text{Cov}[(y_1 -
+a&#39;Y_2),Y_2]&amp;=\text{Cov}(y_1,Y_2)-a&#39;\text{Cov}(Y_2,Y_2)\\
+&amp;=\Sigma_{12}-a&#39;\Sigma_{22}\\ &amp;=0 \end{align*}
+\]</span> 方差关系有： $$ <span class="math display">\[\begin{align*}
+Var(y_1 - b&#39;Y_2) &amp;= Var(y_1 - a&#39;Y_2)+(a - b)&#39;Var(Y_2)(a
+- b)\\ &amp;= Var(y_1 - a&#39;Y_2)+(a - b)&#39;\Sigma_{22}(a - b)\\
+&amp;\geq Var(y_1 - a&#39;Y_2) \\\\
+
+Var(y_1 - a&#39;Y_2) &amp;=
+Var(y_1)+Var(a&#39;Y_2)-2Cov(y_1,a&#39;Y_2)\\ &amp;=
+\sigma_{11}+\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}-2\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\\
+&amp;= \sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\\ &amp;=
+Var(y_1|Y_2)
+\end{align*}\]</span> $$ 由定理1知：<span class="math inline">\(Var(y_1
+- a&#39;Y_2)\)</span>达最小意味着<span
+class="math inline">\(y_1-\mu_1\)</span>与<span
+class="math inline">\(a&#39;Y_2 - a&#39;\mu_2\)</span>最接近，即<span
+class="math inline">\(y_1\)</span>与<span class="math inline">\((\mu_1 -
+a&#39;\mu_2)+a&#39;Y_2\)</span>最接近。</p>
+<p><strong>因此可以用<span class="math inline">\((p -
+1)\)</span>个预报因子<span
+class="math inline">\(Y_2\)</span>的线性组合来预测单个因变量<span
+class="math inline">\(y_1\)</span>，其最优斜率为<span
+class="math inline">\(a\)</span>，最优截距为<span
+class="math inline">\((\mu_1 - a&#39;\mu_2)\)</span>。</strong></p>
+<p>注意到： <span class="math display">\[
+\begin{align*} E(y_1|Y_2) &amp;= \mu_1+\Sigma_{12}\Sigma_{22}^{-1}(Y_2 -
+\mu_2)\\ &amp;= \mu_1+a&#39;(Y_2 - \mu_2)\\ &amp;= (\mu_1 -
+a&#39;\mu_2)+a&#39;Y_2 \end{align*}
+\]</span> 条件期望是最优(方差最小)的线性预测。</p>
+</blockquote>
+<h4 id="复相关系数定义变量-向量之间">复相关系数定义(变量-向量之间)</h4>
+<p>变量<span class="math inline">\(y_1\)</span>与向量<span
+class="math inline">\(Y_2\)</span>之间的复相关系数为 $ _{y_1,Y_2} = $
+其中，<span
+class="math inline">\(\sigma_{11}=\text{Var}(y_1)\)</span>，<span
+class="math inline">\(\Sigma_{22}=\text{Cov}(Y_2)\)</span>，<span
+class="math inline">\(\Sigma_{12}=\text{Cov}(y_1,Y_2)\)</span>。</p>
+<p><strong>复相关系数<span
+class="math inline">\(\rho_{y_1,Y_2}\)</span>的性质</strong>：</p>
+<ol type="1">
+<li><span class="math inline">\(0 \leq \rho_{y_1,Y_2} \leq
+1\)</span>；</li>
+<li><span class="math inline">\(\rho_{y_1,Y_2}\)</span>越大则<span
+class="math inline">\(y_1\)</span>与<span
+class="math inline">\(Y_2\)</span>的相关性越强；</li>
+<li><span class="math inline">\(\rho_{y_1,Y_2}=0 \Leftrightarrow
+\Sigma_{12}=0\)</span>，即<span
+class="math inline">\(y_1\)</span>与<span
+class="math inline">\(Y_2\)</span>独立。</li>
+</ol>
+<h3 id="样本复相关系数">5.1.2 样本复相关系数</h3>
+<blockquote>
+<p>在实际应用中，我们通常没有总体的参数，而是通过样本来估计这些参数。</p>
+<p>样本复相关系数 r 是总体复相关系数 <span
+class="math inline">\(\rho\)</span> 的一个估计。样本复相关系数 r
+的形式类似于总体复相关系数，但由于样本的有限性，样本复相关系数会受到抽样误差的影响。为了提高估计的准确性，样本的数量越多，估计的准确性也越高。</p>
+</blockquote>
+<p>设总体<span
+class="math inline">\(X\stackrel{d}{\sim}N_{p}(\mu,\Sigma)\)</span>，其样本为<span
+class="math inline">\(x_1,\cdots,x_n\)</span>。考虑<span
+class="math inline">\(X\)</span>的剖分<span
+class="math inline">\(X=(x^{(1)},(X^{(2)})&#39;)&#39;\)</span>。</p>
+<p>记<span class="math inline">\(\bar{x}\)</span>，<span
+class="math inline">\(V\)</span>和<span
+class="math inline">\(S\)</span>分别为样本均值、样本离差阵和样本协差阵，并对它们作相应剖分。</p>
+<p>则由<span class="math inline">\(x^{(1)}\)</span>与<span
+class="math inline">\(X^{(2)}\)</span>的复相关系数: <span
+class="math display">\[
+\rho_{x^{(1)},X^{(2)}}=\sqrt{\frac{\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}}{\sigma_{11}}}
+\]</span> 定义<span class="math inline">\(x^{(1)}\)</span>与<span
+class="math inline">\(X^{(2)}\)</span>的样本复相关系数为: <span
+class="math display">\[
+r_{x^{(1)},X^{(2)}}=\sqrt{\frac{V_{12}V_{22}^{-1}V_{21}}{v_{11}}}
+\]</span> 以及<span class="math inline">\(a\)</span>的估计为<span
+class="math inline">\(\hat{a}=V_{22}^{-1}V_{21}\)</span>。不难知道，它们分别是复相关系数<span
+class="math inline">\(\rho_{x^{(1)},X^{(2)}}\)</span>和方向<span
+class="math inline">\(a\)</span>的极大似然估计。</p>
+<blockquote>
+<p><strong>修正的样本复相关系数</strong><br />
+<span class="math display">\[
+(r_{x^{(1)},X^{(2)}}^*)^2 = r_{x^{(1)},X^{(2)}}^2-\frac{p - 1}{n - p}(1
+- r_{x^{(1)},X^{(2)}}^2)
+\]</span> 用途：</p>
+<ul>
+<li>当<span class="math inline">\(p =
+1\)</span>时，修正的样本复相关系数=样本复相关系数;</li>
+<li>当<span
+class="math inline">\(p\geq2\)</span>时，修正的样本复相关系数&lt;样本复相关系数。</li>
+</ul>
+<p>在对线性回归模型做模型选择时，常用修正的样本相关系数来判断是否再选入一个预报因子。</p>
+</blockquote>
+<h4 id="样本复相关系数的分布">样本复相关系数的分布</h4>
+<h5 id="sigma_120的情形x1与x2独立"><span
+class="math inline">\(\Sigma_{12}=0\)</span>的情形：<span
+class="math inline">\(x^{(1)}\)</span>与<span
+class="math inline">\(X^{(2)}\)</span>独立</h5>
+<p>由Wishart分布的独立分解性质知，</p>
+<blockquote>
+<p><span class="math inline">\(t_1\)</span>:衡量残差方差的量,在 <span
+class="math inline">\(x^{(1)}\)</span>和 <span
+class="math inline">\(X^{(2)}\)</span> 独立的情形下，<span
+class="math inline">\(t_1\)</span> 会服从自由度为 <span
+class="math inline">\(n - p\)</span> 的卡方分布 <span
+class="math inline">\(\chi^2(n -
+p)\)</span>，因为它的形式类似于在进行回归分析时残差平方和的分布。</p>
+<p><span class="math inline">\(t_2\)</span>:是标准化后的 <span
+class="math inline">\(V_{21}\)</span>（<span
+class="math inline">\(X^{(2)}\)</span> 和<span
+class="math inline">\(x^{(1)}\)</span> 之间的协方差向量）。我们通过乘以
+<span class="math inline">\(V_{22}^{-\frac 1 2}\)</span>
+来标准化它。</p>
+</blockquote>
+<p><span class="math display">\[
+\begin{align}
+t_1 &amp;=
+v_{11}-V_{12}V_{22}^{-1}V_{21}\stackrel{d}{\sim}\sigma_{11}\chi^2(n -
+p)\\
+t_2 &amp;= V_{22}^{-1/2}V_{21}\stackrel{d}{\sim}N_{p -
+1}(0,\sigma_{11}I_{p - 1})
+\end{align}
+\]</span></p>
+<p>且<span class="math inline">\(t_1\)</span>与<span
+class="math inline">\(t_2\)</span>独立。因此， <span
+class="math display">\[
+\begin{align}F&amp;=\frac{n - p}{p -
+1}\cdot\frac{r_{x^{(1)},X^{(2)}}^2}{1 - r_{x^{(1)},X^{(2)}}^2}\\
+&amp;=\frac{n - p}{p -
+1}\cdot\frac{V_{12}V_{22}^{-1}V_{21}}{v_{11}-V_{12}V_{22}^{-1}V_{21}}\\
+&amp;=\frac{t_2^2/(p - 1)}{t_1/(n - p)}\stackrel{d}{\sim}F(p - 1,n -
+p)\end{align}
+\]</span> 则由<span class="math inline">\(F\)</span>可以检验<span
+class="math inline">\(x^{(1)}\)</span>与<span
+class="math inline">\(X^{(2)}\)</span>是否相互独立。</p>
+<blockquote>
+<p>注：该检验与3.3.6中独立性检验在<span class="math inline">\(m =
+2\)</span>的情形一致。</p>
+</blockquote>
+<h5 id="一般情形">一般情形</h5>
+<p>考虑变换<span class="math inline">\(Y=\text{diag}(\sigma_{11}^{-\frac
+1 2},\Sigma_{22}^{-\frac 1 2})X=\begin{pmatrix}\sigma_{11}^{-\frac 1
+2}&amp;0\\0&amp;\Sigma_{22}^{-\frac 1
+2}\end{pmatrix}X\)</span>，并对<span
+class="math inline">\(Y\)</span>作相同剖分: <span
+class="math display">\[
+Y=\begin{pmatrix}y^{(1)}\\Y^{(2)}\end{pmatrix}=\begin{pmatrix}\sigma_{11}^{-\frac
+1 2}x^{(1)} \\ \Sigma_{22}^{-\frac 1 2}X^{(2)}\end{pmatrix}\\
+Y\stackrel{d}{\sim}N_{p}\left(\begin{pmatrix}\sigma_{11}^{-\frac 1
+2}\mu_1\\\Sigma_{22}^{-\frac 1
+2}\mu_2\end{pmatrix},\begin{pmatrix}1&amp;\sigma^{-\frac 1
+2}_{11}\Sigma_{12}\Sigma_{22}^{-\frac 1 2}\\\sigma^{-\frac 1
+2}_{11}\Sigma_{22}^{-\frac 1 2}\Sigma_{21}&amp;I_{p -
+1}\end{pmatrix}\right)\\\\
+\rho_{y^{(1)},Y^{(2)}}=\Sigma_{12}\Sigma_{21}=\sqrt{\frac{\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}}{\sigma_{11}}}=\rho_{x^{(1)},X^{(2)}}
+\]</span> 因此，不失一般性，可以假设<span
+class="math inline">\(X\)</span>的协差阵为 <span
+class="math inline">\(\Sigma=\begin{pmatrix}1&amp;\Sigma_{12}\\\Sigma_{21}&amp;I_{p
+- 1}\end{pmatrix}\)</span> ,</p>
+<p>此时有<span
+class="math inline">\(\rho_{x^{(1)},X^{(2)}}=\Sigma_{12}\Sigma_{21}\)</span>。简记<span
+class="math inline">\(\rho=\rho_{x^{(1)},X^{(2)}}\)</span>。</p>
+<blockquote>
+<p><strong>对上述结果的解释说明</strong>：</p>
+<p>Y的均值、方差按照<span
+class="math inline">\(E[Y]=E[AX]=AE[X],D[Y]=D[AX]=AD[X]A&#39;\)</span>计算。</p>
+<p>有<span class="math inline">\(X=\begin{pmatrix}x^{(1)}\\X^{(2)}
+\end{pmatrix}\sim
+N_p(\mu,\Sigma)=N_p\left\{\begin{pmatrix}\mu^{(1)}\\\mu^{(2)}
+\end{pmatrix},\begin{pmatrix}\sigma_{11}&amp;\Sigma_{12}\\\Sigma_{21}&amp;\Sigma_{22}
+\end{pmatrix}\right\}\)</span>,</p>
+<p>所以<span
+class="math inline">\(Y\stackrel{d}{\sim}N_{p}\left(\begin{pmatrix}\sigma_{11}^{-\frac
+1 2}\mu_1\\\Sigma_{22}^{-\frac 1
+2}\mu_2\end{pmatrix},\begin{pmatrix}1&amp;\sigma^{-\frac 1
+2}_{11}\Sigma_{12}\Sigma_{22}^{-\frac 1 2}\\\sigma^{-\frac 1
+2}_{11}\Sigma_{22}^{-\frac 1 2}\Sigma_{21}&amp;I_{p -
+1}\end{pmatrix}\right)\)</span>.</p>
+<p>对协方差矩阵进行标准化后，每个部分的方差（如 <span
+class="math inline">\(y^{(1)}\)</span> 和 <span
+class="math inline">\(Y^{(2)}\)</span> 的方差）变为
+1。所以内部向量都是独立同分布的，二者的相关性就体现在<span
+class="math inline">\(\sigma^{-\frac 1 2}_{11}\Sigma_{22}^{-\frac 1
+2}\Sigma_{21}\)</span>上。</p>
+<p><strong>Q: 为什么可以假设<span
+class="math inline">\(X\)</span>的协差阵为 <span
+class="math inline">\(\Sigma=\begin{pmatrix}1&amp;\Sigma_{12}\\\Sigma_{21}&amp;I_{p
+- 1}\end{pmatrix}\)</span> ?</strong></p>
+<p>A: 因为我们通过线性变换<span
+class="math inline">\(Y=AX\)</span>已经证明这两个分量，本身内部都是独立同分布的。</p>
+<p>通过标准化<span class="math inline">\(x^{(1)}\)</span> 和<span
+class="math inline">\(X^{(2)}\)</span>的方差结构，使得我们可以更加集中于研究<span
+class="math inline">\(x^{(1)}\)</span> 与<span
+class="math inline">\(X^{(2)}\)</span>之间的相关性，而不需要处理不同变量之间的不同单位和规模。</p>
+</blockquote>
+<p>由Wishart分布的性质知：</p>
+<ol type="1">
+<li><span class="math inline">\(V_{22} \stackrel{d}{\sim} W_{p - 1}(n -
+1, I_{p - 1})\)</span>；</li>
+<li><span class="math inline">\(t_1 = v_{11}-V_{12}V_{22}^{-1}V_{21}
+\stackrel{d}{\sim} \sigma_{11}\chi^2(n - p)\)</span>，<span
+class="math inline">\(\sigma_{11}=1 - \rho^2\)</span>；</li>
+<li>在<span class="math inline">\(V_{22}\)</span>给定的条件下，<span
+class="math inline">\(t_2 = V_{22}^{-\frac 1 2}V_{21} \stackrel{d}{\sim}
+N_{p - 1}(0, \sigma_{11}I_{p - 1})\)</span>；</li>
+<li><span class="math inline">\(t_1\)</span>与<span
+class="math inline">\((t_2, V_{22})\)</span>相互独立。</li>
+</ol>
+<p>则在<span
+class="math inline">\(V_{22}\)</span>给定的条件下，根据条件独立性，u
+服从一个加权的非中心卡方分布；而u的非中心参数又服从另外一个加权的卡方分布：
+<span class="math display">\[
+u = t_{2}&#39;{t}_{2}=V_{12}V_{22}^{-1}V_{21} \stackrel{d}{\sim} (1 -
+\rho^2)\chi^2(p-1,
+\eta),\quad\eta=\frac{\sum_{12}V_{22}^{-1}\sum_{21}}{1 - \rho^2}\\
+\eta \stackrel{d}{\sim} \tau\chi^2(n - 1)，\tau =
+\frac{\sum_{12}\sum_{21}}{1 - \rho^2}=\frac{\rho^2}{1 - \rho^2}
+\]</span> 由此可以导出<span class="math inline">\(u\)</span>的密度函数。
+又由于: <span class="math display">\[
+z = \frac{r^2_{x^{(1)},X^{(2)}}}{1 -
+r^2_{x^{(1)},X^{(2)}}}=\frac{V_{12}V_{22}^{-1}V_{21}}{v_{11}-V_{12}V_{22}^{-1}V_{21}}=\frac{u}{t_1}
+\]</span> 可以导出<span
+class="math inline">\(z\)</span>的分布，进而推出<span
+class="math inline">\(R = r^2\)</span>的密度函数: <span
+class="math display">\[
+\frac{(1 - \rho^2)^{\frac{n-1}2}(1 - R)^{\frac{n - p -
+2}2}}{\Gamma(\frac{n-1}2)\Gamma(\frac{n - p}2)}\sum_{k =
+0}^{\infty}\frac{\rho^{2k}R^{\frac{p-1}2 + k - 1}}{k!\Gamma(\frac{p-1}2
++ k)}\Gamma^2(\frac{n-1}2 + k)
+\]</span> 密度函数揭示了 <strong>相关性强弱</strong>
+对结果的影响，进而使得假设检验更加精确和可靠。例如，如果计算出 <span
+class="math inline">\(r^2\)</span>很小，可以认为<span
+class="math inline">\(x^{(1)}\)</span> 和 <span
+class="math inline">\(X^{(2)}\)</span>之间几乎没有线性相关性，从而支持它们独立的假设；而如果
+<span class="math inline">\(r^2\)</span>
+较大，则可能需要进一步检查相关性的显著性。</p>
+<h2 id="典型相关分析">5.2 典型相关分析</h2>
+<h4
+id="典型相关系数定义向量-向量之间">典型相关系数定义(向量-向量之间)</h4>
+<p>设<span
+class="math inline">\(X=(X_1,\dots,X_p)&#39;,Y=(Y_1,\dots,Y_q)&#39;\)</span>分别为p维和q维随机向量：<span
+class="math inline">\(\begin{pmatrix}X\\Y\end{pmatrix}\sim
+N_{p+q}(\mu,\Sigma)\)</span>，其协方差矩阵为： <span
+class="math display">\[
+\text{Cov}\begin{pmatrix}X\\Y\end{pmatrix}
+=\Sigma=\begin{pmatrix}\Sigma_{11}&amp;\Sigma_{12}\\\Sigma_{21}&amp;\Sigma_{22}\end{pmatrix}
+\]</span> 其中：<span class="math inline">\(\Sigma_{11}:p\times
+p,\Sigma_{22}:q\times q,\Sigma_{12}=\Sigma_{21}&#39;:p\times
+q\)</span>，<span
+class="math inline">\(\Sigma_{11},\Sigma_{22}\)</span>正定。</p>
+<p>设a和b分别为p维和q维任意非零的常数向量： <span
+class="math display">\[
+\rho(a&#39;X,b&#39;Y)=\frac{a&#39;\Sigma_{12}b}{\sqrt{(a&#39;\Sigma_{11}a)(b&#39;\Sigma_{22}b)}}
+\]</span> <strong>由于相关系数<span
+class="math inline">\(\rho(a&#39;X,b&#39;Y)\)</span>不受a和b常数倍的影响，</strong>为简单起见，对<span
+class="math inline">\(a&#39;X,b&#39;Y\)</span>进行标准化，令： <span
+class="math display">\[
+Var(a&#39;X)=a&#39;\Sigma_{11}a=1,\quad
+Var(b&#39;Y)=b&#39;\Sigma_{22}b=1
+\]</span></p>
+<p><strong>(书p485)定理13.1.1</strong>：<span
+class="math inline">\(a&#39;X\)</span>和<span
+class="math inline">\(b&#39;Y\)</span>的最大相关系数为： <span
+class="math display">\[
+\max_{a,b}\rho(a&#39;X,b&#39;Y)=\sqrt{\lambda_1}
+\]</span> 在标准化的方差约束条件下，最大值在<span
+class="math inline">\(a\frac{1}{\sqrt{\lambda_1}\Sigma_{11}^{-1}\Sigma_{12}b},b=\Sigma_{22}^{-1}\beta\)</span>时达到，其中<span
+class="math inline">\(\lambda_1,\beta\)</span>分别为矩阵<span
+class="math inline">\(D=\Sigma_{22}^{-\frac 1
+2}\Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12}\Sigma_{22}^{-\frac 1
+2}\)</span>的最大特征值和最大特征值对应的特征向量。</p>
+<p><strong>定理13.1.1</strong>表明，要求a和b，可以先求a再求b，也可以先求b再求a。<span
+class="math inline">\(a=\Sigma_{11}^{-\frac 1
+2}\theta,b=\frac{1}{\sqrt{\lambda_1}\Sigma_{22}^{-1}\Sigma_{21}a}\)</span>。</p>
+<p>因此把<span class="math inline">\(\sqrt{\lambda_1}\)</span>称为 <span
+class="math inline">\(X\)</span> 和 <span
+class="math inline">\(Y\)</span>
+的<strong>第一典型相关系数</strong>：</p>
+<ul>
+<li>当<span class="math inline">\(\sqrt{\lambda_1}\)</span>越接近0，说明
+<span class="math inline">\(X\)</span> 和 <span
+class="math inline">\(Y\)</span> 的相关程度越弱；</li>
+<li>当<span class="math inline">\(\sqrt{\lambda_1}\)</span>越接近1，说明
+<span class="math inline">\(X\)</span> 和 <span
+class="math inline">\(Y\)</span> 的相关程度越强。</li>
+</ul>
+<p><strong>但上面的得到的<span
+class="math inline">\(a&#39;X,b&#39;Y\)</span>的相关系数<span
+class="math inline">\(\sqrt{\lambda_1}\)</span>往往并不能完全反映 <span
+class="math inline">\(X\)</span> 和 <span
+class="math inline">\(Y\)</span> 的相关程度，需要考虑 <span
+class="math inline">\(X\)</span> 和 <span
+class="math inline">\(Y\)</span>
+的更多组线性组合的相关系数。</strong></p>
+<h3 id="总体典型相关分析">5.2.1 总体典型相关分析</h3>
+<p>设<span
+class="math inline">\(X=(X_1,\dots,X_p)&#39;,Y=(Y_1,\dots,Y_q)&#39;\)</span>分别为p维和q维随机向量：<span
+class="math inline">\(\begin{pmatrix}X\\Y\end{pmatrix}\sim
+N_{p+q}(\mu,\Sigma)\)</span>，其协方差矩阵为： <span
+class="math display">\[
+\text{Cov}\begin{pmatrix}X\\Y\end{pmatrix}
+=\Sigma=\begin{pmatrix}\Sigma_{11}&amp;\Sigma_{12}\\\Sigma_{21}&amp;\Sigma_{22}\end{pmatrix}
+\]</span> 其中 : <span
+class="math inline">\(\Sigma_{11}=Cov(X)&gt;0,\Sigma_{22}=Cov(Y)&gt;0,\Sigma_{12}=\Sigma_{21}&#39;=Cov(X,Y)\)</span>.</p>
+<p>类似随机变量间相关系数，定义： <span class="math display">\[
+R=\Sigma_{11}^{-\frac 1 2}\Sigma_{12}\Sigma_{22}^{-\frac 1 2}
+\]</span> 根据定理13.1.1，<span
+class="math inline">\(a&#39;X,b&#39;Y\)</span>的最大相关关系<span
+class="math inline">\(\sqrt{\lambda_1}\)</span>就是R的最大奇异值。<span
+class="math inline">\(\beta,\theta\)</span>分别为<span
+class="math inline">\(R&#39;R,RR&#39;\)</span>最大特征值对应的标准化后的特征向量。<strong>当R存在多个非零奇异值时，X
+和 Y 存在多组典型相关变量。</strong> 具体定义如下：</p>
+<blockquote>
+<p><strong>(书p486)定义13.2(总体的典型相关)</strong>：记R的奇异值分解为：
+<span class="math display">\[
+R=P\Lambda Q&#39;
+\]</span> 此处, <span
+class="math inline">\(P=(\theta_1,\dots,\theta_k),Q=(\beta_1,\dots,\beta_k)\)</span>分别为<span
+class="math inline">\(p\times k,q\times
+k\)</span>的<strong>列正交矩阵</strong>。<span
+class="math inline">\(\Lambda=diag(\sqrt{\lambda_1},\dots,\sqrt{\lambda_k}),\sqrt{\lambda_1}\ge\dots\ge\sqrt{\lambda_k}\ge0\)</span>为R的非奇异值。<span
+class="math inline">\(\theta_i,\beta_i\)</span> 分别为<span
+class="math inline">\(RR&#39;,R&#39;R\)</span>对应于共同特征值<span
+class="math inline">\(\lambda_i\)</span>的标准化的特征向量。</p>
+<p><strong>X 和 Y的典型相关向量：</strong> <span class="math display">\[
+a_i=\Sigma_{11}^{-\frac 1 2}\theta_i,\quad b_i=\Sigma_{22}^{-\frac 1
+2}\beta_i
+\]</span> <strong>X 和 Y的第i对典型相关向量</strong>：<span
+class="math inline">\((a&#39;_iX,b&#39;_iY)\)</span></p>
+<p><strong>X 和 Y的第i个典型相关系数</strong>：<span
+class="math inline">\(\rho_i=\sqrt{\lambda_i}\)</span></p>
+</blockquote>
+<h4 id="a.典型相关系数的性质">A.典型相关系数的性质</h4>
+<table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 85%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>性质</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>性质13.2.1</td>
+<td>典型相关变量<span
+class="math inline">\(a&#39;_iX,b&#39;_iY\)</span>的方差都被标准化为1，且不同组的典型相关变量是不相关的。</td>
+</tr>
+<tr class="even">
+<td>性质13.2.2</td>
+<td>典型相关变量<span
+class="math inline">\(a_i,b_i\)</span>具有如下关系：<span
+class="math inline">\(\begin{align}a_i&amp;=\frac{1}{\rho_i}\Sigma_{11}^{-1}\Sigma_{12}b_i\\b_i&amp;=\frac
+1{\rho_i}\Sigma_{22}^{-1}\Sigma_{21}a_i\\i&amp;=1,\dots,k\end{align}\)</span></td>
+</tr>
+<tr class="odd">
+<td>性质13.2.3</td>
+<td>典型相关变量<span class="math inline">\(a_i,b_i\)</span>分别为<span
+class="math inline">\(\Sigma_{11}^{-1}\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21},\Sigma_{22}^{-1}\Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12}\)</span>的特征向量。</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>对13.2.2的说明：</strong>因为<span
+class="math inline">\(RR&#39;\)</span>与<span
+class="math inline">\(\Sigma_{11}^{-1}\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\)</span>具有相同的非零特征值，都是<span
+class="math inline">\(\vert\lambda\Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\vert=0\)</span>的解。<strong>所以
+X和Y 的典型相关系数也可以通过后者得到。</strong></p>
+<p><strong>证明13.2.3：</strong>根据上面13.2的定义可得： <span
+class="math display">\[
+\because\Sigma_{11}^{-1}\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\Sigma_{11}^{-1}\theta_i=\lambda_i\Sigma_{11}^{-1}\theta_i\\
+\therefore\Sigma_{11}^{-1}\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}a_i=\lambda_ia_i\\
+同理,\Sigma_{22}^{-1}\Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12}b_i=\lambda_ib_i\\
+\]</span></p>
+</blockquote>
+<table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 85%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>定理和推论</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>定理13.2.1</td>
+<td>对固定的<span class="math inline">\(r(1\le r\le k)\)</span>,记<span
+class="math inline">\(f_r=\max_{a,b}a&#39;\Sigma_{12}b\)</span>,
+其中<span class="math inline">\(a,b\)</span>满足约束条件：<span
+class="math inline">\(a&#39;\Sigma_{11}a=1,b&#39;\Sigma_{22}b=1,a_i&#39;\Sigma_{11}a=0,i=1,\dots,r-1\)</span>,则<span
+class="math inline">\(f_r=\sqrt{\lambda_r}\)</span>, 且最大值在<span
+class="math inline">\(a=a_r,b=b_r\)</span>处达到。</td>
+</tr>
+<tr class="even">
+<td>定理13.2.2</td>
+<td>记 <span class="math inline">\(X^* = U&#39;X + u\)</span>, <span
+class="math inline">\(Y^* = V&#39;Y + v\)</span>，其中 <span
+class="math inline">\(U\)</span> 和 <span
+class="math inline">\(V\)</span> 分别为 <span class="math inline">\(p
+\times p\)</span> 和 <span class="math inline">\(q \times q\)</span>
+的任意可逆的常数矩阵，<span class="math inline">\(u\)</span> 和 <span
+class="math inline">\(v\)</span> 分别为 <span class="math inline">\(p
+\times 1\)</span> 和 <span class="math inline">\(q \times 1\)</span>
+的常数向量。 则 <span class="math inline">\(X^*\)</span> 和 <span
+class="math inline">\(Y^*\)</span> 的典型相关系数就等于 <span
+class="math inline">\(X\)</span> 和 <span
+class="math inline">\(Y\)</span> 的典型相关系数； <span
+class="math inline">\(X^*\)</span> 和 <span
+class="math inline">\(Y^*\)</span> 的典型相关向量分别为： <span
+class="math inline">\(a_i^* = U^{-1}a_i, \quad b_i^* =
+V^{-1}b_i\)</span>， 其中 <span class="math inline">\(a_i\)</span> 和
+<span class="math inline">\(b_i\)</span> 分别为 <span
+class="math inline">\(X\)</span> 和 <span
+class="math inline">\(Y\)</span> 的典型相关向量。</td>
+</tr>
+<tr class="odd">
+<td>推论13.2.1</td>
+<td><span class="math inline">\(X^*\)</span> 和 <span
+class="math inline">\(Y^*\)</span> 与 <span
+class="math inline">\(X\)</span> 和 <span
+class="math inline">\(Y\)</span>
+具有相同的典型相关系数和相应的典型相关变量组，且两者典型相关向量间满足：<span
+class="math inline">\(a_i^* = \text{diag}(\Sigma_{11})^{1/2} a_i, \quad
+b_i^* = \text{diag}(\Sigma_{22})^{1/2} b_i \\ a_i =
+(\text{diag}(\Sigma_{11}))^{-1/2} a_i^*, \quad b_i =
+(\text{diag}(\Sigma_{22}))^{-1/2} b_i^*\)</span>.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>ところで、既然不会考这个定理的证明，那么我们就暂时(永遠に)不写了hh。</p>
+<p>对 <span class="math inline">\(X\)</span> 和 <span
+class="math inline">\(Y\)</span> 进行标准化，得：$ X^* =
+((<em>{11}))^{-1/2} X, Y^* = ((</em>{22}))^{-1/2} Y<span
+class="math inline">\(, 其中，\)</span>(A)$ 表示由方阵 <span
+class="math inline">\(A\)</span> 的对角元素构成的对角矩阵。 由定理
+13.2.2，可得推论13.2.1, 值得注意的是，当 <span
+class="math inline">\(\rho_1, \dots, \rho_p\)</span>
+中存在两个相等时（即 <span class="math inline">\(\rho_r =
+\rho_{r+1}\)</span>​），典型相关系数向量的选择并不唯一。</p>
+</blockquote>
+<h4 id="典型相关分析的所有k步">典型相关分析的所有k步</h4>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 93%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>步骤</th>
+<th>详细说明(与性质部分同)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>设<span
+class="math inline">\(Cov(X,Y)=\Sigma_{12}\)</span>的秩为<span
+class="math inline">\(k\)</span>，则向量<span
+class="math inline">\(X\)</span>与<span
+class="math inline">\(Y\)</span>一共有<span
+class="math inline">\(k\)</span>组（对）典型相关变量和<span
+class="math inline">\(k\)</span>个典型相关系数.</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>设<span
+class="math inline">\(\theta_{1},\cdots,\theta_{k}\)</span>和<span
+class="math inline">\(\beta_{1},\cdots,\beta_{k}\)</span>分别是<span
+class="math inline">\(RR&#39;\)</span>和<span
+class="math inline">\(R&#39;R\)</span>的<span
+class="math inline">\(k\)</span>个非零特征根<span
+class="math inline">\(\lambda_{1}^{2}\geq\cdots\geq\lambda_{k}^{2}&gt;0\)</span>所对应的正则正交特征向量，其中<span
+class="math inline">\(\beta_{i}=R&#39;\theta_{i}/\lambda_{i}\)</span>，<span
+class="math inline">\(1\leq i\leq k\)</span>.</td>
+</tr>
+<tr class="odd">
+<td>-</td>
+<td>令<span class="math inline">\(\mathbf{a}_{i}=\Sigma_{11}^{-\frac 1
+2}\theta_{i}\)</span>，<span
+class="math inline">\(\mathbf{b}_{i}=\Sigma_{22}^{-\frac 1
+2}\beta_{i}\)</span>，<span class="math inline">\(1\leq i\leq
+k\)</span>， 则称<span
+class="math inline">\((\mathbf{a}_{i}&#39;X,\mathbf{b}_{i}&#39;Y)\)</span>为第<span
+class="math inline">\(i\)</span>组（对）典型相关变量，<span
+class="math inline">\(\mathbf{a}_{i}&#39;X\)</span>与<span
+class="math inline">\(\mathbf{b}_{i}&#39;Y\)</span>的相关系数为<span
+class="math inline">\(\lambda_{i}&gt;0\)</span>，称<span
+class="math inline">\(\lambda_{i}\)</span>为第<span
+class="math inline">\(i\)</span>个典型相关系数，<span
+class="math inline">\(1\leq i\leq k\)</span>. <span
+class="math inline">\(\mathbf{a}_{i}\)</span>和<span
+class="math inline">\(\mathbf{b}_{i}\)</span>分别是<span
+class="math inline">\(\Sigma_{11}^{-1}\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\)</span>和<span
+class="math inline">\(\Sigma_{22}^{-1}\Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12}\)</span>的特征根<span
+class="math inline">\(\lambda_{i}^{2}\)</span>所对应的特征向量，<span
+class="math inline">\(1\leq i\leq k\)</span>.</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>第<span class="math inline">\(i\)</span>组（对）典型相关变量<span
+class="math inline">\((\mathbf{a}_{i}&#39;X,\mathbf{b}_{i}&#39;Y)\)</span>是正则的，即
+<span
+class="math inline">\(Var(\mathbf{a}_{i}&#39;X)=\mathbf{a}_{i}&#39;\Sigma_{11}\mathbf{a}_{i}
+= 1\)</span>，<span
+class="math inline">\(Var(\mathbf{b}_{i}&#39;Y)=\mathbf{b}_{i}&#39;\Sigma_{22}\mathbf{b}_{i}=1\)</span>，<span
+class="math inline">\(1\leq i\leq k\)</span>.</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>典型相关变量<span
+class="math inline">\(\{(\mathbf{a}_{i}&#39;X,\mathbf{b}_{i}&#39;Y)\}_{i
+= 1}^{k}\)</span>之间是正交的， 即对<span class="math inline">\(1\leq
+i&lt;j\leq k\)</span>，有: <span
+class="math inline">\(\begin{align}Cov(\mathbf{a}_{i}&#39;X,\mathbf{a}_{j}&#39;X)=\mathbf{a}_{i}&#39;\Sigma_{11}\mathbf{a}_{j}=0\\Cov(\mathbf{a}_{i}&#39;X,\mathbf{b}_{j}&#39;Y)=\mathbf{a}_{i}&#39;\Sigma_{12}\mathbf{b}_{j}=0\\Cov(\mathbf{b}_{i}&#39;Y,\mathbf{b}_{j}&#39;Y)=\mathbf{b}_{i}&#39;\Sigma_{22}\mathbf{b}_{j}=0\\Cov(\mathbf{b}_{i}&#39;Y,\mathbf{a}_{j}&#39;X)=\mathbf{b}_{i}&#39;\Sigma_{21}\mathbf{a}_{j}=0\end{align}\)</span></td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>第1组（对）典型相关变量<span
+class="math inline">\((\mathbf{a}_{1}&#39;X,\mathbf{b}_{1}&#39;Y)\)</span>是下述条件极值问题的解：
+在<span
+class="math inline">\(\mathbf{a}&#39;\Sigma_{11}\mathbf{a}=1\)</span>，<span
+class="math inline">\(\mathbf{b}&#39;\Sigma_{22}\mathbf{b}=1\)</span>的条件下使得<span
+class="math inline">\(\mathbf{a}&#39;\Sigma_{12}\mathbf{b}\)</span>达到最大值，其最大值为<span
+class="math inline">\(\lambda_{1}&gt;0\)</span>.</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>对<span class="math inline">\(2\leq i\leq k\)</span>，第<span
+class="math inline">\(i\)</span>组（对）典型相关变量<span
+class="math inline">\((\mathbf{a}_{i}&#39;X,\mathbf{b}_{i}&#39;Y)\)</span>是下述条件极值问题的解：
+在<span
+class="math inline">\(\mathbf{a}&#39;\Sigma_{11}\mathbf{a}=1\)</span>，<span
+class="math inline">\(\mathbf{b}&#39;\Sigma_{22}\mathbf{b}=1\)</span>且对任意<span
+class="math inline">\(1\leq j\leq(i - 1)\)</span>都有 <span
+class="math inline">\(\mathbf{a}&#39;\Sigma_{11}\mathbf{a}_{j}=\mathbf{a}&#39;\Sigma_{12}\mathbf{b}_{j}=\mathbf{b}&#39;\Sigma_{21}\mathbf{a}_{j}=\mathbf{b}&#39;\Sigma_{22}\mathbf{b}_{j}=0\)</span>的条件下使得<span
+class="math inline">\(\mathbf{a}&#39;\Sigma_{12}\mathbf{b}\)</span>达到最大值，其最大值为<span
+class="math inline">\(\lambda_i&gt;0\)</span></td>
+</tr>
+</tbody>
+</table>
+<h4 id="典型相关分析的作用">典型相关分析的作用</h4>
+<p>一、<strong>特征向量与特征根</strong></p>
+<p>设<span class="math inline">\(\Sigma_{12}\)</span>的秩为<span
+class="math inline">\(k\)</span>，<span class="math inline">\(k\leq
+p\leq q\)</span>。 则<span class="math inline">\(\Sigma_{11}^{-\frac 1
+2}\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\Sigma_{11}^{-\frac 1
+2}\)</span>的特征根 <span
+class="math inline">\(\lambda_{1}^{2}\geq\cdots\geq\lambda_{k}^{2}&gt;0
+= \lambda_{k + 1}^{2}=\cdots=\lambda_{p}^{2}\)</span>所对应的
+正则正交特征向量为<span
+class="math inline">\(\alpha_{1},\cdots,\alpha_{p}\)</span>。</p>
+<p>相应地，<span class="math inline">\(\Sigma_{22}^{-\frac 1
+2}\Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12}\Sigma_{22}^{-\frac 1
+2}\)</span>的特征根 <span
+class="math inline">\(\lambda_{1}^{2}\geq\cdots\geq\lambda_{k}^{2}&gt;0
+= \lambda_{k + 1}^{2}=\cdots=\lambda_{q}^{2}\)</span>所对应的
+正则正交特征向量为<span
+class="math inline">\(\beta_{1},\cdots,\beta_{q}\)</span>。</p>
+<p>二、<strong>相关性与降维</strong></p>
+<p>令: <span class="math display">\[
+U = A&#39;\Sigma_{11}^{-\frac 1 2}X,V = B&#39;\Sigma_{22}^{-\frac 1
+2}Y\\
+W_{1}=C_{1}&#39;\Sigma_{11}^{-\frac 1
+2}X,W_{2}=C_{2}&#39;\Sigma_{22}^{-\frac 1
+2}Y\\W=(W_{1}&#39;,W_{2}&#39;)&#39;
+\]</span> 其中， <span class="math display">\[
+A = (\alpha_{1},\cdots,\alpha_{k}),B = (\beta_{1},\cdots,\beta_{k})\\
+C_{1}=(\alpha_{k + 1},\cdots,\alpha_{p}),C_{2}=(\beta_{k +
+1},\cdots,\beta_{q})
+\]</span> 则有 : <span class="math display">\[
+Cov\left(\begin{array}{c}U\\V\\W\end{array}\right)=\left(\begin{array}{ccc}I_{k}&amp;\Lambda&amp;0\\\Lambda&amp;I_{k}&amp;0\\0&amp;0&amp;I_{p
++ q-2k}\end{array}\right)
+\]</span> 其中<span class="math inline">\(\Lambda =
+diag(\lambda_{1},\cdots,\lambda_{k})\)</span>。</p>
+<p>不难看出，<span class="math inline">\(U\)</span>与<span
+class="math inline">\(V\)</span>的相关性等价于<span
+class="math inline">\(X\)</span>与<span
+class="math inline">\(Y\)</span>的相关性。 由于<span
+class="math inline">\(k\leq min(p,q)\)</span>，因此用<span
+class="math inline">\(U\)</span>与<span
+class="math inline">\(V\)</span>分别代表<span
+class="math inline">\(X\)</span>与<span class="math inline">\(Y\)</span>
+可以起到数据降维的作用。</p>
+<p>事实上，若记<span
+class="math inline">\(U=(U_{1},\cdots,U_{k})&#39;\)</span>，<span
+class="math inline">\(V=(V_{1},\cdots,V_{k})&#39;\)</span>， 则<span
+class="math inline">\((U_{i},V_{i})\)</span>就是<span
+class="math inline">\(X\)</span>与<span
+class="math inline">\(Y\)</span>的第<span
+class="math inline">\(i\)</span>组(对)典型相关变量，
+它们的相关系数就是第<span
+class="math inline">\(i\)</span>个典型相关系数<span
+class="math inline">\(\lambda_{i}&gt;0\)</span>，<span
+class="math inline">\(1\leq i\leq k\)</span>。</p>
+<h4
+id="相关知识矩阵二次型极值的性质">相关知识：矩阵二次型极值的性质</h4>
+<p>在此文中，我们给出了两种解释典型相关分析的方法：</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>SVD-奇异值分解</th>
+<th>矩阵二次型极值</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>直接通过对协方差矩阵 R 进行
+SVD，获得了最大相关系数（即奇异值）及其对应的特征向量，进而给出了经典的典型相关分析的解法。</td>
+<td>从优化问题出发的一个理论框架，最终是要解决如何最大化一个关于矩阵的表达式。</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>如何通过矩阵的特征值和特征向量来求解最大值。</p>
+<p><strong>性质1</strong> : 设 <span class="math inline">\(C\)</span> 是
+<span class="math inline">\(p \times q\)</span> 的非零矩阵，<span
+class="math inline">\(A\)</span> 和 <span
+class="math inline">\(B\)</span> 分别是 <span
+class="math inline">\(p\)</span> 阶和 <span
+class="math inline">\(q\)</span> 阶的正定矩阵，则: <span
+class="math display">\[
+\sup_{\substack{x \in \mathbb{R}^p \\ y \in \mathbb{R}^q}}
+\frac{(x&#39;Cy)^2}{(x&#39;Ax)(y&#39;By)} = \lambda_1^2 &gt; 0,
+\]</span> 其中，<span class="math inline">\(\lambda_1^2\)</span> 是
+<span class="math inline">\(A^{-1}CB^{-1}C&#39;\)</span>，<span
+class="math inline">\(A^{-\frac 1 2}CB^{-1}C&#39;A^{-\frac 1
+2}\)</span>，<span class="math inline">\(B^{-1}C&#39;A^{-1}C\)</span> 或
+<span class="math inline">\(B^{-\frac 1 2}C&#39;A^{-1}CB^{-\frac 1
+2}\)</span> 的最大特征根，且 <span class="math inline">\(\lambda_1 &gt;
+0\)</span>。</p>
+<p>上式在 <span class="math inline">\(x = A^{-\frac 1
+2}\alpha_1\)</span>，<span class="math inline">\(y = B^{-\frac 1
+2}\beta_1\)</span> 时达极大，且 <span class="math inline">\(x&#39;Cy =
+\lambda_1\)</span>，其中，<span class="math inline">\(\alpha_1\)</span>
+和 <span class="math inline">\(\beta_1 = B^{-\frac 1 2}C&#39;A^{-\frac 1
+2}\alpha_1/\lambda_1\)</span> 分别是 <span
+class="math inline">\(\lambda_1^2\)</span> 作为 <span
+class="math inline">\(A^{-\frac 1 2}CB^{-1}C&#39;A^{-\frac 1 2}\)</span>
+和 <span class="math inline">\(B^{-\frac 1 2}C&#39;A^{-1}CB^{-\frac 1
+2}\)</span> 的最大特征根所对应的正则特征向量。</p>
+</blockquote>
+<p>由性质1，典型相关分析第1步，约束极值问题 <span
+class="math display">\[
+\sup_{\substack{\alpha \in \mathbb{R}^p \\ \beta \in
+\mathbb{R}^q}}(\rho_{\alpha&#39;X,\beta&#39;Y})^2 =
+\sup_{\substack{\alpha \in \mathbb{R}^p ,\ \alpha&#39;\Sigma_{11}\alpha
+= 1 \\ \beta \in \mathbb{R}^q ,\  \beta&#39;\Sigma_{22}\beta =
+1}}(a&#39;\Sigma_{12}b)^2
+\]</span> 的解为：<span
+class="math inline">\((\alpha&#39;\Sigma_{12}\beta)^2\)</span>
+的最大值为 <span class="math inline">\(\lambda_1^2\)</span>.</p>
+<p><span class="math inline">\(\lambda_1^2\)</span> 是 <span
+class="math inline">\(\Sigma_{11}^{-1}\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\)</span>，<span
+class="math inline">\(\Sigma_{11}^{-\frac 1
+2}\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\Sigma_{11}^{-\frac 1
+2}\)</span>，<span
+class="math inline">\(\Sigma_{22}^{-1}\Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12}\)</span>
+或 <span class="math inline">\(\Sigma_{22}^{-\frac 1
+2}\Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12}\Sigma_{22}^{-\frac 1
+2}\)</span> 的最大特征根，在 <span class="math inline">\(\alpha_1 =
+\Sigma_{11}^{-\frac 1 2}\alpha_1\)</span>，<span
+class="math inline">\(\beta_1 = \Sigma_{22}^{-\frac 1 2}\beta_1\)</span>
+时取最大值，其中，<span class="math inline">\(\alpha_1\)</span> 和 <span
+class="math inline">\(\beta_1 = \Sigma_{22}^{-\frac 1
+2}\Sigma_{21}\Sigma_{11}^{-\frac 1 2}\alpha_1/\lambda_1\)</span> 分别是
+<span class="math inline">\(\Sigma_{11}^{-\frac 1
+2}\Sigma_{12}\Sigma_{22}^{-\frac 1 2}\)</span> 和 <span
+class="math inline">\(\Sigma_{22}^{-\frac 1
+2}\Sigma_{21}\Sigma_{11}^{-\frac 1 2}\)</span> 的最大特征根 <span
+class="math inline">\(\lambda_1^2\)</span> 所对应的正则特征向量。</p>
+<p>因此，<span class="math inline">\(\alpha_1&#39;X\)</span> 与 <span
+class="math inline">\(\beta_1&#39;Y\)</span> 的相关系数 <span
+class="math inline">\(\rho_{\alpha_1&#39;X,\beta_1&#39;Y} = \lambda_1
+&gt; 0\)</span>。 此时，<span class="math inline">\(\alpha_1\)</span> 和
+<span class="math inline">\(\beta_1\)</span> 分别是 <span
+class="math inline">\(\Sigma_{11}^{-1}\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\)</span>
+和 <span
+class="math inline">\(\Sigma_{22}^{-1}\Sigma_{21}\Sigma_{11}^{-1}\Sigma_{12}\)</span>
+的最大特征根 <span class="math inline">\(\lambda_1^2\)</span>
+所对应的特征向量。</p>
+<p>当 <span class="math inline">\(\Sigma_{12} = 0\)</span> 时，<span
+class="math inline">\(X\)</span> 与 <span
+class="math inline">\(Y\)</span> 相互独立。</p>
+<p>因此，<span class="math inline">\(X\)</span> 与 <span
+class="math inline">\(Y\)</span>
+的任意线性组合都相互独立，相关系数的最大值也为零。</p>
+<blockquote>
+<p>性质2 : 设 <span class="math inline">\(C\)</span> 是秩为 <span
+class="math inline">\(k\)</span> 的 <span class="math inline">\(p \times
+q\)</span> 的非零矩阵，<span class="math inline">\(p \leq q\)</span>。
+则 <span class="math inline">\(p\)</span> 阶矩阵 <span
+class="math inline">\(CC&#39;\)</span> 的 <span
+class="math inline">\(p\)</span> 个非负特征根中有 <span
+class="math inline">\(k\)</span> 个正的特征根 <span
+class="math inline">\(\lambda_1^2 \geq \cdots \geq \lambda_k^2 &gt;
+0\)</span>，其余 <span class="math inline">\(p - k\)</span> 个特征根为
+<span class="math inline">\(\lambda_{k + 1}^2 = \cdots = \lambda_p^2 =
+0\)</span>。 同理，<span class="math inline">\(q\)</span> 阶矩阵 <span
+class="math inline">\(C&#39;C\)</span> 的 <span
+class="math inline">\(q\)</span> 个非负特征根中有 <span
+class="math inline">\(\lambda_1^2 \geq \cdots \geq \lambda_k^2 &gt;
+0\)</span>，其余 <span class="math inline">\(q - k\)</span> 个特征根为
+<span class="math inline">\(\lambda_{k + 1}^2 = \cdots = \lambda_q^2 =
+0\)</span>。</p>
+<p>记 <span class="math inline">\(\alpha_1,\cdots,\alpha_p\)</span> 为
+<span class="math inline">\(CC&#39;\)</span>
+的特征根所对应的正则正交特征向量，<span
+class="math inline">\(\beta_1,\cdots,\beta_q\)</span> 为 <span
+class="math inline">\(C&#39;C\)</span>
+的特征根所对应的正则正交特征向量。</p>
+<p>相关结论:</p>
+<ol type="1">
+<li>设 <span class="math inline">\(x \in \mathbb{R}^p\)</span>，<span
+class="math inline">\(y \in \mathbb{R}^q\)</span>，则在 <span
+class="math inline">\(x&#39;x = 1\)</span>，<span
+class="math inline">\(y&#39;y = 1\)</span> 的正则化约束条件下， $
+(x'Cy)^2 = _1^2 $ 当 <span class="math inline">\(x =
+\alpha_1\)</span>，<span class="math inline">\(y = \beta_1\)</span>
+时取最大值，并且 <span class="math inline">\(x&#39;Cy =
+\lambda_1\)</span>；</li>
+<li>对给定的 <span class="math inline">\(1 \leq m \leq (p -
+1)\)</span>，<span class="math inline">\(x \in
+\mathbb{R}^p\)</span>，<span class="math inline">\(y \in
+\mathbb{R}^q\)</span> 满足如下约束条件：
+<ul>
+<li><strong>正则化约束</strong>：<span class="math inline">\(x&#39;x =
+1\)</span>，<span class="math inline">\(y&#39;y = 1\)</span>；<br />
+</li>
+<li><strong>正交化约束</strong>：对所有 <span class="math inline">\(1
+\leq i \leq m\)</span>，都有：<span class="math inline">\(\alpha_i&#39;x
+= 0\)</span>，<span class="math inline">\(\beta_i&#39;y =
+0\)</span>，<span class="math inline">\(\alpha_i&#39;Cy =
+0\)</span>，<span class="math inline">\(\beta_i&#39;C&#39;x =
+0\)</span>。</li>
+<li>则在<strong>正则正交约束</strong>下有 ：
+<ul>
+<li>当 <span class="math inline">\(1 \leq m \leq (k - 1)\)</span>
+时，<span class="math inline">\(\sup(x&#39;Cy)^2 = \lambda_{m +
+1}^2\)</span>，当 <span class="math inline">\(x = \alpha_{m +
+1}\)</span>，<span class="math inline">\(y = \beta_{m + 1}\)</span>
+时取最大值，且 <span class="math inline">\(x&#39;Cy = \lambda_{m + 1}
+&gt; 0\)</span>；</li>
+<li>当 <span class="math inline">\(k \leq m \leq (p - 1)\)</span>
+时，<span class="math inline">\(x&#39;Cy = 0\)</span>。</li>
+</ul></li>
+</ul></li>
+</ol>
+</blockquote>
+<h3 id="样本典型相关分析">5.2.2 样本典型相关分析</h3>
+<blockquote>
+<p>在大多数实际应用中<span
+class="math inline">\(\Sigma\)</span>都是未知的，因此，典型相关系数和典型相关变量都是未知的，需要由样本来估计。</p>
+</blockquote>
+<p>设正态总体<span class="math inline">\((X&#39;,Y&#39;)&#39;\sim
+N_{p+q}(\mu,\Sigma)\)</span>有样本<span
+class="math inline">\(\{(x_i,y_i)\}_{i = 1}^{n}\)</span>，i.i.d.<span
+class="math inline">\(n&gt; p + q\)</span>，<span
+class="math inline">\(p\leq q\)</span>。 则<span
+class="math inline">\(\Sigma_{11}\)</span>，<span
+class="math inline">\(\Sigma_{22}\)</span>和<span
+class="math inline">\(\Sigma_{12}\)</span>极大似然估计为: <span
+class="math display">\[
+\hat{\Sigma}_{11}=\frac 1 n\sum_{i =
+1}^{n}(x_i-\bar{x}_n)(x_i-\bar{x}_n)&#39;\\
+\hat{\Sigma}_{22}=\frac 1 n\sum_{i =
+1}^{n}(y_i-\bar{y}_n)(y_i-\bar{y}_n)&#39;\\
+\hat{\Sigma}_{12}=\frac 1 n\sum_{i =
+1}^{n}(x_i-\bar{x}_n)(y_i-\bar{y}_n)&#39;
+\]</span></p>
+<h4 id="性质">性质</h4>
+<p>由于特征根是矩阵中各元素的非退化连续函数，因此由正态随机变量组成的矩阵<span
+class="math inline">\(RR&#39;\)</span>的特征根是连续型随机变量。
+那么，该矩阵的特征根以概率1满足： <span class="math display">\[
+1&gt;\hat{\lambda}_1^2&gt;\cdots&gt;\hat{\lambda}_p^2&gt;0
+\]</span></p>
+<h4 id="样本典型相关变量与系数">样本典型相关变量与系数</h4>
+<p>记<span
+class="math inline">\(\alpha_1,\cdots,\alpha_p\)</span>和<span
+class="math inline">\(\beta_1,\cdots,\beta_p\)</span>分别是<span
+class="math inline">\(RR&#39;\)</span>和<span
+class="math inline">\(R&#39;R\)</span>的特征根<span
+class="math inline">\(\hat{\lambda}_1^2,\cdots,\hat{\lambda}_p^2\)</span>所对应的正则正交特征向量。</p>
+<p>令<span class="math inline">\(\hat{a}_i=\hat{\Sigma}_{11}^{-\frac 1
+2}\alpha_i\)</span>，<span
+class="math inline">\(\hat{b}_i=\hat{\Sigma}_{22}^{-\frac 1
+2}\beta_i\)</span>，<span class="math inline">\(1\leq i\leq
+p\)</span>。</p>
+<ul>
+<li>称<span
+class="math inline">\((\hat{a}_i&#39;X,\hat{b}_i&#39;Y)\)</span>为第<span
+class="math inline">\(i\)</span>组(对)样本典型相关变量</li>
+<li>称<span class="math inline">\(\hat{\lambda}_i\)</span>为第<span
+class="math inline">\(i\)</span>个样本典型相关系数，<span
+class="math inline">\(1\leq i\leq p\)</span>。</li>
+</ul>
+<p>不难知道，<span class="math inline">\(\hat{a}_i\)</span>和<span
+class="math inline">\(\hat{b}_i\)</span>分别是<span
+class="math inline">\(\hat{\Sigma}_{11}^{-1}\hat{\Sigma}_{12}\hat{\Sigma}_{22}^{-1}\hat{\Sigma}_{21}\)</span>和<span
+class="math inline">\(\hat{\Sigma}_{22}^{-1}\hat{\Sigma}_{21}\hat{\Sigma}_{11}^{-1}\hat{\Sigma}_{12}\)</span>的特征根<span
+class="math inline">\(\hat{\lambda}_i^2\)</span>所对应的特征向量，<span
+class="math inline">\(1\leq i\leq p\)</span>。</p>
+<p><span
+class="math inline">\((\hat{a}_i&#39;X,\hat{b}_i&#39;Y)\)</span>和<span
+class="math inline">\(\hat{\lambda}_i\)</span>分别是总体典型相关变量<span
+class="math inline">\((a_i&#39;X,b_i&#39;Y)\)</span>和总体典型相关系数<span
+class="math inline">\(\lambda_i\)</span>的极大似然估计，<span
+class="math inline">\(1\leq i\leq p\)</span>。</p>
+<blockquote>
+<p><strong>Q</strong>: 由于<span
+class="math inline">\(1&gt;\hat{\lambda}_1^2&gt;\cdots&gt;\hat{\lambda}_p^2&gt;0\)</span>，如何判断有意义的典型相关变量？</p>
+<p>A: 即给出一个估计<span class="math inline">\(k\leq p\)</span>，认为:
+<span class="math display">\[
+\lambda_1^2&gt;\cdots&gt;\lambda_k^2&gt;0\\
+\lambda_{k + 1}^2=\cdots=\lambda_p^2 = 0
+\]</span></p>
+</blockquote>
+<h3 id="典型相关变量个数的检验">5.2.3 典型相关变量个数的检验</h3>
+<p>设正态总体<span class="math inline">\((X,Y)\)</span>有样本<span
+class="math inline">\(\{(x_i,y_i)\}_{i = 1}^{n}\)</span>，<span
+class="math inline">\(n &gt; p + q\)</span>，<span
+class="math inline">\(p \leq q\)</span>。 记<span
+class="math inline">\(V\)</span>为样本离差阵: <span
+class="math display">\[
+V=\left(\begin{array}{ll} V_{11} &amp; V_{12} \\ V_{21} &amp; V_{22}
+\end{array}\right) \\\begin{cases}V_{11}=\sum_{i =
+1}^{n}(x_i-\bar{x}_n)(x_i-\bar{x}_n)&#39;\\
+V_{22}=\sum_{i = 1}^{n}(y_i-\bar{y}_n)(y_i-\bar{y}_n)&#39;,
+\\V_{12}=\sum_{i = 1}^{n}(x_i-\bar{x}_n)(y_i-\bar{y}_n)&#39;
+\end{cases}
+\]</span></p>
+<h4 id="典型相关变量个数等于0-vs.-大于0的检验问题">典型相关变量个数等于0
+vs. 大于0的检验问题</h4>
+<p>典型相关变量个数<span class="math inline">\(k = 0 \Leftrightarrow
+\Sigma_{12}=0\)</span>，即<span class="math inline">\(X\)</span>与<span
+class="math inline">\(Y\)</span>独立（不相关）。</p>
+<p>因此上述检验问题等价于：正态假设下，<span
+class="math inline">\(X\)</span>与<span
+class="math inline">\(Y\)</span>的独立性检验问题。</p>
+<p>似然比统计量为 ： <span class="math display">\[
+\lambda=\left(\frac{|V|}{|V_{11}||V_{22}|}\right)^{n/2}=\left(\frac{|V_{11}-V_{12}V_{22}^{-1}V_{21}|}{|V_{11}|}\right)^{n/2}\\
+=\vert I_p-V_{11}^{-1}V_{12}V_{22}^{-1}V_{21}\vert^{n/ 2}=\left[\prod_{i
+= 1}^{p}(1-\hat{\lambda}_i^2)\right]^{n/2}\\
+T_0=\prod_{i = 1}^{p}(1 -
+\hat{\lambda}_i^2)=\frac{|V_{11}-V_{12}V_{22}^{-1}V_{21}|}{|(V_{11}-V_{12}V_{22}^{-1}V_{21})+V_{12}V_{22}^{-1}V_{21}|}
+\]</span> 在零假设<span
+class="math inline">\(\Sigma_{12}=0\)</span>下，有<span
+class="math inline">\(T_0\stackrel{d}{\sim}\Lambda_{p,n - 1 -
+q,q}\)</span>。因此可以用零分布<span class="math inline">\(\Lambda_{p,n
+- 1 -
+q,q}\)</span>构造检验方案，也可由似然比统计量的渐近分布构造检验方案。
+<span class="math display">\[
+- 2\log(\lambda)=-n\sum_{i =
+1}^{p}\log(1-\hat{\lambda}_i^2)\stackrel{d}{\sim}\chi^2(pq)
+\]</span></p>
+<h4
+id="典型相关变量的个数等于k-vs.-大于k的检验问题">典型相关变量的个数等于<span
+class="math inline">\(k\)</span> vs. 大于<span
+class="math inline">\(k\)</span>的检验问题</h4>
+等价于检验问题： <span class="math display">\[
+H_0:rank(\Sigma_{12})=k\quad vs.\quad H_1:rank(\Sigma_{12})&gt;k
+\]</span> 也等价于检验问题： <span class="math display">\[
+H_0:\lambda_k^2&gt;0,\lambda_{k + 1}^2 = 0\quad vs.\quad H_1:\lambda_{k
++ 1}^2&gt;0
+\]</span> 也等价于检验问题： <span class="math display">\[
+H_0:存在p\times(p - k)的列满秩矩阵C，使得\Sigma_{22}^{-1}\Sigma_{21}C =
+0
+\]</span> 似然比统计量为 : <span class="math display">\[
+\begin{align}\lambda&amp;=\sup_{C}\left[\frac{|C&#39;(V_{11}-V_{12}V_{22}^{-1}V_{21})C|}{|C&#39;V_{11}C|}\right]^{n/2}\\
+&amp;=\sup_{C&#39;C = I_{p - k}}\vert C&#39;(I_p-RR&#39;)C\vert^{n/2}\\
+&amp;=\sup_{D&#39;D = I_{p -
+k}}\frac{|D&#39;diag(1-\hat{\lambda}_1^2,\cdots,1-\hat{\lambda}_p^2)D|}{|D&#39;D|}\\
+&amp;=\left[\prod_{i = k + 1}^{p}(1-\hat{\lambda}_i^2)\right]^{n/2}
+\end{align}
+\]</span> 其中<span class="math inline">\(C\)</span>是任意<span
+class="math inline">\(p\times(p - k)\)</span>的列满秩矩阵。 由于<span
+class="math inline">\(rank(\Sigma_{12})=k\)</span>，因此有 $ _{12}=(
+<span class="math display">\[\begin{array}{c} C_1 \\ C_2
+\end{array}\]</span>
+<p>), $ 其中<span class="math inline">\(C_1\)</span>是<span
+class="math inline">\(k\times q\)</span>的满秩矩阵，而<span
+class="math inline">\(C_2 = QC_1\)</span>，<span
+class="math inline">\(Q\)</span>是<span class="math inline">\((p -
+k)\times k\)</span>的矩阵。</p>
+<p>因此，有: <span class="math display">\[
+\begin{align*}&amp; \dim(\Theta_0)=p + q + p(p + 1)/2 + q(q + 1)/2 +
+kq+(p - k)k\\ &amp;\dim(\Theta)-\dim(\Theta_0)=(p - k)(q - k)
+\end{align*}
+\]</span> 由Wilks定理知: <span class="math display">\[
+-2\log(\lambda)=-n\sum_{i = k + 1}^{p}\log(1 -
+\hat{\lambda}_i^2)\stackrel{d}{\rightarrow}\chi^2((p - k)(q - k))
+\]</span> 进而构造检验方案。也可以采用修正的统计量: <span
+class="math display">\[
+-\left(n - 1 - k-\frac{p + q + 1}{2}+\sum_{i =
+1}^{k}\hat{\lambda}_i^2\right)\sum_{i = k + 1}^{p}\log(1 -
+\hat{\lambda}_i^2)
+\]</span></p>
+<h2 id="广义相关系数">5.3 广义相关系数</h2>
+<p>设随机变量<span class="math inline">\(X_{p\times1}\)</span>和<span
+class="math inline">\(Y_{q\times1}\)</span>，记: <span
+class="math display">\[
+\Sigma =
+Cov\left(\begin{matrix}X\\Y\end{matrix}\right)=\left(\begin{matrix}\Sigma_{11}&amp;\Sigma_{12}\\\Sigma_{21}&amp;\Sigma_{22}\end{matrix}\right)&gt;0
+\]</span> 称<span
+class="math inline">\(M_{21}=V_{22}^{-1}V_{21}V_{11}^{-1}V_{12}\)</span>为<span
+class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>的线性关联阵。</p>
+<p>记<span class="math inline">\(k = rank(M_{21})\)</span>，称<span
+class="math inline">\(k\)</span>为<span
+class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>的相关秩。</p>
+<p>记线性关联阵<span
+class="math inline">\(M_{21}\)</span>的非零特征根为<span
+class="math inline">\(\lambda_{1}^{2}\geq\cdots\geq\lambda_{k}^{2}&gt;0\)</span>。
+四、广义相关系数 则下面定义的每个量都称为<span
+class="math inline">\(X\)</span>与<span
+class="math inline">\(Y\)</span>的广义相关系数： <span
+class="math display">\[
+\begin{cases}
+\ \rho_{12}^{(1)}=\left(\prod_{i = 1}^{k}\lambda_{i}\right)^{1/k}\\
+\ \rho_{12}^{(2)}=\frac 1 k\sum_{i = 1}^{k}\lambda_{i}^{2}\\
+\ \rho_{12}^{(3)}=\lambda_{1}^{2}\\
+\ \rho_{12}^{(4)}=\lambda_{k}^{2}\\
+\ \rho_{12}^{(5)}=\left(\frac 1 k\sum_{i =
+1}^{k}\lambda_{i}^{-2}\right)^{-1}
+\end{cases}
+\]</span></p>
+<h2 id="实例分析">5.4 实例分析</h2>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241214114658874.png"
+alt="image-20241214114658874" />
+<figcaption aria-hidden="true">image-20241214114658874</figcaption>
+</figure>
+<p>变量间的相关系数矩阵 |</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>X1</th>
+<th>X2</th>
+<th>y1</th>
+<th>y2</th>
+<th>y3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>X1</strong></td>
+<td>1.00</td>
+<td>0.80</td>
+<td><strong>0.26</strong></td>
+<td><strong>0.67</strong></td>
+<td><strong>0.34</strong></td>
+</tr>
+<tr class="even">
+<td><strong>X2</strong></td>
+<td>0.80</td>
+<td>1.00</td>
+<td><strong>0.33</strong></td>
+<td><strong>0.59</strong></td>
+<td><strong>0.34</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>y1</strong></td>
+<td><strong>0.26</strong></td>
+<td><strong>0.33</strong></td>
+<td>1.00</td>
+<td>0.37</td>
+<td>0.21</td>
+</tr>
+<tr class="even">
+<td><strong>y2</strong></td>
+<td><strong>0.67</strong></td>
+<td><strong>0.59</strong></td>
+<td>0.37</td>
+<td>1.00</td>
+<td>0.35</td>
+</tr>
+<tr class="odd">
+<td><strong>y3</strong></td>
+<td><strong>0.34</strong></td>
+<td><strong>0.34</strong></td>
+<td>0.21</td>
+<td>0.35</td>
+<td>1.00</td>
+</tr>
+</tbody>
+</table>
+<p>典型相关分析:</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>典型相关系数</th>
+<th>典型相关系数的平方</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>0.687948</td>
+<td>0.473272</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>0.186865</td>
+<td>0.034919</td>
+</tr>
+</tbody>
+</table>
+<p>X组典型变量的系数<span class="math inline">\(U=a&#39;X\)</span>:</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>U1</th>
+<th>U2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>X1(就餐)</td>
+<td>0.7689</td>
+<td>-1.4787</td>
+</tr>
+<tr class="even">
+<td>X2(电影)</td>
+<td>0.2721</td>
+<td>1.6443</td>
+</tr>
+</tbody>
+</table>
+<p>Y组典型变量的系数<span class="math inline">\(V=b&#39;Y\)</span> :</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>V1</th>
+<th>V2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Y1(年龄)</td>
+<td>0.0491</td>
+<td>1.0003</td>
+</tr>
+<tr class="even">
+<td>Y2(收入)</td>
+<td>0.8975</td>
+<td>-0.5837</td>
+</tr>
+<tr class="odd">
+<td>Y3(文化)</td>
+<td>0.1900</td>
+<td>0.2956</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(U_1 = 0.7689X_1 + 0.2721X_2; \quad V_1 =
+0.0491Y_1 + 0.8975Y_2 + 0.1900Y_3;\)</span> <span
+class="math inline">\(U_2 = -1.4787X_1 + 1.6443X_2; \quad V_2 =
+1.0003Y_1 - 0.5837Y_2 + 0.2956Y_3.\)</span></p>
+<h4 id="典型变量的结构相关系数">典型变量的结构（相关系数）</h4>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>U1</th>
+<th>U2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>X1</td>
+<td>0.9866</td>
+<td>-0.1632</td>
+</tr>
+<tr class="even">
+<td>X2</td>
+<td>0.8872</td>
+<td>0.4461</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>V1</th>
+<th>V2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Y1</td>
+<td>0.4211</td>
+<td>0.8464</td>
+</tr>
+<tr class="even">
+<td>Y2</td>
+<td>0.9822</td>
+<td>-0.1101</td>
+</tr>
+<tr class="odd">
+<td>Y3</td>
+<td>0.5145</td>
+<td>0.3013</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>V1</th>
+<th>V2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>X1</td>
+<td>0.6787</td>
+<td>-0.0305</td>
+</tr>
+<tr class="even">
+<td>X2</td>
+<td>0.6104</td>
+<td>0.0862</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>U1</th>
+<th>U2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Y1</td>
+<td>0.2897</td>
+<td>0.1582</td>
+</tr>
+<tr class="even">
+<td>Y2</td>
+<td>0.6757</td>
+<td>-0.0206</td>
+</tr>
+<tr class="odd">
+<td>Y3</td>
+<td>0.3539</td>
+<td>0.0563</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>两个反映消费的指标与第一对典型变量中<span
+class="math inline">\(U_1\)</span>的相关系数分别为0.9866和0.8872，可以看出<span
+class="math inline">\(U_1\)</span>可以作为消费特性的指标；</li>
+<li>第一对典型变量中<span class="math inline">\(V_1\)</span>与<span
+class="math inline">\(Y_2\)</span>之间的相关系数为0.9822，可见典型变量<span
+class="math inline">\(V_1\)</span>主要代表了家庭收入；</li>
+<li><span class="math inline">\(U_1\)</span>和<span
+class="math inline">\(V_1\)</span>的相关系数为0.6787，这就说明家庭的消费与一个家庭的收入之间其关系是很密切的。</li>
+</ul>
+<h4 id="检验典型相关变量的个数k-0-vs.-k0">检验典型相关变量的个数：<span
+class="math inline">\(k = 0\)</span> vs. <span
+class="math inline">\(k&gt;0\)</span></h4>
+<p>此时，样本量<span class="math inline">\(n = 70\)</span>，<span
+class="math inline">\(p = 2\)</span>，<span class="math inline">\(q =
+3\)</span>。 检验统计量、p值为： <span class="math display">\[
+\begin{align*} - 2\log(\lambda)&amp;=-n\sum_{i = k +
+1}^{p}\log(1-\hat{\lambda}_{i}^{2})\\ &amp;=-70[\log(1 -
+0.473272)+\log(1 - 0.034919)]\\ &amp;=47.363 \\\\
+P\{\chi^{2}(pq)&gt; - 2\log(\lambda)\}&amp;=P\{\chi^{2}(6)&gt;47.363\}
+\\&amp;= 1.584\times10^{-8}&lt;0.05 \end{align*}
+\]</span> 结论：拒绝<span class="math inline">\(k =
+0\)</span>的假设，即不能认为两组变量不相关。</p>
+<h4 id="检验典型相关变量的个数k-1-vs.-k1">检验典型相关变量的个数：<span
+class="math inline">\(k = 1\)</span> vs. <span
+class="math inline">\(k&gt;1\)</span></h4>
+<p>检验统计量、p值为： <span class="math display">\[
+\begin{align*} - 2\log(\lambda)&amp;=-n\sum_{i = k +
+1}^{p}\log(1-\hat{\lambda}_{i}^{2})\\ &amp;=-70\log(1 - 0.034919)\\
+&amp;=2.488\\\\ P\{\chi^{2}((p - k)(q - k))&gt; -
+2\log(\lambda)\}&amp;=P\{\chi^{2}(2)&gt;2.488\}\\&amp;=0.288&gt;0.05  \end{align*}
+\]</span>
+结论：没有足够证据拒绝零假设。可以认为典型相关变量的个数为1。</p>
+</div><div class="post-end"><div class="post-prev"></div><div class="post-next"><a href="/2024/12/13/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90-Ch4-%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch5-%E7%9B%B8%E5%85%B3%E5%88%86%E6%9E%90"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch5 相关分析</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E4%BE%8B%E5%AE%B6%E5%BA%AD%E7%89%B9%E5%BE%81%E4%B8%8E%E5%AE%B6%E5%BA%AD%E6%B6%88%E8%B4%B9%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">5.0
+例：家庭特征与家庭消费之间的关系</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%A4%8D%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">5.1 复相关系数</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%80%BB%E4%BD%93%E5%A4%8D%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">5.1.1 总体复相关系数</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%A4%8D%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0%E5%AE%9A%E4%B9%89%E5%8F%98%E9%87%8F-%E5%90%91%E9%87%8F%E4%B9%8B%E9%97%B4"><span class="toc-content-number">1.2.1.1.</span> <span class="toc-content-text">复相关系数定义(变量-向量之间)</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%A0%B7%E6%9C%AC%E5%A4%8D%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0"><span class="toc-content-number">1.2.2.</span> <span class="toc-content-text">5.1.2 样本复相关系数</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%A0%B7%E6%9C%AC%E5%A4%8D%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0%E7%9A%84%E5%88%86%E5%B8%83"><span class="toc-content-number">1.2.2.1.</span> <span class="toc-content-text">样本复相关系数的分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#sigma_120%E7%9A%84%E6%83%85%E5%BD%A2x1%E4%B8%8Ex2%E7%8B%AC%E7%AB%8B"><span class="toc-content-number">1.2.2.1.1.</span> <span class="toc-content-text">\(\Sigma_{12}&#x3D;0\)的情形：\(x^{(1)}\)与\(X^{(2)}\)独立</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E4%B8%80%E8%88%AC%E6%83%85%E5%BD%A2"><span class="toc-content-number">1.2.2.1.2.</span> <span class="toc-content-text">一般情形</span></a></li></ol></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%85%B8%E5%9E%8B%E7%9B%B8%E5%85%B3%E5%88%86%E6%9E%90"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">5.2 典型相关分析</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%85%B8%E5%9E%8B%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0%E5%AE%9A%E4%B9%89%E5%90%91%E9%87%8F-%E5%90%91%E9%87%8F%E4%B9%8B%E9%97%B4"><span class="toc-content-number">1.3.0.1.</span> <span class="toc-content-text">典型相关系数定义(向量-向量之间)</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%80%BB%E4%BD%93%E5%85%B8%E5%9E%8B%E7%9B%B8%E5%85%B3%E5%88%86%E6%9E%90"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">5.2.1 总体典型相关分析</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#a.%E5%85%B8%E5%9E%8B%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="toc-content-number">1.3.1.1.</span> <span class="toc-content-text">A.典型相关系数的性质</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%85%B8%E5%9E%8B%E7%9B%B8%E5%85%B3%E5%88%86%E6%9E%90%E7%9A%84%E6%89%80%E6%9C%89k%E6%AD%A5"><span class="toc-content-number">1.3.1.2.</span> <span class="toc-content-text">典型相关分析的所有k步</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%85%B8%E5%9E%8B%E7%9B%B8%E5%85%B3%E5%88%86%E6%9E%90%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-content-number">1.3.1.3.</span> <span class="toc-content-text">典型相关分析的作用</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E7%9F%A9%E9%98%B5%E4%BA%8C%E6%AC%A1%E5%9E%8B%E6%9E%81%E5%80%BC%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="toc-content-number">1.3.1.4.</span> <span class="toc-content-text">相关知识：矩阵二次型极值的性质</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%A0%B7%E6%9C%AC%E5%85%B8%E5%9E%8B%E7%9B%B8%E5%85%B3%E5%88%86%E6%9E%90"><span class="toc-content-number">1.3.2.</span> <span class="toc-content-text">5.2.2 样本典型相关分析</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%80%A7%E8%B4%A8"><span class="toc-content-number">1.3.2.1.</span> <span class="toc-content-text">性质</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%A0%B7%E6%9C%AC%E5%85%B8%E5%9E%8B%E7%9B%B8%E5%85%B3%E5%8F%98%E9%87%8F%E4%B8%8E%E7%B3%BB%E6%95%B0"><span class="toc-content-number">1.3.2.2.</span> <span class="toc-content-text">样本典型相关变量与系数</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%85%B8%E5%9E%8B%E7%9B%B8%E5%85%B3%E5%8F%98%E9%87%8F%E4%B8%AA%E6%95%B0%E7%9A%84%E6%A3%80%E9%AA%8C"><span class="toc-content-number">1.3.3.</span> <span class="toc-content-text">5.2.3 典型相关变量个数的检验</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%85%B8%E5%9E%8B%E7%9B%B8%E5%85%B3%E5%8F%98%E9%87%8F%E4%B8%AA%E6%95%B0%E7%AD%89%E4%BA%8E0-vs.-%E5%A4%A7%E4%BA%8E0%E7%9A%84%E6%A3%80%E9%AA%8C%E9%97%AE%E9%A2%98"><span class="toc-content-number">1.3.3.1.</span> <span class="toc-content-text">典型相关变量个数等于0
+vs. 大于0的检验问题</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%85%B8%E5%9E%8B%E7%9B%B8%E5%85%B3%E5%8F%98%E9%87%8F%E7%9A%84%E4%B8%AA%E6%95%B0%E7%AD%89%E4%BA%8Ek-vs.-%E5%A4%A7%E4%BA%8Ek%E7%9A%84%E6%A3%80%E9%AA%8C%E9%97%AE%E9%A2%98"><span class="toc-content-number">1.3.3.2.</span> <span class="toc-content-text">典型相关变量的个数等于\(k\) vs. 大于\(k\)的检验问题</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%B9%BF%E4%B9%89%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">5.3 广义相关系数</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%AE%9E%E4%BE%8B%E5%88%86%E6%9E%90"><span class="toc-content-number">1.5.</span> <span class="toc-content-text">5.4 实例分析</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%85%B8%E5%9E%8B%E5%8F%98%E9%87%8F%E7%9A%84%E7%BB%93%E6%9E%84%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0"><span class="toc-content-number">1.5.0.1.</span> <span class="toc-content-text">典型变量的结构（相关系数）</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%A3%80%E9%AA%8C%E5%85%B8%E5%9E%8B%E7%9B%B8%E5%85%B3%E5%8F%98%E9%87%8F%E7%9A%84%E4%B8%AA%E6%95%B0k-0-vs.-k0"><span class="toc-content-number">1.5.0.2.</span> <span class="toc-content-text">检验典型相关变量的个数：\(k &#x3D; 0\) vs. \(k&gt;0\)</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%A3%80%E9%AA%8C%E5%85%B8%E5%9E%8B%E7%9B%B8%E5%85%B3%E5%8F%98%E9%87%8F%E7%9A%84%E4%B8%AA%E6%95%B0k-1-vs.-k1"><span class="toc-content-number">1.5.0.3.</span> <span class="toc-content-text">检验典型相关变量的个数：\(k &#x3D; 1\) vs. \(k&gt;1\)</span></a></li></ol></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>

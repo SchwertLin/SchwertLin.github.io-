@@ -1,0 +1,715 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch4 多元线性模型  码字机施工中...  [TOC] 4.0 一元线性模型 假设有自变量\(x&#x3D;(x_{(1)},\cdots,x_{(k)})&#39;\in R^k\)，因变量\(y\in R^1\)。 一元线性模型的定义： \[ y &#x3D; x&#39;\beta+\epsilon \] 其中，\(\beta &#x3D; (\beta_1,\cdots,\beta_k)&amp;#39">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多元统计分析-Ch4-多元线性模型">
+<meta property="og:url" content="http://example.com/2024/12/13/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90-Ch4-%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch4 多元线性模型  码字机施工中...  [TOC] 4.0 一元线性模型 假设有自变量\(x&#x3D;(x_{(1)},\cdots,x_{(k)})&#39;\in R^k\)，因变量\(y\in R^1\)。 一元线性模型的定义： \[ y &#x3D; x&#39;\beta+\epsilon \] 其中，\(\beta &#x3D; (\beta_1,\cdots,\beta_k)&amp;#39">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-13T14:50:15.000Z">
+<meta property="article:modified_time" content="2024-12-15T03:08:32.171Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="多元统计分析">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary"><title>多元统计分析-Ch4-多元线性模型 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>多元统计分析-Ch4-多元线性模型</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2024-12-13</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2024-12-15</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90/">多元统计分析</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约4.9K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch4-多元线性模型">Ch4 多元线性模型</h1>
+<blockquote>
+<p>码字机施工中...</p>
+</blockquote>
+<p>[TOC]</p>
+<h2 id="一元线性模型">4.0 一元线性模型</h2>
+<p>假设有自变量<span
+class="math inline">\(x=(x_{(1)},\cdots,x_{(k)})&#39;\in
+R^k\)</span>，因变量<span class="math inline">\(y\in R^1\)</span>。</p>
+<p>一元线性模型的定义： <span class="math display">\[
+y = x&#39;\beta+\epsilon
+\]</span> 其中，<span class="math inline">\(\beta =
+(\beta_1,\cdots,\beta_k)&#39;\in R^k\)</span>是模型参数， <span
+class="math inline">\(\epsilon\)</span>是随机误差，<span
+class="math inline">\(E(\epsilon|x) = 0\)</span>。</p>
+<p><span class="math inline">\(x&#39;\beta\)</span>是<span
+class="math inline">\(y\)</span>对<span
+class="math inline">\(x\)</span>的线性回归: <span
+class="math display">\[
+E(y|x)=E(x&#39;\beta+\epsilon|x)=x&#39;\beta +
+E(\epsilon|x)=x&#39;\beta\\
+y=x_{(1)}\beta_1+\cdots + x_{(k)}\beta_k+\epsilon
+\]</span></p>
+<h3 id="模型参数的估计">4.0.1 模型参数的估计</h3>
+<p>假设有<span class="math inline">\(n\)</span>组观测<span
+class="math inline">\((x_1,y_1),\cdots,(x_n,y_n)\)</span>。
+最小二乘法即最小化误差平方和（Residual Sum of Squares, RSS,
+我们的目标函数）： <span class="math display">\[
+RSS({\beta})=\sum_{i = 1}^{n}(y_i - x_i&#39;\beta)^2\\
+\hat \beta =\arg\min_{\beta\in R^k} RSS(\beta)
+\]</span> 记<span class="math inline">\(Y=(y_1,\cdots,y_n)&#39;\in
+R^n\)</span>，<span
+class="math inline">\(X=(x_1,\cdots,x_n)&#39;\)</span>是<span
+class="math inline">\(n\times k\)</span>的矩阵， <span
+class="math inline">\(\epsilon = (\epsilon_1,\cdots,\epsilon_n)&#39;\in
+R^n\)</span>。</p>
+<ul>
+<li>则对这组观测，模型可表示为 <span class="math inline">\(Y =
+X\beta+\epsilon\)</span>。</li>
+<li>则<span class="math inline">\(\beta\)</span>的最小二乘法估计为 <span
+class="math inline">\(\hat{\beta}=(X&#39;X)^{-1}X&#39;Y\)</span>。</li>
+</ul>
+<blockquote>
+<p><span class="math display">\[
+\begin{align}
+RSS(\beta) &amp;=(Y-X\beta)&#39;(Y-X\beta)\\
+&amp;=Y&#39;Y-Y&#39;X\beta-(X\beta)&#39;Y+(X\beta)&#39;(X\beta)\\
+&amp;=Y&#39;Y-2\beta&#39;X&#39;Y+\beta&#39;X&#39;X\beta\\\\
+\frac{\partial{RSS(\beta)
+}}{\partial\beta}&amp;=-2X&#39;Y+2X&#39;X\beta=0\\
+X&#39;X\beta&amp;=X&#39;Y\\
+\hat\beta&amp;=(X&#39;X)^{-1}X&#39;Y
+\end{align}\\
+\]</span></p>
+</blockquote>
+<p><strong>模型的应用</strong>：</p>
+<ol type="1">
+<li>对未来的设计变量<span
+class="math inline">\(x\)</span>，可以预测相应的因变量<span
+class="math inline">\(y\)</span>：<span
+class="math inline">\(\hat{y}=x&#39;\hat{\beta}\)</span>。</li>
+<li>当自变量为单变量时，为了控制未来的因变量<span
+class="math inline">\(y\)</span>， 可以约束自变量的取值范围。</li>
+</ol>
+<h2 id="多元线性模型">4.1 多元线性模型</h2>
+<blockquote>
+<p>相当于x和y由一个值变为一个向量. 此时x在<span
+class="math inline">\(\mathbb{R}^k\)</span>空间，y在<span
+class="math inline">\(\mathbb{R}^p\)</span>空间.</p>
+</blockquote>
+<p>假设有自变量<span
+class="math inline">\(x=(x_{(1)},\cdots,x_{(k)})&#39;\in
+R^k\)</span>，因变量<span
+class="math inline">\(y=(y_{(1)},\cdots,y_{(p)})&#39;\in
+R^p\)</span>。</p>
+<p><span class="math inline">\(y\)</span>与<span
+class="math inline">\(x\)</span>的关系可表示为如下<span
+class="math inline">\(p\)</span>个一元线性模型： <span
+class="math display">\[
+y_{(i)} = x&#39;\beta_i+\epsilon_{(i)}
+\]</span> <span class="math inline">\(1\leq i\leq p\)</span>，
+其中，<span class="math inline">\(\beta_1,\cdots,\beta_p\in
+R^k\)</span>是每个子线性模型的参数， <span
+class="math inline">\(\epsilon_{(i)}\)</span>是每个因变量对应的随机误差，<span
+class="math inline">\(E(\epsilon_{(i)}|x) = 0\)</span>，<span
+class="math inline">\(1\leq i\leq p\)</span>。</p>
+<p>记<span class="math inline">\(B =
+(\beta_1,\cdots,\beta_p)\)</span>是<span class="math inline">\(k\times
+p\)</span>的模型参数矩阵， <span class="math inline">\(\epsilon =
+(\epsilon_{(1)},\cdots,\epsilon_{(p)})&#39;\)</span>是误差向量。
+那么，<span class="math inline">\(y\)</span>与<span
+class="math inline">\(x\)</span>的关系可表示为: <span
+class="math display">\[
+y&#39; = x&#39;B+\epsilon&#39;
+\]</span> 假设有<span class="math inline">\(n\)</span>组观测<span
+class="math inline">\((x_1,y_1),\cdots,(x_n,y_n)\)</span>。 记<span
+class="math inline">\(Y=(y_1,\cdots,y_n)&#39;\)</span>，<span
+class="math inline">\(X=(x_1,\cdots,x_n)&#39;\)</span>，<span
+class="math inline">\(e =
+(\epsilon_1,\cdots,\epsilon_n)&#39;\)</span>。</p>
+<blockquote>
+<p>x 和 y 由向量转变为矩阵，原先只是在<span
+class="math inline">\(\mathbb{R}^k,\mathbb{R}^p\)</span>空间，现在在<span
+class="math inline">\(\mathbb{R}^{nk},\mathbb{R}^{np}\)</span>空间。</p>
+</blockquote>
+<p>多元线性模型的<strong>定义</strong>如下： <span
+class="math inline">\(Y = XB + e\)</span>，</p>
+<p>其中:</p>
+<ol type="1">
+<li><span class="math inline">\(Y\)</span>是<span
+class="math inline">\(n\times p\)</span>阶观测的随机矩阵，<span
+class="math inline">\(n\geq p\)</span>；</li>
+<li><span class="math inline">\(X\)</span>是已知的<span
+class="math inline">\(n\times k\)</span>阶设计矩阵，<span
+class="math inline">\(n\geq k\)</span>，<span
+class="math inline">\(rank(X)=r\leq k\)</span>； (3)</li>
+<li>是<span class="math inline">\(k\times
+p\)</span>阶的未知回归系数矩阵；</li>
+<li><span class="math inline">\(e\)</span>是<span
+class="math inline">\(n\times p\)</span>阶不可观测的随机误差矩阵。</li>
+</ol>
+<p>若记 : <span class="math display">\[
+\begin{align}
+Y&amp;=\begin{pmatrix}y_{(11)}&amp;y_{(12)}&amp;\cdots&amp;y_{(1p)}\\y_{(21)}&amp;y_{(22)}&amp;\cdots&amp;y_{(2p)}\\\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\y_{(n1)}&amp;y_{(n2)}&amp;\cdots&amp;y_{(np)}\end{pmatrix}=\begin{pmatrix}y_1&#39;\\y_2&#39;\\\vdots\\y_n&#39;\end{pmatrix}=(Y_{(1)},\cdots,Y_{(p)})&#39;\\
+X&amp;=\begin{pmatrix}x_{(11)}&amp;x_{(12)}&amp;\cdots&amp;x_{(1k)}\\x_{(21)}&amp;x_{(22)}&amp;\cdots&amp;x_{(2k)}\\\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\x_{(n1)}&amp;x_{(n2)}&amp;\cdots&amp;x_{(nk)}\end{pmatrix}=\begin{pmatrix}x_1&#39;\\x_2&#39;\\\vdots\\x_n&#39;\end{pmatrix}\\
+e&amp;=\begin{pmatrix}\epsilon_{(11)}&amp;\epsilon_{(12)}&amp;\cdots&amp;\epsilon_{(1p)}\\\epsilon_{(21)}&amp;\epsilon_{(22)}&amp;\cdots&amp;\epsilon_{(2p)}\\\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\\epsilon_{(n1)}&amp;\epsilon_{(n2)}&amp;\cdots&amp;\epsilon_{(np)}\end{pmatrix}=\begin{pmatrix}\epsilon_1&#39;\\\epsilon_2&#39;\\\vdots\\\epsilon_n&#39;\end{pmatrix}=(\epsilon_{(1)},\cdots,\epsilon_{(p)})&#39;
+\end{align}
+\]</span> 则模型 <span class="math inline">\(Y = XB + e\)</span> 化为
+<span class="math inline">\(y_{(ij)} =
+x_i&#39;\beta_j+\epsilon_{(ij)}\)</span>，<span
+class="math inline">\(1\leq i\leq n\)</span>，<span
+class="math inline">\(1\leq j\leq p\)</span>。</p>
+<p>我们假定<span
+class="math inline">\(\varepsilon\)</span>服从正态分布，只在特别情况下会说明只假定一、二阶矩存在(有界)的情形。</p>
+<blockquote>
+<p><strong>Q: 一阶矩、二阶矩？</strong></p>
+<p>A:
+<strong>矩（moment）</strong>是用来描述随机变量分布特性的数字量度。</p>
+<ul>
+<li>一阶矩：均值、<span class="math inline">\(E[X]=\mu\)</span></li>
+<li>二阶矩：方差、协方差：<span
+class="math inline">\(Var(X)=E[(X-E(X))^2],
+Cov(X,Y)=E[(X-E(X))(Y-E(Y))]\)</span></li>
+</ul>
+</blockquote>
+<p>假设<span class="math inline">\(\varepsilon\sim N_{n\times
+p}(0,\Sigma\otimes I_n)\)</span>，其中误差协方差阵<span
+class="math inline">\(\Sigma\)</span>是未知的<span
+class="math inline">\(p\)</span>阶正定矩阵。 由<span
+class="math inline">\(e&#39;=(\varepsilon_{1},\cdots,\varepsilon_{n})\)</span>，知<span
+class="math inline">\(\varepsilon_{1},\cdots,\varepsilon_{n}\)</span>独立同分布，且<span
+class="math inline">\(\varepsilon_{1}\stackrel{d}{~}N_{p}(0,\Sigma)\)</span>。
+<span class="math inline">\(e\sim N_{n\times p}(0,\Sigma\otimes
+I_n)\)</span>，则<span class="math inline">\(Y\sim N_{n\times
+p}(XB,\Sigma\otimes I_n)\)</span>。 则有 : <span class="math display">\[
+y_{i}^{\prime}=x_{i}^{\prime}B+\varepsilon_{i}^{\prime}\sim
+N_{p}(x_{i}^{\prime}B,\Sigma), 1\leq i\leq n
+\]</span></p>
+<blockquote>
+<p>由于 <span class="math inline">\(y_i&#39; = x_i&#39; B +
+\varepsilon_i&#39;\)</span>，这里的 <span class="math inline">\(x_i&#39;
+B\)</span> 是一个常数向量（因为给定了自变量 <span
+class="math inline">\(x_i&#39;\)</span> 和回归系数 B），而 <span
+class="math inline">\(\varepsilon_i&#39;\)</span>
+是一个多维正态随机向量。</p>
+</blockquote>
+<p>那么模型 <span class="math inline">\(Y = XB + e\)</span> 可以理解为 :
+<span class="math display">\[
+\begin{cases}
+E(Y)=XB\\
+{Y的行向量}y_{1}^{\prime},\cdots,y_{n}^{\prime}是相互独立的正态向量，同协方差阵\Sigma,\Sigma&gt;0.
+\end{cases}
+\]</span> 记<span class="math inline">\(Y=(Y_{(1)},\cdots,Y_{(p)}),B =
+(\beta_{1},\cdots,\beta_{p}),e=(\varepsilon_{(1)},\cdots,\varepsilon_{(p)})\)</span>，则有:
+<span class="math display">\[
+Y_{(j)}=X\beta_{j}+\varepsilon_{(j)},\quad 1\leq j\leq p
+\]</span> 即模型<span class="math inline">\(Y = XB +
+e\)</span>可以分解为<span
+class="math inline">\(p\)</span>个一元线性模型，这<span
+class="math inline">\(p\)</span>个一元线性模型有相同的设计矩阵<span
+class="math inline">\(X\)</span>。</p>
+<p>不难得出<span
+class="math inline">\(\beta_{j}\)</span>的最小二乘估计为 <span
+class="math inline">\(\hat{\beta}_{j}=(X^{\prime}X)^{-}X^{\prime}Y_{(j)}\)</span>，<span
+class="math inline">\(1\leq j\leq p\)</span>。</p>
+<p>若<span class="math inline">\(rank(X)=k\)</span>，则<span
+class="math inline">\((X^{\prime}X)^{-}=(X^{\prime}X)^{-1}\)</span>.</p>
+<blockquote>
+<p><span
+class="math inline">\((X^{\prime}X)^{-}\)</span>表示Moore-Penrose伪逆、当X满秩的时候伪逆=真逆）</p>
+</blockquote>
+<p>进而有<span class="math inline">\(B\)</span>的最小二乘估计为 <span
+class="math inline">\(\hat{B}=(\hat{\beta}_{1},\cdots,\hat{\beta}_{p})=(X^{\prime}X)^{-1}X^{\prime}(Y_{(1)},\cdots,Y_{(p)})=(X^{\prime}X)^{-1}X^{\prime}Y\)</span>。</p>
+<blockquote>
+<p><strong>Q: 设计矩阵？</strong></p>
+<p>A: <strong>设计矩阵（Design Matrix）</strong>
+是回归分析中的一个重要概念，用于表示回归模型中自变量（或特征）和观测数据之间的关系。对于多元回归模型
+<span class="math inline">\(Y = X B + e\)</span>，设计矩阵 X
+存储了所有观测点的自变量值。具体来说：</p>
+<ul>
+<li>Y 是因变量的观测矩阵，表示所有观测点和因变量的值。</li>
+<li>X 是设计矩阵，包含所有观测点的自变量（或特征）值，通常是一个 <span
+class="math inline">\(n \times k\)</span>的矩阵，其中：
+<ul>
+<li>n 是观测点的数量（样本数量）。</li>
+<li>k 是自变量的数量（包括常数项，如果有的话）。</li>
+</ul></li>
+</ul>
+</blockquote>
+<h4 id="例1-p维的正态分布">例1: p维的正态分布</h4>
+<p>设<span
+class="math inline">\(Y^{\prime}=(y_{1},\cdots,y_{n})\)</span>是来自<span
+class="math inline">\(N_{p}(\mu,\Sigma)\)</span>的样本，<span
+class="math inline">\(\Sigma&gt;0\)</span>。则 <span
+class="math display">\[
+\begin{cases}E(Y) =
+XB,\\Y的行向量y_{1}^{\prime},\cdots,y_{n}^{\prime}是相互独立的正态向量，协方差阵\Sigma,\Sigma&gt;0,\end{cases}
+\]</span> 其中，设计矩阵<span class="math inline">\(X = 1_{n},\
+B=\mu^{\prime}\)</span>。</p>
+<h4 id="例2-多元方差分析">例2: 多元方差分析</h4>
+<p>设有<span class="math inline">\(k\)</span>个相互独立的总体<span
+class="math inline">\(Y_{j}\stackrel{d}{\sim}N_{p}(\mu_{j},\Sigma)\)</span>，<span
+class="math inline">\(k\geq2\)</span>。 <span
+class="math inline">\(y_{j1},\cdots,y_{jn_{j}}\)</span>是来自总体<span
+class="math inline">\(Y_{j}\)</span>的样本，<span
+class="math inline">\(1\leq j\leq k,\ \Sigma&gt;0\)</span>。记<span
+class="math inline">\(n=\sum_{j = 1}^{k}n_{j}\)</span> .</p>
+<p>这相当于如下的多元线性模型 : <span class="math display">\[
+\begin{cases}E(Y) =
+XB,\\Y的行向量y_{1}^{\prime},\cdots,y_{n}^{\prime}是相互独立的正态向量，协方差阵\Sigma,\Sigma&gt;0,\end{cases}
+\]</span> 其中， <span
+class="math inline">\(X=\begin{pmatrix}1_{n_{1}}&amp;0&amp;\cdots&amp;0\\0&amp;1_{n_2}&amp;\cdots&amp;0\\\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\0&amp;0&amp;\cdots&amp;1_{n_{k}}\end{pmatrix}\)</span>是<span
+class="math inline">\(n\times k\)</span>阶对角分块矩阵， <span
+class="math inline">\(B=\begin{pmatrix}\mu_{1}^{\prime}\\\mu_2&#39;\\\vdots\\\mu_{k}^{\prime}\end{pmatrix}\)</span>是<span
+class="math inline">\(k\times p\)</span>阶矩阵。</p>
+<h2 id="充分统计量">4.2 充分统计量</h2>
+<p>由等价模型知，Y的行向量<span
+class="math inline">\(y_{1}^{\prime},\cdots,y_{n}^{\prime}\)</span>相互独立，且<span
+class="math inline">\(y_{i}\stackrel{d}{\sim}N_{p}(x_{i}^{\prime}B,\Sigma)\)</span>，<span
+class="math inline">\(1\leq i\leq n\)</span>。</p>
+<p>那么有Y的密度函数为 : <span class="math display">\[
+\begin{align*} f(Y|B,\Sigma)&amp;=\prod_{i =
+1}^{n}\frac{1}{(2\pi)^{p/2}|\Sigma|^{1/2}}\exp\left\{-\frac{1}{2}(y_{i}-x_{i}^{\prime}B)^{\prime}\Sigma^{-1}(y_{i}-x_{i}^{\prime}B)\right\}\\
+&amp;=\frac{1}{(2\pi)^{np/2}|\Sigma|^{n/2}}\exp\left\{\frac{1}{2}\text{tr}[(Y
+- XB)\Sigma^{-1}(Y - XB)^{\prime}]\right\}\\
+&amp;=\frac{1}{(2\pi)^{np/2}|\Sigma|^{n/2}}\exp\left\{\frac{1}{2}\text{tr}[(Y
+- XB)^{\prime}(Y - XB)\Sigma^{-1}]\right\}\\
+&amp;=\frac{\exp\left\{-\text{tr}(B^{\prime}X^{\prime}XB\Sigma^{-1})\right\}}{(2\pi)^{np/2}|\Sigma|^{n/2}}\exp\left\{\frac{1}{2}\text{tr}(Y^{\prime}Y\Sigma^{-1}-2B^{\prime}X^{\prime}Y\Sigma^{-1})\right\}
+\end{align*}
+\]</span> 显然Y的分布是指数族分布，<strong><span
+class="math inline">\((Y^{\prime}Y,X^{\prime}Y)\)</span>是参数<span
+class="math inline">\((B,\Sigma)\)</span>的充分统计量。</strong></p>
+<p>注意到，Y的密度还可以写为: <span class="math display">\[
+\begin{align}
+f(Y|B,\Sigma)&amp;=\frac{1}{(2\pi)^{np/2}|\Sigma|^{n/2}}\exp\left\{\frac{1}{2}\text{tr}[(Y
+- XB)^{\prime}(Y - XB)\Sigma^{-1}]\right\} \\
+&amp;=\frac{1}{(2\pi)^{np/2}|\Sigma|^{n/2}}\exp\left\{-\frac{1}{2}\text{tr}[Y^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})Y\Sigma^{-1}]\right\}\\
+&amp;-\frac{1}{2}\text{tr}\left[((X^{\prime}X)^{-1}X^{\prime}Y -
+B)^{\prime}(X^{\prime}X)((X^{\prime}X)^{-1}X^{\prime}Y -
+B)\Sigma^{-1}\right]
+\end{align}
+\]</span> 可见<span class="math inline">\((
+(X^{\prime}X)^{-1}X^{\prime}Y,
+Y^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})Y)\)</span>也是<span
+class="math inline">\((B,\Sigma)\)</span>的充分统计量。 平方和分解公式 :
+<span class="math display">\[
+\begin{align}(Y - XB)^{\prime}(Y -
+XB)&amp;=Y^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})Y\\
+&amp;+(X^{\prime}X)^{-1}X^{\prime}Y -
+B)^{\prime}X^{\prime}X((X^{\prime}X)^{-1}X^{\prime}Y - B)\end{align}
+\]</span></p>
+<blockquote>
+<p>下面的这种用于X列非满秩的情况、没有逆，只能使用伪逆。</p>
+</blockquote>
+<h3 id="情形1rankxk-x列满秩">情形1：<span
+class="math inline">\(rank(X)=k\)</span> X列满秩</h3>
+<h4 id="性质4.1.1">性质4.1.1</h4>
+<ol type="1">
+<li><span
+class="math inline">\((X^{\prime}X)^{-1}X^{\prime}Y\stackrel{d}{\sim}N_{k\times
+p}(B,\Sigma\otimes(X^{\prime}X)^{-1})\)</span>；</li>
+<li><span
+class="math inline">\(Y^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})Y\stackrel{d}{\sim}W_{p}(n
+- k,\Sigma)\)</span>；</li>
+<li><span
+class="math inline">\((X^{\prime}X)^{-1}X^{\prime}Y\)</span>与<span
+class="math inline">\(Y^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})Y\)</span>相互独立。</li>
+</ol>
+<blockquote>
+<p><strong>(1) 证明</strong>：由于<span
+class="math inline">\(Y\stackrel{d}{\sim}N_{n\times p}(XB,\Sigma\otimes
+I_{n})\)</span>，即<span
+class="math inline">\(vec(Y)\stackrel{d}{\sim}N_{np}(XB,\Sigma\otimes
+I_{n})\)</span>。 又有 : <span class="math display">\[
+vec((X^{\prime}X)^{-1}X^{\prime}Y)=vec((X^{\prime}X)^{-1}X^{\prime}YI_{p})=(I_{p}\otimes(X^{\prime}X)^{-1}X^{\prime})vec(Y)\\\\
+\begin{align*}
+E[vec((X^{\prime}X)^{-1}X^{\prime}Y)]&amp;=(I_{p}\otimes(X^{\prime}X)^{-1}X^{\prime})E[vec(Y)]\\
+&amp;=(I_{p}\otimes(X^{\prime}X)^{-1}X^{\prime})vec(XB)\\
+&amp;=vec(((X^{\prime}X)^{-1}X^{\prime})(XB)I_{p})\\ &amp;=vec(B)\\\\
+Cov[vec((X^{\prime}X)^{-1}X^{\prime}Y)]&amp;=(I_{p}\otimes(X^{\prime}X)^{-1}X^{\prime})Cov[vec(Y)](I_{p}\otimes(X^{\prime}X)^{-1}X^{\prime})^{\prime}\\
+&amp;=(I_{p}\otimes(X^{\prime}X)^{-1}X^{\prime})(\Sigma\otimes
+I_{n})(I_{p}\otimes(X^{\prime}X)^{-1}X^{\prime})^{\prime}\\
+&amp;=\Sigma\otimes(X^{\prime}X)^{-1} \end{align*}
+\]</span> 故知<span
+class="math inline">\(vec((X^{\prime}X)^{-1}X^{\prime}Y)\stackrel{d}{\sim}N_{kp}(vec(B),\Sigma\otimes(X^{\prime}X)^{-1})\)</span>，即(1)成立。</p>
+<p><strong>(2) 证明</strong>：由于<span class="math inline">\(Y = XB +
+e\)</span>，有 ： <span class="math display">\[
+Y^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})Y =
+e^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})e
+\]</span> 由误差向量的独立同正态分布性知<span
+class="math inline">\(e^{\prime}\stackrel{d}{\sim}N_{p\times
+n}(0,I_{n}\otimes\Sigma)\)</span>，而且不难知道<span
+class="math inline">\(I_{n}-X(X^{\prime}X)^{-1}X^{\prime}\)</span>是秩为<span
+class="math inline">\(n - k\)</span>的幂等阵。
+由第二章关于随机矩阵二次型的性质5的(1)知 ： <span
+class="math display">\[
+Y^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})Y\stackrel{d}{\sim}W_{p}(n
+- k,\Sigma)
+\]</span> 即性质(2)成立。</p>
+<p><strong>(3) 证明：</strong>又由第二章关于随机矩阵二次型的性质5的(3)知
+： <span class="math display">\[
+e^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})e与(X^{\prime}X)^{-1}X^{\prime}e独立\\
+(X^{\prime}X)^{-1}X^{\prime}Y = B+(X^{\prime}X)^{-1}X^{\prime}e
+\]</span> 知<span
+class="math inline">\((X^{\prime}X)^{-1}X^{\prime}Y\)</span>与<span
+class="math inline">\(Y^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})Y\)</span>独立.</p>
+</blockquote>
+<h3 id="情形2-rankx-r-k">情形2: <span class="math inline">\(rank(X) = r
+&lt; k\)</span></h3>
+<h4 id="性质4.1.1的推论">性质4.1.1的推论</h4>
+<ol type="1">
+<li><span class="math inline">\((X&#39;X)^- X&#39;Y \stackrel{d}{\sim}
+N_{k\times p}((X&#39;X)^- X&#39;XB, \Sigma \otimes (X&#39;X)^-
+X&#39;X(X&#39;X)^-)\)</span>;
+<ul>
+<li>(1')$ X(X'X)^- X'Y N_{np}(XB, X(X'X)^- X')$;_</li>
+<li>(1'') 对<span class="math inline">\(n × s\)</span>阶的矩阵C, <span
+class="math inline">\(L = X&#39;C\)</span>, 则 <span
+class="math inline">\(L&#39;(X&#39;X)^- X&#39;Y \stackrel{d}{\sim}
+N_{s\times p}(L&#39;B, \Sigma \otimes L&#39;(X&#39;X)^-
+L)\)</span>;</li>
+</ul></li>
+<li><span class="math inline">\(Y&#39;(I_n - X(X&#39;X)^- X&#39;)Y
+\stackrel{d}{\sim} W_p(n - r, \Sigma)\)</span>;</li>
+<li><span class="math inline">\((X&#39;X)^- X&#39;Y\)</span>与<span
+class="math inline">\(Y&#39;(I_n - X(X&#39;X)^-
+X&#39;)Y\)</span>相互独立.</li>
+</ol>
+<h2 id="参数估计">4.3 参数估计</h2>
+<p>参数(B, Σ)的似然函数为(去掉常数) ： <span class="math display">\[
+L(B, \Sigma|Y) = |\Sigma|^{-n/2} \exp \big\{ -\frac{1}{2} \text{tr}
+\left[ Y&#39;(I_n - X(X&#39;X)^{-1}X&#39;)Y\Sigma^{-1} \right] \\
+-\frac{1}{2} \text{tr} \left[ ((X&#39;X)^{-1}X&#39;Y - B)&#39; (X&#39;X)
+((X&#39;X)^{-1}X&#39;Y - B) \Sigma^{-1} \right] \big\}
+\]</span> 易知B的极大似然估计为 : <span class="math display">\[
+\hat{B} = (X&#39;X)^{-1}X&#39;Y
+\]</span> 注意到平方和分解 :<br />
+<span class="math display">\[
+(Y - XB)&#39;(Y - XB) = Y&#39;(I_n - X(X&#39;X)^{-1}X&#39;)Y\\ +
+((X&#39;X)^{-1}X&#39;Y - B)&#39;X&#39;X((X&#39;X)^{-1}X&#39;Y - B)\\\\
+(Y - X\hat{B})&#39;(Y - X\hat{B}) = \min (Y - XB)&#39;(Y - XB)
+\]</span> 即<span class="math inline">\(\hat{B}\)</span>也是<span
+class="math inline">\(B\)</span>的最小二乘估计。</p>
+<p><strong><span class="math inline">\(\hat{B}\)</span>的分布</strong>
+:</p>
+<p>当<span
+class="math inline">\(\text{rank}(X)=k\)</span>时，由性质4.1.1(1)知，
+<span class="math display">\[
+\hat{B} = (X&#39;X)^{-1}X&#39;Y \stackrel{d}{\sim} N_{k\times p}(B,
+\Sigma \otimes (X&#39;X)^{-1})
+\]</span> 即<span class="math inline">\(\hat{B}\)</span>是<span
+class="math inline">\(B\)</span>的无偏估计，且<span
+class="math inline">\(\text{Cov}(\text{vec}(\hat{B})) = \Sigma \otimes
+(X&#39;X)^{-1}\)</span>。</p>
+<p>当<span
+class="math inline">\(\text{rank}(X)&lt;k\)</span>时，由性质4.1.1的推论(1'')知，
+<span class="math display">\[
+L&#39;\hat{B} = L&#39;(X&#39;X)^{-1}X&#39;Y \stackrel{d}{\sim}
+N_{s\times p}(L&#39;B, \Sigma \otimes L&#39;(X&#39;X)^{-1}L)
+\]</span> 其中<span class="math inline">\(L = X&#39;C\)</span>。则<span
+class="math inline">\(L&#39;\hat{B}\)</span>是<span
+class="math inline">\(L&#39;B\)</span>的无偏估计，其协差阵为<span
+class="math inline">\(\Sigma \otimes
+L&#39;(X&#39;X)^{-1}L\)</span>。</p>
+<p>将<span class="math inline">\(\hat{B}\)</span>代入似然函数，有: <span
+class="math display">\[
+L(\hat{B}, \Sigma|Y) = |\Sigma|^{-n/2} \exp \left\{ -\frac{1}{2}
+\text{tr} \left[ Y&#39;(I_n - X(X&#39;X)^{-1}X&#39;)Y\Sigma^{-1} \right]
+\right\}
+\]</span> 因此，Σ的极大似然估计为 <span class="math display">\[
+\hat{\Sigma} = \frac{1}{n} Y&#39;(I_n - X(X&#39;X)^{-1}X&#39;)Y
+\]</span> 再将<span class="math inline">\(\hat{B}\)</span>和<span
+class="math inline">\(\hat{\Sigma}\)</span>代入似然函数，有: <span
+class="math display">\[
+\max_{B, \Sigma} L(B, \Sigma|Y) = |\hat{\Sigma}|^{-n/2} \exp \left\{
+-\frac{n\rho}{2} \right\}        = |Y&#39;(I_n -
+X(X&#39;X)^{-1}X&#39;)Y|^{-n/2} \left( \frac{n}{e} \right)^{np/2}
+\]</span> 由性质4.1.1的推论(2)知， <span class="math display">\[
+Y&#39;(I_n - X(X&#39;X)^{-1}X&#39;)Y \stackrel{d}{\sim} W_p(n - r,
+\Sigma)\\
+\tilde{\Sigma} = \frac{1}{n - r} Y&#39;(I_n - X(X&#39;X)^{-1}X&#39;)Y
+\]</span> 易知<span
+class="math inline">\(E(\tilde{\Sigma})=\Sigma\)</span>，即<span
+class="math inline">\(\tilde{\Sigma}\)</span>是<span
+class="math inline">\(\Sigma\)</span>的无偏估计。</p>
+<p>由性质4.1.1的推论(3)知，<span
+class="math inline">\(\tilde{\Sigma}\)</span>与<span
+class="math inline">\(\hat{B}\)</span>相互独立。</p>
+<h3 id="最小二乘基本定理">最小二乘基本定理</h3>
+<h4 id="第一基本定理">第一基本定理</h4>
+<p>令<span class="math inline">\(R_{0}^{2}=\min_{B}(Y - XB)&#39;(Y -
+XB)\)</span>，则 <span class="math display">\[
+R_{0}^{2}\stackrel{d}{\sim}W_{p}(n - r,\Sigma)
+\]</span> 其中<span
+class="math inline">\(\text{rank}(X)=r\)</span>。</p>
+<h4 id="第二基本定理">第二基本定理</h4>
+<p>在<span class="math inline">\(H&#39;B = 0\)</span>的约束条件下，令
+<span class="math display">\[
+R_{H}^{2}=\min_{H&#39;B = 0}(Y - XB)&#39;(Y - XB)
+\]</span> 其中<span class="math inline">\(H\)</span>是<span
+class="math inline">\(k\times s\)</span>的矩阵，<span
+class="math inline">\(s\leq k\)</span>。</p>
+<p>那么有：</p>
+<ul>
+<li><ol type="i">
+<li><span class="math inline">\(R_{H}^{2}\stackrel{d}{\sim}W_{p}(n -
+m,\Sigma)\)</span>，其中，<span
+class="math inline">\(m=\text{rank}(X_{H})\)</span>，<span
+class="math inline">\(X_{H}=X(I_{k}-H(H&#39;H)^{-
+1}H&#39;)\)</span>；<br />
+</li>
+</ol></li>
+<li><ol start="2" type="i">
+<li><span
+class="math inline">\(R_{H}^{2}-R_{0}^{2}\stackrel{d}{\sim}W_{p}(r -
+m,\Sigma)\)</span>；</li>
+</ol></li>
+<li><ol start="3" type="i">
+<li><span class="math inline">\(R_{0}^{2}\)</span>与<span
+class="math inline">\(R_{H}^{2}-R_{0}^{2}\)</span>相互独立；</li>
+</ol></li>
+<li><ol start="4" type="i">
+<li><span class="math inline">\(\frac{\vert R_{0}^{2}\vert}{\vert
+R_{H}^{2}\vert}\stackrel{d}{\sim}\Lambda_{p,n - r - m}\)</span>。</li>
+</ol></li>
+</ul>
+<blockquote>
+<p><strong>(i)证明</strong>：由广义逆的性质知<span
+class="math inline">\(H&#39;B = 0\)</span>的通解是<span
+class="math inline">\(B=(I_{k}-H(H&#39;H)^{-1}H&#39;)\Theta\)</span>，其中<span
+class="math inline">\(\Theta\)</span>是任意的<span
+class="math inline">\(k\times p\)</span>阶矩阵。则在<span
+class="math inline">\(H&#39;B = 0\)</span>的约束下模型转换为 <span
+class="math display">\[
+Y = X_{H}\Theta+\varepsilon
+\]</span> 其设计矩阵为<span class="math inline">\(X_{H}\)</span>，<span
+class="math inline">\(\text{rank}(X_{H})=m\leq r\)</span>。</p>
+<p>由第一基本定理知： <span class="math display">\[
+\begin{align}
+R_{H}^{2}&amp;=\min_{H&#39;B = 0}(Y - XB)&#39;(Y - XB)=\min_{\Theta}(Y -
+X_{H}\Theta)&#39;(Y - X_{H}\Theta)\\
+&amp;=Y&#39;(I_{n}-X_{H}(X_{H}&#39;X_{H})^{-1}X_{H}&#39;)Y\\
+&amp;\stackrel{d}{\sim}W_{p}(n - m,\Sigma)
+\end{align}
+\]</span> <strong>(ii)-(iv) 证明：</strong>因为： <span
+class="math display">\[
+\begin{align}
+R_{H}^{2}&amp;=\min_{H&#39;B = 0}(Y - XB)&#39;(Y - XB)\geq\min_{B}(Y -
+XB)&#39;(Y - XB)=R_{0}^{2}\\\\
+&amp;\begin{cases}
+R_{H}^{2}=\varepsilon&#39;(I_{n}-X_{H}(X_{H}&#39;X_{H})^{-1}X_{H}&#39;)\varepsilon\\
+R_{0}^{2}=\varepsilon&#39;(I_{n}-X(X&#39;X)^{-1}X&#39;)\varepsilon\end{cases}
+\end{align}
+\]</span> 由第二章关于随机矩阵二次型的性质5的(2)知: <span
+class="math display">\[
+R_{H}^{2}-R_{0}^{2}\stackrel{d}{\sim}W_{p}(r - m,\Sigma)
+\]</span> 且<span class="math inline">\(R_{0}^{2}\)</span>与<span
+class="math inline">\(R_{H}^{2}-R_{0}^{2}\)</span>相互独立。进而有 :
+<span class="math display">\[
+\frac{\vert R_{0}^{2}\vert}{\vert R_{H}^{2}\vert}=\frac{\vert
+R_{0}^{2}\vert}{\vert
+R_{0}^{2}+(R_{H}^{2}-R_{0}^{2})\vert}\stackrel{d}{\sim}\Lambda_{p,n - r
+- m}
+\]</span> 即(ii)-(iv)得证。</p>
+</blockquote>
+<p><strong>特殊情况</strong></p>
+<p>若<span class="math inline">\(\text{rank}(X)=k\)</span>，<span
+class="math inline">\(H\)</span>是秩为<span
+class="math inline">\(s\)</span>的<span class="math inline">\(k\times
+s\)</span>阶矩阵，则<span
+class="math inline">\(X_{H}=X(I_{k}-H(H&#39;H)^{-1}H&#39;)\)</span>的秩为<span
+class="math inline">\(m = k - s\)</span>。因此有：</p>
+<ul>
+<li><ol type="i">
+<li><span class="math inline">\(R_{H}^{2}\stackrel{d}{\sim}W_{p}(n-(k -
+s),\Sigma)\)</span>；</li>
+</ol></li>
+<li><ol start="2" type="i">
+<li><span
+class="math inline">\(R_{H}^{2}-R_{0}^{2}\stackrel{d}{\sim}W_{p}(s,\Sigma)\)</span>；</li>
+</ol></li>
+<li><ol start="3" type="i">
+<li><span class="math inline">\(R_{0}^{2}\)</span>与<span
+class="math inline">\(R_{H}^{2}-R_{0}^{2}\)</span>相互独立；</li>
+</ol></li>
+<li><ol start="4" type="i">
+<li><span class="math inline">\(\frac{\vert R_{0}^{2}\vert}{\vert
+R_{H}^{2}\vert}\stackrel{d}{\sim}\Lambda_{p,n - k,s}\)</span>。</li>
+</ol></li>
+</ul>
+<h4 id="第三基本定理">第三基本定理</h4>
+<p>将<span class="math inline">\(Y\)</span>和<span
+class="math inline">\(X\)</span>分别剖分为: <span
+class="math display">\[
+Y=
+\begin{pmatrix}
+\mathbf{Y}_1 \\
+\mathbf{Y}_2
+\end{pmatrix}, \quad
+X=
+\begin{pmatrix}
+\mathbf{X}_1 \\
+\mathbf{X}_2
+\end{pmatrix},\quad
+Y:
+\begin{pmatrix}
+m \times p \\
+(n - m) \times p
+\end{pmatrix}, \quad
+X:
+\begin{pmatrix}
+m \times k \\
+(n - m) \times k
+\end{pmatrix}
+\]</span> 假设<span class="math inline">\(X_{1}\)</span>的秩为<span
+class="math inline">\(r_{1}\)</span>，并令<span
+class="math inline">\(R_{1}^{2}=\min_{B}(Y_{1}-X_{1}B)&#39;(Y_{1}-X_{1}B)\)</span>，则有
+<span class="math display">\[
+        \frac{\vert R_{1}^{2}\vert}{\vert R_{0}^{2}\vert}
+\stackrel{d}{\sim} \Lambda_{p,m - r_{1},n - m - r + r_{1}}        
+\]</span></p>
+<blockquote>
+<p><strong>证明</strong>：由于有<br />
+<span class="math display">\[
+\begin{align}
+R_{0}^{2}&amp;=\min_{B}(Y - XB)&#39;(Y -
+XB)=Y&#39;(I_{n}-X(X&#39;X)^{-1}X&#39;)Y \\
+&amp;\stackrel{d}{\sim} W_{p}(n - r,\Sigma)\\   \\
+R_{1}^{2}&amp;=\min_{B}(Y_{1}-X_{1}B)&#39;(Y_{1}-X_{1}B)=Y_{1}&#39;(I_{m}-X_{1}(X_{1}&#39;X_{1})^{-1}X_{1}&#39;)Y_{1}
+\\
+&amp;\stackrel{d}{\sim} W_{p}(m - r_{1},\Sigma)          
+\end{align}
+\]</span> 由于: <span class="math display">\[
+(Y - XB)&#39;(Y -
+XB)=(Y_{1}-X_{1}B)&#39;(Y_{1}-X_{1}B)+(Y_{2}-X_{2}B)&#39;(Y_{2}-X_{2}B)
+\]</span> 所以<span class="math inline">\(R_{0}^{2}\geq
+R_{1}^{2}\)</span>。又<span
+class="math inline">\(R_{1}^{2}=Y&#39;AY=\epsilon&#39;A\epsilon\)</span>，其中:
+<span class="math display">\[
+A=\left(\begin{array}{cc}        I_{m}-X_{1}(X_{1}&#39;X_{1})^{-1}X_{1}&#39;
+&amp; 0 \\        0 &amp; 0        \end{array}\right)
+\]</span> 由随机矩阵二次型的性质知，<span
+class="math inline">\(R_{0}^{2}-R_{1}^{2} \stackrel{d}{\sim} W_{p}(n - m
+- r + r_{1},\Sigma)\)</span>，且<span
+class="math inline">\(R_{1}^{2}\)</span>与<span
+class="math inline">\(R_{0}^{2}-R_{1}^{2}\)</span>相互独立。进而有 :
+<span class="math display">\[
+\frac{\vert R_{1}^{2}\vert}{\vert R_{0}^{2}\vert}=\frac{\vert
+R_{1}^{2}\vert}{\vert R_{1}^{2}+(R_{0}^{2}-R_{1}^{2})\vert}
+\stackrel{d}{\sim} \Lambda_{p,m - r_{1},n - m - r + r_{1}}
+\]</span></p>
+</blockquote>
+<h2 id="线性假设检验">4.4 线性假设检验</h2>
+<p><strong>检验问题1</strong><br />
+<span class="math display">\[
+H_{0}:H&#39;B = 0,\quad v.s.\quad H_{1}:H&#39;B\neq0
+\]</span> 其中<span class="math inline">\(H\)</span>是<span
+class="math inline">\(k\times s\)</span>的矩阵。</p>
+<p>检验问题的似然比为 : <span class="math display">\[
+      \lambda=\frac{\max_{H&#39;B =
+0,\Sigma}L(B,\Sigma|Y)}{\max_{B,\Sigma}L(B,\Sigma|Y)}      
+\]</span> 由已知 : <span class="math display">\[
+\max_{B,\Sigma}L(B,\Sigma|Y)=\vert
+Y&#39;(I_{n}-X(X&#39;X)^{-1}X&#39;)Y\vert^{-n/2}\left(\frac{n}{e}\right)^{np/2}
+\]</span> 由已知，在约束<span class="math inline">\(H&#39;B =
+0\)</span>下，多元线性模型<span
+class="math inline">\((*)\)</span>转化为: <span class="math display">\[
+      Y = X_{H}\Theta+\epsilon      
+\]</span> 因此有： <span class="math display">\[
+\max_{H&#39;B =
+0,\Sigma}L(B,\Sigma|Y)=\max_{\Theta,\Sigma}L(\Theta,\Sigma|Y)
+\]</span> 其中<span
+class="math inline">\(L(\Theta,\Sigma|Y)\)</span>是多元线性模型<span
+class="math inline">\((**)\)</span>的似然函数。</p>
+<p>同样利用已知，可以推得： <span class="math display">\[
+\max_{\Theta,\Sigma}L(\Theta,\Sigma|Y)=\vert
+Y&#39;(I_{n}-X_{H}(X_{H}&#39;X_{H})^{-1}X_{H}&#39;)Y\vert^{-n/2}\left(\frac{n}{e}\right)^{np/2}
+\]</span> 进而得 ：<br />
+<span class="math display">\[
+        \max_{H&#39;B = 0,\Sigma}L(B,\Sigma|Y)=\vert
+Y&#39;(I_{n}-X_{H}(X_{H}&#39;X_{H})^{-1}X_{H}&#39;)Y\vert^{-n/2}\left(\frac{n}{e}\right)^{np/2}        
+\]</span></p>
+<h2 id="均值子集的线性假设检验">4.5 均值子集的线性假设检验</h2>
+<h2 id="多元线性回归模型">4.6 多元线性回归模型</h2>
+<h3 id="参数估计-1">4.6.1 参数估计</h3>
+<h3 id="假设检验">4.6.2 假设检验</h3>
+<h2 id="变量选择-逐步回归方法">4.7 变量选择-逐步回归方法</h2>
+<h3 id="预报因子的逐步回归选取方法">4.7.1
+预报因子的逐步回归选取方法</h3>
+<h3 id="因变量的逐步回归选取方法">4.7.2 因变量的逐步回归选取方法</h3>
+<h3 id="其他的变量选择方法">4.7.3 其他的变量选择方法</h3>
+<h2 id="多元线性模型的均值置信域和预测域">4.8
+多元线性模型的均值置信域和预测域</h2>
+<h3 id="均值置信域">4.8.1 均值置信域</h3>
+<h3 id="预测域">4.8.2 预测域</h3>
+<h2 id="重复测量模型">4.9 重复测量模型</h2>
+<h3 id="方差分析">4.9.2 方差分析</h3>
+<h3 id="作业">作业</h3>
+<p>线性模型<span class="math inline">\(Y=XB+e\)</span>, 其中<span
+class="math inline">\(X\)</span>列满秩, <span
+class="math inline">\(B=(\beta_1,\dots,\beta_p)\)</span>.
+给出下面检验问题的检验方案： <span class="math display">\[
+H_0:\beta_1=\dots=\beta_p,\quad v.s.\quad
+H_1:\beta_1,\dots,\beta_p不全相等
+\]</span></p>
+<p><strong>答案：</strong> <span class="math display">\[
+G=\begin{pmatrix} 1&amp;&amp;&amp;0\\ -1&amp;1&amp;&amp;\\
+&amp;\ddots&amp;\ddots&amp;\\ 0&amp;&amp;-1&amp;1 \end{pmatrix}\\
+\]</span></p>
+</div><div class="post-end"><div class="post-prev"><a href="/2024/12/15/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90-Ch5-%E7%9B%B8%E5%85%B3%E5%88%86%E6%9E%90/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-next"><a href="/2024/12/10/2024-12-10-%E4%BB%8A%E6%97%A5%E8%BF%B7%E6%80%9D/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch4-%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch4 多元线性模型</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E4%B8%80%E5%85%83%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">4.0 一元线性模型</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%A8%A1%E5%9E%8B%E5%8F%82%E6%95%B0%E7%9A%84%E4%BC%B0%E8%AE%A1"><span class="toc-content-number">1.1.1.</span> <span class="toc-content-text">4.0.1 模型参数的估计</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">4.1 多元线性模型</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B1-p%E7%BB%B4%E7%9A%84%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83"><span class="toc-content-number">1.2.0.1.</span> <span class="toc-content-text">例1: p维的正态分布</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B2-%E5%A4%9A%E5%85%83%E6%96%B9%E5%B7%AE%E5%88%86%E6%9E%90"><span class="toc-content-number">1.2.0.2.</span> <span class="toc-content-text">例2: 多元方差分析</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%85%85%E5%88%86%E7%BB%9F%E8%AE%A1%E9%87%8F"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">4.2 充分统计量</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%83%85%E5%BD%A21rankxk-x%E5%88%97%E6%BB%A1%E7%A7%A9"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">情形1：\(rank(X)&#x3D;k\) X列满秩</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%80%A7%E8%B4%A84.1.1"><span class="toc-content-number">1.3.1.1.</span> <span class="toc-content-text">性质4.1.1</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%83%85%E5%BD%A22-rankx-r-k"><span class="toc-content-number">1.3.2.</span> <span class="toc-content-text">情形2: \(rank(X) &#x3D; r
+&lt; k\)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%80%A7%E8%B4%A84.1.1%E7%9A%84%E6%8E%A8%E8%AE%BA"><span class="toc-content-number">1.3.2.1.</span> <span class="toc-content-text">性质4.1.1的推论</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">4.3 参数估计</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E5%9F%BA%E6%9C%AC%E5%AE%9A%E7%90%86"><span class="toc-content-number">1.4.1.</span> <span class="toc-content-text">最小二乘基本定理</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%AC%AC%E4%B8%80%E5%9F%BA%E6%9C%AC%E5%AE%9A%E7%90%86"><span class="toc-content-number">1.4.1.1.</span> <span class="toc-content-text">第一基本定理</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%AC%AC%E4%BA%8C%E5%9F%BA%E6%9C%AC%E5%AE%9A%E7%90%86"><span class="toc-content-number">1.4.1.2.</span> <span class="toc-content-text">第二基本定理</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%AC%AC%E4%B8%89%E5%9F%BA%E6%9C%AC%E5%AE%9A%E7%90%86"><span class="toc-content-number">1.4.1.3.</span> <span class="toc-content-text">第三基本定理</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E7%BA%BF%E6%80%A7%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C"><span class="toc-content-number">1.5.</span> <span class="toc-content-text">4.4 线性假设检验</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%9D%87%E5%80%BC%E5%AD%90%E9%9B%86%E7%9A%84%E7%BA%BF%E6%80%A7%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C"><span class="toc-content-number">1.6.</span> <span class="toc-content-text">4.5 均值子集的线性假设检验</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E6%A8%A1%E5%9E%8B"><span class="toc-content-number">1.7.</span> <span class="toc-content-text">4.6 多元线性回归模型</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1-1"><span class="toc-content-number">1.7.1.</span> <span class="toc-content-text">4.6.1 参数估计</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%81%87%E8%AE%BE%E6%A3%80%E9%AA%8C"><span class="toc-content-number">1.7.2.</span> <span class="toc-content-text">4.6.2 假设检验</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%8F%98%E9%87%8F%E9%80%89%E6%8B%A9-%E9%80%90%E6%AD%A5%E5%9B%9E%E5%BD%92%E6%96%B9%E6%B3%95"><span class="toc-content-number">1.8.</span> <span class="toc-content-text">4.7 变量选择-逐步回归方法</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E9%A2%84%E6%8A%A5%E5%9B%A0%E5%AD%90%E7%9A%84%E9%80%90%E6%AD%A5%E5%9B%9E%E5%BD%92%E9%80%89%E5%8F%96%E6%96%B9%E6%B3%95"><span class="toc-content-number">1.8.1.</span> <span class="toc-content-text">4.7.1
+预报因子的逐步回归选取方法</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%9B%A0%E5%8F%98%E9%87%8F%E7%9A%84%E9%80%90%E6%AD%A5%E5%9B%9E%E5%BD%92%E9%80%89%E5%8F%96%E6%96%B9%E6%B3%95"><span class="toc-content-number">1.8.2.</span> <span class="toc-content-text">4.7.2 因变量的逐步回归选取方法</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%85%B6%E4%BB%96%E7%9A%84%E5%8F%98%E9%87%8F%E9%80%89%E6%8B%A9%E6%96%B9%E6%B3%95"><span class="toc-content-number">1.8.3.</span> <span class="toc-content-text">4.7.3 其他的变量选择方法</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%9D%87%E5%80%BC%E7%BD%AE%E4%BF%A1%E5%9F%9F%E5%92%8C%E9%A2%84%E6%B5%8B%E5%9F%9F"><span class="toc-content-number">1.9.</span> <span class="toc-content-text">4.8
+多元线性模型的均值置信域和预测域</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%9D%87%E5%80%BC%E7%BD%AE%E4%BF%A1%E5%9F%9F"><span class="toc-content-number">1.9.1.</span> <span class="toc-content-text">4.8.1 均值置信域</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E9%A2%84%E6%B5%8B%E5%9F%9F"><span class="toc-content-number">1.9.2.</span> <span class="toc-content-text">4.8.2 预测域</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E9%87%8D%E5%A4%8D%E6%B5%8B%E9%87%8F%E6%A8%A1%E5%9E%8B"><span class="toc-content-number">1.10.</span> <span class="toc-content-text">4.9 重复测量模型</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%96%B9%E5%B7%AE%E5%88%86%E6%9E%90"><span class="toc-content-number">1.10.1.</span> <span class="toc-content-text">4.9.2 方差分析</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%BD%9C%E4%B8%9A"><span class="toc-content-number">1.10.2.</span> <span class="toc-content-text">作业</span></a></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>
