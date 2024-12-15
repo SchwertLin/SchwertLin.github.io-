@@ -1,0 +1,1344 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch6 主成分分析 [TOC] 目的：根据二八定律（雾），大量有效的信息都在很少的指标中。所以PCA在尽量减少损失信息的前提下，将多个指标降维，综合成几个综合指标。  总的来说，PCA就是数据降维。但需要注意的是，得到的降维后的变量无实际意义（基本上就是原各个变量都混合一点的“大杂烩”）。  思路：选取变量的线性组合，使其\(\max \Sigma\sim \sum_i \Sigm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多元统计分析-Ch6-主成分分析">
+<meta property="og:url" content="http://example.com/2024/12/15/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90-Ch6-%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch6 主成分分析 [TOC] 目的：根据二八定律（雾），大量有效的信息都在很少的指标中。所以PCA在尽量减少损失信息的前提下，将多个指标降维，综合成几个综合指标。  总的来说，PCA就是数据降维。但需要注意的是，得到的降维后的变量无实际意义（基本上就是原各个变量都混合一点的“大杂烩”）。  思路：选取变量的线性组合，使其\(\max \Sigma\sim \sum_i \Sigm">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-15T15:11:05.000Z">
+<meta property="article:modified_time" content="2024-12-15T15:13:44.835Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="多元统计分析">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary"><title>多元统计分析-Ch6-主成分分析 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>多元统计分析-Ch6-主成分分析</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2024-12-15</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2024-12-15</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90/">多元统计分析</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约6.8K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch6-主成分分析">Ch6 主成分分析</h1>
+<p>[TOC]</p>
+<p>目的：根据二八定律（雾），大量有效的信息都在很少的指标中。所以PCA在尽量减少损失信息的前提下，将多个指标<strong>降维，综合成几个综合指标</strong>。</p>
+<blockquote>
+<p>总的来说，PCA就是数据降维。但需要注意的是，得到的降维后的变量无实际意义（基本上就是原各个变量都混合一点的“大杂烩”）。</p>
+</blockquote>
+<p>思路：选取变量的线性组合，使其<span class="math inline">\(\max
+\Sigma\sim \sum_i
+\Sigma_i\)</span>（使得这个线性组合的方差尽可能的大，接近各个分类的方差之和，进而代表总体的散布程度）。</p>
+<p>[TOC]</p>
+<h2 id="引入">6.0 引入</h2>
+<h3 id="例子">6.0.1 例子</h3>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241215114128375.png"
+alt="image-20241215114128375" />
+<figcaption aria-hidden="true">image-20241215114128375</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241215114228030.png"
+alt="image-20241215114228030" />
+<figcaption aria-hidden="true">image-20241215114228030</figcaption>
+</figure>
+<p>方差<span
+class="math inline">\(Var(X)\)</span>,选取的是对角线上值最大的前四个。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241215114254872.png"
+alt="image-20241215114254872" />
+<figcaption aria-hidden="true">image-20241215114254872</figcaption>
+</figure>
+<p>计算相关系数：<span
+class="math inline">\(\rho_{xy}=\frac{Cov(X,Y)}{\sqrt{Var(X)Var(Y)}}\)</span>,
+我们选择的方差最大的四个变量中，身高与颈椎点高、腰围高之间相关性交，所以只取身高即可。</p>
+<p><strong>最终选取的变量是：身高和胸围。</strong></p>
+<blockquote>
+<p><strong>但仍存在问题：身高和胸围仍然具有相关性，应该对其进行进一步地压缩，以选出更具有代表性的指标。</strong></p>
+<p><strong>Q：</strong>是否有更具代表性一个or少数指标</p>
+<p>代表性标准：方差最大。</p>
+</blockquote>
+<h3 id="主成分分析">6.0.2 主成分分析</h3>
+<p>记<span class="math inline">\(X\)</span>是<span
+class="math inline">\(p\)</span>维随机向量(<span
+class="math inline">\(p&gt;1,Cov(X)=\Sigma\)</span>)，我们想基于<span
+class="math inline">\(X\)</span>，找到变量<span
+class="math inline">\(Y=a&#39;X\)</span>(<span
+class="math inline">\(a\in \mathbb{R}^p, X\)</span>的线性组合)，令<span
+class="math inline">\(Y\)</span>的方差尽可能地大，足以代表<span
+class="math inline">\(X\)</span>的散布。</p>
+<blockquote>
+<p><span class="math inline">\(a\in\mathbb{R}^{m\times
+p},X\in\mathbb{R}^{p\times1},Y\in\mathbb{R}^{m\times1}\)</span></p>
+</blockquote>
+<p>因为<span class="math inline">\(Cov(X)=\Sigma,
+Var(a&#39;X)=a&#39;Cov(X)a=a&#39;\Sigma a\)</span>，这表明若不对<span
+class="math inline">\(a\)</span>施加约束，则<span
+class="math inline">\(a&#39;X\)</span>的最大方差<span
+class="math inline">\(\rightarrow \infty\)</span>。</p>
+<p>所以对<span class="math inline">\(a\)</span>施加正则化约束：<span
+class="math inline">\(a&#39;a=1\)</span>，使得优化问题为： <span
+class="math display">\[
+\sup_{a&#39;a=1}Var(a&#39;X)=\sup_{a&#39;a=1} a&#39;\Sigma a
+\]</span> 令<span
+class="math inline">\(a_1=\arg\max_{a&#39;a=1}a&#39;\Sigma a\)</span>,
+<span class="math inline">\(a_1&#39;X\)</span>是<span
+class="math inline">\(X\)</span>的第一主成分。</p>
+<ul>
+<li><span
+class="math inline">\(a&#39;_1X\)</span>是正则化系数下方差最大的<span
+class="math inline">\(X\)</span>的线性组合。</li>
+<li><span class="math inline">\(a&#39;_1X\)</span>的散布程度最接近<span
+class="math inline">\(X\)</span>, 是代表<span
+class="math inline">\(X\)</span>的首选。</li>
+</ul>
+<h4
+id="a.总体协方差矩阵的特征根与特征向量">A.总体协方差矩阵的特征根与特征向量</h4>
+<p>首先，我们先回顾一下URV分解、SVD分解、Moore-Penrose伪逆：</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241215150754017.png"
+alt="image-20241215150754017" />
+<figcaption aria-hidden="true">image-20241215150754017</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241215150953899.png"
+alt="image-20241215150953899" />
+<figcaption aria-hidden="true">image-20241215150953899</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241215151256715.png"
+alt="image-20241215151256715" />
+<figcaption aria-hidden="true">image-20241215151256715</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241215151352366.png"
+alt="image-20241215151352366" />
+<figcaption aria-hidden="true">image-20241215151352366</figcaption>
+</figure>
+<p>令<span class="math inline">\(\Sigma\)</span>的特征根为<span
+class="math inline">\(\lambda_{1}\geq\cdots\geq\lambda_{p}\geq0\)</span>，与这些特征根对应的正则正交特征向量为<span
+class="math inline">\(\alpha_{1},\cdots,\alpha_{p}\)</span>。 易知:
+<span class="math display">\[
+\alpha_{1}=\alpha_{1}=(a_{11},\cdots,a_{1p})&#39;\\
+V_{ar}(a_{1}&#39;X)=a_{1}&#39;\Sigma a_{1}=\lambda_{1}
+\]</span> 则第一主成份：</p>
+<ul>
+<li>方向：总体协差阵的最大特征根所对应的正则特征向量。</li>
+<li>方差：总体协差阵的最大特征根。</li>
+</ul>
+<h4 id="b.随机向量的离散程度">B.随机向量的离散程度</h4>
+<p>设<span class="math inline">\(p\)</span>维随机向量<span
+class="math inline">\(X=(x_{1},\cdots,x_{p})&#39;\)</span>，其离散程度的信息可用向量各分量方差的总和表示：
+<span class="math display">\[
+V{ar}(x_{1})+\cdots+V{ar}(x_{p})
+\]</span> <strong>第一主成份的作用</strong> ：</p>
+<p>将<span
+class="math inline">\(X\)</span>所含离散程度的信息最大化地用一个线性组合变量<span
+class="math inline">\(a_{1}&#39;X\)</span>所含离散程度的信息来代替。</p>
+<p>第一主成份离散程度信息的贡献率： <span class="math display">\[
+\text{contriution}=\frac{V{ar}(a_{1}&#39;X)}{\sum_{i =
+1}^{p}V{ar}(x_{i})}\times100\%
+\]</span></p>
+<blockquote>
+<p><strong>Q：第一主成份代表性是否足够？或第一主成份贡献率是否足够？</strong></p>
+<p>A: 寻找第二主成份<span class="math inline">\(a_2&#39;X\)</span>,
+第二主成份应该与第一主成份正交，从而不含有第一主成份的信息。优化问题如下：
+<span class="math display">\[
+\sup_{a_{2}&#39;a_{2}=1,\
+a_{2}&#39;a_{1}=0}V_{ar}(a_{2}&#39;X)=\sup_{a_{2}&#39;a_{2}=1,\
+a_{2}&#39;a_{1}=0}a_{2}&#39;\Sigma a_{2}\\
+s.t.\begin{cases}
+\text{正则化约束：}a_{2}&#39;a_{2}=1\\
+\text{正交化约束：}a_{2}&#39;a_{1}=0
+\end{cases}
+\]</span> 不难知道，<span
+class="math inline">\(a_{2}=\alpha_{2}=(a_{21},\cdots,a_{2p})&#39;\)</span>，<span
+class="math inline">\(V_{ar}(a_{2}&#39;X)=a_{2}&#39;\Sigma
+a_{2}=\lambda_{2}\)</span>。</p>
+<p>即，第二主成份:</p>
+<ul>
+<li>方向：总体协差阵的第二大特征根所对应的正则特征向量；</li>
+<li>方差：总体协差阵的第二大特征根。</li>
+</ul>
+</blockquote>
+<p><strong>第一主成份与第二主成份的正交性</strong>: <span
+class="math display">\[
+Cov(a_{1}&#39;X,a_{2}&#39;X)=a_{1}&#39;\Sigma
+a_{2}=\lambda_{2}a_{1}&#39;a_{2}=0
+\]</span> 因此，正态总体下，第一主成份与第二主成份相互独立。</p>
+<p>第二主成份离散程度信息的贡献率: <span class="math display">\[
+\text{contribution}=\frac{V_{ar}(a_{2}&#39;X)}{\sum_{i =
+1}^{p}V_{ar}(x_{i})}\times100\%
+\]</span> 第一、第二主成份的累计贡献率: <span class="math display">\[
+\text{累计贡献率} = \frac{Var(a_1&#39;X)+Var(a_2&#39;X)}{\sum_{i =
+1}^{p}Var(x_i)}×100\%
+\\
+\]</span></p>
+<h3 id="回到例子">6.0.3 回到例子</h3>
+<blockquote>
+<p>因为<span class="math inline">\(\Sigma\)</span>是满秩的，那么<span
+class="math inline">\(\Sigma\)</span>是一个RPN阵，这个时候对它进行SVD分解，得到的U=V都是<span
+class="math inline">\(R(\Sigma)\)</span>值域空间的标准正交基。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241215151614999.png"
+alt="image-20241215151614999" />
+<figcaption aria-hidden="true">image-20241215151614999</figcaption>
+</figure>
+<p>那么写一个简单的python程序，对<span
+class="math inline">\(\Sigma\)</span>进行SVD分解结果如下。</p>
+<p><strong>特征值&amp;奇异值</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>序号</th>
+<th>特征值<span class="math inline">\(\lambda_i\)</span></th>
+<th>奇异值<span class="math inline">\(\sqrt{\lambda_i}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>10115.7573</td>
+<td>100.5771</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>809.2391</td>
+<td>28.4471</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>33.0498</td>
+<td>5.7489</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>19.8222</td>
+<td>4.4522</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>10.2260</td>
+<td>3.1978</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>6.6843</td>
+<td>2.5854</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>1.9138</td>
+<td>1.3834</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>0.8612</td>
+<td>0.9280</td>
+</tr>
+</tbody>
+</table>
+<p><strong>左奇异向量 <span
+class="math inline">\(U\)</span></strong></p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>元素</th>
+<th><span class="math inline">\(U_{*1}\)</span></th>
+<th><span class="math inline">\(U_{*2}\)</span></th>
+<th><span class="math inline">\(U_{*3}\)</span></th>
+<th><span class="math inline">\(U_{*4}\)</span></th>
+<th><span class="math inline">\(U_{*5}\)</span></th>
+<th><span class="math inline">\(U_{*6}\)</span></th>
+<th><span class="math inline">\(U_{*7}\)</span></th>
+<th><span class="math inline">\(U_{*8}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(U_{1*}\)</span></td>
+<td>-0.5920</td>
+<td>0.1849</td>
+<td>-0.1308</td>
+<td>0.1612</td>
+<td>-0.0062</td>
+<td>-0.0136</td>
+<td>-0.5614</td>
+<td>0.5067</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(U_{2*}\)</span></td>
+<td>-0.5469</td>
+<td>0.1362</td>
+<td>-0.0860</td>
+<td>0.0608</td>
+<td>-0.0676</td>
+<td>-0.0599</td>
+<td>-0.0709</td>
+<td>-0.8112</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(U_{3*}\)</span></td>
+<td>-0.4052</td>
+<td>0.2028</td>
+<td>0.2958</td>
+<td>0.0702</td>
+<td>0.5535</td>
+<td>0.1070</td>
+<td>0.5948</td>
+<td>0.1752</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(U_{4*}\)</span></td>
+<td>-0.2062</td>
+<td>-0.0083</td>
+<td>-0.4074</td>
+<td>0.2113</td>
+<td>-0.6080</td>
+<td>-0.1179</td>
+<td>0.5662</td>
+<td>0.2065</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(U_{5*}\)</span></td>
+<td>-0.0638</td>
+<td>-0.2320</td>
+<td>-0.1151</td>
+<td>0.1003</td>
+<td>-0.0726</td>
+<td>0.9549</td>
+<td>-0.0116</td>
+<td>-0.0397</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(U_{6*}\)</span></td>
+<td>-0.2680</td>
+<td>-0.9003</td>
+<td>0.2347</td>
+<td>0.1167</td>
+<td>0.0327</td>
+<td>-0.2170</td>
+<td>-0.0055</td>
+<td>0.0272</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(U_{7*}\)</span></td>
+<td>-0.1416</td>
+<td>-0.1867</td>
+<td>-0.6008</td>
+<td>-0.7004</td>
+<td>0.2935</td>
+<td>-0.0286</td>
+<td>0.0667</td>
+<td>0.0472</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(U_{8*}\)</span></td>
+<td>-0.2183</td>
+<td>0.0831</td>
+<td>0.5411</td>
+<td>-0.6376</td>
+<td>-0.4763</td>
+<td>0.1055</td>
+<td>0.0282</td>
+<td>0.0854</td>
+</tr>
+</tbody>
+</table>
+<p><strong>右奇异向量 <span
+class="math inline">\(V^T\)</span></strong>(<span
+class="math inline">\(V=U\)</span>)</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>元素</th>
+<th><span class="math inline">\(V_{*1}\)</span></th>
+<th><span class="math inline">\(V_{*2}\)</span></th>
+<th><span class="math inline">\(V_{*3}\)</span></th>
+<th><span class="math inline">\(V_{*4}\)</span></th>
+<th><span class="math inline">\(V_{*5}\)</span></th>
+<th><span class="math inline">\(V_{*6}\)</span></th>
+<th><span class="math inline">\(V_{*7}\)</span></th>
+<th><span class="math inline">\(V_{*8}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(V_{1*}\)</span></td>
+<td>-0.5920</td>
+<td>-0.5469</td>
+<td>-0.4052</td>
+<td>-0.2062</td>
+<td>-0.0638</td>
+<td>-0.2680</td>
+<td>-0.1416</td>
+<td>-0.2183</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(V_{2*}\)</span></td>
+<td>0.1849</td>
+<td>0.1362</td>
+<td>0.2028</td>
+<td>-0.0083</td>
+<td>-0.2320</td>
+<td>-0.9003</td>
+<td>-0.1867</td>
+<td>0.0831</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(V_{3*}\)</span></td>
+<td>-0.1308</td>
+<td>-0.0860</td>
+<td>0.2958</td>
+<td>-0.4074</td>
+<td>-0.1151</td>
+<td>0.2347</td>
+<td>-0.6008</td>
+<td>0.5411</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(V_{4*}\)</span></td>
+<td>0.1612</td>
+<td>0.0608</td>
+<td>0.0702</td>
+<td>0.2113</td>
+<td>0.1003</td>
+<td>0.1167</td>
+<td>-0.7004</td>
+<td>-0.6376</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(V_{5*}\)</span></td>
+<td>-0.0062</td>
+<td>-0.0676</td>
+<td>0.5535</td>
+<td>-0.6080</td>
+<td>-0.0726</td>
+<td>0.0327</td>
+<td>0.2935</td>
+<td>-0.4763</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(V_{6*}\)</span></td>
+<td>-0.0136</td>
+<td>-0.0599</td>
+<td>0.1070</td>
+<td>-0.1179</td>
+<td>0.9549</td>
+<td>-0.2170</td>
+<td>-0.0286</td>
+<td>0.1055</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(V_{7*}\)</span></td>
+<td>-0.5614</td>
+<td>-0.0709</td>
+<td>0.5948</td>
+<td>0.5662</td>
+<td>-0.0116</td>
+<td>-0.0055</td>
+<td>0.0667</td>
+<td>0.0282</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(V_{8*}\)</span></td>
+<td>0.5067</td>
+<td>-0.8112</td>
+<td>0.1752</td>
+<td>0.2065</td>
+<td>-0.0397</td>
+<td>0.0272</td>
+<td>0.0472</td>
+<td>0.0854</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>通过成人男子8个身体部位尺寸的协方差阵知： <span
+class="math display">\[
+\lambda_{1}=100.5771\\
+a_{1}=(0.5920,0.5469,0.4052,0.2062,0.0638,0.2680,0.1416,0.2183)&#39;
+\]</span> 第一主成份<span
+class="math inline">\(\approx0.5\times(\text{身高}+\text{颈椎点高}+\text{腰围高})\)</span>。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241215115616003.png"
+alt="image-20241215115616003" />
+<figcaption aria-hidden="true">image-20241215115616003</figcaption>
+</figure>
+<p>根据定理13.1.1 有： <span class="math display">\[
+\max_{a,b}\rho(a&#39;X,b&#39;Y)=\sqrt{\lambda_1}\\
+Var(a&#39;X)=\sqrt{\lambda_1}=100.57&gt;Var(x_1)=37.115\\
+\]</span> 第一主成份<span
+class="math inline">\(a_{1}&#39;X\)</span>的方差(散布程度)更大。
+将其作为成年男子上衣的第一基本特征更具有代表性，以此对人群进行划分将更细致。</p>
+<p>国外确定服装号型：第一主成份。</p>
+<p>成年男子上衣第一主成份的贡献率<span
+class="math inline">\(=\frac{100.5771}{147.32}=68.3\%\)</span>。</p>
+<p>通过成人男子8个身体部位尺寸的协方差阵知： <span
+class="math display">\[
+\lambda_{2}=28.4471\\
+a_{2}=(0.1849,0.1362,0.2028,-0.0083,-0.2320,-0.9003,-0.1867,0.0831)&#39;
+\]</span> 第二主成份<span
+class="math inline">\(\approx\text{胸围}\)</span>。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241215161959796.png"
+alt="image-20241215161959796" />
+<figcaption aria-hidden="true">image-20241215161959796</figcaption>
+</figure>
+<p>对于成年男子上衣，有： <span class="math display">\[
+\text{累计贡献率} = \frac{129.0242}{147.32}×100\% = 87.6\%
+\]</span></p>
+<blockquote>
+<p><strong>Q1</strong>：第一、第二主成份代表性是否足够？</p>
+<p><strong>Q2</strong>：停止？还是类似地继续寻找更多的主成份？</p>
+</blockquote>
+<h2 id="总体pca">6.1 总体PCA</h2>
+<p>设<span
+class="math inline">\(X\sim^pN_p(\mu,\Sigma)\)</span>。令<span
+class="math inline">\(\Sigma\)</span>的特征根为<span
+class="math inline">\(\lambda_1\ge\dots\ge\lambda_p\ge0\)</span>，特征根对应的<strong>正则正交特征向量</strong>为<span
+class="math inline">\(\alpha_1,\dots,\alpha_p\)</span>。</p>
+<p>令<span class="math inline">\(T = (\alpha_1, \cdots,
+\alpha_p)\)</span>，则<span
+class="math inline">\(T\)</span>是正交阵，且:<br />
+<span class="math display">\[
+T&#39;\Sigma T=\Lambda, \quad \Lambda = diag(\lambda_1, \cdots,
+\lambda_p)
+\]</span></p>
+<ol type="1">
+<li><p>令<span class="math inline">\(Y = T&#39;X\)</span>，<span
+class="math inline">\(Y=(y_1, \cdots, y_p)&#39;\)</span>，则称<span
+class="math inline">\(Y\)</span>为<span
+class="math inline">\(X\)</span>的主成份. 令<span
+class="math inline">\(\alpha_i = (\alpha_{1i}, \cdots,
+\alpha_{pi})&#39;\)</span>，则:</p>
+<ul>
+<li><span class="math inline">\(X\)</span>的第<span
+class="math inline">\(i\)</span>主成份: <span
+class="math inline">\(y_i=\alpha_i&#39;X=\sum_{j = 1}^p
+\alpha_{ji}x_j\)</span></li>
+<li><span class="math inline">\(X\)</span>的第<span
+class="math inline">\(i\)</span>主成份的方差：<span
+class="math inline">\(Var(\alpha_i&#39;X)=\alpha_i&#39;\Sigma\alpha_i=\lambda_i\)</span>，<span
+class="math inline">\(1\leq i\leq p\)</span>。</li>
+</ul></li>
+<li><p><span class="math inline">\(Y\)</span>的协方差阵为<span
+class="math inline">\(Cov(Y)=T&#39;\Sigma
+T=\Lambda\)</span>，因此有：</p>
+<ol type="1">
+<li><p><span class="math inline">\(X\)</span>的第<span
+class="math inline">\(i\)</span>个主成份的方差为<span
+class="math inline">\(Var(y_i)=\lambda_i\)</span>，<span
+class="math inline">\(1\leq i\leq p\)</span>。</p></li>
+<li><p>记<span class="math inline">\(\Sigma = (\sigma_{ij})_{p\times
+p}\)</span>，则<span class="math inline">\(Y\)</span>与<span
+class="math inline">\(X\)</span>具有相同的散布程度。 <span
+class="math display">\[
+\sum_{i = 1}^p Var(y_i)=\sum_{i = 1}^p \lambda_i=tr(\Sigma)=\sum_{i =
+1}^p \sigma_{ii}=\sum_{i = 1}^p Var(x_i)
+\]</span></p></li>
+<li><p>任意两个主成份都相互独立。</p></li>
+</ol></li>
+</ol>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>定义</th>
+<th>公式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>第<span class="math inline">\(k\)</span>个主成份<span
+class="math inline">\(y_k\)</span>的贡献率</td>
+<td><span class="math inline">\(\lambda_k/\sum_{i = 1}^p
+\lambda_i\)</span></td>
+<td>表示第<span class="math inline">\(k\)</span>个主成份保留总体<span
+class="math inline">\(X\)</span>散布程度信息的比例.</td>
+</tr>
+<tr class="even">
+<td>前<span class="math inline">\(k\)</span>个主成份<span
+class="math inline">\((y_1, \cdots, y_k)\)</span>的累计贡献率</td>
+<td><span class="math inline">\(\sum_{i = 1}^k \lambda_i/\sum_{i = 1}^p
+\lambda_i\)</span></td>
+<td>表示前<span
+class="math inline">\(k\)</span>个主成份保留总体散布程度信息的比例.</td>
+</tr>
+<tr class="odd">
+<td>第<span class="math inline">\(k\)</span>个主成分<span
+class="math inline">\(y_{k}\)</span>中变量<span
+class="math inline">\(x_{j}\)</span>的因子负荷量</td>
+<td><span
+class="math inline">\(\rho_{y_{k},x_{j}}=\alpha_{jk}\sqrt{\lambda_{k}}/\sqrt{\sigma_{jj}}\)</span></td>
+<td><span class="math inline">\(\sum_{k =
+1}^{p}\rho_{y_{k},x_{j}}^{2}=\sum_{k =
+1}^{p}\lambda_{k}\alpha_{jk}^{2}/\sigma_{jj}=1\)</span></td>
+</tr>
+<tr class="even">
+<td>第<span class="math inline">\(k\)</span>个主成分<span
+class="math inline">\(y_{k}\)</span>的对于<span
+class="math inline">\(X\)</span>的第<span
+class="math inline">\(j\)</span>个分量<span
+class="math inline">\(x_{j}\)</span>的贡献率</td>
+<td><span
+class="math inline">\(\rho_{y_{k},x_{j}}^{2}=\lambda_{k}\alpha_{jk}^{2}/\sigma_{jj}\)</span></td>
+<td>表示第<span class="math inline">\(k\)</span>个主成分保留<span
+class="math inline">\(x_{j}\)</span>离散程度的信息的比例.</td>
+</tr>
+<tr class="odd">
+<td>前<span class="math inline">\(k\)</span>个主成分<span
+class="math inline">\((y_{1},\cdots,y_{k})\)</span>的对于<span
+class="math inline">\(X\)</span>的第<span
+class="math inline">\(j\)</span>个分量<span
+class="math inline">\(x_{j}\)</span>的累计贡献率</td>
+<td><span class="math inline">\(\sum_{i =
+1}^{k}\rho_{y_{i},x_{j}}^{2}=\sum_{i =
+1}^{k}\lambda_{i}\alpha_{ij}^{2}/\sigma_{jj}\)</span></td>
+<td>表示前<span class="math inline">\(k\)</span>个主成分保留<span
+class="math inline">\(x_{j}\)</span>离散程度的信息的比例.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="主成分与总体的相关性">6.1.1 主成分与总体的相关性</h3>
+<p>记<span class="math inline">\(\Sigma\)</span>的第<span
+class="math inline">\(j\)</span>个行向量为<span
+class="math inline">\((\sigma_{j1},\cdots,\sigma_{jp})\)</span>，<span
+class="math inline">\(1\leq j\leq p\)</span>。</p>
+<p>由于<span
+class="math inline">\(\Sigma\alpha_{k}=\lambda_{k}\alpha_{k}\)</span>（<span
+class="math inline">\(\lambda_k\)</span>是<span
+class="math inline">\(\Sigma\)</span>的特征值，<span
+class="math inline">\(\alpha_k\)</span>是<span
+class="math inline">\(\Sigma\)</span>的对应的特征向量,取列向量)，因而有：
+<span class="math display">\[
+\sum_{i = 1}^{p}\sigma_{ji}\alpha_{ik}=\lambda_{k}\alpha_{jk} \\
+\sum_{i = 1}^{p}\sigma_{ij}\alpha_{ik}=\lambda_{k}\alpha_{jk}\\
+Cov(y_{k},x_{j}) = Cov\left(\sum_{i =
+1}^{p}\alpha_{ik}x_{i},x_{j}\right)=\sum_{i =
+1}^{p}\sigma_{ij}\alpha_{ik}=\lambda_{k}\alpha_{jk}
+\]</span> <span class="math inline">\(X\)</span>的第<span
+class="math inline">\(k\)</span>个主成分与<span
+class="math inline">\(X\)</span>的第<span
+class="math inline">\(j\)</span>个分量<span
+class="math inline">\(x_{j}\)</span>的相关系数为 : <span
+class="math display">\[
+\rho_{y_{k},x_{j}}=\frac{Cov(y_{k},x_{j})}{\sqrt{Var(y_{k})}\sqrt{Var(x_{j})}}=\frac{\lambda_{k}\alpha_{jk}}{\sqrt{\lambda_{k}}\sqrt{\sigma_{jj}}}=\frac{\alpha_{jk}\sqrt{\lambda_{k}}}{\sqrt{\sigma_{jj}}}
+\]</span> 称<span
+class="math inline">\(\rho_{y_{k},x_{j}}\)</span>为第<span
+class="math inline">\(k\)</span>个主成分<span
+class="math inline">\(y_{k}\)</span>中变量<span
+class="math inline">\(x_{j}\)</span>的<strong>因子负荷量</strong>。</p>
+<h3 id="主成分与x分量的复相关系数">6.1.2 主成分与X分量的复相关系数</h3>
+<p>令<span class="math inline">\(\rho_{Y,x_{j}}\)</span>为<span
+class="math inline">\(Y\)</span>与<span
+class="math inline">\(x_{j}\)</span>的复相关系数，<span
+class="math inline">\(1\leq j\leq p\)</span>，则： <span
+class="math display">\[
+\rho_{Y,x_{j}}^{2}=\sum_{k =
+1}^{p}\rho_{y_{k},x_{j}}^{2}=\frac{1}{\sigma_{jj}}\sum_{k =
+1}^{p}\lambda_{k}\alpha_{jk}^{2},\ 1\leq j\leq p
+\]</span> 由<span class="math inline">\(T&#39;\Sigma
+T=\Lambda\)</span>，知<span class="math inline">\(\Sigma = T\Lambda
+T&#39;\)</span>，即有<span class="math inline">\(\sigma_{jj}=\sum_{k =
+1}^{p}\lambda_{k}\alpha_{jk}^{2}\)</span>，<span
+class="math inline">\(1\leq j\leq p\)</span>。</p>
+<p>则主成分<span class="math inline">\(Y\)</span>与<span
+class="math inline">\(X\)</span>的分量<span
+class="math inline">\(x_{j}\)</span>的复相关系数<span
+class="math inline">\(\rho_{Y,x_{j}} = 1\)</span>，<span
+class="math inline">\(1\leq j\leq p\)</span>。</p>
+<p>这说明主成分中含有分量<span
+class="math inline">\(x_{j}\)</span>的离散程度的全部信息。</p>
+<p>事实上，有<span class="math inline">\(X = TY\)</span>，即知 : <span
+class="math display">\[
+$x_{j}=\sum_{k = 1}^{p}\alpha_{jk}y_{k},1\leq j\leq p
+\]</span></p>
+<h3 id="回到例子-1">6.1.3 回到例子</h3>
+<p>回答我们上述提到的问题：</p>
+<blockquote>
+<p><strong>Q1</strong>：第一、第二主成份代表性是否足够？</p>
+<p><strong>Q2</strong>：停止？还是类似地继续寻找更多的主成份？</p>
+</blockquote>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241215162403948.png"
+alt="image-20241215162403948" />
+<figcaption aria-hidden="true">image-20241215162403948</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241215162416925.png"
+alt="image-20241215162416925" />
+<figcaption aria-hidden="true">image-20241215162416925</figcaption>
+</figure>
+<blockquote>
+<p>第一、二主成分对身高：<span
+class="math inline">\(95.04\%+2.62\%=97.66\%\)</span></p>
+<p>第一、二主成分对胸围：<span
+class="math inline">\(23.45\%+74.9\%=98.35\%\)</span></p>
+</blockquote>
+<h2 id="r主成分分析处理量纲">6.2 R主成分分析:处理量纲</h2>
+<p>主成分分析主要是对随机变量的协方差矩阵进行分析，将向量投影到方差大的方向以获得重要的主成份。</p>
+<blockquote>
+<p><strong>Q：变量的量纲影响变量的方差，有必要消除量纲对方差的影响。</strong></p>
+<p>A：对变量进行标准化处理，即令: <span class="math display">\[
+X^{*}=\text{diag}(\sigma_{11}^{-1/2},\cdots,\sigma_{pp}^{-1/2})X =
+(\sigma_{11}^{-1/2}x_{1},\cdots,\sigma_{pp}^{-1/2}x_{p})&#39; \\
+\text{Cov}(X^{*})=\text{diag}(\sigma_{11}^{-1/2},\cdots,\sigma_{pp}^{-1/2})\Sigma\text{diag}(\sigma_{11}^{-1/2},\cdots,\sigma_{pp}^{-1/2})
+= R
+\]</span> 其中<span class="math inline">\(R\)</span>是<span
+class="math inline">\(X\)</span>的相关阵，<span
+class="math inline">\(X^{*}\)</span>的主成份与量纲无关。</p>
+</blockquote>
+<h3 id="r主成分分析的定义">6.2.1 R主成分分析的定义</h3>
+<p>设<span class="math inline">\(R\)</span>的特征根为<span
+class="math inline">\(\lambda_{1}^{*}\geq\cdots\geq\lambda_{p}^{*}\geq0\)</span>，与这些特征根对应的正则正交特征向量为<span
+class="math inline">\(\alpha_{1}^{*},\cdots,\alpha_{p}^{*}\)</span>。令<span
+class="math inline">\(T^{*}=(\alpha_{1}^{*},\cdots,\alpha_{p}^{*})\)</span>，
+<span class="math display">\[
+Y^{*}=(T^{*})&#39;X^{*}=(T^{*})&#39;(\sigma_{11}^{-1/2}x_{1},\cdots,\sigma_{pp}^{-1/2}x_{p})&#39;
+\]</span> 则称<span class="math inline">\(Y^{*}\)</span>为<span
+class="math inline">\(X\)</span>的<span
+class="math inline">\(R\)</span>主成份。</p>
+<p>令<span
+class="math inline">\(Y^{*}=(y_{1}^{*},\cdots,y_{p}^{*})&#39;\)</span>，<span
+class="math inline">\(\alpha_{i}^{*}=(\alpha_{1i}^{*},\cdots,\alpha_{pi}^{*})&#39;\)</span>，则称:
+<span class="math display">\[
+y_{i}^{*}=\alpha_{i}^{*}X^{*}=\sum_{j =
+1}^{p}\alpha_{ji}^{*}\sigma_{jj}^{-1/2}x_{j}
+\]</span> <span class="math inline">\(y_{i}^{*}\)</span>为<span
+class="math inline">\(X\)</span>的第<span
+class="math inline">\(i\)</span>个<span
+class="math inline">\(R\)</span>主成份，<span
+class="math inline">\(1\leq i\leq p\)</span>。</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>定义</th>
+<th>公式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(Y^{*}\)</span>的协方差阵</td>
+<td><span
+class="math inline">\(\begin{align}\text{Cov}(Y^{*})&amp;=\Lambda^{*}\\&amp;=\text{diag}(\lambda_{1}^{*},\cdots,\lambda_{p}^{*})\end{align}\)</span></td>
+<td><span class="math inline">\(\sum^p_{i=1}\lambda_i^*=p\)</span></td>
+</tr>
+<tr class="even">
+<td>第<span class="math inline">\(k\)</span>个<span
+class="math inline">\(R\)</span>主成份<span
+class="math inline">\(y_{k}^{*}\)</span>的贡献率</td>
+<td><span class="math inline">\(\lambda_{k}^{*}/p\)</span></td>
+<td>--</td>
+</tr>
+<tr class="odd">
+<td>前<span class="math inline">\(k\)</span>个<span
+class="math inline">\(R\)</span>主成份<span
+class="math inline">\((y_{1}^{*},\cdots,y_{k}^{*})\)</span>的累计贡献率</td>
+<td><span class="math inline">\({\sum_{i =
+1}^{k}\lambda_{i}^{*}}/p\)</span></td>
+<td>--</td>
+</tr>
+<tr class="even">
+<td>第<span class="math inline">\(k\)</span>个<span
+class="math inline">\(R\)</span>主成份<span
+class="math inline">\(y_{k}^{*}\)</span>中变量<span
+class="math inline">\(x_{j}\)</span>的因子负荷量</td>
+<td><span
+class="math inline">\(\alpha_{jk}^{*}\sqrt{\lambda_{k}^{*}}\)</span></td>
+<td><span class="math inline">\(\sum_{k =
+1}^{p}\lambda_{k}^{*}(\alpha_{jk}^{*})^{2}=1,\ 1\leq j\leq
+p\)</span></td>
+</tr>
+<tr class="odd">
+<td>前<span class="math inline">\(k\)</span>个<span
+class="math inline">\(R\)</span>主成份<span
+class="math inline">\((y_{1}^{*},\cdots,y_{k}^{*})\)</span>的对于<span
+class="math inline">\(X\)</span>的第<span
+class="math inline">\(j\)</span>个分量<span
+class="math inline">\(x_{j}\)</span>的累计贡献率</td>
+<td><span class="math inline">\(\sum_{i =
+1}^{k}\lambda_{i}^{*}(\alpha_{ij}^{*})^{2}\)</span></td>
+<td>--</td>
+</tr>
+</tbody>
+</table>
+<h2 id="样本主成分分析基于观测数据">6.3
+样本主成分分析(基于观测数据)</h2>
+<p>假设总体<span class="math inline">\(X\sim
+N_{p}(\mu,\Sigma)\)</span>，其观测样本为<span
+class="math inline">\(x_{1},\cdots,x_{n}\)</span>，则<span
+class="math inline">\((\mu,\Sigma)\)</span>的极大似然估计为: <span
+class="math display">\[
+\hat{\mu}=\bar{x}=n^{-1}\sum_{i = 1}^{n}x_{i}\\
+\hat{\Sigma}=S=n^{-1}\sum_{i = 1}^{n}(x_{i}-\bar{x})(x_{i}-\bar{x})&#39;
+\]</span> 样本主成份分析也就是基于样本协方差阵<span
+class="math inline">\(S\)</span>的主成份分析，它也等价于某个分布下的总体主成份分析。</p>
+<p><strong>样本主成份的定义</strong> :(使用<span
+class="math inline">\(S\)</span>代替<span
+class="math inline">\(\Sigma\)</span>)</p>
+<table>
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 61%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>相关定义</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(S\)</span>的特征根</td>
+<td><span
+class="math inline">\(\hat{\lambda}_{1}\geq\cdots\geq\hat{\lambda}_{p}\geq0\)</span></td>
+</tr>
+<tr class="even">
+<td>与特征根对应的正则正交特征向量</td>
+<td><span
+class="math inline">\(\hat{\alpha}_{1},\cdots,\hat{\alpha}_{p}\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\hat{Y}\)</span>为<span
+class="math inline">\(X\)</span>的样本主成份</td>
+<td>令<span class="math inline">\(\hat{Y}=\hat{T}&#39;X\)</span>，<span
+class="math inline">\(\hat{Y}=(\hat{y}_{1},\cdots,\hat{y}_{p})&#39;\)</span>，其中<span
+class="math inline">\(\hat{T}=(\hat{\alpha}_{1},\cdots,\hat{\alpha}_{p})\)</span>.</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(X\)</span>的第<span
+class="math inline">\(k\)</span>样本主成份(<span
+class="math inline">\(1\leq k\leq p\)</span>)</td>
+<td>记<span
+class="math inline">\(\hat{\alpha}_{k}=(\hat{\alpha}_{1k},\cdots,\hat{\alpha}_{pk})&#39;\)</span>，则称<span
+class="math inline">\(\hat{y}_{k}=\hat{\alpha}_{k}&#39;X=\sum_{j =
+1}^{p}\hat{\alpha}_{jk}x_{j}\)</span>.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><span
+class="math inline">\(\hat{y}_{k}=\hat{\alpha}_{k}&#39;X\)</span>: <span
+class="math inline">\(\hat{\alpha}_{k}\)</span>和<span
+class="math inline">\(\hat{\lambda}_{k}\)</span>分别是<span
+class="math inline">\(X\)</span>的第<span
+class="math inline">\(k\)</span>主成份<span
+class="math inline">\(y_{k}=\alpha_{k}X\)</span>，第<span
+class="math inline">\(k\)</span>主成分系数<span
+class="math inline">\(\alpha_{k}\)</span>和第<span
+class="math inline">\(k\)</span>主成份的方差<span
+class="math inline">\(\lambda_{k}\)</span>的极大似然估计，<span
+class="math inline">\(1\leq k\leq p\)</span>。</p>
+</blockquote>
+<p>相应地，可以得到主成份对总体的贡献率、对总体分量的因子负荷量以及总体分量的贡献率的极大似然估计。</p>
+<h3 id="经验总体下的总体主成份分析">6.3.1
+经验总体下的总体主成份分析</h3>
+<p>定义随机向量<span
+class="math inline">\(X^{*}\)</span>，它服从离散分布，分布函数为： <span
+class="math display">\[
+P(X^{*}=x_{i})=\frac{1}{n}, \quad 1\leq i\leq n
+\]</span></p>
+<p>则<span class="math inline">\(X^{*}\)</span>的分布就是样本<span
+class="math inline">\(x_{1},\cdots,x_{n}\)</span>的经验分布。</p>
+<p>显然有： <span class="math display">\[
+\begin{align}E(X^{*})&amp;=n^{-1}\sum_{i = 1}^{n}x_{i}=\bar{x}\\\\
+Cov(X^{*})&amp;=E[(X^{*}-E(X^{*}))(X^{*}-E(X^{*}))&#39;]\\&amp;=n^{-1}\sum_{i
+= 1}^{n}(x_{i}-\bar{x})(x_{i}-\bar{x})&#39;=S
+\end{align}
+\]</span> <strong>经验总体下主成份的求解</strong> :</p>
+<table>
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 20%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>求<span class="math inline">\(X^{*}\)</span>的主成份</th>
+<th>主成分</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(1) 求第一主成份</td>
+<td><span class="math inline">\(\hat{\alpha}_{1}X^{*}\)</span></td>
+<td><span
+class="math inline">\(\hat{\alpha}_{1}=\underset{\alpha&#39;\alpha =
+1}{\arg\max}Var(\alpha&#39;X^{*})=\underset{\alpha&#39;\alpha =
+1}{\arg\max}\alpha&#39;S\alpha\)</span></td>
+</tr>
+<tr class="even">
+<td>(2) 求第二主成份</td>
+<td><span class="math inline">\(\hat{\alpha}_{2}X^{*}\)</span></td>
+<td><span
+class="math inline">\(\hat{\alpha}_{2}=\underset{\begin{subarray}{c}\alpha&#39;\alpha
+=
+1\\\alpha&#39;\hat{\alpha}_{1}=0\end{subarray}}{\arg\max}Var(\alpha&#39;X^{*})=\underset{\begin{subarray}{c}\alpha&#39;\alpha
+=
+1\\\alpha&#39;\hat{\alpha}_{1}=0\end{subarray}}{\arg\max}\alpha&#39;S\alpha\)</span></td>
+</tr>
+<tr class="odd">
+<td>(3) 依次求第三到第<span class="math inline">\(p\)</span>主成份</td>
+<td><span class="math inline">\(\hat{\alpha}_{p}X^{*}\)</span></td>
+<td>---</td>
+</tr>
+</tbody>
+</table>
+<p>因此，<span class="math inline">\(X^{*}\)</span>的主成份系数与<span
+class="math inline">\(X\)</span>的样本主成份系数是一致的，且: <span
+class="math display">\[
+Var(\hat{\alpha}_{i}&#39;X^{*})=\hat{\lambda}_{i},\ 1\leq i\leq p
+\]</span></p>
+<h2 id="样本r主成分分析">6.4 样本R主成分分析</h2>
+<blockquote>
+<p><strong>基于样本相关阵的主成分分析就是样本R主成分分析。</strong></p>
+</blockquote>
+<p>记: <span class="math display">\[
+\hat{R} = diag(s_{11}^{-1/2},\cdots,s_{pp}^{-1/2})S \
+diag(s_{11}^{-1/2},\cdots,s_{pp}^{-1/2})
+\]</span> 即<span
+class="math inline">\(\hat{R}\)</span>是样本相关阵。基于<span
+class="math inline">\(\hat{R}\)</span>进行主成分分析即可。</p>
+<p>此外，令: <span class="math display">\[
+x_{i}^{*} = diag(s_{11}^{-1/2},\cdots,s_{pp}^{-1/2})(x_{i}-\bar{x}),
+\quad 1\leq i\leq n
+\]</span> 那么<span
+class="math inline">\(x_{1}^{*},\cdots,x_{n}^{*}\)</span>的样本协差阵也是<span
+class="math inline">\(x_{1},\cdots,x_{n}\)</span>的样本相关阵<span
+class="math inline">\(\hat{R}\)</span>。</p>
+<p>则对<span
+class="math inline">\(x_{1}^{*},\cdots,x_{n}^{*}\)</span>进行主成分分析即是样本R主成分分析。</p>
+<blockquote>
+<p>PS:</p>
+<ul>
+<li>(总体)主成分分析与R主成分分析的结论<strong>可能不一致</strong>。</li>
+<li>样本主成分分析与样本R主成分分析的结论<strong>可能不一致</strong>。</li>
+</ul>
+</blockquote>
+<h2 id="主成分的统计推断">6.5 主成分的统计推断</h2>
+<p>对实际数据进行的主成份分析时，事先会设定一个主成份贡献率的阈值(1 -
+δ)。</p>
+<p>得到样本的主成份后，可以计算前k个样本主成份的贡献率: $<em>{i = 1}^{k}
+</em>{i} / <em>{i = 1}^{p} </em>{i} $</p>
+<p>如果: <span class="math display">\[
+\sum_{i = 1}^{k} \hat{\lambda}_{i} / \sum_{i = 1}^{p} \hat{\lambda}_{i}
+&gt; (1 - \delta)\\
+\]</span> <strong>是否就可以认为:</strong> <span class="math display">\[
+\sum_{i = 1}^{k} \lambda_{i} / \sum_{i = 1}^{p} \lambda_{i} &gt; (1 -
+\delta) ?
+\]</span> <strong>A: 需要对协差阵的特征根$<em>{1} </em>{p}
+$进行统计推断。</strong></p>
+<blockquote>
+<p>首先假定$&gt; 0 <span class="math inline">\(，则参数\)</span>(,)
+$的似然函数为: <span class="math display">\[
+\frac{1}{|\Sigma|^{n/2}} \exp\left\{-\frac{1}{2}tr[\Sigma^{-1}(V +
+n(\bar{x}-\mu)(\bar{x}-\mu)&#39;)]\right\}
+\]</span> 由于$= TT' <span
+class="math inline">\(，即\)</span>(<em>{1},,</em>{p}) <span
+class="math inline">\(和\)</span>(<em>{1},,</em>{p}) <span
+class="math inline">\(仅与\)</span>$有关，其似然函数为 : <span
+class="math display">\[
+\begin{align}L(\lambda_{1},\cdots,\lambda_{p},\alpha_{1},\cdots,\alpha_{p})&amp;=\frac{1}{|\Sigma|^{n/2}}
+\exp\left\{-\frac{1}{2}tr(\Sigma^{-1}V)\right\}\\
+&amp;=\frac{1}{|T\Lambda T&#39;|^{n/2}}
+\exp\left\{-\frac{1}{2}tr(T\Lambda^{-1}T&#39;V)\right\} \\
+&amp;= \left(\prod_{i = 1}^{p} \lambda_{i}\right)^{-n/2}
+\exp\left\{-\frac{1}{2}\left(\sum_{i = 1}^{p}
+\frac{\alpha_{i}&#39;V\alpha_{i}}{\lambda_{i}}\right)\right\}
+\end{align}
+\]</span> 为简单起见，再假定$<em>{1}&gt;&gt;</em>{p}&gt;0
+$，即<strong>所有特征根都不等</strong>。</p>
+<p>此时$<em>{1},,</em>{p} <span
+class="math inline">\(与\)</span><em>{1},,</em>{p} $无关。</p>
+<p>因为由$<span
+class="math inline">\(的任意性，在给定\)</span><em>{1},,</em>{p} <span
+class="math inline">\(下，正交矩阵\)</span>T = (<em>{1},,</em>{p})
+$也是任意的。</p>
+<p>事实上，考虑参数的自由度：在$<em>{1}&gt;&gt;</em>{p}&gt;0 $下 <span
+class="math display">\[
+dim(\Lambda)=p, \quad dim(T)=p^{2}-p-\frac{p(p - 1)}{2} \\
+dim(\Lambda)+dim(T)=\frac{p(p + 1)}{2}=dim(\Sigma)
+\]</span></p>
+</blockquote>
+<h3 id="fisher信息阵与极大似然估计的渐近正态性">6.5.1
+Fisher信息阵与极大似然估计的渐近正态性</h3>
+<p>假设$x_{1},,x_{n} <span
+class="math inline">\(是服从密度函数为\)</span>(x,) <span
+class="math inline">\(的独立样本。 记\)</span> <span
+class="math inline">\(为\)</span><span
+class="math inline">\(的极大似然估计，\)</span>X^{(n)}=(x_{1},,x_{n})
+$。对数似然函数为: <span class="math display">\[
+l(\theta|X^{(n)})=\sum_{i = 1}^{n} \log \rho(x_{i},\theta)
+\]</span> 则Fisher信息阵为: <span class="math display">\[
+\begin{align}
+I_{n}(\theta)&amp;=V_{ar\theta}\left[\frac{\partial
+l(\theta|X^{(n)})}{\partial \theta}\right]\quad\text{（一般性的定义）}\\
+&amp;=-E_{\theta}\left[\frac{\partial^{2}l(\theta|X^{(n)})}{\partial
+\theta^{2}}\right] \\
+&amp;=-nE_{\theta}\left[\frac{\partial^{2}}{\partial \theta^{2}}\log
+\rho(x_{1},\theta)\right]\quad\text{（独立同分布下）}\\
+&amp;\triangleq nI(\theta)
+\end{align}
+\]</span> <strong>$ $的渐近正态性(一般情形):</strong> <span
+class="math display">\[
+(I_{n}(\theta))^{1/2}(\hat{\theta}-\theta) \stackrel{d}{\rightarrow}
+N(0,I_{p}) (n\rightarrow\infty)
+\]</span> 在独立同分布情形下，有 : <span class="math display">\[
+\sqrt{n}(\hat{\theta}-\theta) \stackrel{d}{\rightarrow}
+N(0,I^{-1}(\theta)) (n\rightarrow\infty)
+\]</span></p>
+<h4 id="hatlambda_1cdotshatlambda_p的渐近分布"><span
+class="math inline">\((\hat{\lambda}_{1},\cdots,\hat{\lambda}_{p})\)</span>的渐近分布</h4>
+<p>有对数似然函数: <span class="math display">\[
+l(\lambda_{1},\cdots,\lambda_{p},\alpha_{1},\cdots,\alpha_{p})=\sum_{i =
+1}^{p}\left(-\frac{n}{2}\log\lambda_{i}-\frac{1}{2\lambda_{i}}\alpha_{i}&#39;V\alpha_{i}\right)\triangleq\sum^p_{i=1}l(\lambda_i,\alpha_i)
+\]</span> 因此对任意的<span class="math inline">\(i\neq j\)</span>，有:
+<span class="math display">\[
+\frac{\partial^{2}l(\theta|X^{(n)})}{\partial\lambda_{i}\partial\lambda_{j}}
+=
+\frac{\partial^{2}l(\lambda_{1},\cdots,\lambda_{p},\alpha_{1},\cdots,\alpha_{p})}{\partial\lambda_{i}\partial\lambda_{j}}=0
+\]</span> 那么由Fisher信息阵的结构，知<span
+class="math inline">\(\hat{\lambda}_{1},\cdots,\hat{\lambda}_{p}\)</span>的极限分布是相互独立的正态分布。</p>
+<p><strong><span
+class="math inline">\(\hat{\lambda}_{1},\cdots,\hat{\lambda}_{p}\)</span>的渐近方差:</strong></p>
+<p>由于<span class="math inline">\(V\stackrel{d}{=}W_{p}(n -
+1,\Sigma)\)</span>，等价地有 : <span class="math display">\[
+V\stackrel{d}{=}\sum_{k = 1}^{n - 1}Z_{k}Z_{k}&#39;
+\]</span> 其中，<span class="math inline">\(Z_{1},\cdots,Z_{n -
+1}\)</span>是i.i.d.的正态<span
+class="math inline">\(N_{p}(0,\Sigma)\)</span>随机向量。</p>
+<p>因此，对<span class="math inline">\(1\leq i\leq p\)</span>，有 :
+<span class="math display">\[
+\alpha_{i}&#39;V\alpha_{i}\stackrel{d}{=}\sum_{k = 1}^{n -
+1}(\alpha_{i}&#39;Z_{k})^{2}
+\]</span> 由于<span
+class="math inline">\(\alpha_{i}&#39;\Sigma\alpha_{i}=\lambda_{i}\)</span>，知<span
+class="math inline">\(\alpha_{i}&#39;Z_{1},\cdots,\alpha_{i}&#39;Z_{n -
+1}\)</span>是独立同分布的<span
+class="math inline">\(N_{1}(0,\lambda_{i})\)</span>随机变量。因此 <span
+class="math display">\[
+\alpha_{i}&#39;V\alpha_{i}\stackrel{d}{=}\lambda_{i}\chi^{2}(n - 1)
+\]</span></p>
+<p><strong>计算<span
+class="math inline">\(\lambda_{i}\)</span>的Fisher信息</strong> : <span
+class="math display">\[
+\begin{align}-E_{(\lambda_{i},\alpha_{i})}\left[\frac{\partial^{2}l(\lambda_{i})}{\partial\lambda_{i}^{2}}\right]&amp;=-E_{(\lambda_{i},\alpha_{i})}\left[\frac{n}{2\lambda_{i}^{2}}-\frac{\alpha_{i}&#39;V\alpha_{i}}{\lambda_{i}^{3}}\right]\\
+&amp;=-\frac{n}{2\lambda_{i}^{2}}+\frac{(n -
+1)\lambda_{i}}{\lambda_i^3}\\
+&amp;=\frac{n-2}{2\lambda_{i}^{2}}
+\end{align}
+\]</span> 则<span
+class="math inline">\((\hat{\lambda}_{1},\cdots,\hat{\lambda}_{p})\)</span>的Fisher信息阵为:
+<span class="math display">\[
+I_{n}=diag\left(\frac{n - 2}{2\lambda_{1}^{2}},\cdots,\frac{n -
+2}{2\lambda_{p}^{2}}\right)
+\]</span> 由极大似然估计的渐近正态性知: <span class="math display">\[
+I_{n}^{1/2}\left(\begin{array}{c} \hat{\lambda}_{1}-\lambda_{1}\\
+\vdots\\ \hat{\lambda}_{n}-\lambda_{n}
+\end{array}\right)\stackrel{d}{\rightarrow}N(0,I_{p})(n\rightarrow\infty)
+\\
+n\rightarrow \infty,\quad\sqrt{n - 2}\left(\begin{array}{c}
+\hat{\lambda}_{1}-\lambda_{1}\\ \vdots\\ \hat{\lambda}_{n}-\lambda_{n}
+\end{array}\right)\stackrel{d}{\rightarrow}N(0,diag(2\lambda_{1}^{2},\cdots,2\lambda_{p}^{2}))
+\]</span></p>
+<blockquote>
+<p><strong>当<span
+class="math inline">\(\Sigma\)</span>的特征根有重根时</strong>，情况比较复杂。</p>
+<p>由极大似然估计的渐近正态性可以构造<span
+class="math inline">\(\lambda_{i}\)</span>的渐近置信区间: <span
+class="math display">\[
+\hat{\lambda}_{i}\left[1+\sqrt{2/(n -
+2)}Z_{1-\beta/2}\right]^{-1}\leq\lambda_{i}\leq\hat{\lambda}_{i}\left[1-\sqrt{2/(n
+- 2)}Z_{1-\beta/2}\right]^{-1}
+\]</span> 也可通过方差齐性变换，导出 : <span class="math display">\[
+\sqrt{n -
+2}(\ln(\hat{\lambda}_{i}^{\sqrt{2}/2})-\ln(\lambda_{i}^{\sqrt{2}/2}))\stackrel{d}{\rightarrow}N(0,1)
+\]</span> 可得<span
+class="math inline">\(\lambda_{i}\)</span>的另一个置信水平为<span
+class="math inline">\((1-\beta)\)</span>的渐近置信区间: <span
+class="math display">\[
+\hat{\lambda}_{i}\exp\left\{-\frac{2}{n -
+2}Z_{1-\beta/2}\right\}\leq\lambda_{i}\leq\hat{\lambda}_{i}\exp\left\{\frac{2}{n
+- 2}Z_{1-\beta/2}\right\}
+\]</span></p>
+</blockquote>
+<h3 id="与主成分分析有关的检验问题">6.5.2
+与主成分分析有关的检验问题</h3>
+<h4 id="a.检验问题i">A.检验问题I</h4>
+<p><span class="math display">\[
+H_0:\lambda_{k + 1}+\cdots+\lambda_p\leq\gamma
+\]</span></p>
+<p><strong>检验统计量的构造</strong> - 由<span
+class="math inline">\((\hat{\lambda}_1,\cdots,\hat{\lambda}_p)\)</span>的渐近正态性，有
+: <span class="math display">\[
+\sqrt{n - 2}\left(\sum_{i = k+1}^{p}\hat{\lambda}_i-\sum_{i =
+k+1}^{p}\lambda_i\right)\stackrel{d}{\rightarrow}N\left(0,\sum_{i =
+k+1}^{p}2\lambda_i^2\right)   
+\]</span> 进而可得 : <span class="math display">\[
+\frac{\sqrt{n - 2}\left(\sum_{i = k+1}^{p}\hat{\lambda}_i-\sum_{i =
+k+1}^{p}\lambda_i\right)}{\sqrt{\sum_{i =
+k+1}^{p}2\hat{\lambda}_i^2}}\stackrel{d}{\rightarrow}N(0,1)   
+\]</span> 当: <span class="math display">\[
+\sum_{i = k+1}^{p}\hat{\lambda}_i&gt;\gamma+\sqrt{\frac{\sum_{i =
+k+1}^{p}2\hat{\lambda}_i^2}{n - 2}}Z_{1-\alpha}     
+\]</span> 时，拒绝零假设，它犯第一类错误的概率渐近不超过<span
+class="math inline">\(\alpha\)</span>。</p>
+<h4 id="b.检验问题ii">B.检验问题II</h4>
+<p><strong>前k个主成分的累计贡献率是否大于给定的值<span
+class="math inline">\(\delta\)</span>?</strong> <span
+class="math display">\[
+H_0:\frac{\sum_{i = 1}^{k}\lambda_i}{\sum_{i =
+1}^{p}\lambda_i}\leq\delta
+\]</span> 考虑如下的累计贡献率统计量的渐近分布 :<br />
+<span class="math display">\[
+\sqrt{n - 2}\left(\frac{\sum_{i = 1}^{k}\hat{\lambda}_i}{\sum_{i =
+1}^{p}\hat{\lambda}_i}-\frac{\sum_{i = 1}^{k}\lambda_i}{\sum_{i =
+1}^{p}\lambda_i}\right)     
+\]</span> 定义如下的累计贡献率函数: <span class="math display">\[
+f(\lambda_1,\cdots,\lambda_p)=\frac{\sum_{i = 1}^{k}\lambda_i}{\sum_{i =
+1}^{p}\lambda_i}     
+\]</span> 由Cramér定理有: <span class="math display">\[
+\sqrt{n -
+2}(f(\hat{\lambda}_1,\cdots,\hat{\lambda}_p)-f(\lambda_1,\cdots,\lambda_p))\stackrel{d}{\rightarrow}N(0,\nu^2)     
+\]</span> 其中 : <span class="math display">\[
+\nu^2=\frac{2\left[\left(\sum_{i =
+k+1}^{p}\lambda_i\right)^2\left(\sum_{i =
+1}^{k}\lambda_i^2\right)+\left(\sum_{i =
+1}^{k}\lambda_i\right)^2\left(\sum_{i =
+k+1}^{p}\lambda_i^2\right)\right]}{\left(\sum_{i =
+1}^{p}\lambda_i\right)^4}     
+\]</span> 事实上，若记<span class="math inline">\(\lambda =
+(\lambda_{1},\cdots,\lambda_{p})&#39;\)</span>,则有： <span
+class="math display">\[
+\frac{\partial f(\lambda)}{\partial \lambda_{i}}=\frac{I(1\leq i\leq
+k)}{\sum_{j = 1}^{p} \lambda_{j}}-\frac{\sum_{j = 1}^{k}
+\lambda_{j}}{(\sum_{j = 1}^{p} \lambda_{j})^{2}},\ 1\leq i\leq p
+\]</span> 因此: <span class="math display">\[
+\begin{align}
+v^{2}&amp;=\left(\frac{\partial f(\lambda)}{\partial
+\lambda}\right)&#39;\text{diag}(2\lambda_{1}^{2},\cdots,2\lambda_{p}^{2})\frac{\partial
+f(\lambda)}{\partial \lambda}\\
+&amp;=2\sum_{i = 1}^{p} \lambda_{i}^{2}\left(\frac{I(1\leq i\leq
+k)}{\sum_{j = 1}^{p} \lambda_{j}}-\frac{\sum_{j = 1}^{k}
+\lambda_{j}}{(\sum_{j = 1}^{p} \lambda_{j})^{2}}\right)^{2}
+\end{align}
+\]</span></p>
+<blockquote>
+<p><span class="math inline">\(I(1\leq i\leq k)\)</span>是指示函数：</p>
+<ul>
+<li><span class="math inline">\(i\le k: I(1\leq i\leq k)=1\)</span></li>
+<li><span class="math inline">\(i\gt k : I(1\leq i\leq
+k)=0\)</span></li>
+</ul>
+</blockquote>
+<p>将极大似然估计<span
+class="math inline">\(\hat{\lambda}_1,\cdots,\hat{\lambda}_p\)</span>代入<span
+class="math inline">\(\nu^2\)</span>即得估计<span
+class="math inline">\(\hat{\nu}^2\)</span>，<br />
+<span class="math display">\[
+\hat{\nu}^2=\frac{2\left[\left(\sum_{i =
+k+1}^{p}\hat{\lambda}_i\right)^2\left(\sum_{i =
+1}^{k}\hat{\lambda}_i^2\right)+\left(\sum_{i =
+1}^{k}\hat{\lambda}_i\right)^2\left(\sum_{i =
+k+1}^{p}\hat{\lambda}_i^2\right)\right]}{\left(\sum_{i =
+1}^{p}\hat{\lambda}_i\right)^4}
+\]</span> 因此有: <span class="math display">\[
+\frac{\sqrt{n - 2}}{\hat v}\left(\frac{\sum_{i =
+1}^{k}\hat{\lambda}_i}{\sum_{i = 1}^{p}\hat{\lambda}_i}-\frac{\sum_{i =
+1}^{k}\lambda_i}{\sum_{i =
+1}^{p}\lambda_i}\right)\stackrel{d}{\rightarrow}N(0,1)
+\]</span> <strong>结论</strong>：当:<br />
+<span class="math display">\[
+\because\frac{\sqrt{n-2}}{\hat{\nu}} \left( \frac{\sum_{i=1}^k
+\hat{\lambda}_i}{\sum_{i=1}^p \hat{\lambda}_i} - \delta \right) &gt;
+Z_{1-\alpha}\\
+\therefore\frac{\sum_{i = 1}^{k}\hat{\lambda}_i}{\sum_{i =
+1}^{p}\hat{\lambda}_i}\geq\delta+\frac{\hat{\nu}}{\sqrt{n -
+2}}Z_{1-\alpha}\\
+\therefore\frac{\sum_{i = 1}^{k}\lambda_i}{\sum_{i =
+1}^{p}\lambda_i}&gt;\delta
+\]</span> 当标准化的统计量大于<span
+class="math inline">\(Z_{1-\alpha}\)</span>时拒绝零假设，它犯第一类错误的概率渐近不超过<span
+class="math inline">\(\alpha\)</span>。</p>
+<h4 id="c.再次回到例子统计检验">C.再次回到例子(统计检验)</h4>
+<p>样本协差阵的特征根从大到小依次为：</p>
+<table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 25%" />
+<col style="width: 24%" />
+<col style="width: 24%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">\(\hat{\lambda}_{1} =
+100.5771\)</span></th>
+<th><span class="math inline">\(\hat{\lambda}_{2} =
+28.4471\)</span></th>
+<th><span class="math inline">\(\hat{\lambda}_{3} = 5.7489\)</span></th>
+<th><span class="math inline">\(\hat{\lambda}_{4} = 4.4522\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\hat{\lambda}_{5} = 3.1978\)</span></td>
+<td><span class="math inline">\(\hat{\lambda}_{6} = 2.5854\)</span></td>
+<td><span class="math inline">\(\hat{\lambda}_{7} = 1.3834\)</span></td>
+<td><span class="math inline">\(\hat{\lambda}_{8} = 0.9280\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>设定累计贡献率的阈值<span class="math inline">\(\delta=
+0.85\)</span>、显著性水平设定为<span class="math inline">\(\alpha =
+0.05\)</span></p>
+<p>由于<span class="math inline">\(\frac{\sum_{i =
+1}^{2}\hat{\lambda}_{i}}{\sum_{i =
+1}^{8}\hat{\lambda}_{i}}=87.6\%\)</span>，我们把零假设设定为： <span
+class="math display">\[
+H_{0}:\frac{\sum_{i = 1}^{2}\lambda_{i}}{\sum_{i =
+1}^{8}\lambda_{i}}\leq\delta = 0.85
+\]</span></p>
+<blockquote>
+<p>即检验问题Ⅱ：前2个主成分的累计贡献率是否大于给定的值<span
+class="math inline">\(\delta\)</span>？</p>
+</blockquote>
+<p>计算<span class="math inline">\(\hat v^2\)</span>: <span
+class="math display">\[
+\begin{align}\hat{\nu}^{2}&amp;=\frac{2\left[\left(\sum_{i =
+3}^{8}\hat{\lambda}_{i}\right)^{2}\left(\sum_{i =
+1}^{2}\hat{\lambda}_{i}^{2}\right)+\left(\sum_{i =
+1}^{2}\hat{\lambda}_{i}\right)^{2}\left(\sum_{i =
+3}^{8}\hat{\lambda}_{i}^{2}\right)\right]}{\left(\sum_{i =
+1}^{8}\hat{\lambda}_{i}\right)^{4}}\\
+&amp;=0.0207
+\end{align}
+\]</span> <strong>计算检验临界值</strong> : 其中<span
+class="math inline">\(n = 5115\)</span>， <span class="math display">\[
+Z_{1-\alpha}=Z_{0.95}=1.6449\\
+C_{r}=\delta+\frac{\hat{\nu}}{\sqrt{n - 2}}Z_{1-\alpha}=0.8533\\
+\frac{\sum_{i = 1}^{2}\hat{\lambda}_{i}}{\sum_{i =
+1}^{8}\hat{\lambda}_{i}}=0.876 &gt; C_{r}=0.8533
+\]</span> <strong>结论</strong>：拒绝零假设，即认为<span
+class="math inline">\(\frac{\sum_{i = 1}^{2}\lambda_{i}}{\sum_{i =
+1}^{8}\lambda_{i}}&gt;0.85\)</span>，两个主成分已满足代表原总体散度的要求。</p>
+<h3 id="r主成分分析的检验">6.5.3 R主成分分析的检验</h3>
+<p>由于在R主成份分析中，样本相关阵的特征根<span
+class="math inline">\(\hat{\lambda}_{1}^{*},\cdots,\hat{\lambda}_{p}^{*}\)</span>要满足约束条件<span
+class="math inline">\(\sum_{i =
+1}^{p}\hat{\lambda}_{i}^{*}=1\)</span>。因此，<span
+class="math inline">\(\hat{\lambda}_{1}^{*},\cdots,\hat{\lambda}_{p}^{*}\)</span>不再是渐近独立的。</p>
+<p>此外，<span
+class="math inline">\((\lambda_{1}^{*},\cdots,\lambda_{p}^{*})\)</span>与<span
+class="math inline">\((\alpha_{1}^{*},\cdots,\alpha_{p}^{*})\)</span>不再是无关的，因此有关主成份分析的渐近理论对R主成份分析不再成立。</p>
+</div><div class="post-end"><div class="post-prev"></div><div class="post-next"><a href="/2024/12/15/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90-Ch5-%E7%9B%B8%E5%85%B3%E5%88%86%E6%9E%90/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch6-%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch6 主成分分析</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%BC%95%E5%85%A5"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">6.0 引入</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-content-number">1.1.1.</span> <span class="toc-content-text">6.0.1 例子</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90"><span class="toc-content-number">1.1.2.</span> <span class="toc-content-text">6.0.2 主成分分析</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#a.%E6%80%BB%E4%BD%93%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9F%A9%E9%98%B5%E7%9A%84%E7%89%B9%E5%BE%81%E6%A0%B9%E4%B8%8E%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F"><span class="toc-content-number">1.1.2.1.</span> <span class="toc-content-text">A.总体协方差矩阵的特征根与特征向量</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#b.%E9%9A%8F%E6%9C%BA%E5%90%91%E9%87%8F%E7%9A%84%E7%A6%BB%E6%95%A3%E7%A8%8B%E5%BA%A6"><span class="toc-content-number">1.1.2.2.</span> <span class="toc-content-text">B.随机向量的离散程度</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%9B%9E%E5%88%B0%E4%BE%8B%E5%AD%90"><span class="toc-content-number">1.1.3.</span> <span class="toc-content-text">6.0.3 回到例子</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%80%BB%E4%BD%93pca"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">6.1 总体PCA</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%B8%BB%E6%88%90%E5%88%86%E4%B8%8E%E6%80%BB%E4%BD%93%E7%9A%84%E7%9B%B8%E5%85%B3%E6%80%A7"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">6.1.1 主成分与总体的相关性</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%B8%BB%E6%88%90%E5%88%86%E4%B8%8Ex%E5%88%86%E9%87%8F%E7%9A%84%E5%A4%8D%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0"><span class="toc-content-number">1.2.2.</span> <span class="toc-content-text">6.1.2 主成分与X分量的复相关系数</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%9B%9E%E5%88%B0%E4%BE%8B%E5%AD%90-1"><span class="toc-content-number">1.2.3.</span> <span class="toc-content-text">6.1.3 回到例子</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#r%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90%E5%A4%84%E7%90%86%E9%87%8F%E7%BA%B2"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">6.2 R主成分分析:处理量纲</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#r%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">6.2.1 R主成分分析的定义</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%A0%B7%E6%9C%AC%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90%E5%9F%BA%E4%BA%8E%E8%A7%82%E6%B5%8B%E6%95%B0%E6%8D%AE"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">6.3
+样本主成分分析(基于观测数据)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%BB%8F%E9%AA%8C%E6%80%BB%E4%BD%93%E4%B8%8B%E7%9A%84%E6%80%BB%E4%BD%93%E4%B8%BB%E6%88%90%E4%BB%BD%E5%88%86%E6%9E%90"><span class="toc-content-number">1.4.1.</span> <span class="toc-content-text">6.3.1
+经验总体下的总体主成份分析</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%A0%B7%E6%9C%ACr%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90"><span class="toc-content-number">1.5.</span> <span class="toc-content-text">6.4 样本R主成分分析</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E4%B8%BB%E6%88%90%E5%88%86%E7%9A%84%E7%BB%9F%E8%AE%A1%E6%8E%A8%E6%96%AD"><span class="toc-content-number">1.6.</span> <span class="toc-content-text">6.5 主成分的统计推断</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#fisher%E4%BF%A1%E6%81%AF%E9%98%B5%E4%B8%8E%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1%E7%9A%84%E6%B8%90%E8%BF%91%E6%AD%A3%E6%80%81%E6%80%A7"><span class="toc-content-number">1.6.1.</span> <span class="toc-content-text">6.5.1
+Fisher信息阵与极大似然估计的渐近正态性</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#hatlambda_1cdotshatlambda_p%E7%9A%84%E6%B8%90%E8%BF%91%E5%88%86%E5%B8%83"><span class="toc-content-number">1.6.1.1.</span> <span class="toc-content-text">\((\hat{\lambda}_{1},\cdots,\hat{\lambda}_{p})\)的渐近分布</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%B8%8E%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90%E6%9C%89%E5%85%B3%E7%9A%84%E6%A3%80%E9%AA%8C%E9%97%AE%E9%A2%98"><span class="toc-content-number">1.6.2.</span> <span class="toc-content-text">6.5.2
+与主成分分析有关的检验问题</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#a.%E6%A3%80%E9%AA%8C%E9%97%AE%E9%A2%98i"><span class="toc-content-number">1.6.2.1.</span> <span class="toc-content-text">A.检验问题I</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#b.%E6%A3%80%E9%AA%8C%E9%97%AE%E9%A2%98ii"><span class="toc-content-number">1.6.2.2.</span> <span class="toc-content-text">B.检验问题II</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#c.%E5%86%8D%E6%AC%A1%E5%9B%9E%E5%88%B0%E4%BE%8B%E5%AD%90%E7%BB%9F%E8%AE%A1%E6%A3%80%E9%AA%8C"><span class="toc-content-number">1.6.2.3.</span> <span class="toc-content-text">C.再次回到例子(统计检验)</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#r%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90%E7%9A%84%E6%A3%80%E9%AA%8C"><span class="toc-content-number">1.6.3.</span> <span class="toc-content-text">6.5.3 R主成分分析的检验</span></a></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>
