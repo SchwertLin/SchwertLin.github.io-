@@ -6,7 +6,7 @@
 <meta property="og:description" content="Ch5 相关分析 [TOC]  どうぞよろしくお願い～OvO  5.0 例：家庭特征与家庭消费之间的关系   image-20241213235458701  统计分析方法：典型相关分析  典型相关分析：研究两组变量之间相关性的一种统计分析方法，也是一种降维技术。  5.1 复相关系数  之前我们评估两个随机变量\(X,Y\)之间的相关程度，使用的是Pearson">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-12-15T03:04:28.000Z">
-<meta property="article:modified_time" content="2024-12-15T03:09:34.354Z">
+<meta property="article:modified_time" content="2024-12-15T08:03:56.036Z">
 <meta property="article:author" content="Schwertlilien">
 <meta property="article:tag" content="多元统计分析">
 <meta property="article:tag" content="笔记">
@@ -177,11 +177,10 @@ a&#39;\mu_2)+a&#39;Y_2 \end{align*}
 </blockquote>
 <h4 id="复相关系数定义变量-向量之间">复相关系数定义(变量-向量之间)</h4>
 <p>变量<span class="math inline">\(y_1\)</span>与向量<span
-class="math inline">\(Y_2\)</span>之间的复相关系数为 $ _{y_1,Y_2} = $
-其中，<span
-class="math inline">\(\sigma_{11}=\text{Var}(y_1)\)</span>，<span
-class="math inline">\(\Sigma_{22}=\text{Cov}(Y_2)\)</span>，<span
-class="math inline">\(\Sigma_{12}=\text{Cov}(y_1,Y_2)\)</span>。</p>
+class="math inline">\(Y_2\)</span>之间的复相关系数为 $<em>{y_1,Y_2} =
+<span class="math inline">\(其中，\)</span></em>{11}=(y_1)<span
+class="math inline">\(，\)</span><em>{22}=(Y_2)<span
+class="math inline">\(，\)</span></em>{12}=(y_1,Y_2)$。</p>
 <p><strong>复相关系数<span
 class="math inline">\(\rho_{y_1,Y_2}\)</span>的性质</strong>：</p>
 <ol type="1">
@@ -579,14 +578,15 @@ b_i^* = \text{diag}(\Sigma_{22})^{1/2} b_i \\ a_i =
 </table>
 <blockquote>
 <p>ところで、既然不会考这个定理的证明，那么我们就暂时(永遠に)不写了hh。</p>
-<p>对 <span class="math inline">\(X\)</span> 和 <span
-class="math inline">\(Y\)</span> 进行标准化，得：$ X^* =
-((<em>{11}))^{-1/2} X, Y^* = ((</em>{22}))^{-1/2} Y<span
-class="math inline">\(, 其中，\)</span>(A)$ 表示由方阵 <span
-class="math inline">\(A\)</span> 的对角元素构成的对角矩阵。 由定理
+<p>对 <span class="math inline">\(X\)</span>和 <span
+class="math inline">\(Y\)</span>进行标准化，得：<span
+class="math inline">\(X^* = (\text{diag}(\Sigma_{11}))^{-1/2} X, \quad
+Y^* = (\text{diag}(\Sigma_{22}))^{-1/2} Y\)</span>, 其中，<span
+class="math inline">\(\text{diag}(A)\)</span>表示由方阵 <span
+class="math inline">\(A\)</span>的对角元素构成的对角矩阵。 由定理
 13.2.2，可得推论13.2.1, 值得注意的是，当 <span
-class="math inline">\(\rho_1, \dots, \rho_p\)</span>
-中存在两个相等时（即 <span class="math inline">\(\rho_r =
+class="math inline">\(\rho_1, \dots, \rho_p\)</span>中存在两个相等时（即
+<span class="math inline">\(\rho_r =
 \rho_{r+1}\)</span>​），典型相关系数向量的选择并不唯一。</p>
 </blockquote>
 <h4 id="典型相关分析的所有k步">典型相关分析的所有k步</h4>
@@ -868,11 +868,10 @@ class="math inline">\(C&#39;C\)</span>
 <li>设 <span class="math inline">\(x \in \mathbb{R}^p\)</span>，<span
 class="math inline">\(y \in \mathbb{R}^q\)</span>，则在 <span
 class="math inline">\(x&#39;x = 1\)</span>，<span
-class="math inline">\(y&#39;y = 1\)</span> 的正则化约束条件下， $
-(x'Cy)^2 = _1^2 $ 当 <span class="math inline">\(x =
-\alpha_1\)</span>，<span class="math inline">\(y = \beta_1\)</span>
-时取最大值，并且 <span class="math inline">\(x&#39;Cy =
-\lambda_1\)</span>；</li>
+class="math inline">\(y&#39;y = 1\)</span>的正则化约束条件下， $(x'Cy)^2
+= _1^2 $当 <span class="math inline">\(x = \alpha_1\)</span>，<span
+class="math inline">\(y = \beta_1\)</span>时取最大值，并且 <span
+class="math inline">\(x&#39;Cy = \lambda_1\)</span>；</li>
 <li>对给定的 <span class="math inline">\(1 \leq m \leq (p -
 1)\)</span>，<span class="math inline">\(x \in
 \mathbb{R}^p\)</span>，<span class="math inline">\(y \in
@@ -1028,14 +1027,14 @@ k}}\frac{|D&#39;diag(1-\hat{\lambda}_1^2,\cdots,1-\hat{\lambda}_p^2)D|}{|D&#39;D
 \end{align}
 \]</span> 其中<span class="math inline">\(C\)</span>是任意<span
 class="math inline">\(p\times(p - k)\)</span>的列满秩矩阵。 由于<span
-class="math inline">\(rank(\Sigma_{12})=k\)</span>，因此有 $ _{12}=(
+class="math inline">\(rank(\Sigma_{12})=k\)</span>，因此有 $_{12}=(
 <span class="math display">\[\begin{array}{c} C_1 \\ C_2
 \end{array}\]</span>
-<p>), $ 其中<span class="math inline">\(C_1\)</span>是<span
-class="math inline">\(k\times q\)</span>的满秩矩阵，而<span
-class="math inline">\(C_2 = QC_1\)</span>，<span
-class="math inline">\(Q\)</span>是<span class="math inline">\((p -
-k)\times k\)</span>的矩阵。</p>
+<p>), <span class="math inline">\(其中\)</span>C_1<span
+class="math inline">\(是\)</span>kq<span
+class="math inline">\(的满秩矩阵，而\)</span>C_2 = QC_1<span
+class="math inline">\(，\)</span>Q<span
+class="math inline">\(是\)</span>(p - k)k$的矩阵。</p>
 <p>因此，有: <span class="math display">\[
 \begin{align*}&amp; \dim(\Theta_0)=p + q + p(p + 1)/2 + q(q + 1)/2 +
 kq+(p - k)k\\ &amp;\dim(\Theta)-\dim(\Theta_0)=(p - k)(q - k)
