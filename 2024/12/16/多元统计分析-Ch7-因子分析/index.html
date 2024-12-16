@@ -1,0 +1,1100 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch7 因子分析  一只码字机踩过... 时间远远不够です、どうしますか...  [TOC] 7.1 引入 因子分析法： 在多变量分析中，某些变量间往往存在相关性。  Q1: 是什么原因使变量间有关联呢？ Q2: 是否存在不能直接观测到的，但影响可观测变量变化的公共因子？  因子分析法就是寻找这些公共因子的模型分析方法。 通过构建若干意义较为明确的公共因子，以它们为框架">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多元统计分析-Ch7-因子分析">
+<meta property="og:url" content="http://example.com/2024/12/16/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90-Ch7-%E5%9B%A0%E5%AD%90%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch7 因子分析  一只码字机踩过... 时间远远不够です、どうしますか...  [TOC] 7.1 引入 因子分析法： 在多变量分析中，某些变量间往往存在相关性。  Q1: 是什么原因使变量间有关联呢？ Q2: 是否存在不能直接观测到的，但影响可观测变量变化的公共因子？  因子分析法就是寻找这些公共因子的模型分析方法。 通过构建若干意义较为明确的公共因子，以它们为框架">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-16T15:45:48.000Z">
+<meta property="article:modified_time" content="2024-12-16T15:47:04.091Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="多元统计分析">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary"><title>多元统计分析-Ch7-因子分析 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>多元统计分析-Ch7-因子分析</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2024-12-16</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2024-12-16</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90/">多元统计分析</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约7.4K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch7-因子分析">Ch7 因子分析</h1>
+<blockquote>
+<p>一只码字机踩过...</p>
+<p>时间远远不够です、どうしますか...</p>
+</blockquote>
+<p>[TOC]</p>
+<h2 id="引入">7.1 引入</h2>
+<p><strong>因子分析法：</strong></p>
+<p>在多变量分析中，某些变量间往往存在相关性。</p>
+<blockquote>
+<p>Q1: 是什么原因使变量间有关联呢？</p>
+<p>Q2: 是否存在不能直接观测到的，但影响可观测变量变化的公共因子？</p>
+</blockquote>
+<p>因子分析法就是<strong>寻找这些公共因子</strong>的模型分析方法。
+通过构建若干意义较为明确的公共因子，以它们为框架分解原变量，以此考察原变量间的联系与区别。</p>
+<p><strong>因子分析的目的和应用：</strong></p>
+<ol type="1">
+<li><strong>目的</strong>
+：用有限个不可观测的隐变量来解释原始变量之间的相关关系，是一种把多个变量化为少数几个综合变量的多变量分析方法。</li>
+<li><strong>主要应用</strong> ：
+<ul>
+<li>减少分析变量个数。<br />
+</li>
+<li>通过对变量间相关关系的探测，将原始变量进行分类，即可以将相关性高的变量分为一组，并用共性因子代替该组变量。</li>
+</ul></li>
+</ol>
+<h3 id="例1-spearman因素分析">7.1.1 例1: Spearman因素分析</h3>
+<figure>
+<img
+src="https://raw.githubusercontent.com/SchwertLin/Pic/main/img/image-20241215233014988.png"
+alt="image-20241215233014988" />
+<figcaption aria-hidden="true">image-20241215233014988</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241215233311393.png"
+alt="image-20241215233311393" />
+<figcaption aria-hidden="true">image-20241215233311393</figcaption>
+</figure>
+<blockquote>
+<p><strong>Spearman推测的解释</strong>：</p>
+<p>因为相关系数矩阵是对称的，所以行=列。那么此处以列说明：每列基本上的相关系数值都差不多，所以任一两个值的比也都差不多。</p>
+<p><span class="math inline">\(\frac{\text{Cov}(x_i,
+x_j)}{\text{Cov}(x_i, x_k)}\)</span>的结果与 <span
+class="math inline">\(i\)</span>无关，说明所有变量的相关性可以通过<strong>共同因子</strong>解释。</p>
+<p>这个推测为 <strong>因子分析</strong>
+提供了理论依据，即变量间的相关性具有内在结构。</p>
+</blockquote>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241216104308922.png"
+alt="image-20241216104308922" />
+<figcaption aria-hidden="true">image-20241216104308922</figcaption>
+</figure>
+<p>其中，<span class="math inline">\(f\)</span>是一维的公共变量；<span
+class="math inline">\(u_1,\cdots,u_6\)</span>是相互独立的随机变量，方差分别是<span
+class="math inline">\(\sigma_1^2,\cdots,\sigma_6^2\)</span>；<span
+class="math inline">\(f\)</span>与<span
+class="math inline">\((u_1,\cdots,u_6)\)</span>独立，<span
+class="math inline">\(Var(f)=1\)</span>。</p>
+<p>记<span
+class="math inline">\(X=(x_{1},\cdots,x_{6})&#39;\)</span>，<span
+class="math inline">\(a=(a_{1},\cdots,a_{6})&#39;\)</span>，<span
+class="math inline">\(U=(u_{1},\cdots,u_{6})&#39;\)</span>，则模型可写为：
+<span class="math display">\[
+X = af + U
+\]</span> 或: <span class="math display">\[
+x_{i}=a_{i}f + u_{i},\ 1\leq i\leq 6
+\]</span></p>
+<h4 id="a.-spearman模型的解释">A. Spearman模型的解释</h4>
+<ol type="1">
+<li>每一门功课的成绩都由两部分组成: <span
+class="math inline">\(x_{i}=a_{i}f + u_{i}\)</span> .
+<ul>
+<li>前一部分中的<span
+class="math inline">\(f\)</span>是对所有课程的成绩都有贡献的随机变量；</li>
+<li>后一部分中<span class="math inline">\(u_{i}\)</span>是仅对第<span
+class="math inline">\(i\)</span>门课程的成绩有贡献的随机变量。</li>
+<li>因此，称<span class="math inline">\(f\)</span>为公共因子，称<span
+class="math inline">\((u_1,\cdots,u_6)\)</span>为特殊因子。</li>
+</ul></li>
+<li>因子载荷：<span class="math inline">\(a_{i}\)</span>称为第<span
+class="math inline">\(i\)</span>门课程成绩的因子载荷，理解为公共因子<span
+class="math inline">\(f\)</span>对第<span
+class="math inline">\(i\)</span>门课程成绩的作用程度。</li>
+<li>公共因子含义: <span
+class="math inline">\(f\)</span>可以理解为学生的阅读能力。
+<ul>
+<li>由于不同人的阅读能力有差异，故它是一个随机变量。<br />
+</li>
+<li>阅读能力对不同课程的贡献率<span
+class="math inline">\(a_{i}\)</span>不一样。</li>
+</ul></li>
+</ol>
+<blockquote>
+<p><strong>结论</strong>：Spearman模型是最早的仅有一个公共因子的因子模型。此模型就是在发现学生6门功课成绩的相关性后，挖掘出影响学习成绩的公共因子，并解释其对学习成绩影响的因子分析模型。</p>
+</blockquote>
+<h3 id="例2-顾客感知因子模型">7.1.2 例2: 顾客感知因子模型</h3>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241216104507968.png"
+alt="image-20241216104507968" />
+<figcaption aria-hidden="true">image-20241216104507968</figcaption>
+</figure>
+<p><strong>潜变量定义</strong>：</p>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 24%" />
+<col style="width: 24%" />
+<col style="width: 15%" />
+<col style="width: 12%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>潜变量</th>
+<th><span class="math inline">\(\eta_1\)</span></th>
+<th><span class="math inline">\(\eta_2\)</span></th>
+<th><span class="math inline">\(\eta_3\)</span></th>
+<th><span class="math inline">\(\eta_4\)</span></th>
+<th><span class="math inline">\(\eta_5\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>说明</td>
+<td>顾客对质量的感知</td>
+<td>顾客对价值的感知</td>
+<td>顾客满意度</td>
+<td>顾客抱怨</td>
+<td>顾客忠诚度</td>
+</tr>
+</tbody>
+</table>
+<p><strong>观测变量与潜变量的关系：</strong></p>
+<table>
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 58%" />
+<col style="width: 13%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>观察变量</th>
+<th>意义</th>
+<th>与潜变量关系</th>
+<th>潜变量意义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(y_1, y_2, y_3\)</span></td>
+<td>分别表示顾客对质量、质量可靠性和质量满足需求程度的评价</td>
+<td>与<span class="math inline">\(\eta_1\)</span>有关</td>
+<td>对质量感知</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(y_4, y_5\)</span></td>
+<td>分别表示给定价格后顾客对质量的评价和给定质量后顾客对价格的评价</td>
+<td>与<span class="math inline">\(\eta_2\)</span>有关</td>
+<td>对价值的感知</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(y_6, y_7, y_8\)</span></td>
+<td>分别表示顾客对企业的总评价、感知的质量与期望的比较，以及感知的质量与理想中的质量的差距</td>
+<td>与<span class="math inline">\(\eta_3\)</span>有关</td>
+<td>顾客满意度</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(y_9\)</span></td>
+<td>表示顾客正式或非正式的投诉行为对质量的评价和给定质量后顾客对价格的评价</td>
+<td>与<span class="math inline">\(\eta_4\)</span>有关</td>
+<td>顾客抱怨</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(y_{10}, y_{11}\)</span></td>
+<td>分别表示顾客重复购买的可能性，顾客可承受的涨价幅度或促销（降价）对顾客购买的影响</td>
+<td>与<span class="math inline">\(\eta_5\)</span>有关</td>
+<td>顾客忠诚度</td>
+</tr>
+</tbody>
+</table>
+<h3 id="因子分析模型">7.1.3 因子分析模型</h3>
+<p>记观察变量<span class="math inline">\(x=(x_1, \cdots,
+x_p)&#39;\)</span>, 公共因子<span class="math inline">\(f=(f_1, \cdots,
+f_m)&#39;\)</span>, 特殊因子<span class="math inline">\(u=(u_1, \cdots,
+u_p)&#39;\)</span>.</p>
+<p>假设：</p>
+<ol type="1">
+<li><span class="math inline">\(f_1, \cdots,
+f_m\)</span>相互独立，且<span class="math inline">\(Var(f_{ij}) = 1,
+1\leq i\leq m\)</span>。<br />
+</li>
+<li><span class="math inline">\(u_1, \cdots,
+u_p\)</span>相互独立，且<span class="math inline">\(Var(u_i) =
+\sigma_i^2, 1\leq i\leq p\)</span>。<br />
+</li>
+<li><span class="math inline">\(f\)</span>与<span
+class="math inline">\(u\)</span>相互独立。<br />
+</li>
+<li><span class="math inline">\(Var(x_i) = 1, 1\leq i\leq
+p\)</span>。</li>
+</ol>
+<p>记因子载荷矩阵<span class="math inline">\(A=(a_{ij})_{p\times
+m}\)</span>，描述因子与观测变量之间的关系. 那么上述的模型可以一般化为:
+<span class="math display">\[
+x_i=\sum_{j = 1}^{m}a_{ij}f_j + u_i, 1\leq i\leq p\\
+1 = Var(x_i)=\sum_{j = 1}^{m}a_{ij}^2+\sigma_i^2, 1\leq i\leq p
+\]</span> 记<span class="math inline">\(h_i^2=\sum_{j =
+1}^{m}a_{ij}^2\)</span>， 则有<span class="math inline">\(1 =
+h_i^2+\sigma_i^2, 1\leq i\leq p\)</span>.</p>
+<p>称<span class="math inline">\(h_i^2\)</span>为公共因子对<span
+class="math inline">\(x_i\)</span>的贡献(or say 变量<span
+class="math inline">\(x_i\)</span>的公共方差)，它反映公共因子对<span
+class="math inline">\(x_i\)</span>的影响；<span
+class="math inline">\(\sigma_i^2\)</span>是特殊因子<span
+class="math inline">\(u_i\)</span>对变量<span
+class="math inline">\(x_i\)</span>的贡献(or say 变量<span
+class="math inline">\(x_i\)</span>的特殊方差)。</p>
+<p><span class="math inline">\(h_i^2\)</span>越大则<span
+class="math inline">\(\sigma_i^2\)</span>越小，反之亦然，说明变量<span
+class="math inline">\(x_i\)</span>对公共因子和特殊因子的依赖此消彼长。</p>
+<p><strong>公共因子对<span
+class="math inline">\(x\)</span>的贡献</strong></p>
+<p>公共因子<span class="math inline">\(f_j\)</span>对<span
+class="math inline">\(x\)</span>的贡献可以表示为： <span
+class="math display">\[
+g_j^2=\sum_{i = 1}^{p}a_{ij}^2
+\]</span> <span class="math inline">\(g_j^2\)</span>是公共因子<span
+class="math inline">\(f_j\)</span>的方差贡献总和，表示<span
+class="math inline">\(f_j\)</span>对所有变量<span
+class="math inline">\(x\)</span>的总体影响程度。，<span
+class="math inline">\(g_j^2\)</span>越大，说明<span
+class="math inline">\(f_j\)</span>对<span
+class="math inline">\(x\)</span>的影响越大，也就越重要。</p>
+<p>对任意<span class="math inline">\(1\leq i\leq p, 1\leq j\leq
+m\)</span>, 有: <span class="math display">\[
+Cov(x_i, f_j)=\sum_{k = 1}^{m}a_{ik}Cov(f_k, f_j)+Cov(u_i,
+f_j)=a_{ij}=\rho(x_i, f_j)
+\]</span> 因此，因子载荷矩阵<span
+class="math inline">\(A=(a_{ij})\)</span>的统计意义为：</p>
+<ol type="1">
+<li><span class="math inline">\(a_{ij}\)</span>是<span
+class="math inline">\(x_i\)</span>与<span
+class="math inline">\(f_j\)</span>的相关系数。<br />
+</li>
+<li><span class="math inline">\(\sum_{j = 1}^{m}a_{ij}^2\)</span>是<span
+class="math inline">\(x_i\)</span>对公共因子的依赖程度。</li>
+<li><span class="math inline">\(\sum_{i =
+1}^{p}a_{ij}^2\)</span>是公共因子<span
+class="math inline">\(f_j\)</span>对<span
+class="math inline">\(x\)</span>的各个分量的影响总和。</li>
+</ol>
+<h2 id="正交因子模型">7.2 正交因子模型</h2>
+<p><strong>正交因子模型</strong>：令<span
+class="math inline">\(x\in\mathbb{R}^p\)</span>, <span
+class="math inline">\(x=\mu+Af+u\)</span>.</p>
+<p><span class="math inline">\(x\)</span>具有因子结构(<span
+class="math inline">\(f\)</span>与<span
+class="math inline">\(u\)</span>相互独立):</p>
+<table>
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 16%" />
+<col style="width: 24%" />
+<col style="width: 48%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">\(\mu\)</span></th>
+<th><span class="math inline">\(A\)</span></th>
+<th><span class="math inline">\(f\)</span></th>
+<th><span class="math inline">\(u\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(p\)</span>维常数向量</td>
+<td><span class="math inline">\(p\times m\)</span>阶常数矩阵</td>
+<td><span class="math inline">\(f\sim N_{m}(0, I_{m}),\ m &lt;
+p\)</span></td>
+<td><span class="math inline">\(u\sim N_{p}(0, D),\
+D=\text{diag}(\sigma_{1}^{2},\cdots,\sigma_{p}^{2})\)</span></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>因子载荷矩阵</td>
+<td>公共因子</td>
+<td>特殊因子</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math display">\[
+\text{Cov}(x)=\Sigma = AA^{\prime}+D
+\]</span></p>
+<blockquote>
+<p>注意：因子载荷矩阵并不唯一，因为对任意<span
+class="math inline">\(m\)</span>阶正交矩阵<span
+class="math inline">\(T\)</span>，有: <span class="math display">\[
+\begin{align}x&amp;=\mu + Af + u\\
+&amp;=\mu+(AT)(T^{\prime}f)+u\\
+&amp;=\mu+(AT)f^{*}+u\\\\
+f^{*}&amp;=T^{\prime}f\sim N_{m}(0, I_{m})\\
+\text{Cov}(x)&amp;=AA^{\prime}+D=(AT)(AT)^{\prime}+D
+\end{align}
+\]</span></p>
+</blockquote>
+<h3 id="因子载荷矩阵的表示">7.2.1 因子载荷矩阵的表示</h3>
+<blockquote>
+<p><strong>Q: 在给定<span class="math inline">\(x\)</span>的相关阵<span
+class="math inline">\(R\)</span>和对角阵<span
+class="math inline">\(D\)</span>的条件下，如何求解<span
+class="math inline">\(A\)</span>？ </strong></p>
+</blockquote>
+<p>约相关阵：<span class="math inline">\(R^{*}=R -
+D=AA^{\prime}\)</span></p>
+<p>易知，<span class="math inline">\(R^{*}\)</span>的对角元素为<span
+class="math inline">\(h_{i}^{2}\)</span>，<span
+class="math inline">\(1\leq i\leq p\)</span>，其它元素与<span
+class="math inline">\(R\)</span>一样，且非负定。</p>
+<blockquote>
+<p><span class="math display">\[
+R^*=AA&#39;=\begin{pmatrix}
+a_{11}&amp;a_{12}&amp;\cdots&amp;a_{1m}\\
+a_{21}&amp;a_{22}&amp;\cdots&amp;a_{2m}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+a_{p1}&amp;a_{p2}&amp;\cdots&amp;a_{pm}\\
+\end{pmatrix}\begin{pmatrix}
+a_{11}&amp;a_{21}&amp;\cdots&amp;a_{p1}\\
+a_{12}&amp;a_{22}&amp;\cdots&amp;a_{p2}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+a_{1m}&amp;a_{2m}&amp;\cdots&amp;a_{pm}\\
+\end{pmatrix}\\
+R^*_{ii}=A_{i*}·A_{i*}&#39;=\sum^m_{j=1}a_{ij}^2=h_{i}^2\\
+R^*_{ij}=A_{i*}·A_{j*}&#39;=\sum^m_{k=1}a_{ik} a_{jk}
+\]</span></p>
+</blockquote>
+<p>记<span class="math inline">\(R^*\)</span>内的元素为<span
+class="math inline">\(r^*_{ij}=\sum^m_{k=1}a_{ik} a_{jk},\ 1\le j,k\le
+p\)</span>.</p>
+<p><strong>目标</strong>：求解<span
+class="math inline">\(A\)</span>的各列，使得“贡献”<span
+class="math inline">\(g_{1}^{2}\geq\cdots\geq g_{m}^{2}\)</span>.</p>
+<p><strong>要求</strong>：使得<span
+class="math inline">\(g_{1}^{2}=\sum_{i =
+1}^{p}a_{i1}^{2}\)</span>达到最大值的解。</p>
+<p><strong>利用特征根和特征向量求解</strong>:</p>
+<p>记<span
+class="math inline">\(\lambda_{1}\geq\cdots\geq\lambda_{p}\geq0\)</span>为<span
+class="math inline">\(R^{*}\)</span>的特征根，其对应的正则正交特征向量分别为<span
+class="math inline">\(\alpha_{1},\cdots,\alpha_{p}\)</span>。 则 : <span
+class="math display">\[
+\begin{align}R^{*}&amp;=U\Lambda U&#39;=U\Lambda^{\frac 1 2}
+U&#39;=AA&#39;
+\\&amp;=(\alpha_{1},\cdots,\alpha_{p})\text{diag}(\lambda_{1},\cdots,\lambda_{p})(\alpha_{1},\cdots,\alpha_{p})^{\prime}\\
+&amp;=(\alpha_{1},\cdots,\alpha_{p})\text{diag}(\sqrt{\lambda_{1}},\cdots,\sqrt{\lambda_{p}})\text{diag}(\sqrt{\lambda_{1}},\cdots,\sqrt{\lambda_{p}})(\alpha_{1},\cdots,\alpha_{p})^{\prime}\\\\
+A &amp;=
+(\alpha_{1},\cdots,\alpha_{m})\text{diag}(\sqrt{\lambda_{1}},\cdots,\sqrt{\lambda_{m}})
+\end{align}
+\]</span> 其中<span class="math inline">\(m\)</span>是<span
+class="math inline">\(R^{*}\)</span>的秩。</p>
+<h2 id="因子载荷矩阵的估计">7.3 因子载荷矩阵的估计</h2>
+<h3 id="r主成分估计法">7.3.1 R主成分估计法</h3>
+<blockquote>
+<p>认为比较粗糙，一般对<span
+class="math inline">\(R^*=R-D\)</span>进行主成分分析，此处<strong>直接对R进行主成分分析</strong>。</p>
+</blockquote>
+<p>记<span class="math inline">\(\hat{R}\)</span>为样本相关阵。对<span
+class="math inline">\(\hat{R}\)</span>做谱分解有 : <span
+class="math display">\[
+\hat{R}=\sum_{i =
+1}^{p}\hat{\lambda}_{i}\hat{\alpha}_{i}\hat{\alpha}_{i}&#39;
+\]</span> 其中，<span
+class="math inline">\(\hat{\lambda}_{1}&gt;\cdots&gt;\hat{\lambda}_{p}&gt;0\)</span>。</p>
+<p>先取<span
+class="math inline">\(\hat{a}_{1}=\sqrt{\hat{\lambda}_{1}}\hat{\alpha}_{1}\)</span>，然后看<span
+class="math inline">\(\hat{R}-\hat{a}_{1}\hat{a}_{1}&#39;=\sum_{i =
+2}^{p}\hat{\lambda}_{i}\hat{\alpha}_{i}\hat{\alpha}_{i}&#39;\)</span>是否接近对角阵。</p>
+<ul>
+<li>如果接近对角阵，表明剩下的都是特殊因子的影响，只有一个公共因子。</li>
+<li>否则一直进行下去。</li>
+</ul>
+<p>实际操作中，给定一个阈值<span
+class="math inline">\(\delta\)</span>，若: <span class="math display">\[
+\frac{\sum_{i = 1}^{m}\hat{\lambda}_{i}}{\sum_{i =
+1}^{p}\hat{\lambda}_{i}}\geq\delta
+\]</span> 则取 : <span class="math display">\[
+\hat{\Lambda}=(\hat{a}_{1},\cdots,\hat{a}_{m})\text{diag}(\sqrt{\hat{\lambda}_{1}},\cdots,\sqrt{\hat{\lambda}_{m}})=(\sqrt{\hat{\lambda}_{1}}\hat{\alpha}_{1},\cdots,\sqrt{\hat{\lambda}_{m}}\hat{\alpha}_{m})
+\]</span></p>
+<h3 id="mse-极大似然估计法">7.3.2 MSE-极大似然估计法</h3>
+<p>假设<span
+class="math inline">\(x_1,\cdots,x_n\)</span>是来自正交因子模型<span
+class="math inline">\((M)\)</span>的独立观测样本，<span
+class="math inline">\(\text{rank}(A)=m\)</span>，则<span
+class="math inline">\((\mu,A,D)\)</span>的似然函数为 : <span
+class="math display">\[
+L(\mu,A,D)=\vert
+AA&#39;+D\vert^{-n/2}\exp\left\{-\frac{n}{2}\text{tr}[(AA&#39;+D)^{-1}(S
++ (\bar{x}-\mu)(\bar{x}-\mu)&#39;)]\right\}
+\]</span> 其中，<span
+class="math inline">\(\bar{x}\)</span>是样本均值，<span
+class="math inline">\(S\)</span>是样本协差阵。</p>
+<p>对<span class="math inline">\(\mu\)</span>求极大后得<span
+class="math inline">\((A,D)\)</span>的对数似然函数为 : <span
+class="math display">\[
+L(A,D)=|AA&#39;+D|^{-\frac n 2} \exp\{-\frac
+n2tr\left[(AA&#39;+D)^{-1}S)\right]\}\\
+\ln L(A,D)=l(A,D)=-\frac n2\ln|AA&#39;+D|-\frac
+n2tr\left[(AA&#39;+D)^{-1}S)\right]
+\]</span> 对其求偏微分、极大似然估计满足： <span class="math display">\[
+\begin{cases}
+\frac{\partial l(\hat{A},\hat{D})}{\partial A}=0;\\\frac{\partial
+l(\hat{A},\hat{D})}{\partial D}=0\\
+\end{cases}
+\]</span> 求解<span class="math inline">\(\frac{\partial
+l(\hat{A},\hat{D})}{\partial A}=0\)</span>过程如下：</p>
+<blockquote>
+<p>因此，第一项关于 AA 的偏导数为： <span class="math display">\[
+\frac{\partial}{\partial A} \left( -\frac{n}{2} \ln |AA&#39; + D|
+\right) = -\frac{n}{2} \cdot (AA&#39; + D)^{-1} \cdot \frac{\partial
+(AA&#39; + D)}{\partial A}\\
+\because\frac{\partial (AA&#39;)}{\partial A} = A\\
+\therefore\frac{\partial}{\partial A} \left( -\frac{n}{2} \ln |AA&#39; +
+D| \right) = -\frac{n}{2} (AA&#39; + D)^{-1} A\\
+\]</span> 矩阵的迹的偏导性质为： <span class="math display">\[
+\because\frac{\partial \text{tr}(A^{-1} B)}{\partial A} = -A^{-1} B
+A^{-1}\\\therefore\begin{align}
+\frac{\partial}{\partial A} \left( -\frac{n}{2} \text{tr} \left[
+(AA&#39; + D)^{-1} S \right] \right)&amp; = -\frac{n}{2} \cdot \left[ -
+(AA&#39; + D)^{-1} S (AA&#39; + D)^{-1} \right] \cdot \frac{\partial
+(AA&#39; + D)}{\partial A}\\
+&amp;= \frac{n}{2} (AA&#39; + D)^{-1} S (AA&#39; + D)^{-1} A\end{align}
+\]</span> 将两项的偏导数相加，得到： <span class="math display">\[
+\frac{\partial l(A, D)}{\partial A} = -\frac{n}{2} (AA&#39; + D)^{-1} A
++ \frac{n}{2} (AA&#39; + D)^{-1} S (AA&#39; + D)^{-1} A=0\\
+-\frac{n}{2} (AA&#39; + D)^{-1} A \left[ I - (AA&#39; + D)^{-1} S
+\right]=0\\
+\]</span> 由于$(AA' + D)^{-1} <span
+class="math inline">\(是非奇异矩阵，且\)</span>A $，所以要求： <span
+class="math display">\[
+I - (AA&#39; + D)^{-1} S = 0\\
+(AA&#39; + D)^{-1} S = I\\
+S=(AA&#39;+D)
+\]</span> 而对<span class="math inline">\(\frac{\partial
+l(\hat{A},\hat{D})}{\partial D}=0\)</span>求解，结果也是<span
+class="math inline">\(S=(AA&#39;+D)\)</span></p>
+</blockquote>
+<p>根据我们计算偏导的结果，能够知道极大似然估计满足下面的方程组：：</p>
+<p><span class="math display">\[
+\begin{cases}
+A=S(AA&#39;+D)^{-1}A\quad &amp;\text{(因子载荷矩阵的更新方程)}\\
+diag(S)=diag(AA&#39;+D)\quad &amp;\text{(对角元素方差约束)}
+\end{cases}
+\]</span></p>
+<h4 id="a.-其他表示">A. 其他表示</h4>
+<blockquote>
+<p><strong>Q: 进行变换有何意义？</strong></p>
+<p>A: GPT大爷如是说到——</p>
+<ol type="1">
+<li><strong>解耦和标准化</strong>：
+<ul>
+<li>通过引入 <span class="math inline">\(D^{-1}\)</span> 和 <span
+class="math inline">\(D^{-\frac{1}{2}}\)</span>，将原始因子分析模型中的协方差分解标准化，减少了特殊方差
+D 对求解的影响。</li>
+<li>变换后的方程更简洁，特别是在数值迭代计算中，便于求解。</li>
+</ul></li>
+<li><strong>结构性分解</strong>：
+<ul>
+<li>方程 <span class="math inline">\(SD^{-1}A = A(I_m +
+A&#39;D^{-1}A)\)</span> 和标准化方程 $D^{-} S D^{-}
+$提供了一个明确的框架，展示了样本协方差矩阵与因子载荷之间的关系。</li>
+</ul></li>
+<li><strong>数值求解的基础</strong>：
+<ul>
+<li>在实际应用中，这些变换是迭代估计算法（如极大似然估计和 EM
+算法）的基础。</li>
+<li>归一化后的方程可以用于更新 A 和 D，直到收敛。</li>
+</ul></li>
+</ol>
+</blockquote>
+<p>由： <span class="math display">\[
+\begin{align}A(I_m+A&#39;D^{-1}A)&amp;=A+AA&#39;D^{-1}A,\quad
+I_m=DD^{-1}\\
+A(I_m+A&#39;D^{-1}A)&amp;=DD^{-1}A+AA&#39;D^{-1}A\\&amp;=(D+AA&#39;)D^{-1}A\\\\
+A(I_m+A&#39;D^{-1}A)&amp;=(D+AA&#39;)D^{-1}A\\
+A&amp;=(D+AA&#39;)D^{-1}A(I_m+A&#39;D^{-1}A)^{-1}\\
+(D+AA&#39;)^{-1}A&amp;=D^{-1}A(I_m+A&#39;D^{-1}A)^{-1}
+\end{align}
+\]</span></p>
+<p>因为<span
+class="math inline">\((AA&#39;+D)^{-1}A=D^{-1}A(I_m+A&#39;D^{-1}A)^{-1}\)</span>,
+对A代换有: <span class="math display">\[
+A=S(AA&#39;+D)^{-1}A=SD^{-1}A(I_m+A&#39;D^{-1}A)^{-1}\\
+A=SD^{-1}A(I_m+A&#39;D^{-1}A)^{-1}\\
+SD^{-1}A=A(I_m+A&#39;D^{-1}A)
+\]</span> 上述的解可以被写成： <span class="math display">\[
+\begin{cases}
+SD^{-1}A=A(I_m+A&#39;D^{-1}A)\\
+diag(S)=diag(AA&#39;+D)
+\end{cases}
+\]</span></p>
+<blockquote>
+<p>上面的方程还可以被写成： <span class="math display">\[
+SD^{-1}A=A(I_m+A&#39;D^{-1}A)\\
+D^{-\frac 1 2}SD^{-1}A=(D^{-\frac 1 2}A)(I_m+A&#39;D^{-1}A)\\
+(D^{-\frac 1 2}SD^{-\frac 1 2})(D^{-\frac 1 2}A)=(D^{-\frac 1
+2}A)(I_m+A&#39;D^{-1}A)
+\]</span></p>
+</blockquote>
+<h4 id="b.因子载荷矩阵的唯一解">B.因子载荷矩阵的唯一解</h4>
+<p><strong>注意到：因子负荷矩阵<span
+class="math inline">\(A\)</span>不唯一。</strong></p>
+<p>这是因为 <span class="math inline">\(\Sigma =
+AA&#39;+D=(AT)(AT)&#39;+D\)</span>对任意正交矩阵<span
+class="math inline">\(T\)</span>成立。由于正交矩阵<span
+class="math inline">\(T\)</span>有: <span class="math display">\[
+m^2 - m - m(m - 1)/2=m(m - 1)/2
+\]</span> 个变量(自由度)。</p>
+<p>因此，为使<span class="math inline">\(A\)</span>的解“唯一”，需对<span
+class="math inline">\(A\)</span>加上<span
+class="math inline">\(\frac{m(m - 1)}{2}\)</span>个约束。 对<span
+class="math inline">\(A\)</span>的约束为 : <span class="math display">\[
+A&#39;D^{-1}A=\Gamma=\text{diag}(\gamma_{1},\cdots,\gamma_{m})&gt;0
+\]</span> 如果加上约束条件：<span
+class="math inline">\(A&#39;D^{-1}A=\Gamma=\text{diag}(\gamma_{1},\cdots,\gamma_{m})&gt;0\)</span>，
+则由方程推知： <span class="math display">\[
+\begin{align}(D^{-\frac{1}{2}}SD^{-\frac{1}{2}})(D^{-\frac{1}{2}}A)&amp;=(D^{-\frac{1}{2}}A)(I_{m}+A&#39;D^{-1}A)\\
+(D^{-\frac{1}{2}}SD^{-\frac{1}{2}})(D^{-\frac{1}{2}}A)&amp;=(D^{-\frac{1}{2}}A)(I_{m}+\Gamma)\\
+(D^{-\frac{1}{2}}SD^{-\frac{1}{2}})(D^{-\frac{1}{2}}A)\Gamma^{-\frac 1
+2}&amp;=(D^{-\frac{1}{2}}A)(I_{m}+\Gamma)\Gamma^{-\frac 1 2}\\
+(D^{-\frac{1}{2}}SD^{-\frac{1}{2}})(D^{-\frac{1}{2}}A)\Gamma^{-\frac 1
+2}&amp;=(D^{-\frac{1}{2}}A)\Gamma^{-\frac 1 2}(I_{m}+\Gamma)\\
+(D^{-\frac{1}{2}}SD^{-\frac{1}{2}})(D^{-\frac{1}{2}}A\Gamma^{-\frac 1
+2})&amp;=(D^{-\frac{1}{2}}A\Gamma^{-\frac 1 2})(I_{m}+\Gamma)\\\\
+\because\Gamma^{-\frac 1 2}A&#39;D^{-1}A\Gamma^{-\frac 1
+2}=\frac{A&#39;DA}{A&#39;DA}&amp;=I_m\\
+\therefore(D^{-\frac{1}{2}}A\Gamma^{-\frac 1
+2})&#39;(D^{-\frac{1}{2}}A\Gamma^{-\frac 1 2}) &amp;= I_{m}
+\end{align}
+\]</span> 表明下列例子成立： <span class="math display">\[
+\begin{cases}
+(D^{-\frac{1}{2}}SD^{-\frac{1}{2}})(D^{-\frac{1}{2}}A\Gamma^{\frac 1
+2})=(D^{-\frac{1}{2}}A\Gamma^{\frac 1 2}) (I_{m}+\Gamma)\\
+(D^{-\frac{1}{2}}A\Gamma^{\frac 1
+2})&#39;(D^{-\frac{1}{2}}A\Gamma^{\frac 1 2}) = I_{m}
+\end{cases}
+\]</span> 表明<span class="math inline">\(1 + \gamma_{1},\cdots,1 +
+\gamma_{m}\)</span>是<span
+class="math inline">\(D^{-\frac{1}{2}}SD^{-\frac{1}{2}}\)</span>的<span
+class="math inline">\(m\)</span>个正特征根; <span
+class="math inline">\(D^{-\frac{1}{2}}A\Gamma^{-\frac{1}{2}}\)</span>是它们对应的正则正交特征向量矩阵。</p>
+<p>由于: <span class="math display">\[
+D^{-\frac{1}{2}}\Sigma
+D^{-\frac{1}{2}}=D^{-\frac{1}{2}}(AA&#39;+D)D^{-\frac{1}{2}}=(A&#39;D^{-\frac{1}{2}})&#39;(A&#39;D^{-\frac{1}{2}})+I_{p}
+\]</span> 而<span
+class="math inline">\((A&#39;D^{-\frac{1}{2}})&#39;(A&#39;D^{-\frac{1}{2}})\)</span>
+与 <span
+class="math inline">\((A&#39;D^{-\frac{1}{2}})(A&#39;D^{-\frac{1}{2}})&#39;
+= A&#39;D^{-1}A=\Gamma\)</span> 有相同的非零特征根。</p>
+<p>因此<span class="math inline">\(D^{-\frac{1}{2}}\Sigma
+D^{-\frac{1}{2}}\)</span>的前<span
+class="math inline">\(m\)</span>个特征根为<span class="math inline">\((1
++ \gamma_{1})\geq\cdots\geq(1 + \gamma_{m})&gt;1\)</span>，其它全是<span
+class="math inline">\(1\)</span>。</p>
+<p>在给定<span class="math inline">\(D\)</span>的条件下，可计算出<span
+class="math inline">\(D^{-\frac{1}{2}}SD^{-\frac{1}{2}}\)</span>的<span
+class="math inline">\(m\)</span>个非零特征根<span
+class="math inline">\((1 + \gamma_{1})\geq\cdots\geq(1 +
+\gamma_{m})&gt;1\)</span>，以及它们对应的正则正交特征向量矩阵<span
+class="math inline">\(E\)</span>. 令<span
+class="math inline">\(\Pi=\text{diag}(\gamma_{1},\cdots,\gamma_{m})\)</span>。</p>
+<p>则方程<span
+class="math inline">\(SD^{-1}A=A(I_m+A&#39;D^{-1}A)\)</span>的解为:
+<span class="math display">\[
+D^{-\frac{1}{2}}A\Gamma^{-\frac{1}{2}}=E\\\Rightarrow A =
+D^{\frac{1}{2}}E\Gamma^{\frac{1}{2}}
+\]</span></p>
+<h4 id="c.mse迭代算法">C.MSE迭代算法</h4>
+<ol type="1">
+<li><p><strong>给出<span
+class="math inline">\(D\)</span>的一个初始估计</strong>:
+可由主成分法等确定<span
+class="math inline">\(D\)</span>的一个粗估计，或简单地由各分量的方差估计作为<span
+class="math inline">\(D\)</span>初始估计。记<span
+class="math inline">\(D_0=\text{diag}(\sigma_{1,0},\cdots,\sigma_{p,0})\)</span>。</p></li>
+<li><p><strong>计算特征根和特征向量并估计因子载荷矩阵</strong>:
+计算<span
+class="math inline">\(D_0^{-\frac{1}{2}}SD_0^{-\frac{1}{2}}\)</span>的前<span
+class="math inline">\(m\)</span>个特征根<span
+class="math inline">\(\lambda_{1,1}&gt;\cdots&gt;\lambda_{1,m}\)</span>以及它们所对应的正则正交特征向量<span
+class="math inline">\(e_{1,1},\cdots,e_{1,m}\)</span>。记: <span
+class="math display">\[
+\Gamma_1 = \text{diag}(\lambda_{1,1}-1,\cdots,\lambda_{1,m}-1)\\
+E_1=(e_{1,1},\cdots,e_{1,m})\\
+A_1 = D_0^{\frac{1}{2}}E_1\Gamma_1^{\frac{1}{2}}
+\]</span> <span
+class="math inline">\(A_1\)</span>是因子载荷矩阵的估计，这里要求<span
+class="math inline">\(\lambda_{1,1}&gt;\cdots&gt;\lambda_{1,m}&gt;1\)</span>，否则减小<span
+class="math inline">\(m\)</span>，或停止。</p></li>
+<li><p><strong>给出<span
+class="math inline">\(D\)</span>的迭代估计</strong> - 由方程(2)给出<span
+class="math inline">\(D\)</span>的迭代估计: <span
+class="math display">\[
+D_1=\text{diag}(S)-\text{diag}(A_1A_1&#39;)
+\]</span> 这里要求<span
+class="math inline">\(D_1&gt;0\)</span>，否则停止。</p></li>
+<li><p><strong>迭代循环</strong> - 返回(1)，直至迭代停止。</p></li>
+</ol>
+<p>也可以使用EM算法，视作隐变量进行计算。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241128110458974.png"
+alt="image-20241128110458974" />
+<figcaption aria-hidden="true">image-20241128110458974</figcaption>
+</figure>
+<h2 id="因子旋转">7.4 因子旋转</h2>
+<p>由于因子载荷矩阵不唯一，因此可以寻找一个正交矩阵<span
+class="math inline">\(T\)</span>使得<span
+class="math inline">\(AT\)</span>对应的公共因子具有更好的实际意义而便于解释</p>
+<h3 id="方差最大的正交旋转varimax旋转">7.4.1
+方差最大的正交旋转(Varimax旋转)</h3>
+<p>先考虑两个因子的正交旋转，设因子载荷矩阵和正交矩阵为：</p>
+<p><span
+class="math inline">\(B=AT,T=\begin{pmatrix}\cos(\varphi)&amp;-\sin(\varphi)\\
+\sin(\varphi)&amp;cos(\varphi) \end{pmatrix}\)</span>, T是旋转矩阵。</p>
+<p>令<span class="math inline">\(A=(a_1,a_2), B=(b_1,b_2)\)</span> <span
+class="math display">\[
+\begin{cases}
+b_1=a_1\cos(\varphi)-a_2\sin(\varphi)\\
+b_2=a_1\sin(\varphi)+a_2\cos(\varphi)
+\end{cases}
+\]</span></p>
+<blockquote>
+<p><strong>目标：</strong>旋转后，因子的“贡献”越分散越好。</p>
+<p><strong>结果：</strong><span
+class="math inline">\(x\)</span>可分为两部分，一部分主要与第一因子有关，另一部分主要与第二因子有关。</p>
+</blockquote>
+<p>定义<span class="math inline">\(b_1\)</span>和<span
+class="math inline">\(b_2\)</span>的相对方差： <span
+class="math display">\[
+V_i(\varphi)=\frac 1
+p\sum^p_{j=1}\left(\frac{b_{ji}^2}{h_j^2}\right)-\left(\frac 1
+p\sum^p_{j=1}\frac{b_{ji}^2}{h_j^2}\right)^2
+\]</span> 其中<span class="math inline">\(h_j\)</span>表示因子对<span
+class="math inline">\(x_j\)</span>的影响；要求使得总方差最大，即求：
+<span class="math display">\[
+\hat\varphi=\arg\max_{\varphi}(V_1(\varphi)+V_2(\varphi))
+\]</span> 记：(<span class="math inline">\(1\leq j\leq p\)</span>)</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><span
+class="math inline">\(\mu_{j}=\left(\frac{a_{j1}}{h_{j}}\right)^{2}-\left(\frac{a_{j2}}{h_{j}}\right)^{2}\)</span></th>
+<th><span
+class="math inline">\(v_{j}=2\left(\frac{a_{j1}}{h_{j}}\right)\left(\frac{a_{j2}}{h_{j}^{2}}\right)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(A=\sum_{j = 1}^{p}\mu_{j}\)</span></td>
+<td><span class="math inline">\(B=\sum_{j = 1}^{p}v_{j}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(C=\sum_{j =
+1}^{p}(\mu_{j}^{2}-v_{j}^{2})\)</span></td>
+<td><span class="math inline">\(D=\sum_{j =
+1}^{p}2\mu_{j}v_{j}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>此法具有显式解： <span class="math display">\[
+\tan(4\hat\varphi)=\frac{D-2\frac{AB}{p}}{C-\frac{A^2-B^2}{p}}
+\]</span> 进而得正交矩阵： <span class="math display">\[
+T=\begin{pmatrix}\cos(\hat\varphi)&amp;-\sin(\hat\varphi)\\
+\sin(\hat\varphi)&amp;cos(\hat\varphi) \end{pmatrix}
+\]</span></p>
+<p>取得的方差<span
+class="math inline">\(\hat\varphi\)</span>是有界（其成分都是有界的）、故一定会收敛。</p>
+<p>在旋转的同时，都会更接近收敛（比原来好），因此到达停止条件的时候，收敛。</p>
+<h3 id="更多公共因子的情形">7.4.2 更多公共因子的情形</h3>
+<p>当公共因子个数<span class="math inline">\(m &gt;
+2\)</span>时，可以逐次对每两个公共因子对进行Varimax旋转。</p>
+<blockquote>
+<p>自然而然地联想到矩阵分解方法：Givens reduction(√)</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241216225610973.png"
+alt="image-20241216225610973" />
+<figcaption aria-hidden="true">image-20241216225610973</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241216225626622.png"
+alt="image-20241216225626622" />
+<figcaption aria-hidden="true">image-20241216225626622</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241216225641873.png"
+alt="image-20241216225641873" />
+<figcaption aria-hidden="true">image-20241216225641873</figcaption>
+</figure>
+</blockquote>
+<p>这样做<span class="math inline">\(C_{m}^{2}=m(m -
+1)/2\)</span>次后，所有公共因子对都旋转一次，记为旋转一轮。如果旋转一轮后未达到目标，再进行新一轮旋转。
+记第<span
+class="math inline">\(j\)</span>次旋转后因子载荷矩阵的相对方差差总和为<span
+class="math inline">\(G^{(j)}\)</span>， <span class="math display">\[
+G^{(j)}=\sum_{i = 1}^{m}V_{i}^{(j)}
+\]</span> 由Varimax的性质知，<span class="math inline">\(G^{(1)}\leq
+G^{(2)}\leq\cdots\leq G^{(n)}\leq G^{(n + 1)}\leq\cdots\)</span></p>
+<p>而因子载荷矩阵的元素绝对值均不大于1，因此上述单调序列有上界，故收敛。</p>
+<p>实际中，若认为因子载荷矩阵的相对方差差总和已经变化很小时，则停止旋转。</p>
+<h2 id="正交因子模型协方差结构的检验">7.5
+正交因子模型协方差结构的检验</h2>
+<p>在因子分析中，正交因子模型假设观测变量的协方差矩阵可以被分解为因子载荷矩阵和特殊方差矩阵的组合形式：
+<span class="math display">\[
+\Sigma = AA&#39; + D
+\]</span>
+模型假设的是一个特定的协方差结构，但这个假设不一定总是成立，因此需要检验协方差的结构是否符合模型的理论假设。</p>
+<blockquote>
+<p><strong>检验协方差结构的目的和意义</strong>:</p>
+<ul>
+<li><strong>理论协方差矩阵</strong> <span
+class="math inline">\(\Sigma\)</span> 是因子模型根据参数 A 和 D
+推导得到的。</li>
+<li><strong>实际协方差矩阵</strong> S 是根据样本数据计算出来的。</li>
+</ul>
+<p>目标是检验实际协方差矩阵 S 是否与理论协方差矩阵 <span
+class="math inline">\(\Sigma\)</span> 足够接近。</p>
+<ul>
+<li>如果 <span class="math inline">\(S \approx
+\Sigma\)</span>，说明因子模型合理，协方差的结构假设成立；</li>
+<li>如果 <span class="math inline">\(S\)</span> 与 <span
+class="math inline">\(\Sigma\)</span>
+偏差较大，说明因子模型可能不适合当前数据。</li>
+</ul>
+</blockquote>
+<h3 id="正交因子模型极大似然估计相关推导">7.5.1
+正交因子模型极大似然估计相关推导</h3>
+<p>设<span class="math inline">\(x_1,\cdots,x_n\)</span>是来自总体<span
+class="math inline">\(N_p(\mu,\Sigma)\)</span>的样本，其中<span
+class="math inline">\(n &gt; p\)</span>，<span
+class="math inline">\(\Sigma&gt;0\)</span>。</p>
+<p>有关正交因子模型<span class="math inline">\((M)\)</span>的检验问题为:
+<span class="math display">\[
+H_0:\Sigma = AA&#39;+D
+\]</span> 其中<span class="math inline">\(A\)</span>是秩为<span
+class="math inline">\(m\)</span>的<span class="math inline">\(p\times
+m\)</span>矩阵，<span
+class="math inline">\(D=\text{diag}(\sigma_1^2,\cdots,\sigma_p^2)&gt;0\)</span>。</p>
+<p>记<span class="math inline">\((A,D)\)</span>的极大似然估计为<span
+class="math inline">\((\hat{A},\hat{D})\)</span>，则有: <span
+class="math display">\[
+L(\hat{A},\hat{D})=\vert\hat{A}\hat{A}&#39;+\hat{D}\vert^{-n/2}\exp\left\{-\frac{n}{2}\text{tr}[(\hat{A}\hat{A}&#39;+\hat{D})^{-1}S]\right\}
+\]</span> 由于极大似然估计满足似然方程，故有: <span
+class="math display">\[
+\begin{cases}
+\hat{A}=S(\hat{A}\hat{A}&#39;+\hat{D})^{-1}\hat{A}\\
+\text{diag}(S)=\text{diag}(\hat{A}\hat{A}&#39;+\hat{D})
+\end{cases}
+\]</span> 对任意方阵<span
+class="math inline">\(Q\)</span>和正定的对角阵<span
+class="math inline">\(P\)</span>，有: <span class="math display">\[
+\text{tr}[\text{diag}(QP)]=\text{tr}[QP]=\text{tr}[(\text{diag}(Q))P]
+\]</span> 由<span
+class="math inline">\(\hat{D}\)</span>是对角阵与方程<span
+class="math inline">\(\text{diag}(S)=\text{diag}(\hat{A}\hat{A}&#39;+\hat{D})\)</span>可知:
+<span class="math display">\[
+\begin{align}
+tr\left[(S-\hat A\hat A&#39;)\hat
+D^{-1}\right]&amp;=tr\left[diag\left((S-\hat A\hat A&#39;)\hat
+D^{-1}\right)\right]\\
+&amp;=tr\left[\left(diag(S-\hat A\hat A&#39;)\right)\hat
+D^{-1}\right]\\\\
+\because \text{diag}(S)&amp;=\text{diag}(\hat{A}\hat{A}&#39;+\hat{D})\\
+\therefore
+\text{diag}(S)&amp;=\text{diag}(\hat{A}\hat{A}&#39;)+diag(\hat{D})\\\\
+tr\left[(S-\hat A\hat A&#39;)\hat D^{-1}\right]&amp;=tr\left[diag(\hat
+D)\hat D^{-1}\right]\\
+&amp;=trtr\left[diag(\hat D\hat D^{-1})\right]\\
+&amp;=p
+\end{align}
+\]</span> 根据<span
+class="math inline">\(\hat{A}=S(\hat{A}\hat{A}&#39;+\hat{D})^{-1}\hat{A}\)</span>知：</p>
+<p><span class="math display">\[
+\begin{align}
+tr\left[S(\hat A\hat A&#39;+\hat D)^{-1}\right]&amp;=tr\left[S(\hat
+A\hat A&#39;+\hat D)^{-1}(\hat A\hat A&#39;+\hat D-\hat A\hat
+A&#39;)\hat D^{-1}\right]\\
+&amp;=tr\left[S\left(\hat D^{-1}-(\hat A\hat A&#39;+\hat D)^{-1}\hat
+A\hat A&#39;\hat D^{-1}\right)\right]\\
+&amp;=tr\left[S\hat D^{-1}-\left(S(\hat A\hat A&#39;+\hat D)^{-1}\hat
+A\right)\hat A&#39;\hat D^{-1}\right]\\
+&amp;=tr\left[S\hat D^{-1}-\hat A\hat A&#39;\hat D^{-1}\right]\\
+&amp;=tr\left[\left(S-\hat A\hat A&#39;\right)\hat D^{-1}\right]\\
+&amp;=p
+\end{align}
+\]</span></p>
+<p>因此有： <span class="math display">\[
+L(\hat A,\hat D)=\vert\hat A\hat A&#39;+\hat D\vert^{-\frac n
+2}\exp\{-\frac {np}2\}
+\]</span> 正交因子模型检验的似然比<span
+class="math inline">\(\lambda\)</span>为： <span class="math display">\[
+\begin{align}
+\lambda&amp;=\frac{\sup_{\mu,\Sigma =
+AA&#39;+D}\vert\Sigma\vert^{-n/2}\exp\left\{-\frac{n}{2}\text{tr}[\Sigma^{-1}(S
++
+(\bar{x}-\mu)(\bar{x}-\mu)&#39;)]\right\}}{\sup_{\mu,\Sigma}\vert\Sigma\vert^{-n/2}\exp\left\{-\frac{n}{2}\text{tr}[\Sigma^{-1}(S
++ (\bar{x}-\mu)(\bar{x}-\mu)&#39;)]\right\}}\\
+&amp;=\left(\frac{\vert
+S\vert}{\vert\hat{A}\hat{A}&#39;+\hat{D}\vert}\right)^{n/2}
+\end{align}
+\]</span> 计算参数空间的自由度:</p>
+<ol type="1">
+<li><span class="math inline">\(\text{dim}(H)=p+\frac{p(p +
+1)}{2}\)</span></li>
+<li>由于<span
+class="math inline">\(A&#39;D^{-1}A\)</span>为对角阵，即<span
+class="math inline">\(A\)</span>有<span class="math inline">\(\frac{m(m
+- 1)}{2}\)</span>个约束。因此<span
+class="math inline">\(\text{dim}(H_0)=mp-\frac{m(m -
+1)}{2}+2p\)</span><br />
+</li>
+<li>自由度<span class="math inline">\(f\)</span>为： <span
+class="math inline">\(\begin{align}
+f&amp;=\text{dim}(H)-\text{dim}(H_0)\\&amp;=\left[p+\frac{p(p +
+1)}{2}\right]-\left[mp + 2p-\frac{m(m - 1)}{2}\right]\\&amp;=\frac{(p -
+m)^2-(p + m)}{2} \end{align}\)</span></li>
+</ol>
+<p>由Wilks定理知： <span class="math display">\[
+- 2\ln\lambda=-n(\ln
+S-\ln\vert\hat{A}\hat{A}&#39;+\hat{D}\vert)\stackrel{d}{\rightarrow}\chi^2(f)
+\]</span> <strong>检验方案</strong>: 当<span class="math inline">\(-
+2\ln\lambda&gt;\chi_{1-\alpha}^2(f)\)</span>时拒绝零假设，其犯第一类错误的概率近似为<span
+class="math inline">\(\alpha\)</span>。</p>
+<blockquote>
+<p>正交因子模型的识别性问题: 当自由度<span
+class="math inline">\(f\leq0\)</span>时，正交因子模型存在可识别性问题。</p>
+<ul>
+<li>当<span class="math inline">\(f &lt; 0\)</span>时，分解<span
+class="math inline">\(\Sigma = AA&#39;+D\)</span>不唯一;（<span
+class="math inline">\(m\)</span>偏大）</li>
+<li>当<span class="math inline">\(f = 0\)</span>时，分解<span
+class="math inline">\(\Sigma =
+AA&#39;+D\)</span>或不存在，或存在唯一。</li>
+</ul>
+</blockquote>
+<h2 id="斜交旋转">7.6斜交旋转</h2>
+<p>设<span class="math inline">\(p\)</span>维随机向量<span
+class="math inline">\(\mathbf{x}\)</span>可以表示为： <span
+class="math display">\[
+\mathbf{x}=\mu + A\mathbf{f}+\mathbf{u}
+\]</span> 其中，<span class="math inline">\(\mu\)</span>是<span
+class="math inline">\(p\)</span>维常数向量，<span
+class="math inline">\(A\)</span>是<span class="math inline">\(p\times
+m\)</span>阶常数矩阵，<span class="math inline">\(\mathbf{f}\sim
+N_{m}(0, R)\)</span>，<span class="math inline">\(m &lt;
+p\)</span>，<span class="math inline">\(R &gt; 0\)</span>为相关阵，<span
+class="math inline">\(\mathbf{u}\sim N_{p}(0, D)\)</span>，<span
+class="math inline">\(D=\text{diag}(\sigma_{1}^{2},\cdots,\sigma_{p}^{2})\)</span>，<span
+class="math inline">\(\mathbf{f}\)</span>与<span
+class="math inline">\(\mathbf{u}\)</span>相互独立。</p>
+<p>称模型<span class="math inline">\(\mathbf{x}=\mu +
+A\mathbf{f}+\mathbf{u}\)</span>为斜交因子模型，称<span
+class="math inline">\(\mathbf{f}\)</span>为公共因子，<span
+class="math inline">\(\mathbf{u}\)</span>为特殊因子，<span
+class="math inline">\(A\)</span>为因子载荷矩阵。</p>
+<p><strong>Actually，</strong>存在满秩阵<span
+class="math inline">\(T\)</span>，使得<span class="math inline">\(R =
+TT^{\prime}\)</span>。若令<span class="math inline">\(B =
+AT\)</span>，<span
+class="math inline">\(g=T^{-1}\mathbf{f}\)</span>，则： <span
+class="math display">\[
+\begin{align}
+{x}&amp;=\mu + \mathbf A{f}+{u}\\
+&amp;=\mu+(\mathbf AT)(T^{-1}{f})+{u}\\
+&amp;=\mu+\mathbf Bg+u
+\end{align}
+\]</span> 易知: <span class="math display">\[
+$\text{Cov}(\mathbf{g})=T^{-1}\text{Cov}(\mathbf{f})(T^{\prime})^{-1}=T^{-1}R(T^{\prime})^{-1}=I_{m}
+\]</span> 则<span class="math inline">\(x=\mu+\mathbf
+Bg+u\)</span>是正交因子模型，<span
+class="math inline">\({g}\)</span>是公共因子，<span
+class="math inline">\(B\)</span>是正交因子载荷矩阵。</p>
+<p>由于<span
+class="math inline">\(T\)</span>非正交矩阵，我们称公共因子<span
+class="math inline">\({f}=T{g}\)</span>为正交公共因子<span
+class="math inline">\({g}\)</span>的斜交旋转。</p>
+<h2 id="因子得分">7.7 因子得分</h2>
+<p>将因子表示成变量的线性组合（反代）</p>
+<p><span class="math inline">\(f=Bx\)</span>, 其中<span
+class="math inline">\(B=(b_{ij})_{m\times
+p},f\in\mathbb{R}^{m}\)</span>是公共因子, <span
+class="math inline">\(x\in\mathbb{R}^p\)</span>是变量。</p>
+<ul>
+<li>因子得分函数：<span class="math inline">\(f=Bx\)</span></li>
+<li>因子得分矩阵：<span class="math inline">\(B\)</span></li>
+</ul>
+<p>由因子得分函数知: <span class="math display">\[
+f_j=\sum_{i = 1}^{p}b_{ji}x_i, \quad 1\leq j\leq m
+\]</span></p>
+<h3 id="因子得分的计算--计算因子得分矩阵b">7.7.1
+因子得分的计算--计算因子得分矩阵<span
+class="math inline">\(B\)</span></h3>
+<p>假定变量<span
+class="math inline">\(\mathbf{x}\)</span>已作标准化处理，即<span
+class="math inline">\(E(x_i) = 0\)</span>，<span
+class="math inline">\(Var(x_i)=1\)</span>，<span
+class="math inline">\(1\leq i\leq p\)</span>。 令<span
+class="math inline">\(R = Cov(\mathbf{x})\)</span>，<span
+class="math inline">\(R\)</span>也是<span
+class="math inline">\(\mathbf{x}\)</span>的相关阵。记<span
+class="math inline">\(R=(r_{ij})_{p\times p}\)</span>。</p>
+<p>假定因子载荷矩阵<span class="math inline">\(A\)</span>和相关阵<span
+class="math inline">\(R\)</span>已知。</p>
+<p>对任意<span class="math inline">\(1\leq i\leq p\)</span>，<span
+class="math inline">\(1\leq j\leq m\)</span>，有： <span
+class="math display">\[
+\begin{align}
+a_{ij}&amp;=E(x_if_j)\\&amp;=\sum_{k =
+1}^{p}b_{jk}E(x_ix_k)\\&amp;=\sum_{k = 1}^{p}r_{ik}b_{jk}
+\end{align}
+\]</span> 因此对<span class="math inline">\(1\leq j\leq m\)</span>，有：
+<span class="math display">\[
+\begin{pmatrix} r_{11}&amp;r_{12}&amp;\cdots&amp;r_{1p}\\
+r_{21}&amp;r_{22}&amp;\cdots&amp;r_{2p}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+r_{p1}&amp;r_{p2}&amp;\cdots&amp;r_{pp} \end{pmatrix} \begin{pmatrix}
+b_{j1}\\ b_{j2}\\ \vdots\\ b_{jp} \end{pmatrix} = \begin{pmatrix}
+a_{1j}\\ a_{2j}\\ \vdots\\ a_{pj} \end{pmatrix}
+\]</span></p>
+<h3 id="估计因子载荷矩阵--回归法">7.7.2 估计(因子载荷矩阵)--回归法</h3>
+<p>因子载荷矩阵估计：<span class="math inline">\(\hat A=(\hat
+a_{ij})\)</span>，相关阵估计：<span class="math inline">\(\hat
+R\)</span>.</p>
+<p>因子得分矩阵<span class="math inline">\(\hat B=(b_{ij})_{m\times
+p}=\hat A&#39;\hat R^{-1}\)</span></p>
+<p><span class="math display">\[
+\begin{pmatrix} \hat{b}_{j1}\\ \hat{b}_{j2}\\ \vdots\\ \hat{b}_{jp}
+\end{pmatrix} =\hat{R}^{-1} \begin{pmatrix} \hat{a}_{1j}\\
+\hat{a}_{2j}\\ \vdots\\ \hat{a}_{pj} \end{pmatrix}, \quad 1\leq j\leq m,
+\]</span> 则因子得分估计为 <span
+class="math inline">\(\hat{\mathbf{f}}=\hat{B}\mathbf{x}\)</span></p>
+<p>因子得分：</p>
+<ul>
+<li>判断公共因子的重要度：得分高，更重要。</li>
+<li>样本聚类：<strong>可以</strong>使用因子得分对样本进行聚类（但不是唯一）。</li>
+</ul>
+<h2 id="pca与因子分析">7.8 PCA与因子分析</h2>
+<p>本质：寻找一个低秩矩阵，使其无限接近于原矩阵。</p>
+<p>因子需要考虑对角阵，主成分考虑范数。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241128115019326.png"
+alt="image-20241128115019326" />
+<figcaption aria-hidden="true">image-20241128115019326</figcaption>
+</figure>
+<p>因子LS(Least Square)估计(不需要正态)：</p>
+<p><span class="math inline">\(\Sigma=\Phi+D\)</span></p>
+<p><span class="math inline">\(\Sigma\)</span>可以使用MSE计算：<span
+class="math inline">\(\min||\hat\Sigma-(\Phi+D)||^2_F\)</span> <span
+class="math display">\[
+s.t.\begin{cases}
+\Phi\ge 0, \quad rank(\Phi)=k\\
+D\gt 0,diag.
+\end{cases}
+\]</span> 迭代训练：</p>
+<ul>
+<li><span class="math inline">\(D^{(0)}\)</span></li>
+<li><span
+class="math inline">\(\min_{\Phi}||\hat\Sigma-(\Phi+D)||^2_F\)</span>，得到<span
+class="math inline">\(\Phi^{(1)}\)</span>前m个主成分。</li>
+<li><span
+class="math inline">\(D^{(1)}=diag(\hat\Sigma-\Phi^{(1)})\)</span></li>
+</ul>
+<p>不一定是正态的时候使用，但是是正态的时候还是MSE更优。==证明？==</p>
+<p><strong>因子也是HMM。</strong></p>
+<h3 id="em-模式识别作业参考">7.8.1 EM-模式识别作业参考</h3>
+<p>对混合高斯模型参数估计问题，在EM优化的框架下，请给出其中的 $Q(, ^{})
+$的基本形式。</p>
+<p>解：</p>
+<p><strong>E-step</strong>: 固定当前参数，对每个样本求 <span
+class="math inline">\(P(zi∣xi,θold)P(z_i | \mathbf{x}_i,
+\mathbf{\theta}^{\text{old}})\)</span>。 <span class="math display">\[
+P(z_{i}|\mathbf{x}_{i},\mathbf{\theta}^{\text{old}}) =
+\frac{p(\mathbf{x}_{i}, z_{i} \mid
+\mathbf{\theta}^{\text{old}})}{p(\mathbf{x}_{i} \mid
+\mathbf{\theta}^{\text{old}})} = \frac{\pi_{z_{i}}
+\mathcal{N}(\mathbf{x}_{i} \mid \mathbf{\mu}_{z_{i}},
+\mathbf{\Sigma}_{z_{i}})}{\sum_{k=1}^{K} \pi_{k}
+\mathcal{N}(\mathbf{x}_{i} \mid \mathbf{\mu}_{k}, \mathbf{\Sigma}_{k})}
+\]</span></p>
+<p><strong>M-step</strong>: 固定 <span
+class="math inline">\({P(zi∣xi,θold)}\{ P(z_{i}|\mathbf{x}_{i},
+\mathbf{\theta}^{\text{old}}) \}\)</span>，通过 <span
+class="math inline">\(max⁡θQ(θ,θold)\max_{\theta} Q(\mathbf{\theta},
+\mathbf{\theta}^{\text{old}})\)</span> 更新参数 <span
+class="math inline">\({πk,μk,Σk}\{ \pi_{k}, \mathbf{\mu}_{k}, \Sigma_{k}
+\}\)</span>。 <span class="math display">\[
+\begin{aligned}    Q(\mathbf{\theta}, \mathbf{\theta}^{\text{old}})
+&amp;= \sum_{i} \sum_{z_{i}=1}^{K} p(z_{i}|\mathbf{x}_{i},
+\mathbf{\theta}^{\text{old}}) \ln \pi_{z_{i}} \\    &amp;\quad +
+\sum_{k=1}^{K} \sum_{i} p(z_{i} = k | \mathbf{x}_{i},
+\mathbf{\theta}^{\text{old}}) \ln \mathcal{N}(\mathbf{x}_{i} |
+\mathbf{\mu}_{k}, \mathbf{\Sigma}_{k}) \end{aligned}
+\]</span></p>
+</div><div class="post-end"><div class="post-prev"></div><div class="post-next"><a href="/2024/12/15/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90-Ch6-%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch7-%E5%9B%A0%E5%AD%90%E5%88%86%E6%9E%90"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch7 因子分析</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%BC%95%E5%85%A5"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">7.1 引入</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%BE%8B1-spearman%E5%9B%A0%E7%B4%A0%E5%88%86%E6%9E%90"><span class="toc-content-number">1.1.1.</span> <span class="toc-content-text">7.1.1 例1: Spearman因素分析</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#a.-spearman%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%A7%A3%E9%87%8A"><span class="toc-content-number">1.1.1.1.</span> <span class="toc-content-text">A. Spearman模型的解释</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%BE%8B2-%E9%A1%BE%E5%AE%A2%E6%84%9F%E7%9F%A5%E5%9B%A0%E5%AD%90%E6%A8%A1%E5%9E%8B"><span class="toc-content-number">1.1.2.</span> <span class="toc-content-text">7.1.2 例2: 顾客感知因子模型</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%9B%A0%E5%AD%90%E5%88%86%E6%9E%90%E6%A8%A1%E5%9E%8B"><span class="toc-content-number">1.1.3.</span> <span class="toc-content-text">7.1.3 因子分析模型</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%AD%A3%E4%BA%A4%E5%9B%A0%E5%AD%90%E6%A8%A1%E5%9E%8B"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">7.2 正交因子模型</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%9B%A0%E5%AD%90%E8%BD%BD%E8%8D%B7%E7%9F%A9%E9%98%B5%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">7.2.1 因子载荷矩阵的表示</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%9B%A0%E5%AD%90%E8%BD%BD%E8%8D%B7%E7%9F%A9%E9%98%B5%E7%9A%84%E4%BC%B0%E8%AE%A1"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">7.3 因子载荷矩阵的估计</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#r%E4%B8%BB%E6%88%90%E5%88%86%E4%BC%B0%E8%AE%A1%E6%B3%95"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">7.3.1 R主成分估计法</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#mse-%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1%E6%B3%95"><span class="toc-content-number">1.3.2.</span> <span class="toc-content-text">7.3.2 MSE-极大似然估计法</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#a.-%E5%85%B6%E4%BB%96%E8%A1%A8%E7%A4%BA"><span class="toc-content-number">1.3.2.1.</span> <span class="toc-content-text">A. 其他表示</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#b.%E5%9B%A0%E5%AD%90%E8%BD%BD%E8%8D%B7%E7%9F%A9%E9%98%B5%E7%9A%84%E5%94%AF%E4%B8%80%E8%A7%A3"><span class="toc-content-number">1.3.2.2.</span> <span class="toc-content-text">B.因子载荷矩阵的唯一解</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#c.mse%E8%BF%AD%E4%BB%A3%E7%AE%97%E6%B3%95"><span class="toc-content-number">1.3.2.3.</span> <span class="toc-content-text">C.MSE迭代算法</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%9B%A0%E5%AD%90%E6%97%8B%E8%BD%AC"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">7.4 因子旋转</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%96%B9%E5%B7%AE%E6%9C%80%E5%A4%A7%E7%9A%84%E6%AD%A3%E4%BA%A4%E6%97%8B%E8%BD%ACvarimax%E6%97%8B%E8%BD%AC"><span class="toc-content-number">1.4.1.</span> <span class="toc-content-text">7.4.1
+方差最大的正交旋转(Varimax旋转)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%9B%B4%E5%A4%9A%E5%85%AC%E5%85%B1%E5%9B%A0%E5%AD%90%E7%9A%84%E6%83%85%E5%BD%A2"><span class="toc-content-number">1.4.2.</span> <span class="toc-content-text">7.4.2 更多公共因子的情形</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%AD%A3%E4%BA%A4%E5%9B%A0%E5%AD%90%E6%A8%A1%E5%9E%8B%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%BB%93%E6%9E%84%E7%9A%84%E6%A3%80%E9%AA%8C"><span class="toc-content-number">1.5.</span> <span class="toc-content-text">7.5
+正交因子模型协方差结构的检验</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%AD%A3%E4%BA%A4%E5%9B%A0%E5%AD%90%E6%A8%A1%E5%9E%8B%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1%E7%9B%B8%E5%85%B3%E6%8E%A8%E5%AF%BC"><span class="toc-content-number">1.5.1.</span> <span class="toc-content-text">7.5.1
+正交因子模型极大似然估计相关推导</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%96%9C%E4%BA%A4%E6%97%8B%E8%BD%AC"><span class="toc-content-number">1.6.</span> <span class="toc-content-text">7.6斜交旋转</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%9B%A0%E5%AD%90%E5%BE%97%E5%88%86"><span class="toc-content-number">1.7.</span> <span class="toc-content-text">7.7 因子得分</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%9B%A0%E5%AD%90%E5%BE%97%E5%88%86%E7%9A%84%E8%AE%A1%E7%AE%97--%E8%AE%A1%E7%AE%97%E5%9B%A0%E5%AD%90%E5%BE%97%E5%88%86%E7%9F%A9%E9%98%B5b"><span class="toc-content-number">1.7.1.</span> <span class="toc-content-text">7.7.1
+因子得分的计算--计算因子得分矩阵\(B\)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%BC%B0%E8%AE%A1%E5%9B%A0%E5%AD%90%E8%BD%BD%E8%8D%B7%E7%9F%A9%E9%98%B5--%E5%9B%9E%E5%BD%92%E6%B3%95"><span class="toc-content-number">1.7.2.</span> <span class="toc-content-text">7.7.2 估计(因子载荷矩阵)--回归法</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#pca%E4%B8%8E%E5%9B%A0%E5%AD%90%E5%88%86%E6%9E%90"><span class="toc-content-number">1.8.</span> <span class="toc-content-text">7.8 PCA与因子分析</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#em-%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB%E4%BD%9C%E4%B8%9A%E5%8F%82%E8%80%83"><span class="toc-content-number">1.8.1.</span> <span class="toc-content-text">7.8.1 EM-模式识别作业参考</span></a></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>
