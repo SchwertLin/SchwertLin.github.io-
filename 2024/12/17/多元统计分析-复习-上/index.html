@@ -1,0 +1,1699 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="期末复习-上 [TOC] 知识复习 Ch1 多元分布  不考的  特征函数 分块矩阵 偏相关系数、精度矩阵\(K&#x3D;\Sigma^{-1}\) 矩阵拉直、Kronecker积、矩阵分布    1.1 矩阵知识 \[ Cov(AX)&#x3D;ACov(X)A&#39;\\ Cov(AX,BY)&#x3D;ACov(X,Y)B&#39; \] 出送分题，计算二维协方差矩阵，对角线是方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多元统计分析-复习(上)">
+<meta property="og:url" content="http://example.com/2024/12/17/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90-%E5%A4%8D%E4%B9%A0-%E4%B8%8A/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="期末复习-上 [TOC] 知识复习 Ch1 多元分布  不考的  特征函数 分块矩阵 偏相关系数、精度矩阵\(K&#x3D;\Sigma^{-1}\) 矩阵拉直、Kronecker积、矩阵分布    1.1 矩阵知识 \[ Cov(AX)&#x3D;ACov(X)A&#39;\\ Cov(AX,BY)&#x3D;ACov(X,Y)B&#39; \] 出送分题，计算二维协方差矩阵，对角线是方">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-17T15:39:25.000Z">
+<meta property="article:modified_time" content="2024-12-17T15:40:22.266Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="多元统计分析">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary"><title>多元统计分析-复习(上) - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>多元统计分析-复习(上)</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2024-12-17</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2024-12-17</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90/">多元统计分析</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约1.3W字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="期末复习-上">期末复习-上</h1>
+<p>[TOC]</p>
+<h1 id="知识复习">知识复习</h1>
+<h2 id="ch1-多元分布">Ch1 多元分布</h2>
+<blockquote>
+<p><strong>不考的</strong></p>
+<ul>
+<li>特征函数</li>
+<li>分块矩阵</li>
+<li>偏相关系数、精度矩阵<span
+class="math inline">\(K=\Sigma^{-1}\)</span></li>
+<li>矩阵拉直、Kronecker积、矩阵分布</li>
+</ul>
+</blockquote>
+<hr />
+<h3 id="矩阵知识">1.1 矩阵知识</h3>
+<p><span class="math display">\[
+Cov(AX)=ACov(X)A&#39;\\
+Cov(AX,BY)=ACov(X,Y)B&#39;
+\]</span></p>
+<p>出送分题，计算二维协方差矩阵，对角线是方差<span
+class="math inline">\(Var(X)\)</span>，非对角线是协方差<span
+class="math inline">\(Cov(X,Y)\)</span>.</p>
+<h3 id="多元正态分布">1.2 多元正态分布</h3>
+<p>似然=密度。会算似然比、极大似然估计。</p>
+<h4 id="密度函数">1.2.1 密度函数</h4>
+<p>若<span class="math inline">\(p\)</span>元随机向量<span
+class="math inline">\(X\)</span>服从参数为<span
+class="math inline">\(\mu,\Sigma\)</span>的多元正态分布，其概率密度函数为：
+<span class="math display">\[
+p(x)=(2\pi)^{-\frac p 2}|\Sigma|^{-\frac 1 2}\exp\left\{-\frac 1 2
+(x-\mu)&#39;\Sigma^{-1}(x-\mu)\right\}
+\]</span> 其中<span
+class="math inline">\(\mu\in\mathbb{R}^p\)</span>，<span
+class="math inline">\(\Sigma\)</span>为p阶正定矩阵，记为<span
+class="math inline">\(X\overset{d}{\sim}N_p(\mu,\Sigma)\)</span>。</p>
+<h4 id="线性变换基本">1.2.2 线性变换(基本)</h4>
+<p><strong>定理1：</strong>设p元随机向量<span
+class="math inline">\(X=\mu+AY\)</span>, 其中<span
+class="math inline">\(\mu\in\mathbb{R}^k, A\)</span>为<span
+class="math inline">\(k\times p\)</span>的行满秩矩阵，<span
+class="math inline">\(k\le p\)</span>, 随机向量<span
+class="math inline">\(Y\overset{d}{\sim}N_p(0,I_p)\)</span>, 则<span
+class="math inline">\(X\overset{d}{\sim}N_k(\mu,\Sigma)\)</span>,
+其中<span class="math inline">\(\Sigma=AA&#39;&gt;0\)</span>.</p>
+<blockquote>
+<p><strong>p元标准正态分布：</strong><span
+class="math inline">\(Y\overset{d}{\sim}N_p(0,I_p)\)</span></p>
+</blockquote>
+<h5 id="性质">性质</h5>
+<p>给出的基本都要考。</p>
+<table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 85%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>性质</th>
+<th>说明: <span
+class="math inline">\(X\overset{d}{\sim}N(\mu,\Sigma)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>密度函数</td>
+<td><span class="math inline">\(p(x)=(2\pi)^{-\frac p
+2}\|\Sigma\|^{-\frac 1 2}\exp\left\{-\frac 1 2
+(x-\mu)&#39;\Sigma^{-1}(x-\mu)\right\}\)</span></td>
+</tr>
+<tr class="even">
+<td>期望方差</td>
+<td><span class="math inline">\(E(X)=\mu,Cov(X)=\Sigma\)</span></td>
+</tr>
+<tr class="odd">
+<td>线性变换</td>
+<td><span class="math inline">\(Y=\eta+AX,\eta\in\mathbb{R}^k,A_{k\times
+p}, Y\overset{d}{\sim}N_k(\eta+A\mu,A\Sigma A&#39;)\)</span></td>
+</tr>
+<tr class="even">
+<td>相互独立</td>
+<td>设<span class="math inline">\(X_1,\dots,X_k\)</span>相互独立，<span
+class="math inline">\(X_i\overset{d}{\sim}N_p(\mu_i,\Sigma_i),1\le i\le
+k\)</span>, 则<span
+class="math inline">\(\sum^k_{i=1}\alpha_iX_i\overset{d}{\sim}N_p(\sum^k_{i=1}\alpha_i\mu_i,\sum^k_{i=1}\alpha^2_i\Sigma_i)\)</span></td>
+</tr>
+<tr class="odd">
+<td>卡方分布</td>
+<td><strong><span class="math inline">\(\Sigma&gt;0\)</span></strong>,
+则<span
+class="math inline">\((X-\mu)&#39;\Sigma^{-1}(X-\mu)\overset{d}{\sim}\chi^2_p\)</span>,
+其中<span
+class="math inline">\(\chi^2_p\)</span>是自由度为p的卡方分布。</td>
+</tr>
+<tr class="even">
+<td>边缘分布</td>
+<td><span
+class="math inline">\(X=\begin{pmatrix}X_1^{(q)}\\X_2^{(p-q)}\end{pmatrix},\mu=\begin{pmatrix}\mu_1\\\mu_2\end{pmatrix},\Sigma=\begin{pmatrix}\Sigma_{11}&amp;\Sigma_{12}\\\Sigma_{21}&amp;\Sigma_{22}\end{pmatrix}\)</span>,则<span
+class="math inline">\(X_1^{(q)}\overset{d}{\sim}N_q(\mu_1,\Sigma_{11}),X_2^{(p-q)}overset{d}{\sim}N_{p-q}(\mu_2,\Sigma_{22})\)</span></td>
+</tr>
+<tr class="odd">
+<td>分量独立性</td>
+<td><span class="math inline">\(X=\begin{pmatrix}
+X_1^{(q_1)}\\\vdots\\X_k^{(q_k)}\end{pmatrix},\Sigma=\begin{pmatrix}\Sigma_{11}&amp;\ldots&amp;\Sigma_{1k}\\\vdots&amp;\ddots&amp;\vdots\\
+\Sigma_{k1}&amp;\ldots&amp;\Sigma_{kk}\end{pmatrix}\)</span>,则<span
+class="math inline">\(X_i^{(q_i)},X_j^{(q_j)}(1\le i&lt;j\le
+k)\)</span>相互独立的<strong>充要条件</strong>是<span
+class="math inline">\(Cov(X_i^{q_i},X_j^{(q_j)})=\Sigma_{ij}=0\)</span>.</td>
+</tr>
+<tr class="even">
+<td>条件分布</td>
+<td><span
+class="math inline">\((X_1|X_2=x_2)\overset{d}{\sim}N_q(\mu_{1|2},\Sigma_{1|2})\)</span>,其中<span
+class="math inline">\(\mu_{1|2}=E(X_1|X_2=x_2)=\mu_1+\Sigma_{12}\Sigma_{22}^{-1}(x_2-\mu_2)\)</span>,<span
+class="math inline">\(\Sigma_{1|2}=Cov(X_1|X_2=x_2)=\Sigma_{11}-\Sigma_{12}\Sigma_{22}^{-1}\Sigma_{21}\)</span>.<span
+class="math inline">\((\Sigma_{1|2}\le\Sigma_{11})\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>条件分布考：给出公式计算即可。</p>
+<h3 id="相关系数">1.3 相关系数</h3>
+<p>计算相关系数，定义知道即可。 <span class="math display">\[
+p_{ij}=\frac{Cov(X_i,X_j)}{\sqrt{Var(X_i)}\sqrt{Var(X_j)}}=\frac{\sigma_{ij}}{\sqrt{\sigma_{ii}}\sqrt{\sigma_{jj}}}
+\]</span></p>
+<h2 id="ch2-由多元正态分布导出的分布">Ch2 由多元正态分布导出的分布</h2>
+<blockquote>
+<p><strong>不考的</strong>：</p>
+<ul>
+<li>Wishart密度函数、部分性质</li>
+<li>非中心的Hotelling <span class="math inline">\(T^2\)</span>分布</li>
+<li>Wilks分布</li>
+</ul>
+</blockquote>
+<h3 id="wishart分布">2.1 Wishart分布</h3>
+<blockquote>
+<p>考一个Wishart分布小性质。</p>
+</blockquote>
+<p>设随机向量<span
+class="math inline">\(X=(X_1,\cdots,X_n)\)</span>，其中<span
+class="math inline">\(X_1,\cdots,X_n\)</span>
+i.i.d.(独立同分布)，每个<span
+class="math inline">\(X_i\)</span>都遵循一个多维正态分布 <span
+class="math inline">\(X_i\stackrel{d}{\sim}N_p(0,\Sigma)\)</span>，<span
+class="math inline">\(1\leq i\leq n\)</span>。</p>
+<p><strong><span
+class="math inline">\(p\)</span>阶Wishart分布</strong>：称<span
+class="math inline">\(p\)</span>阶随机矩阵<span class="math inline">\(W
+= XX&#39;=\sum_{i = 1}^{n}X_iX_i&#39;\)</span>的分布为<span
+class="math inline">\(p\)</span>阶Wishart分布，记为 $ WW_p(n,)<span
+class="math inline">\(,
+其中\)</span>n$称为其<strong>自由度</strong>。</p>
+<h4 id="性质-1">2.1.1 性质</h4>
+<table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 85%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>简要说明</th>
+<th>性质</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1.分布期望</td>
+<td>若 <span class="math inline">\(W \stackrel{d}{\sim}
+W_p(n,\Sigma)\)</span>，则 <span class="math inline">\(E(W) =
+n\Sigma\)</span></td>
+</tr>
+<tr class="even">
+<td>2.线性变换</td>
+<td>若 <span class="math inline">\(W \stackrel{d}{\sim}
+W_p(n,\Sigma)\)</span>，<span class="math inline">\(C\)</span> 是 <span
+class="math inline">\(k\times p\)</span> 阶矩阵，则 <span
+class="math inline">\(CWC&#39; \stackrel{d}{\sim} W_k(n,C\Sigma
+C&#39;)\)</span></td>
+</tr>
+</tbody>
+</table>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241217173045938.png"
+alt="似考非考" />
+<figcaption aria-hidden="true">似考非考</figcaption>
+</figure>
+<h3 id="hotelling-t2分布">2.2 Hotelling <span
+class="math inline">\(T^2\)</span>分布</h3>
+<p>Hotelling <span class="math inline">\(T^2\)</span>分布：设<span
+class="math inline">\(X\overset{d}{\sim}N_p(0,\Sigma),W\overset{d}{\sim}W_p(n,\Sigma)\)</span>，且<span
+class="math inline">\(X\)</span>和<span
+class="math inline">\(W\)</span>相互独立。记为<span
+class="math inline">\(T^2=nX&#39;W^{-1}X\)</span>.</p>
+<blockquote>
+<p>得到的是数。注意<span
+class="math inline">\(X,Y\)</span>的协方差矩阵相同<span
+class="math inline">\(\Sigma\)</span>且独立。</p>
+<p>进行置信检验使用F分布而不是<span
+class="math inline">\(T^2\)</span>.因为<span
+class="math inline">\(T^2\)</span>本身就能化成F分布。</p>
+</blockquote>
+<h2 id="ch3-多元正态分布的估计与检验">Ch3 多元正态分布的估计与检验</h2>
+<blockquote>
+<p><strong>不考的：</strong></p>
+<ul>
+<li>极大似然估计中的正交分解</li>
+<li>样本相关系数的精确分布和渐进分布</li>
+<li><span class="math inline">\(\rho=0\)</span>的假设检验</li>
+<li>渐进分布的区间估计(渐进正态性)、方差齐性变换</li>
+<li>正态总体均值的Bayes估计</li>
+<li>多元BF问题</li>
+<li>多元方差分析</li>
+<li>独立性检验（很重要，但是不考）、条件独立性检验</li>
+<li>多重比较</li>
+</ul>
+</blockquote>
+<h3 id="多元正态分布样本统计量">3.1 多元正态分布样本统计量</h3>
+<p>设<span
+class="math inline">\(X_1,X_2,\cdots,X_n\)</span>为来自多元正态总体<span
+class="math inline">\(N_p(\mu,\Sigma)\)</span>的独立样本，其中<span
+class="math inline">\(\mu\in R^p\)</span>，<span
+class="math inline">\(\Sigma&gt;0\)</span>，<span
+class="math inline">\(n&gt;p\)</span>。记:</p>
+<table>
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 53%" />
+<col style="width: 35%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>metric</th>
+<th>公式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>样本均值</td>
+<td><span class="math inline">\(\overline{X}=n^{-1}\sum_{i =
+1}^{n}X_i\)</span></td>
+<td>无偏估计，即<span
+class="math inline">\(E(\overline{X})=\mu\)</span>。</td>
+</tr>
+<tr class="even">
+<td>样本离差阵</td>
+<td><span class="math inline">\(V=\sum_{i =
+1}^{n}(X_i-\overline{X})(X_i-\overline{X})&#39;\)</span></td>
+<td>衡量了样本点相对于样本均值的离散程度。</td>
+</tr>
+<tr class="odd">
+<td>样本协方差阵</td>
+<td><span class="math inline">\(S=\frac{1}{n-1}V\)</span></td>
+<td>对离差阵进行归一化</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>事实：<span class="math inline">\((\overline{X},V)\)</span>是<span
+class="math inline">\((\mu,\Sigma)\)</span>的完全充分统计量,
+这意味着<span class="math inline">\(\overline{X}\)</span>和<span
+class="math inline">\(V\)</span>包含了样本中关于总体参数<span
+class="math inline">\(\mu\)</span>和<span
+class="math inline">\(\Sigma\)</span>的所有信息。</p>
+</blockquote>
+<h4 id="barx-v-的分布性质">3.1.1 (<span
+class="math inline">\(\bar{X}\)</span>, <span
+class="math inline">\(V\)</span>) 的分布性质</h4>
+<ol type="1">
+<li><span class="math inline">\(\bar{X} \sim N_p(\mu, \Sigma /
+n)\)</span>；</li>
+<li><span class="math inline">\(V \sim W_p(n - 1,
+\Sigma)\)</span>；</li>
+<li><span class="math inline">\(\bar{X}\)</span>与 <span
+class="math inline">\(V\)</span>相互独立。</li>
+</ol>
+<blockquote>
+<p><strong>证明：</strong></p>
+<p>（1）记 <span class="math inline">\(X = (X_1, \cdots,
+X_n)\)</span>，则有 <span class="math inline">\(E(X) = \mu
+\mathbf{1}_n&#39;\)</span>，<span
+class="math inline">\(\text{Cov}(\text{vec}(X)) = I_n \otimes
+\Sigma\)</span>。</p>
+<p>令 <span class="math inline">\(U = (U_1, U_2, \cdots, U_n)\)</span>为
+<span class="math inline">\(n\)</span>阶正交矩阵，其中: <span
+class="math display">\[
+U_1 = \left( \frac{1}{\sqrt{n}}, \frac{1}{\sqrt{n}}, \cdots,
+\frac{1}{\sqrt{n}} \right)&#39; = \frac{1}{\sqrt{n}} \mathbf{1}_n\\
+1_n&#39;U_j=\sqrt{n}(\frac 1 {\sqrt{n}}1_n)&#39;U_j=\sqrt{n}U_iU_j=0
+\]</span> <span class="math inline">\(U\)</span>的第一列 <span
+class="math inline">\(U_1\)</span>被特别选择为与样本均值方向相关的向量。令
+<span class="math inline">\(Y = XU\)</span>记为 <span
+class="math inline">\((Y_1, Y_2, \cdots, Y_n)\)</span>，则<span
+class="math inline">\(Y_1\)</span>代表了样本均值方向上的信息, <span
+class="math inline">\(Y_2, \cdots,
+Y_n\)</span>则代表了与样本均值正交的剩余信息。 <span
+class="math display">\[
+E(Y) = E(X)U = \mu \mathbf{1}_n&#39;U = \mu \mathbf{1}_n&#39;\left(
+\frac{1}{\sqrt{n}} \mathbf{1}_n, U_2, \cdots, U_n \right) = (\sqrt{n}
+\mu, 0, \cdots, 0)\\
+\begin{align*} \text{Cov}(\text{vec}(Y))&amp;=\text{Cov}(\text{vec}(I_p
+XU))\\ &amp;=\text{Cov}((U&#39; \otimes I_p)\text{vec}(X))\\
+&amp;=(U&#39; \otimes I_p)\text{Cov}(\text{vec}(X))(U \otimes I_p)\\
+&amp;=(U&#39; \otimes I_p)(I_n \otimes \Sigma)(U \otimes I_p)\\
+&amp;=I_n \otimes \Sigma
+\end{align*}
+\]</span> 从上面的<span class="math inline">\(Cov(Y)=I_n\otimes
+\Sigma\)</span>可以得到：<span class="math inline">\(Y_1, Y_2, \cdots,
+Y_n\)</span>相互独立，且<span class="math inline">\(Y_1 =
+\sqrt{n}\bar{X} \sim N_p(\sqrt{n}\mu,\Sigma)\)</span>， <span
+class="math inline">\(Y_2, \cdots, Y_n \sim N_p(0,\Sigma)\)</span>。
+因而有<span class="math inline">\(\bar{X} \sim N_p(\mu,\Sigma /
+n)\)</span>，即(1)成立。</p>
+<p>（2）由于<span class="math inline">\(YY&#39;=(XU)(U&#39;X&#39;) =
+XX&#39;\)</span>，即<span class="math inline">\(\sum_{i =
+1}^{n}X_iX_i&#39;=\sum_{i = 1}^{n}Y_iY_i&#39;\)</span>，因而有 <span
+class="math display">\[
+\begin{align*} V&amp;=\sum_{i = 1}^{n}X_iX_i&#39;-n\bar{X}\bar{X}&#39;\\
+&amp;=\sum_{i = 1}^{n}X_iX_i&#39;-Y_1Y_1&#39;\\ &amp;=\sum_{i =
+1}^{n}Y_iY_i&#39;-Y_1Y_1&#39;\\ &amp;=\sum_{i = 2}^{n}Y_iY_i&#39;\sim
+W_p(n - 1,\Sigma)\end{align*}
+\]</span> 所以(2)成立。 又由于<span
+class="math inline">\(\sqrt{n}\bar{X}=Y_1\)</span>，<span
+class="math inline">\(V=\sum_{i = 2}^{n}Y_iY_i&#39;\)</span>，因此<span
+class="math inline">\(\bar{X}\)</span>与<span
+class="math inline">\(V\)</span>独立，即(3)成立。</p>
+</blockquote>
+<h3 id="多元正态分布的参数估计">3.2 多元正态分布的参数估计</h3>
+<p><strong>密度函数给出，根据密度函数写似然。</strong></p>
+<h4 id="极大似然估计">3.2.1 极大似然估计</h4>
+<p>观测样本<span
+class="math inline">\(X=(X_1,X_2,\cdots,X_n)\)</span>的联合密度： <span
+class="math display">\[
+f(X)=(2\pi)^{-\frac{n
+p}{2}}|\Sigma|^{-\frac{n}{2}}\exp\left\{-\frac{1}{2}\text{tr}\Sigma^{-1}(V
++ n(\bar{X}-\mu)(\bar{X}-\mu)&#39;)\right\}
+\]</span> 首先求<span class="math inline">\(\mu\)</span>的极大似然估计:
+<span class="math display">\[
+\begin{align} f(X)&amp;=(2\pi)^{-\frac{n
+p}{2}}|\Sigma|^{-\frac{n}{2}}\exp\left\{-\frac{1}{2}\text{tr}\Sigma^{-1}(V
++ n(\bar{X}-\mu)(\bar{X}-\mu)&#39;)\right\}\\ &amp;=(2\pi)^{-\frac{n
+p}{2}}|\Sigma|^{-\frac{n}{2}}\exp\left\{-\frac{1}{2}\text{tr}\Sigma^{-1}V-\frac{n}{2}\text{tr}\Sigma^{-1}(\bar{X}-\mu)(\bar{X}-\mu)&#39;\right\}\\
+&amp;=(2\pi)^{-\frac{n
+p}{2}}|\Sigma|^{-\frac{n}{2}}\exp\left\{-\frac{1}{2}\text{tr}\Sigma^{-1}V-\frac{n}{2}(\bar{X}-\mu)&#39;\Sigma^{-1}(\bar{X}-\mu)\right\}
+\end{align}
+\]</span> 易知<span
+class="math inline">\(\mu\)</span>的极大似然估计为<span
+class="math inline">\(\max
+f(X)=(\bar{X}-\mu)&#39;\Sigma^{-1}(\bar{X}-\mu)=0\)</span>：<span
+class="math inline">\(\hat{\mu}=\bar{X}\)</span>。
+即正态总体均值的极大似然估计是样本均值。</p>
+<h4 id="样本相关系数">3.2.2 样本相关系数</h4>
+<blockquote>
+<p>样本相关系数是总体相关系数的估计，与其差距有多大，使用分布刻画。</p>
+<p>知道样本相关系数可以检验X和Y独立，不考。</p>
+</blockquote>
+<p>记<span class="math inline">\(\Upsilon = (\rho_{ij})_{p\times
+p}\)</span>为正态总体的相关系数矩阵，并记<span
+class="math inline">\(V=(v_{ij})_{p\times p}\)</span>，<span
+class="math inline">\(S=(s_{ij})_{p\times p}\)</span>，则<span
+class="math inline">\(\rho_{ij}\)</span>的极大似然估计为: <span
+class="math display">\[
+\hat{\rho}_{ij}=r_{ij}=\frac{v_{ij}}{\sqrt{v_{ii}v_{jj}}}=\frac{s_{ij}}{\sqrt{s_{ii}s_{jj}}},
+\quad 1\leq i,j\leq p
+\]</span> 记<span class="math inline">\(R=(r_{ij})_{p\times
+p}\)</span>为样本相关系数矩阵。</p>
+<h4 id="正态总体均值的置信域估计">3.2.3 正态总体均值的置信域估计</h4>
+<blockquote>
+<p>考：<span class="math inline">\(\Sigma\)</span>已知时化成<span
+class="math inline">\(\chi^2\)</span>分布、<span
+class="math inline">\(\Sigma\)</span>未知时化成<span
+class="math inline">\(T^2\)</span>分布--&gt;F分布</p>
+<p>等价于似然比检验和区间估计、使用输入量构造统计量、与似然比殊途同归。</p>
+</blockquote>
+<h5 id="a.单总体">A.单总体</h5>
+<p>设<span
+class="math inline">\(x_1,\dots,x_n\)</span>是来自p元正态总体<span
+class="math inline">\(N_p(\mu,\Sigma)\)</span>的随机样本，其中<span
+class="math inline">\(\mu\in\mathbb{R}^p,\Sigma&gt;0,n&gt;p\)</span>.
+上面给出了总体均值向量<span
+class="math inline">\(\mu\)</span>和总体协方差矩阵<span
+class="math inline">\(\Sigma\)</span>的无偏估计分别是样本均值向量<span
+class="math inline">\(\bar x\)</span>和样本协方差矩阵<span
+class="math inline">\(S\)</span>. <strong>下面讨论<span
+class="math inline">\(\mu\)</span>的置信域估计问题，分别在总体协方差阵<span
+class="math inline">\(\Sigma\)</span>已知和未知的两种情况下讨论。</strong></p>
+<h6 id="boldsymbolsigma已知"><span
+class="math inline">\(\boldsymbol{\Sigma}\)</span>已知</h6>
+<p>如果总体协方差矩阵 <span
+class="math inline">\(\Sigma\)</span>已知，样本均值向量 <span
+class="math inline">\(\bar{x}\)</span>的分布可以通过标准化后的形式来推导出：
+<span class="math display">\[
+n(\bar{\mathbf{X}} -
+\boldsymbol{\mu})&#39;\boldsymbol{\Sigma}^{-1}(\bar{\mathbf{X}} -
+\boldsymbol{\mu}) \stackrel{d}{\rightarrow} \chi^2(p)
+\]</span> 则<span
+class="math inline">\(\boldsymbol{\mu}\)</span>的水平为<span
+class="math inline">\((1 - \alpha)\)</span>的置信域估计为： <span
+class="math display">\[
+D = \left\{\boldsymbol{\mu} \in \mathbb{R}^p : n(\bar{\mathbf{X}} -
+\boldsymbol{\mu})&#39;\boldsymbol{\Sigma}^{-1}(\bar{\mathbf{X}} -
+\boldsymbol{\mu}) \leq \chi^2_{1 - \alpha}(p)\right\}
+\]</span> 即有 ${ D} = 1 - . $意味着在大量的重复实验中，置信域 <span
+class="math inline">\(D\)</span>将包含真实总体均值 <span
+class="math inline">\(\mu\)</span>的概率为 <span class="math inline">\(1
+- \alpha\)</span>。</p>
+<blockquote>
+<p><strong>Q: <span
+class="math inline">\(\chi^2\)</span>分布与置信域的联系？</strong></p>
+<p>A: 具体来说，样本均值 <span
+class="math inline">\(\bar{x}\)</span>和总体均值 <span
+class="math inline">\(\mu\)</span>之间的偏差经过标准化后（即通过协方差矩阵的逆来标准化）符合
+$^2(p) $分布。这意味着，我们可以通过卡方分布的分位点来构建置信区间。</p>
+<p>置信域 D中$^2_{1 - }(p) $是卡方分布自由度为 <span
+class="math inline">\(p\)</span>时，置信度为 <span
+class="math inline">\((1 - \alpha)\)</span>的分位点。这表示总体均值
+<span
+class="math inline">\(\mu\)</span>在给定的样本数据下落入该置信域的概率为
+<span class="math inline">\(1 - \alpha\)</span>。</p>
+</blockquote>
+<h6 id="sigma未知"><span class="math inline">\(\Sigma\)</span>未知</h6>
+<p>因为<span
+class="math inline">\(\Sigma\)</span>我们无从得知，所以使用<span
+class="math inline">\(\Sigma\)</span>的无偏估计<span
+class="math inline">\(S=\frac 1{n-1}V\)</span>来代替。令 ： <span
+class="math display">\[
+\begin{align}
+T^2 &amp;= n(\bar{X} - \mu)&#39;S^{-1}(\bar{X} - \mu)\\
+&amp;=n(n - 1)(\bar{X} - \mu)&#39;V^{-1}(\bar{X} - \mu)\\
+&amp;\sim T^2_p(n-1)
+\end{align}
+\]</span></p>
+<blockquote>
+<p>由正态样本统计量的性质知 ：<span
+class="math inline">\(\sqrt{n}(\bar{X} - \mu) \stackrel{d}{\rightarrow}
+N(0, \Sigma)\)</span>, <span class="math inline">\(V
+\stackrel{d}{\rightarrow} W_p(n - 1, \Sigma)\)</span>, 且${X} <span
+class="math inline">\(与\)</span>V$独立.</p>
+<p>Hotelling <span class="math inline">\(T^2\)</span>分布性质如下：</p>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 93%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>性质</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1.</td>
+<td><span class="math inline">\(X&#39;W^{-1}X \stackrel{d}{=}
+\frac{\chi^2(p)}{\chi^2(n - p + 1)}\)</span>,其中分子分母相互独立；</td>
+</tr>
+<tr class="even">
+<td>2.</td>
+<td><span class="math inline">\(\frac{n - p + 1}{np}T_p^2(n)
+\stackrel{d}{=} \frac{\chi^2(p)/p}{\chi^2(n - p + 1)/(n - p + 1)}
+\stackrel{d}{\sim} F(p,(n - p + 1))\)</span></td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>因此有： <span class="math display">\[
+T^2 = (n - 1)(\sqrt{n}(\bar{X} - \mu))&#39;V^{-1}(\sqrt{n}(\bar{X} -
+\mu)) \stackrel{d}{\rightarrow} T_p^2(n - 1)\\
+\frac{1}{n - 1}T^2 = n(\bar{X} - \mu)&#39;V^{-1}(\bar{X} - \mu)
+\stackrel{d}{\rightarrow} \frac{\chi^2(p)}{\chi^2(n-p)}\\
+\frac{n - p}{(n - 1)p}T^2 \stackrel{d}{\rightarrow}
+\frac{\chi^2(p)/p}{\chi^2(n - p)/(n - p)} \stackrel{d}{\rightarrow} F(p,
+n - p)
+\]</span> 则当<span
+class="math inline">\(\boldsymbol{\Sigma}\)</span>未知时，<span
+class="math inline">\(\boldsymbol{\mu}\)</span>的水平为<span
+class="math inline">\((1 - \alpha)\)</span>的置信域估计为 : <span
+class="math display">\[
+D = \left\{\boldsymbol{\mu} \in \mathbb{R}^p : \frac{n(n -
+p)}{p}(\bar{X} - \boldsymbol{\mu})&#39;V^{-1}(\bar{X} -
+\boldsymbol{\mu}) \leq F_{1 - \alpha}(p, n - p)\right\}
+\]</span> 即有 ${ D} = 1 - . $</p>
+<blockquote>
+<p>PS:
+因为这个置信域D是一个二次型，那么上述的不等式就是对这个二次型的约束，所以，这个<strong>置信域是一个超椭球。</strong></p>
+<ul>
+<li>协方差矩阵 <span class="math inline">\(V\)</span>的逆 <span
+class="math inline">\(V^{-1}\)</span>定义了椭球的方向和形状，特征值决定了每个方向上的伸缩因子。</li>
+<li><span class="math inline">\(F\)</span>分布的临界值 <span
+class="math inline">\(F_{1-\alpha}(p,
+n-p)\)</span>确定了超椭球的大小。</li>
+</ul>
+</blockquote>
+<h5 id="b.两总体">B.两总体</h5>
+<p>设独立总体<span class="math inline">\(X \stackrel{d}{\sim}
+N_p(\boldsymbol{\mu}_1, \boldsymbol{\Sigma})\)</span>，<span
+class="math inline">\(Y \stackrel{d}{\sim} N_p(\boldsymbol{\mu}_2,
+\boldsymbol{\Sigma})\)</span>，<span
+class="math inline">\(\boldsymbol{\mu}_1, \boldsymbol{\mu}_2 \in
+\mathbb{R}^p\)</span>，<span
+class="math inline">\(\boldsymbol{\Sigma}&gt;0\)</span>。
+(<em>属于同一维度空间，但分布不同。</em>)</p>
+<p>记 <span class="math inline">\(\mathbf{X} = (X_1, \cdots,
+X_m)\)</span>，<span class="math inline">\(\mathbf{Y} = (Y_1, \cdots,
+Y_n)\)</span>分别为来自总体<span class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>的样本，<span
+class="math inline">\(\min\{m, n\} &gt; p\)</span>。
+我们要构造总体均值差<span class="math inline">\(\boldsymbol{\delta} =
+\boldsymbol{\mu}_1 - \boldsymbol{\mu}_2\)</span>的置信域估计。</p>
+<p>已知：</p>
+<table>
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>已知条件</th>
+<th>对应公式</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>样本X的样本离差阵和协方差矩阵</td>
+<td><span class="math inline">\(V_1=\sum^n_{i=1}(x_i-\bar x)(x_i-\bar
+x)&#39;,S_1=\frac1{n-1}V_1\)</span></td>
+</tr>
+<tr class="even">
+<td>样本Y的样本离差阵和协方差矩阵</td>
+<td><span class="math inline">\(V_2=\sum^n_{i=1}(y_i-\bar y)(y_i-\bar
+y)&#39;,S_2=\frac1{n-1}V_2\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>我们下面讨论的问题是：</p>
+<ol type="1">
+<li><span class="math inline">\(\Sigma_1=\Sigma_2=\Sigma\)</span>:
+①<span class="math inline">\(\Sigma\)</span>未知，②<span
+class="math inline">\(\Sigma\)</span>已知</li>
+<li><span
+class="math inline">\(\Sigma_1\neq\Sigma_2\)</span>（<strong>这种情况在本课程中不涉及，下面也不会涉及</strong>）</li>
+</ol>
+<p>因此下面对于<span class="math inline">\(\Sigma\)</span>未知、<span
+class="math inline">\(\Sigma\)</span>已知的考虑的前提是<span
+class="math inline">\(\Sigma_1=\Sigma_2=\Sigma\)</span>.</p>
+<h6 id="sigma已知"><span class="math inline">\(\Sigma\)</span>已知</h6>
+<p>由<span class="math inline">\(\bar{X} \stackrel{d}{\sim}
+N_p(\boldsymbol{\mu}_1, \boldsymbol{\Sigma}/m)\)</span>，<span
+class="math inline">\(\bar{Y} \stackrel{d}{\sim} N_p(\boldsymbol{\mu}_2,
+\boldsymbol{\Sigma}/n)\)</span>，有: <span class="math display">\[
+(\bar X-\bar
+Y)\overset{d}{\sim}N_p(\delta,(\frac1m+\frac1n)\Sigma)=N_p(\delta,\frac{mn}{m
++ n}\Sigma)
+\]</span></p>
+<blockquote>
+<p>根据二次型的性质：<span class="math inline">\(X\sim
+N_p(\mu,\Sigma),\Sigma&gt;0\)</span>,假设有个p阶方阵 <span
+class="math inline">\(A\ge0\)</span>,则有<span
+class="math inline">\((X-\mu)&#39;A(X-\mu)\sim\chi^2_m,m=tr(A\Sigma)\)</span>.
+当<span class="math inline">\(A=\Sigma^{-1}\)</span>时, <span
+class="math inline">\((X-\mu)&#39;A(X-\mu)\sim\chi^2_p\)</span>.</p>
+</blockquote>
+<p><span class="math display">\[
+\frac{mn}{m + n}((\bar{X} - \bar{Y}) - \delta)&#39;\Sigma^{-1}((\bar{X}
+- \bar{Y}) - \delta) \stackrel{d}{\rightarrow} \chi^2(p)
+\]</span></p>
+<p>由此得到<span class="math inline">\(\delta\)</span>的水平为<span
+class="math inline">\((1 - \alpha)\)</span>的置信域估计为: <span
+class="math display">\[
+D = \left\{\delta \in \mathbb{R}^p : \frac{mn}{m + n}((\bar{X} -
+\bar{Y}) - \delta)&#39;\Sigma^{-1}((\bar{X} - \bar{Y}) - \delta) \leq
+\chi^2_{1 - \alpha}(p)\right\}.
+\]</span></p>
+<h6 id="sigma未知-1"><span
+class="math inline">\(\Sigma\)</span>未知</h6>
+<p>记<span class="math inline">\(V_X\)</span>和<span
+class="math inline">\(V_Y\)</span>分别为总体<span
+class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>的样本离差阵。</p>
+<p>由<span class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>的联合密度函数: <span
+class="math display">\[
+\begin{align} &amp;(2\pi)^{-(m + n)p/2}|\boldsymbol{\Sigma}|^{-(m +
+n)/2} \cdot \\
+&amp;\exp\left\{-\frac{1}{2}\text{tr}[\boldsymbol{\Sigma}^{-1}(V_X + V_Y
++ m(\bar{X}-\boldsymbol{\mu}_1)(\bar{X}-\boldsymbol{\mu}_1)&#39; +
+n(\bar{Y}-\boldsymbol{\mu}_2)(\bar{Y}-\boldsymbol{\mu}_2)&#39;)]\right\}
+\end{align}
+\]</span> 知<span
+class="math inline">\((\boldsymbol{\mu}_1,\boldsymbol{\mu}_2,\boldsymbol{\Sigma})\)</span>的极大似然估计为<span
+class="math inline">\((\bar{X},\bar{Y},(V_X + V_Y)/(m +
+n))\)</span>。</p>
+<p>记<span class="math inline">\(V = V_X + V_Y\)</span>，并令 : <span
+class="math display">\[
+T^2 = \frac{mn(m + n - 2)}{m +
+n}((\bar{X}-\bar{Y})-\boldsymbol{\delta})&#39;V^{-1}((\bar{X}-\bar{Y})-\boldsymbol{\delta})
+\]</span> 由于<span
+class="math inline">\((\bar{X}-\bar{Y})\)</span>与<span
+class="math inline">\(V\)</span>相互独立，且 <span
+class="math display">\[
+\sqrt{\frac{mn}{m + n}}((\bar{X}-\bar{Y})-\boldsymbol{\delta})
+\stackrel{d}{\rightarrow} N_p(0,\boldsymbol{\Sigma}), \quad V
+\stackrel{d}{\rightarrow} W_p(m + n - 2,\boldsymbol{\Sigma})\\
+T^2 \stackrel{d}{\rightarrow} T_p^2(m + n - 2)
+\]</span> 进而可知 <span class="math display">\[
+\begin{align}
+&amp;\frac{m + n - p - 1}{(m + n - 2)p}T^2 \\
+&amp;= \frac{(m + n - p - 1)mn}{(m + n)(m + n -
+2)p}((\bar{X}-\bar{Y})-\boldsymbol{\delta})&#39;V^{-1}((\bar{X}-\bar{Y})-\boldsymbol{\delta})
+\\
+&amp;\stackrel{d}{\sim} F(p,m + n - p - 1)
+\end{align}
+\]</span> 由此得到<span
+class="math inline">\(\boldsymbol{\delta}\)</span>的水平为<span
+class="math inline">\((1 - \alpha)\)</span>的置信域估计为 <span
+class="math display">\[
+D = \left\{ \boldsymbol{\delta} \in \mathbb{R}^p :\begin{align} \frac{(m
++ n - p - 1)mn}{(m + n)p}((\bar{X} - \bar{Y}) -
+\boldsymbol{\delta})&#39;V^{-1}((\bar{X} - \bar{Y}) -
+\boldsymbol{\delta})\\ \leq F_{1 - \alpha}(p, m + n - p - 1)\end{align}
+\right\}
+\]</span></p>
+<h3 id="多元正态分布的检验">3.3 多元正态分布的检验</h3>
+<blockquote>
+<p>本质上就是求似然比、知道一般形式、原则。</p>
+<p>考，但是不会考复杂的。最多找一个非常简单的东西写一个似然比。</p>
+</blockquote>
+<p>多元正态分布的检验问题包括：</p>
+<table>
+<thead>
+<tr class="header">
+<th>单总体</th>
+<th>多总体</th>
+<th>多变量</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>均值检验</td>
+<td>均值比较检验</td>
+<td>独立性检验</td>
+</tr>
+<tr class="even">
+<td>协方差检验</td>
+<td>协方差比较检验</td>
+<td>条件独立性检验</td>
+</tr>
+<tr class="odd">
+<td>---</td>
+<td>均值和协方差同时比较检验</td>
+<td>---</td>
+</tr>
+</tbody>
+</table>
+<h4 id="均值向量的改进估计">3.3.0 均值向量的改进估计</h4>
+<p>总体均值向量<span
+class="math inline">\(\mu\)</span>的极大似然估计<span
+class="math inline">\(\hat \mu =\bar x\)</span>, 定义用<span
+class="math inline">\(\bar x\)</span>估计<span
+class="math inline">\(\mu\)</span>的损失函数为<span
+class="math inline">\(L(\bar x,\mu)\ge0\)</span>.</p>
+<ul>
+<li><span class="math inline">\(L(\bar
+x,\mu)&gt;0\)</span>：取值越大，表示<span class="math inline">\(\bar
+x\)</span>离<span
+class="math inline">\(\mu\)</span>的距离越来越远，损失越来越大。</li>
+<li><span class="math inline">\(L(\bar x,\mu)=0\)</span>：用<span
+class="math inline">\(\bar x\)</span>估计<span
+class="math inline">\(\mu\)</span>没有损失。</li>
+</ul>
+<p><strong>实际问题中，对于均值向量<span
+class="math inline">\(\mu\)</span>的估计，希望找到一个对于所有的<span
+class="math inline">\((\mu,\Sigma)\)</span>,
+几乎处处使得风险函数=0的估计。</strong>但是实际上这样的估计通常是不存在的，因此我们退而求其次，希望找到一个估计<span
+class="math inline">\(\hat \mu\)</span>, 使得其风险函数小于<span
+class="math inline">\(\bar x\)</span>的风险，或者不比<span
+class="math inline">\(\bar
+x\)</span>的风险大。<strong>这就是改进估计。</strong></p>
+<h5 id="sigma已知-1"><span
+class="math inline">\(\Sigma\)</span>已知</h5>
+<p>令<span class="math inline">\(\bar x=(\bar x_1,\dots,\bar
+x_p)&#39;,\mu=(\mu_1,\dots,\mu_p)&#39;\)</span>, 平方和损失函数定义为：
+<span class="math display">\[
+L(\bar x,\mu)=\sum^n_{i=1}(\bar x_i-\mu_i)&#39;(\bar x_i-\mu_i)=(\bar
+x-\mu)&#39;(\bar x-\mu)
+\]</span>
+一个好的估计希望平方损失越小越好，在统计决策理论中，损失函数的平均值称为风险函数。<span
+class="math inline">\(\bar x\)</span>作为<span
+class="math inline">\(\mu\)</span>的估计，它在平方和损失函数下的风险函数为：
+<span class="math display">\[
+\begin{align}
+R(\bar x)&amp;=E[L(\bar x,\mu)]=E[(\bar x-\mu)&#39;(\bar x-\mu)]\\
+&amp;=tr\left\{E[(\bar x-\mu)&#39;(\bar x-\mu)]\right\}\\
+&amp;=\frac{tr(\Sigma)}{n}\\
+\end{align}
+\]</span> <span class="math inline">\(\bar x\)</span>的风险函数<span
+class="math inline">\(R(\bar x)\)</span>只依赖于<span
+class="math inline">\(\Sigma\)</span>,与<span
+class="math inline">\(\mu\)</span>无关。</p>
+<ul>
+<li>当p=1,2时：在平方和损失函数下，样本均值<span
+class="math inline">\(\bar x\)</span>是总体均值<span
+class="math inline">\(\mu\)</span>的容许估计，改进不存在。</li>
+<li>当p$<span class="math inline">\(3时：样本均值\)</span>x<span
+class="math inline">\(是总体均值\)</span>$的不容许估计。</li>
+</ul>
+<blockquote>
+<p><strong>极大似然估计：</strong></p>
+<p>设<span
+class="math inline">\(X=(x_1,\dots,x_n)&#39;\)</span>是来自多元正态总体<span
+class="math inline">\(X\sim N_p(\mu,\Sigma)\)</span>的样本，其中<span
+class="math inline">\(n&gt;p,\mu\in\mathbb{R}^p,\Sigma&gt;0\)</span>.
+<span class="math display">\[
+\begin{align*}
+L(\mu,\Sigma)&amp;=\prod^n_{i=1}\frac{1}{(2\pi)^{\frac p
+2}|\Sigma|^{\frac 1 2}}\exp[-\frac 1 2
+(x_i-\mu)&#39;\Sigma^{-1}(x_i-\mu)]\\
+&amp;=\frac{1}{(2\pi)^{np/2}|\Sigma|^{n/2}}\exp\left[-\frac{1}{2}\sum_{i
+= 1}^{n}(x_{i}-\mu)&#39;\Sigma^{-1}(x_{i}-\mu)\right]\\
+&amp;=\frac{1}{(2\pi)^{np/2}|\Sigma|^{n/2}}\exp\left[-\frac{1}{2}\text{tr}\left(\Sigma^{-1}\left\{\sum_{i
+= 1}^{n}(x_{i}-\mu)(x_{i}-\mu)&#39;\right\}\right)\right]\\
+&amp;=\frac{1}{(2\pi)^{np/2}|\Sigma|^{n/2}}\exp\left[-\frac{1}{2}\text{tr}\left(\Sigma^{-1}\{V
++ n(\bar{x}-\mu)(\bar{x}-\mu)&#39;\}\right)\right]
+\end{align*}
+\]</span> 首先给定 <span class="math inline">\(\Sigma&gt;0\)</span>
+时，求 <span class="math inline">\(\mu\)</span>
+的极大似然估计，即求对数似然函数 <span class="math inline">\(\ln
+L(\mu,\Sigma)\)</span> 的极大值点。由式(5.3)，给定 <span
+class="math inline">\(\Sigma&gt;0\)</span>，关于 <span
+class="math inline">\(\mu\)</span> 的对数似然函数为 <span
+class="math display">\[
+\begin{align*} \ln
+L(\mu,\Sigma)&amp;=-\frac{n}{p}\ln2\pi-\frac{n}{2}\ln|\Sigma|-\frac{1}{2}\text{tr}(\Sigma^{-1}\{V
++ n(\bar{x}-\mu)(\bar{x}-\mu)&#39;\})\\
+&amp;=-\frac{n}{p}\ln2\pi-\frac{n}{2}\ln|\Sigma|-\text{tr}(\Sigma^{-1}V)-\frac{n}{2}(\bar{x}-\mu)&#39;\Sigma^{-1}(\bar{x}-\mu)\\
+&amp;\leq-\frac{n}{p}\ln2\pi-\frac{n}{2}\ln|\Sigma|-\text{tr}(\Sigma^{-1}V)
+\end{align*}
+\]</span> 上式不等式中等号成立当且仅当 <span class="math inline">\(\mu =
+\bar{x}\)</span>。因此，总体均值向量 <span
+class="math inline">\(\mu\)</span> 的极大似然估计为样本均值向量 <span
+class="math inline">\(\bar{x}\)</span>。由<span
+class="math inline">\(E(\bar{x})=\mu\)</span>，因此，样本均值向量 <span
+class="math inline">\(\bar{x}\)</span> 是 <span
+class="math inline">\(\mu\)</span> 的无偏估计。 将上式中的 <span
+class="math inline">\(\mu\)</span> 用它的极大似然估计 <span
+class="math inline">\(\bar{x}\)</span> 替换，得到 <span
+class="math inline">\(\Sigma\)</span> 的似然函数为: <span
+class="math display">\[
+L(\bar{x},\Sigma)=\frac{(2\pi)^{np/2}}{|\Sigma|^{n/2}}\exp\left[-\frac{1}{2}\text{tr}(\Sigma^{-1}V)\right]
+\]</span> 令 <span
+class="math inline">\(\Sigma^{-1/2}V\Sigma^{-1/2}=UAU&#39;\)</span>，其中
+<span class="math inline">\(U\)</span> 是正交矩阵，<span
+class="math inline">\(\Lambda=\text{diag}(\lambda_1,\cdots,\lambda_p)\)</span>
+是对角矩阵，则上式可以简化为 <span class="math display">\[
+L(\bar{x},\Sigma)=\frac{1}{(2\pi)^{np/2}|V|^{n/2}}\prod_{k =
+1}^{p}\left[\lambda_k^{n/2}\exp\left\{-\frac{\lambda_k}{2}\right\}\right]
+\]</span> 由于 <span
+class="math inline">\(f(x)=x^{n/2}\exp\{-x/2\}\)</span> 在 <span
+class="math inline">\(x = n\)</span> 处取最大值，所以上式在 <span
+class="math inline">\(\lambda_1=\cdots=\lambda_p=n\)</span>
+时取最大值，从而可知，<span class="math inline">\(\Sigma\)</span>
+的极大似然估计 <span class="math inline">\(\hat{\Sigma}\)</span>
+满足条件 <span
+class="math inline">\(\hat{\Sigma}^{-1/2}V\hat{\Sigma}^{-1/2}=nI_p\)</span>。由此可见，<span
+class="math inline">\(\Sigma\)</span> 的极大似然估计为 <span
+class="math inline">\(\hat{\Sigma}=V/n\)</span>。</p>
+<p><strong>定理5.1.2</strong> 设 <span
+class="math inline">\(x_i=(x_{i1},\cdots,x_{ip})&#39;(i =
+1,\cdots,n)\)</span> 为来自 <span class="math inline">\(p\)</span>
+元正态总体 <span class="math inline">\(N_p(\mu,\Sigma)\)</span>
+的一组随机样本，<span class="math inline">\(n&gt;p\)</span>，<span
+class="math inline">\(\bar{x}\)</span> 为样本均值向量，<span
+class="math inline">\(V\)</span> 为样本离差阵，则 <span
+class="math inline">\(\mu\)</span> 和 <span
+class="math inline">\(\Sigma\)</span> 的极大似然估计分别为 <span
+class="math inline">\(\hat{\mu}=\bar{x}\)</span> 和 <span
+class="math inline">\(\hat{\Sigma}=V/n\)</span>。</p>
+</blockquote>
+<h4 id="单总体均值检验">3.3.1 单总体均值检验</h4>
+<p>设<span
+class="math inline">\(\mathbf{X}=(x_1,x_2,\cdots,x_n)\)</span>是来自多元正态总体<span
+class="math inline">\(N_p(\boldsymbol{\mu},\boldsymbol{\Sigma})\)</span>的<span
+class="math inline">\(n\)</span>个独立样本，其中<span
+class="math inline">\(\boldsymbol{\mu}\in\mathbb{R}^p\)</span>，<span
+class="math inline">\(\boldsymbol{\Sigma}&gt;0\)</span>，<span
+class="math inline">\(n&gt;p\)</span>。 我们关心如下总体均值<span
+class="math inline">\(\boldsymbol{\mu}\)</span>的检验问题： <span
+class="math display">\[
+H_0:\boldsymbol{\mu}=\boldsymbol{\mu}_0,\quad v.s.\quad
+H_1:\boldsymbol{\mu}\neq\boldsymbol{\mu}_0
+\]</span> 记<span class="math inline">\(\bar{\mathbf{x}}\)</span>和<span
+class="math inline">\(V\)</span>分别是样本均值和样本离差阵。</p>
+<blockquote>
+<p><strong>似然比检验方法</strong></p>
+<p>假设我们有一个统计模型，参数空间为<span
+class="math inline">\(\Theta\)</span>,
+其中包含了所有可能的参数值。检验问题通常表述为： <span
+class="math display">\[
+H_0:\theta\in\Theta_0，\quad v.s.\quad
+H_1:\theta\in\Theta_1=\Theta\backslash\Theta_0
+\]</span> <u><span class="math inline">\(H_0\)</span>表述为参数<span
+class="math inline">\(\theta\)</span>属于一个特定的子集<span
+class="math inline">\(\Theta_0\)</span>, <span
+class="math inline">\(H_1\)</span>表述为参数<span
+class="math inline">\(\theta\)</span>不属于原假设所定义的子集<span
+class="math inline">\(\Theta_0\)</span>, 即属于<span
+class="math inline">\(\Theta\)</span>中除<span
+class="math inline">\(\Theta_0\)</span>之外的所有可能值。</u>符号
+ 表示集合的差集运算。</p>
+<p>记样本<span class="math inline">\(X\)</span>下的似然函数为<span
+class="math inline">\(L(\theta|X) = f(X|\theta)\)</span>。
+似然比定义为在原假设 <span class="math inline">\(H_0\)</span>
+下，似然函数的最大值与在整个参数空间 <span
+class="math inline">\(\Theta\)</span> 下的似然函数最大值之比。 <span
+class="math display">\[
+\lambda=\frac{\sup_{\theta\in\Theta_0}L(\theta|X)}{\sup_{\theta\in\Theta}L(\theta|X)}
+\]</span> 此处写的是上确界（所有上界中最小的一个），即使<span
+class="math inline">\(L(\theta|x)\)</span>没有最大元素，但上确界仍然存在
+，这是sup与max的区别。</p>
+<p>似然比检验统计量为 ： <span class="math display">\[
+T=-2\ln(\lambda)=-2\ln\frac{\sup_{\theta\in\Theta_0}L(\theta|X)}{\sup_{\theta\in\Theta}L(\theta|X)}
+\]</span> 可以通过<span class="math inline">\(T\)</span>在零假设<span
+class="math inline">\(H_0\)</span>下的分布（零分布）构造检验的拒绝域。</p>
+</blockquote>
+<h5 id="boldsymbolsigma已知的情形">(1) <span
+class="math inline">\(\boldsymbol{\Sigma}\)</span>已知的情形</h5>
+<p>均值参数<span class="math inline">\(\boldsymbol{\mu}\)</span>的似然比
+<span class="math display">\[
+\begin{align}
+L(\bar{x},\Sigma)&amp;=\frac{1}{(2\pi)^{np/2}|\Sigma|^{n/2}}\exp\left[-\frac{1}{2}\text{tr}\left(\Sigma^{-1}\{V
++ n(\bar{x}-\mu)(\bar{x}-\mu)&#39;\}\right)\right]\\\\
+\lambda&amp;=\frac{\sup_{\theta\in\Theta_0}L(\theta|X)}{\sup_{\theta\in\Theta}L(\theta|X)}\\
+&amp;=\frac{\exp\left\{-\frac 1
+2\text{tr}(\boldsymbol{\Sigma}^{-1}(n(\bar{\mathbf{x}}-\boldsymbol{\mu}_0)(\bar{\mathbf{x}}-\boldsymbol{\mu}_0)&#39;))\right\}}{\sup_{\boldsymbol{\mu}\in\mathbb{R}^p}\left[\exp\left\{-\frac
+1
+2\text{tr}(\boldsymbol{\Sigma}^{-1}(n(\bar{\mathbf{x}}-\boldsymbol{\mu})(\bar{\mathbf{x}}-\boldsymbol{\mu})&#39;))\right\}\right]}
+\\
+&amp;=\frac{\exp\left\{-\frac 1
+2n(\bar{\mathbf{x}}-\boldsymbol{\mu}_0)&#39;\boldsymbol{\Sigma}^{-1}(\bar{\mathbf{x}}-\boldsymbol{\mu}_0)\right\}}{\sup_{\boldsymbol{\mu}\in\mathbb{R}^p}\left[\exp\left\{-\frac
+1
+2n(\bar{\mathbf{x}}-\boldsymbol{\mu})&#39;\boldsymbol{\Sigma}^{-1}(\bar{\mathbf{x}}-\boldsymbol{\mu})\right\}\right]}\\
+&amp;=\frac{\exp\left\{-\frac 1 2
+n(\bar{\mathbf{x}}-\boldsymbol{\mu}_0)&#39;\boldsymbol{\Sigma}^{-1}(\bar{\mathbf{x}}-\boldsymbol{\mu}_0)\right\}}{\exp\left\{-\frac
+1 2
+n(\bar{\mathbf{x}}-\boldsymbol{\hat\mu})&#39;\boldsymbol{\Sigma}^{-1}(\bar{\mathbf{x}}-\boldsymbol{\hat\mu})\right\}},\quad\hat\mu=\bar
+x\\
+&amp; =\exp\left\{-\frac 1
+2n(\bar{\mathbf{x}}-\boldsymbol{\mu}_0)&#39;\boldsymbol{\Sigma}^{-1}(\bar{\mathbf{x}}-\boldsymbol{\mu}_0)\right\}
+\end{align}
+\]</span> 因此似然比检验统计量为 <span class="math display">\[
+T = -
+2\ln(\lambda)=n(\bar{\mathbf{x}}-\boldsymbol{\mu}_0)&#39;\boldsymbol{\Sigma}^{-1}(\bar{\mathbf{x}}-\boldsymbol{\mu}_0)
+\]</span> 故当<span
+class="math inline">\(T&gt;\chi^2_{1-\alpha}(p)\)</span>时拒绝零假设，其犯第一类错误的概率为<span
+class="math inline">\(\alpha\)</span>。</p>
+<h5 id="boldsymbolsigma未知的情形">(2) <span
+class="math inline">\(\boldsymbol{\Sigma}\)</span>未知的情形</h5>
+<p>记<span class="math inline">\(V_0=\sum_{i =
+1}^{n}(x_{i}-\boldsymbol{\mu}_0)(x_{i}-\boldsymbol{\mu}_0)&#39;=V+n(\bar
+x-\mu_0)&#39;(\bar x-\mu_0)\)</span> 参数<span
+class="math inline">\(\boldsymbol{\mu}\)</span>的似然比为 (<span
+class="math inline">\(\Sigma =\frac1{n-1}V\)</span>): <span
+class="math display">\[
+\begin{align}
+\lambda&amp;=\frac{\sup_{\boldsymbol{\Sigma}}\left[|\boldsymbol{\Sigma}|^{-n/2}\exp\left\{-\frac
+1 2\text{tr}(\boldsymbol{\Sigma}^{-1}(V +
+n(\bar{\mathbf{x}}-\boldsymbol{\mu}_0)(\bar{\mathbf{x}}-\boldsymbol{\mu}_0)&#39;))\right\}\right]}{\sup_{\{\boldsymbol{\mu},\boldsymbol{\Sigma}\}}\left[|\boldsymbol{\Sigma}|^{-n/2}\exp\left\{-\frac
+1 2\text{tr}(\boldsymbol{\Sigma}^{-1}(V +
+n(\bar{\mathbf{x}}-\boldsymbol{\mu})(\bar{\mathbf{x}}-\boldsymbol{\mu})&#39;))\right\}\right]}\\
+&amp;=\frac{\sup_{\boldsymbol{\Sigma}}\left[|\boldsymbol{\Sigma}|^{-n/2}\exp\left\{-\frac
+1
+2\text{tr}(\boldsymbol{\Sigma}^{-1}V_0)\right\}\right]}{\sup_{\{\boldsymbol{\mu},\boldsymbol{\Sigma}\}}\left[|\boldsymbol{\Sigma}|^{-n/2}\exp\left\{-\frac
+1 2\text{tr}(\boldsymbol{\Sigma}^{-1}(V +
+n(\bar{\mathbf{x}}-\boldsymbol{\mu})(\bar{\mathbf{x}}-\boldsymbol{\mu})&#39;))\right\}\right]}
+\\
+&amp;=\frac{|\boldsymbol{\hat\Sigma_0}|^{-n/2}\exp\left\{-\frac 1
+2\text{tr}(\boldsymbol{\hat\Sigma_0}^{-1}V_0)\right\}}{|\boldsymbol{\hat\Sigma}|^{-n/2}\exp\left\{-\frac
+1 2\text{tr}(\boldsymbol{\hat\Sigma}^{-1}(V +
+n(\bar{\mathbf{x}}-\boldsymbol{\hat\mu})(\bar{\mathbf{x}}-\boldsymbol{\hat\mu})&#39;))\right\}}
+\\
+\end{align}
+\]</span> 其中<span
+class="math inline">\(\hat\Sigma_0\)</span>是原假设<span
+class="math inline">\(H_0\)</span>为真时：<span
+class="math inline">\(\mu=\mu_0,\Sigma&gt;0\)</span>时的极大似然估计。
+<span class="math display">\[
+\hat\Sigma_0=\frac1n\sum^n_{i=1}(x_i-\mu_0)(x_i-\mu_0)&#39;
+\]</span> 分母中的<span
+class="math inline">\(\hat\mu,\hat\Sigma\)</span>是当<span
+class="math inline">\(\mu\in\mathbb{R}^p,\Sigma&gt;0\)</span>时，<span
+class="math inline">\(\mu,\Sigma\)</span>的极大似然估计。 <span
+class="math display">\[
+\hat \mu=\bar x\\
+\hat\Sigma=\frac 1 n \sum^n_{i=1}(x_i-\bar x)
+(x_i-\bar x)&#39;=\frac V n
+\]</span> 继续计算<span class="math inline">\(\lambda\)</span>,
+分母后面的exp因为<span class="math inline">\(\hat \mu=\bar
+x\)</span>所以等于0，<span class="math inline">\(e^0=1\)</span>;且<span
+class="math inline">\(\hat\Sigma_0=\frac{V_0}n\)</span>有： $$ <span
+class="math display">\[\begin{align}
+\lambda&amp;=\frac{|\frac{V_0}n|^{-n/2}e^{-\frac {np} 2}}{\left|\frac V
+n\right|^{-n/2}},\quad e^{-\frac {np} 2}常数项忽略\\
+&amp;=\frac{\left|V_0\right|^{-n/2}}{\left|V\right|^{-n/2}}\\
+&amp;=\left(\frac{\left|V\right| +
+n(\bar{\mathbf{x}}-\boldsymbol{\mu}_0)(\bar{\mathbf{x}}-\boldsymbol{\mu}_0)&#39;}{\left|V\right|}\right)^{-n/2}
+\\
+&amp;=\left|I_p +
+nV^{-1/2}(\bar{\mathbf{x}}-\boldsymbol{\mu}_0)(\bar{\mathbf{x}}-\boldsymbol{\mu}_0)&#39;V^{-1/2}\right|^{-n/2}\\
+&amp;=(1 +
+n(\bar{\mathbf{x}}-\boldsymbol{\mu}_0)&#39;V^{-1}(\bar{\mathbf{x}}-\boldsymbol{\mu}_0))^{-n/2}
+
+\end{align}\]</span> <span class="math display">\[
+利用似然比原理，在$\lambda$较小时拒绝原假设$H_0: \mu=\mu_0$,
+从而认为备择假设成立$H_1$. 当原假设$H_0:
+\mu=\mu_0$成立时，由$n(n-1)(\bar x-\mu_0)&#39;V^{-1}(\bar x-\mu_0)\sim
+T^2_p(n-1)$, 所以通常取：
+\]</span> T^{2}=n(n -
+1)({x}-<em>{0})'V<sup>{-1}({x}-<em>{0})=n({x}-</em>{0})'S</sup>{-1}({x}-</em>{0})
+$$ 为检验统计量。并在<span
+class="math inline">\(T^2\)</span>较大时拒绝原假设<span
+class="math inline">\(H_0\)</span>, 从而认为备择假设<span
+class="math inline">\(H_1\)</span>成立。</p>
+<p>根据Hotelling <span class="math inline">\(T^2\)</span>分布的性质有:
+<span class="math display">\[
+T^{2} \stackrel{d}{\rightarrow} T_{p}^{2}(n - 1)\\
+\frac{n - p}{(n - 1)p}T^{2} \stackrel{d}{\rightarrow} F(p, n - p)
+\]</span> 则当<span class="math inline">\(\frac{n - p}{(n -
+1)p}T^{2}&gt;F_{1-\alpha}(p, n -
+p)\)</span>时拒绝零假设，其犯第一类错误的概率为<span
+class="math inline">\(\alpha\)</span>。</p>
+<p>检验的p值为： <span class="math display">\[
+p_v=Pr(F_{p,n-p}\ge\frac{n-p}{(n-1)p}T^2)
+\]</span></p>
+<h5 id="栗子检验单总体两总体均值">栗子(检验单总体、两总体均值)</h5>
+<p><strong>(1)</strong>:
+在正态假设下，哥特式教堂的长度和中殿长度是否与罗马式教堂具有相同的均值？</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241208213813501.png"
+alt="image-20241208213813501" />
+<figcaption aria-hidden="true">image-20241208213813501</figcaption>
+</figure>
+<p>计算哥特式教堂数据的<span class="math inline">\(\bar x,V\)</span>:
+<span class="math display">\[
+\bar
+x=\begin{pmatrix}121.12\\22.84\end{pmatrix},V=\begin{pmatrix}19466.70&amp;
+2257.90\\2257.90&amp; 469.56\end{pmatrix}
+\]</span> n=16,p=2, <span class="math inline">\(H_0:\mu=\mu_0,\quad
+v.s.\quad H_1:\mu\neq\mu_0,\quad
+\mu_0=\begin{pmatrix}145.29\\22.69\end{pmatrix}\)</span>, <span
+class="math inline">\(\Sigma\)</span>未知。 <span
+class="math display">\[
+T^2=n(n-1)(\bar X-\mu_0)&#39;V^{-1}(\bar X-\mu_0)=17.283\\
+\]</span> 设定显著性水平为<span
+class="math inline">\(\alpha=0.05\)</span>, 计算检验的p值： <span
+class="math display">\[
+\begin{align}
+p_v&amp;=Pr(F_{p,n-p}\ge\frac{n-p}{(n-1)p}T^2)\\
+&amp;=Pr(F(2,14)\ge8.0654)\\
+&amp;=0.0047\\
+&amp;&lt;0.05
+\end{align}
+\]</span> <strong>结论：</strong>故拒绝零假设，<span
+class="math inline">\(\mu\neq\mu_0\)</span>,
+认为哥特式教堂和罗马式教堂没有相同的长度和中殿高度。</p>
+<p><strong>(2):
+</strong>哥特式教堂的长度与罗马式教堂长度是否具有相同的均值？</p>
+<p>这实际上是一个<strong>单总体正态分布检测</strong>。哥特式教堂的样本协方差阵:
+<span class="math display">\[
+S=\frac{V}{n-1}=\begin{pmatrix}19466.70/15&amp;
+2257.90/15\\2257.90/15&amp;
+469.56/15\end{pmatrix}=\begin{pmatrix}12977.78&amp; 150.53\\150.53&amp;
+31.3\end{pmatrix}=\begin{pmatrix}s_{11}&amp;s_{12}\\s_{21}&amp;s_{22}\end{pmatrix}
+\]</span> t-检验与检验的p值： $$ t_1=n =4 =-2.648\\</p>
+<p>p=Pr{|t(15)||t_1|}=2Pr(t(15))=0.017 $$ <strong>总结：</strong><span
+class="math inline">\(p\le\alpha\)</span>因此认为哥特式教堂的长度与罗马式教堂长度没有相同均值。</p>
+<p><strong>(3):
+</strong>哥特式教堂的中殿高度与罗马式教堂的中殿高度是否具有相同的均值？
+<span class="math display">\[
+t_2=\sqrt n\frac{\bar
+X_2-22.69}{\sqrt{s_{22}}}=4\times\frac{22.84-22.69}{\sqrt{31.3}}=0.107\\\\
+p=Pr\left\{|t(15)|\ge|t_2|\right\}=2Pr(t(15)\ge 0.107)=0.916\gt 0.05
+\]</span> <strong>总结：</strong><span
+class="math inline">\(p\gt\alpha\)</span>因此认为哥特式教堂的中殿高度与罗马式教堂的中殿高度具有相同的均值.</p>
+<p><strong>两种教堂长度和中殿高度的比较问题</strong>（例1续）</p>
+<p>如果设定 <span
+class="math inline">\(\mu_0^*=\begin{pmatrix}131\\21\end{pmatrix}\)</span>。
+考虑如下的协方差阵 <span class="math inline">\(\Sigma\)</span>
+未知时的均值检验问题： <span class="math display">\[
+H_0:\mu = \mu_0^*，\quad v.s.\quad H_1:\mu\neq\mu_0^*
+\]</span> 此时Hotelling<span class="math inline">\(T^2\)</span>
+检验统计量、计算的p值为 ： <span class="math display">\[
+T^2=n(n - 1)(\bar{X}-\mu_0^*)&#39;V^{-1}(\bar{X}-\mu_0^*) = 11.507\\\\
+p=P\left\{F(p,n - p)\geq\frac{n - p}{(n - 1)p}T^2\right\}
+=P\left\{F(2,14)\geq5.370\right\}=0.019
+\]</span> <strong>结论</strong>：拒绝零假设。</p>
+<p>1') 哥特式教堂的长度与罗马式教堂长度是否有相同均值的t - 检验、p值：
+<span class="math display">\[
+t_1^*=\sqrt{n}\cdot\frac{\bar{X}_1 -
+131}{\sqrt{S_{11}^*}}=\sqrt{16}\cdot\frac{121.12 -
+131}{\sqrt{1297.78}}=-1.097\\\\
+p = P_r\{|t(15)|\geq|t_1^*|\}=2P_r\{t(15)\leq - 1.097\}=0.290&gt;0.05
+\]</span>
+<strong>结论</strong>：因此认为哥特式教堂的长度与罗马式教堂长度有相同均值。</p>
+<p>2') 哥特式教堂的中殿高度与罗马式教堂的中殿高度是否有相同均值的t -
+检验、p值： <span class="math display">\[
+t_2^*=\sqrt{n}\cdot\frac{\bar{X}_2 -
+21}{\sqrt{S_{22}^*}}=\sqrt{16}\cdot\frac{22.84 -
+21}{\sqrt{31.30}}=1.315\\\\
+p = P_r\{|t(15)|\geq|t_2^*|\}=2P_r\{t(15)\geq1.315\}=0.208&gt;0.05
+\]</span>
+<strong>结论</strong>：因此认为哥特式教堂的中殿高度与罗马式教堂的中殿高度有相同的均值。</p>
+<h4 id="两个多元总体均值比较的检验">3.3.2
+两个多元总体均值比较的检验</h4>
+<p>记 <span class="math inline">\(X=(x_1,\cdots,x_m)\)</span> 和 <span
+class="math inline">\(Y=(y_1,\cdots,y_n)\)</span> 分别为来自总体 <span
+class="math inline">\(N_p(\mu_1,\Sigma)\)</span> 和 <span
+class="math inline">\(N_p(\mu_2,\Sigma)\)</span> 的独立样本，<span
+class="math inline">\(\mu_1,\mu_2\in R^p\)</span>，<span
+class="math inline">\(\Sigma&gt;0\)</span>，<span
+class="math inline">\(\min(m,n)&gt;p\)</span>。</p>
+<p>两个总体均值是否相等的检验问题为: <span class="math display">\[
+H_0:\mu_1 = \mu_2，\quad v.s.\quad H_1:\mu_1\neq\mu_2
+\]</span> 注意：此时两个总体的协方差阵相等。 记 <span
+class="math inline">\(\bar{x}\)</span> 和 <span
+class="math inline">\(\bar{y}\)</span> 分别为总体 <span
+class="math inline">\(X\)</span> 和 <span
+class="math inline">\(Y\)</span> 的样本均值。</p>
+<h5 id="sigma-已知的情形">(1) <span
+class="math inline">\(\Sigma\)</span> 已知的情形</h5>
+<p><span class="math inline">\((\mu_1,\mu_2)\)</span>
+的似然函数为(去掉常数项): <span class="math display">\[
+L(\mu_1,\mu_2)=\exp\left\{-\frac{1}{2}[m(\bar{x}-\mu_1)&#39;\Sigma^{-1}(\bar{x}-\mu_1)+n(\bar{y}-\mu_2)&#39;\Sigma^{-1}(\bar{y}-\mu_2)]\right\}\\
+\hat{\mu}_0=\frac{m\bar{x}+n\bar{y}}{m + n}=\frac{\sum_{i =
+1}^{m}x_i+\sum_{j = 1}^{n}y_j}{m + n}
+\]</span> 当 <span class="math inline">\(\mu_1=\mu_2=\mu\)</span>
+时，<span class="math inline">\(\mu\)</span> 的极大似然估计是 <span
+class="math inline">\(\hat{\mu}_0\)</span>。</p>
+<p>检验问题的似然比为: <span class="math display">\[
+\begin{align}
+\lambda&amp;=\frac{\sup_{\mu}L(\mu,\mu)}{\sup_{\{\mu_1,\mu_2\}}L(\mu_1,\mu_2)}\\
+&amp;=\exp\left\{-\frac{1}{2}[m(\bar{x}-\hat{\mu}_0)&#39;\Sigma^{-1}(\bar{x}-\hat{\mu}_0)+n(\bar{y}-\hat{\mu}_0)&#39;\Sigma^{-1}(\bar{y}-\hat{\mu}_0)]\right\}\\
+&amp;=\exp\left\{-\frac{1}{2}\left[\frac{mn}{m +
+n}(\bar{x}-\bar{y})&#39;\Sigma^{-1}(\bar{x}-\bar{y})\right]\right\}
+\end{align}
+\]</span></p>
+<blockquote>
+<p><span class="math display">\[
+m(\bar{x}-\hat{\mu}_0)&#39;\Sigma^{-1}(\bar{x}-\hat{\mu}_0)+n(\bar{y}-\hat{\mu}_0)&#39;\Sigma^{-1}(\bar{y}-\hat{\mu}_0)=\frac{mn}{m
++ n}(\bar{x}-\bar{y})&#39;\Sigma^{-1}(\bar{x}-\bar{y})
+\]</span></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241210134445146.png"
+alt="image-20241210134445146" />
+<figcaption aria-hidden="true">image-20241210134445146</figcaption>
+</figure>
+</blockquote>
+<p>则检验比检验统计量为: <span class="math display">\[
+T=-2\log(\lambda)=\frac{mn}{m +
+n}(\bar{x}-\bar{y})&#39;\Sigma^{-1}(\bar{x}-\bar{y})\vert_{H_0}\stackrel{d}{\sim}\chi^2(p)
+\]</span> 当 <span
+class="math inline">\(T&gt;\chi^2_{1-\alpha}(p)\)</span>
+时拒绝零假设，其犯第一类错误的概率为 <span
+class="math inline">\(\alpha\)</span>。</p>
+<h5 id="sigma-未知的情形">(2) <span
+class="math inline">\(\Sigma\)</span> 未知的情形</h5>
+<p>记<span class="math inline">\(V_X\)</span>和<span
+class="math inline">\(V_Y\)</span>分别为总体<span
+class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>的样本离差阵，<span
+class="math inline">\(V = V_X+V_Y\)</span>。</p>
+<p><span class="math inline">\((\mu_1,\mu_2,\Sigma)\)</span>
+的似然函数为: <span class="math display">\[
+L(\mu_1,\mu_2,\Sigma)=\frac{1}{\vert\Sigma\vert^{\frac{(m + n)}2}}
+\exp\left\{-\frac{1}{2}\text{tr}[\Sigma^{-1}(V +
+m(\bar{x}-\mu_1)(\bar{x}-\mu_1)&#39; +
+n(\bar{y}-\mu_2)(\bar{y}-\mu_2)&#39;)]\right\}
+\]</span> 当<span
+class="math inline">\(\mu_1,\,u_2\in\mathbb{R}^p,\Sigma&gt;0\)</span>时，<span
+class="math inline">\(\mu_1\)</span>和<span
+class="math inline">\(\mu_2\)</span>的极大似然估计分别为：<span
+class="math inline">\(\hat\mu_1=\bar x,\hat\mu_2=\bar y\)</span>，<span
+class="math inline">\(\Sigma\)</span>的极大似然估计为<span
+class="math inline">\(\hat\Sigma={V_1+V_2}/{(n+m)}\)</span>.在原假设<span
+class="math inline">\(H_0\)</span>成立时(<span
+class="math inline">\(\mu_1=\mu_2=\mu\)</span>)，<span
+class="math inline">\(\mu\)</span>的极大似然估计为<span
+class="math inline">\(\hat\mu_0=(n\bar x+m\bar y)/(n+m)\)</span>.
+在原假设<span class="math inline">\(H_0\)</span>成立时，将似然函数<span
+class="math inline">\(L(\mu_1,\mu_2,\Sigma)\)</span>中的均值向量<span
+class="math inline">\(\mu_1=\mu_2=\hat\mu_0\)</span>,
+从而得到原假设<span class="math inline">\(H_0\)</span>成立时的<span
+class="math inline">\(\Sigma\)</span>的似然函数为： <span
+class="math display">\[
+\begin{align}
+L(\Sigma)&amp;=\frac{1}{\vert\Sigma\vert^{\frac{(m + n)}2}}
+\exp\left\{-\frac{1}{2}\text{tr}[\Sigma^{-1}(V_1+V_2 +
+m(\bar{x}-\hat\mu_0)(\bar{x}-\hat\mu_0)&#39; +
+n(\bar{y}-\hat\mu_0)(\bar{y}-\hat\mu_0)&#39;)]\right\}\\
+\hat \Sigma_0&amp;=\frac{V_1+V_2 +
+m(\bar{x}-\hat\mu_0)(\bar{x}-\hat\mu_0)&#39;+
+n(\bar{y}-\hat\mu_0)(\bar{y}-\hat\mu_0)&#39;}{m+n}\\
+\hat \Sigma_0&amp;=\frac{V_1+V_2 + \frac{mn}{m +
+n}(\bar{x}-\bar{y})(\bar{x}-\bar{y})&#39;}{m+n}
+\end{align}
+\]</span></p>
+<p><span class="math display">\[
+\because
+m(\bar{x}-\hat{\mu}_0)&#39;\Sigma^{-1}(\bar{x}-\hat{\mu}_0)+n(\bar{y}-\hat{\mu}_0)&#39;\Sigma^{-1}(\bar{y}-\hat{\mu}_0)=\frac{mn}{m
++ n}(\bar{x}-\bar{y})&#39;\Sigma^{-1}(\bar{x}-\bar{y})\\
+\therefore m(\bar{x}-\hat\mu_0)(\bar{x}-\hat\mu_0)&#39;+
+n(\bar{y}-\hat\mu_0)(\bar{y}-\hat\mu_0)&#39;= \frac{mn}{m +
+n}(\bar{x}-\bar{y})(\bar{x}-\bar{y})&#39;
+\]</span></p>
+<p>检验问题的似然比为: <span class="math display">\[
+\begin{align}
+\lambda&amp;=\frac{\sup_{\{\mu,\Sigma\}}L(\mu,\mu,\Sigma)}{\sup_{\{\mu_1,\mu_2,\Sigma\}}L(\mu_1,\mu_2,\Sigma)}\\
+&amp;=\left(\frac{\vert V_1+V_2 + \frac{mn}{(m +
+n)}(\bar{x}-\bar{y})(\bar{x}-\bar{y})&#39;\vert}{\vert
+V_1+V_2\vert}\right)^{-(m + n)/2}\\
+&amp;=\vert I_p+\frac{mn}{m+n}(V_1+V_2)^{-\frac 1
+2}(\bar{x}-\bar{y})(\bar{x}-\bar{y})&#39;(V_1+V_2)^{-\frac 1
+2}\vert^{-(m + n)/2}\\
+&amp;=\left(1+\frac{mn}{m +
+n}(\bar{x}-\bar{y})&#39;(V_1+V_2)^{-1}(\bar{x}-\bar{y})\right)^{-(m +
+n)/2}
+\end{align}
+\]</span> 令 : <span class="math display">\[
+T^2=\frac{mn(m + n - 2)}{m +
+n}(\bar{x}-\bar{y})&#39;(V_1+V_2)^{-1}(\bar{x}-\bar{y})\\\\
+T^2\vert_{H_0}\stackrel{d}{\sim}T^2_p(m + n - 2)
+\]</span> 取<span
+class="math inline">\(T^2\)</span>为检验统计量，在原假设<span
+class="math inline">\(H_0\)</span>为真(<span
+class="math inline">\(\mu_1=\mu_2\)</span>)时，<span
+class="math inline">\(T^2\stackrel{d}{\sim}T^2_p(m + n - 2)\)</span>,
+且在<span class="math inline">\(T^2\)</span>较大时拒绝原假设<span
+class="math inline">\(H_0\)</span>, 从而认为备择假设<span
+class="math inline">\(H_1\)</span>成立(<span
+class="math inline">\(\mu_1\neq\mu_2\)</span>). 再根据Hotelling <span
+class="math inline">\(T^2\)</span>分布的性质： <span
+class="math display">\[
+\frac{1}{(m + n - 2)}T^2_p(n+m-2)\overset{d}{=}\frac{\chi^2_p}{\chi^2_{m
++ n - p - 1}}\\
+\frac{(m + n - p - 1)}{(m + n - 2)p}T^2\overset{d}{\sim}F(p,m + n - p -
+1)\\
+p_v=Pr\left( F_{1-\alpha}(p,m + n - p - 1)\ge\frac{(m + n - p - 1)}{(m +
+n - 2)p}T^2\right)
+\]</span> 因此，当<span class="math inline">\(p&lt;\alpha\)</span>
+时拒绝零假设， 其犯第一类错误的概率为 <span
+class="math inline">\(\alpha\)</span>。</p>
+<h5 id="mle小结">MLE小结</h5>
+<p><strong>似然比检验统计量</strong>由似然函数在极大似然估计下的似然函数值决定。</p>
+<p>相同协方差阵下正态总体均值和协方差阵的<strong>极大似然估计(MLE)</strong>：</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>均值</th>
+<th>协方差阵</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>单总体：均值的极大似然估计为样本均值;</td>
+<td>计算在给定均值极大似然估计下协方差阵的似然函数:</td>
+</tr>
+<tr class="even">
+<td>多总体：各总体均值无约束的极大似然估计为各自的样本均值;</td>
+<td><span class="math inline">\(\vert\Sigma\vert^{-n/2}\exp\{-\frac 1
+2\text{tr}(\Sigma^{-1}W)\}\)</span></td>
+</tr>
+<tr class="odd">
+<td>多总体：在各总体均值相等的约束条件下，均值的极大似然估计为将所有样本看成是来自同一总体时的样本均值;</td>
+<td>其中<span
+class="math inline">\(W\)</span>是仅与数据有关的正定矩阵，则协方差矩阵的极大似然估计<span
+class="math inline">\(\hat{\Sigma}=W/n\)</span>。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ch4-多元线性模型">Ch4 多元线性模型</h2>
+<blockquote>
+<p><strong>不考的：</strong>(有些不太确定)</p>
+<ul>
+<li><p><span class="math inline">\(rank(X) = r &lt;
+k\)</span>广义逆</p></li>
+<li><p>有约束的最小二乘基本定理</p></li>
+<li><p>左乘：有约束化为无约束-线性假设检验</p>
+<p>右乘：均值子集的线性假设</p></li>
+<li><p>多元线性回归模型中参数估计、假设检验、选取变量</p></li>
+<li><p>多元线性模型的均值置信域和预测域</p></li>
+</ul>
+</blockquote>
+<h3 id="多元线性模型">4.1 多元线性模型</h3>
+<blockquote>
+<p>要清楚多元线性模型中的每一个参数都代表什么、考基于矩阵形式</p>
+<p>知道最小二乘估计的形式</p>
+</blockquote>
+<p>理论上的总体形式，一元线性模型的定义： <span class="math display">\[
+y = x&#39;\beta+\epsilon
+\]</span> 其中，<span class="math inline">\(\beta =
+(\beta_1,\cdots,\beta_k)&#39;\in R^k\)</span>是模型参数， <span
+class="math inline">\(\epsilon\)</span>是随机误差，<span
+class="math inline">\(E(\epsilon|x) = 0\)</span>。</p>
+<p>而有了数据之后，可以写成矩阵的形式，估计它的最小二乘。 <span
+class="math display">\[
+Y = X\beta+\epsilon\\
+\hat{\beta}=(X&#39;X)^{-1}X&#39;Y
+\]</span> <span class="math inline">\(y\)</span>与<span
+class="math inline">\(x\)</span>的关系可表示为如下<span
+class="math inline">\(p\)</span>个一元线性模型： <span
+class="math display">\[
+y_{(i)} = x&#39;\beta_i+\epsilon_{(i)}
+\]</span> <span class="math inline">\(1\leq i\leq p\)</span>，
+其中，<span class="math inline">\(\beta_1,\cdots,\beta_p\in
+R^k\)</span>是每个子线性模型的参数， <span
+class="math inline">\(\epsilon_{(i)}\)</span>是每个因变量对应的随机误差，<span
+class="math inline">\(E(\epsilon_{(i)}|x) = 0\)</span>，<span
+class="math inline">\(1\leq i\leq p\)</span>。</p>
+<p>假设有<span class="math inline">\(n\)</span>组观测<span
+class="math inline">\((x_1,y_1),\cdots,(x_n,y_n)\)</span>。 记<span
+class="math inline">\(Y=(y_1,\cdots,y_n)&#39;\)</span>，<span
+class="math inline">\(X=(x_1,\cdots,x_n)&#39;\)</span>，<span
+class="math inline">\(e =
+(\epsilon_1,\cdots,\epsilon_n)&#39;\)</span>。</p>
+<blockquote>
+<p>x 和 y 由向量转变为矩阵，原先只是在<span
+class="math inline">\(\mathbb{R}^k,\mathbb{R}^p\)</span>空间，现在在<span
+class="math inline">\(\mathbb{R}^{nk},\mathbb{R}^{np}\)</span>空间。</p>
+</blockquote>
+<p>多元线性模型的<strong>定义</strong>如下： <span
+class="math display">\[
+Y = XB + e
+\]</span> 其中:</p>
+<ol type="1">
+<li><span class="math inline">\(Y\)</span>是<span
+class="math inline">\(n\times p\)</span>阶观测的随机矩阵，<span
+class="math inline">\(n\geq p\)</span>；</li>
+<li><span class="math inline">\(X\)</span>是已知的<span
+class="math inline">\(n\times k\)</span>阶设计矩阵，<span
+class="math inline">\(n\geq k\)</span>，<span
+class="math inline">\(rank(X)=r\leq k\)</span>； (3)</li>
+<li>是<span class="math inline">\(k\times
+p\)</span>阶的未知回归系数矩阵；</li>
+<li><span class="math inline">\(e\)</span>是<span
+class="math inline">\(n\times p\)</span>阶不可观测的随机误差矩阵。</li>
+</ol>
+<p><span class="math display">\[
+\begin{align}
+Y&amp;=\begin{pmatrix}y_{(11)}&amp;y_{(12)}&amp;\cdots&amp;y_{(1p)}\\y_{(21)}&amp;y_{(22)}&amp;\cdots&amp;y_{(2p)}\\\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\y_{(n1)}&amp;y_{(n2)}&amp;\cdots&amp;y_{(np)}\end{pmatrix}=\begin{pmatrix}y_1&#39;\\y_2&#39;\\\vdots\\y_n&#39;\end{pmatrix}=(Y_{(1)},\cdots,Y_{(p)})&#39;\\
+X&amp;=\begin{pmatrix}x_{(11)}&amp;x_{(12)}&amp;\cdots&amp;x_{(1k)}\\x_{(21)}&amp;x_{(22)}&amp;\cdots&amp;x_{(2k)}\\\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\x_{(n1)}&amp;x_{(n2)}&amp;\cdots&amp;x_{(nk)}\end{pmatrix}=\begin{pmatrix}x_1&#39;\\x_2&#39;\\\vdots\\x_n&#39;\end{pmatrix}\\
+e&amp;=\begin{pmatrix}\epsilon_{(11)}&amp;\epsilon_{(12)}&amp;\cdots&amp;\epsilon_{(1p)}\\\epsilon_{(21)}&amp;\epsilon_{(22)}&amp;\cdots&amp;\epsilon_{(2p)}\\\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\\epsilon_{(n1)}&amp;\epsilon_{(n2)}&amp;\cdots&amp;\epsilon_{(np)}\end{pmatrix}=\begin{pmatrix}\epsilon_1&#39;\\\epsilon_2&#39;\\\vdots\\\epsilon_n&#39;\end{pmatrix}=(\epsilon_{(1)},\cdots,\epsilon_{(p)})&#39;
+\end{align}
+\]</span></p>
+<p>模型 <span class="math inline">\(Y = XB + e\)</span> 化为 <span
+class="math inline">\(y_{(ij)} =
+x_i&#39;\beta_j+\epsilon_{(ij)}\)</span>，<span
+class="math inline">\(1\leq i\leq n\)</span>，<span
+class="math inline">\(1\leq j\leq p\)</span>。</p>
+<p>我们假定<span
+class="math inline">\(\varepsilon\)</span>服从正态分布，只在特别情况下会说明只假定一、二阶矩存在(有界)的情形。</p>
+<blockquote>
+<p><strong>Q: 一阶矩、二阶矩？</strong></p>
+<p>A:
+<strong>矩（moment）</strong>是用来描述随机变量分布特性的数字量度。</p>
+<ul>
+<li>一阶矩：均值、<span class="math inline">\(E[X]=\mu\)</span></li>
+<li>二阶矩：方差、协方差：<span
+class="math inline">\(Var(X)=E[(X-E(X))^2],
+Cov(X,Y)=E[(X-E(X))(Y-E(Y))]\)</span></li>
+</ul>
+</blockquote>
+<p>假设<span class="math inline">\(\varepsilon\sim N_{n\times
+p}(0,\Sigma\otimes I_n)\)</span>，其中误差协方差阵<span
+class="math inline">\(\Sigma\)</span>是未知的<span
+class="math inline">\(p\)</span>阶正定矩阵。 由<span
+class="math inline">\(e&#39;=(\varepsilon_{1},\cdots,\varepsilon_{n})\)</span>，知<span
+class="math inline">\(\varepsilon_{1},\cdots,\varepsilon_{n}\)</span>独立同分布，且<span
+class="math inline">\(\varepsilon_{1}\stackrel{d}{~}N_{p}(0,\Sigma)\)</span>。
+<span class="math inline">\(e\sim N_{n\times p}(0,\Sigma\otimes
+I_n)\)</span>，则<span class="math inline">\(Y\sim N_{n\times
+p}(XB,\Sigma\otimes I_n)\)</span>。 则有 : <span class="math display">\[
+y_{i}^{\prime}=x_{i}^{\prime}B+\varepsilon_{i}^{\prime}\sim
+N_{p}(x_{i}^{\prime}B,\Sigma), 1\leq i\leq n
+\]</span></p>
+<blockquote>
+<p>由于 <span class="math inline">\(y_i&#39; = x_i&#39; B +
+\varepsilon_i&#39;\)</span>，这里的 <span class="math inline">\(x_i&#39;
+B\)</span> 是一个常数向量（因为给定了自变量 <span
+class="math inline">\(x_i&#39;\)</span> 和回归系数 B），而 <span
+class="math inline">\(\varepsilon_i&#39;\)</span>
+是一个多维正态随机向量。</p>
+</blockquote>
+<p>那么模型 <span class="math inline">\(Y = XB + e\)</span> 可以理解为 :
+<span class="math display">\[
+\begin{cases}
+E(Y)=XB\\
+{Y的行向量}y_{1}^{\prime},\cdots,y_{n}^{\prime}是相互独立的正态向量，同协方差阵\Sigma,\Sigma&gt;0.
+\end{cases}
+\]</span> 记<span class="math inline">\(Y=(Y_{(1)},\cdots,Y_{(p)}),B =
+(\beta_{1},\cdots,\beta_{p}),e=(\varepsilon_{(1)},\cdots,\varepsilon_{(p)})\)</span>，则有:
+<span class="math display">\[
+Y_{(j)}=X\beta_{j}+\varepsilon_{(j)},\quad 1\leq j\leq p
+\]</span> 即模型<span class="math inline">\(Y = XB +
+e\)</span>可以分解为<span
+class="math inline">\(p\)</span>个一元线性模型，这<span
+class="math inline">\(p\)</span>个一元线性模型有相同的设计矩阵<span
+class="math inline">\(X\)</span>。</p>
+<p>不难得出<span
+class="math inline">\(\beta_{j}\)</span>的最小二乘估计为 <span
+class="math inline">\(\hat{\beta}_{j}=(X^{\prime}X)^{-}X^{\prime}Y_{(j)}\)</span>，<span
+class="math inline">\(1\leq j\leq p\)</span>。</p>
+<p>若<span class="math inline">\(rank(X)=k\)</span>，则<span
+class="math inline">\((X^{\prime}X)^{-}=(X^{\prime}X)^{-1}\)</span>.</p>
+<blockquote>
+<p><span
+class="math inline">\((X^{\prime}X)^{-}\)</span>表示Moore-Penrose伪逆、当X满秩的时候伪逆=真逆）</p>
+</blockquote>
+<p>进而有<span class="math inline">\(B\)</span>的最小二乘估计为 <span
+class="math inline">\(\hat{B}=(\hat{\beta}_{1},\cdots,\hat{\beta}_{p})=(X^{\prime}X)^{-1}X^{\prime}(Y_{(1)},\cdots,Y_{(p)})=(X^{\prime}X)^{-1}X^{\prime}Y\)</span>。</p>
+<blockquote>
+<p><strong>Q: 设计矩阵？</strong></p>
+<p>A: <strong>设计矩阵（Design Matrix）</strong>
+是回归分析中的一个重要概念，用于表示回归模型中自变量（或特征）和观测数据之间的关系。对于多元回归模型
+<span class="math inline">\(Y = X B + e\)</span>，设计矩阵 X
+存储了所有观测点的自变量值。具体来说：</p>
+<ul>
+<li>Y 是因变量的观测矩阵，表示所有观测点和因变量的值。</li>
+<li>X 是设计矩阵，包含所有观测点的自变量（或特征）值，通常是一个 <span
+class="math inline">\(n \times k\)</span>的矩阵，其中：
+<ul>
+<li>n 是观测点的数量（样本数量）。</li>
+<li>k 是自变量的数量（包括常数项，如果有的话）。</li>
+</ul></li>
+</ul>
+</blockquote>
+<h4 id="例1-p维的正态分布">例1: p维的正态分布</h4>
+<p>设<span
+class="math inline">\(Y^{\prime}=(y_{1},\cdots,y_{n})\)</span>是来自<span
+class="math inline">\(N_{p}(\mu,\Sigma)\)</span>的样本，<span
+class="math inline">\(\Sigma&gt;0\)</span>。则 <span
+class="math display">\[
+\begin{cases}E(Y) =
+XB,\\Y的行向量y_{1}^{\prime},\cdots,y_{n}^{\prime}是相互独立的正态向量，协方差阵\Sigma,\Sigma&gt;0,\end{cases}
+\]</span> 其中，设计矩阵<span class="math inline">\(X = 1_{n},\
+B=\mu^{\prime}\)</span>。</p>
+<h4 id="例2-多元方差分析">例2: 多元方差分析</h4>
+<p>设有<span class="math inline">\(k\)</span>个相互独立的总体<span
+class="math inline">\(Y_{j}\stackrel{d}{\sim}N_{p}(\mu_{j},\Sigma)\)</span>，<span
+class="math inline">\(k\geq2\)</span>。 <span
+class="math inline">\(y_{j1},\cdots,y_{jn_{j}}\)</span>是来自总体<span
+class="math inline">\(Y_{j}\)</span>的样本，<span
+class="math inline">\(1\leq j\leq k,\ \Sigma&gt;0\)</span>。记<span
+class="math inline">\(n=\sum_{j = 1}^{k}n_{j}\)</span> .</p>
+<p>这相当于如下的多元线性模型 : <span class="math display">\[
+\begin{cases}E(Y) =
+XB,\\Y的行向量y_{1}^{\prime},\cdots,y_{n}^{\prime}是相互独立的正态向量，协方差阵\Sigma,\Sigma&gt;0,\end{cases}
+\]</span> 其中， <span
+class="math inline">\(X=\begin{pmatrix}1_{n_{1}}&amp;0&amp;\cdots&amp;0\\0&amp;1_{n_2}&amp;\cdots&amp;0\\\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\0&amp;0&amp;\cdots&amp;1_{n_{k}}\end{pmatrix}\)</span>是<span
+class="math inline">\(n\times k\)</span>阶对角分块矩阵， <span
+class="math inline">\(B=\begin{pmatrix}\mu_{1}^{\prime}\\\mu_2&#39;\\\vdots\\\mu_{k}^{\prime}\end{pmatrix}\)</span>是<span
+class="math inline">\(k\times p\)</span>阶矩阵。</p>
+<h3 id="充分统计量">4.2 充分统计量</h3>
+<blockquote>
+<p>总体上没什么新东西：意思是比较简单、会考</p>
+<p>协方差矩阵与之前的一致，只是均值发生变化、体现在期望发生变化</p>
+<p>需要能推导、考：列满秩、计算期望、协方差矩阵、线性变换</p>
+</blockquote>
+<p>由等价模型知，Y的行向量<span
+class="math inline">\(y_{1}^{\prime},\cdots,y_{n}^{\prime}\)</span>相互独立，且<span
+class="math inline">\(y_{i}\stackrel{d}{\sim}N_{p}(x_{i}^{\prime}B,\Sigma)\)</span>，<span
+class="math inline">\(1\leq i\leq n\)</span>。</p>
+<p>那么有Y的密度函数为 : <span class="math display">\[
+\begin{align*} f(Y|B,\Sigma)&amp;=\prod_{i =
+1}^{n}\frac{1}{(2\pi)^{p/2}|\Sigma|^{1/2}}\exp\left\{-\frac{1}{2}(y_{i}-x_{i}^{\prime}B)^{\prime}\Sigma^{-1}(y_{i}-x_{i}^{\prime}B)\right\}\\
+&amp;=\frac{1}{(2\pi)^{np/2}|\Sigma|^{n/2}}\exp\left\{\frac{1}{2}\text{tr}[(Y
+- XB)\Sigma^{-1}(Y - XB)^{\prime}]\right\}\\
+&amp;=\frac{1}{(2\pi)^{np/2}|\Sigma|^{n/2}}\exp\left\{\frac{1}{2}\text{tr}[(Y
+- XB)^{\prime}(Y - XB)\Sigma^{-1}]\right\}\\
+&amp;=\frac{\exp\left\{-\text{tr}(B^{\prime}X^{\prime}XB\Sigma^{-1})\right\}}{(2\pi)^{np/2}|\Sigma|^{n/2}}\exp\left\{\frac{1}{2}\text{tr}(Y^{\prime}Y\Sigma^{-1}-2B^{\prime}X^{\prime}Y\Sigma^{-1})\right\}
+\end{align*}
+\]</span> 上面<span class="math inline">\(X\)</span>是固定的、<span
+class="math inline">\(Y\)</span>才是变量。不同体现在期望是<span
+class="math inline">\(x_i&#39;B\)</span>.</p>
+<p>显然Y的分布是指数族分布，<strong><span
+class="math inline">\((Y^{\prime}Y,X^{\prime}Y)\)</span>是参数<span
+class="math inline">\((B,\Sigma)\)</span>的充分统计量。</strong></p>
+<p>注意到，Y的密度还可以写为: <span class="math display">\[
+\begin{align}
+f(Y|B,\Sigma)&amp;=\frac{1}{(2\pi)^{np/2}|\Sigma|^{n/2}}\exp\left\{\frac{1}{2}\text{tr}[(Y
+- XB)^{\prime}(Y - XB)\Sigma^{-1}]\right\} \\
+&amp;=\frac{1}{(2\pi)^{np/2}|\Sigma|^{n/2}}\exp\left\{-\frac{1}{2}\text{tr}[Y^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})Y\Sigma^{-1}]\right\}\\
+&amp;-\frac{1}{2}\text{tr}\left[((X^{\prime}X)^{-1}X^{\prime}Y -
+B)^{\prime}(X^{\prime}X)((X^{\prime}X)^{-1}X^{\prime}Y -
+B)\Sigma^{-1}\right]
+\end{align}
+\]</span> 可见<span class="math inline">\((
+(X^{\prime}X)^{-1}X^{\prime}Y,
+Y^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})Y)\)</span>也是<span
+class="math inline">\((B,\Sigma)\)</span>的充分统计量。
+平方和分解公式（协方差矩阵的估计） : <span class="math display">\[
+\begin{align}(Y - XB)^{\prime}(Y -
+XB)&amp;=Y^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})Y\\
+&amp;+(X^{\prime}X)^{-1}X^{\prime}Y -
+B)^{\prime}X^{\prime}X((X^{\prime}X)^{-1}X^{\prime}Y - B)\end{align}
+\]</span></p>
+<blockquote>
+<p>下面的这种用于X列非满秩的情况、没有逆，只能使用伪逆。</p>
+</blockquote>
+<h4 id="情形1rankxk-x列满秩">情形1：<span
+class="math inline">\(rank(X)=k\)</span> X列满秩</h4>
+<blockquote>
+<p>不考广义逆，一定考列满秩的情况。</p>
+</blockquote>
+<h5 id="性质4.1.1">性质4.1.1</h5>
+<ol type="1">
+<li><span
+class="math inline">\((X^{\prime}X)^{-1}X^{\prime}Y\stackrel{d}{\sim}N_{k\times
+p}(B,\Sigma\otimes(X^{\prime}X)^{-1})\)</span>；</li>
+<li><span
+class="math inline">\(Y^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})Y\stackrel{d}{\sim}W_{p}(n
+- k,\Sigma)\)</span>；</li>
+<li><span
+class="math inline">\((X^{\prime}X)^{-1}X^{\prime}Y\)</span>与<span
+class="math inline">\(Y^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})Y\)</span>相互独立。</li>
+</ol>
+<blockquote>
+<p><strong>(1) 证明</strong>：由于<span
+class="math inline">\(Y\stackrel{d}{\sim}N_{n\times p}(XB,\Sigma\otimes
+I_{n})\)</span>，即<span
+class="math inline">\(vec(Y)\stackrel{d}{\sim}N_{np}(XB,\Sigma\otimes
+I_{n})\)</span>。 又有 : <span class="math display">\[
+vec((X^{\prime}X)^{-1}X^{\prime}Y)=vec((X^{\prime}X)^{-1}X^{\prime}YI_{p})=(I_{p}\otimes(X^{\prime}X)^{-1}X^{\prime})vec(Y)\\\\
+\begin{align*}
+E[vec((X^{\prime}X)^{-1}X^{\prime}Y)]&amp;=(I_{p}\otimes(X^{\prime}X)^{-1}X^{\prime})E[vec(Y)]\\
+&amp;=(I_{p}\otimes(X^{\prime}X)^{-1}X^{\prime})vec(XB)\\
+&amp;=vec(((X^{\prime}X)^{-1}X^{\prime})(XB)I_{p})\\ &amp;=vec(B)\\\\
+Cov[vec((X^{\prime}X)^{-1}X^{\prime}Y)]&amp;=(I_{p}\otimes(X^{\prime}X)^{-1}X^{\prime})Cov[vec(Y)](I_{p}\otimes(X^{\prime}X)^{-1}X^{\prime})^{\prime}\\
+&amp;=(I_{p}\otimes(X^{\prime}X)^{-1}X^{\prime})(\Sigma\otimes
+I_{n})(I_{p}\otimes(X^{\prime}X)^{-1}X^{\prime})^{\prime}\\
+&amp;=\Sigma\otimes(X^{\prime}X)^{-1} \end{align*}
+\]</span> 故知<span
+class="math inline">\(vec((X^{\prime}X)^{-1}X^{\prime}Y)\stackrel{d}{\sim}N_{kp}(vec(B),\Sigma\otimes(X^{\prime}X)^{-1})\)</span>，即(1)成立。</p>
+<p><strong>(2) 证明</strong>：由于<span class="math inline">\(Y = XB +
+e\)</span>，有 ： <span class="math display">\[
+Y^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})Y =
+e^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})e
+\]</span> 由误差向量的独立同正态分布性知<span
+class="math inline">\(e^{\prime}\stackrel{d}{\sim}N_{p\times
+n}(0,I_{n}\otimes\Sigma)\)</span>，而且不难知道<span
+class="math inline">\(I_{n}-X(X^{\prime}X)^{-1}X^{\prime}\)</span>是秩为<span
+class="math inline">\(n - k\)</span>的幂等阵。
+由第二章关于随机矩阵二次型的性质5的(1)知 ： <span
+class="math display">\[
+Y^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})Y\stackrel{d}{\sim}W_{p}(n
+- k,\Sigma)
+\]</span> 即性质(2)成立。</p>
+<p><strong>(3) 证明：</strong>又由第二章关于随机矩阵二次型的性质5的(3)知
+： <span class="math display">\[
+e^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})e与(X^{\prime}X)^{-1}X^{\prime}e独立\\
+(X^{\prime}X)^{-1}X^{\prime}Y = B+(X^{\prime}X)^{-1}X^{\prime}e
+\]</span> 知<span
+class="math inline">\((X^{\prime}X)^{-1}X^{\prime}Y\)</span>与<span
+class="math inline">\(Y^{\prime}(I_{n}-X(X^{\prime}X)^{-1}X^{\prime})Y\)</span>独立.</p>
+</blockquote>
+<h3 id="参数估计">4.3 参数估计</h3>
+<blockquote>
+<p>如果误差是正态：那么可以使用极大似然估计，就可以写似然。最小二乘不一定要有似然，因为没有正态也能进行最小二乘。在二维正态下，二者等价。</p>
+</blockquote>
+<p>参数(B, Σ)的似然函数为(去掉常数) ： <span class="math display">\[
+L(B, \Sigma|Y) = |\Sigma|^{-n/2} \exp \big\{ -\frac{1}{2} \text{tr}
+\left[ Y&#39;(I_n - X(X&#39;X)^{-1}X&#39;)Y\Sigma^{-1} \right] \\
+-\frac{1}{2} \text{tr} \left[ ((X&#39;X)^{-1}X&#39;Y - B)&#39; (X&#39;X)
+((X&#39;X)^{-1}X&#39;Y - B) \Sigma^{-1} \right] \big\}
+\]</span> 易知B的极大似然估计为 : <span class="math display">\[
+\hat{B} = (X&#39;X)^{-1}X&#39;Y
+\]</span> 注意到平方和分解 :<br />
+<span class="math display">\[
+(Y - XB)&#39;(Y - XB) = Y&#39;(I_n - X(X&#39;X)^{-1}X&#39;)Y\\ +
+((X&#39;X)^{-1}X&#39;Y - B)&#39;X&#39;X((X&#39;X)^{-1}X&#39;Y - B)\\\\
+(Y - X\hat{B})&#39;(Y - X\hat{B}) = \min (Y - XB)&#39;(Y - XB)
+\]</span> 即<span class="math inline">\(\hat{B}\)</span>也是<span
+class="math inline">\(B\)</span>的最小二乘估计。</p>
+<p><strong><span class="math inline">\(\hat{B}\)</span>的分布</strong>
+:</p>
+<p>当<span
+class="math inline">\(\text{rank}(X)=k\)</span>时，由性质4.1.1(1)知，
+<span class="math display">\[
+\hat{B} = (X&#39;X)^{-1}X&#39;Y \stackrel{d}{\sim} N_{k\times p}(B,
+\Sigma \otimes (X&#39;X)^{-1})
+\]</span> 即<span class="math inline">\(\hat{B}\)</span>是<span
+class="math inline">\(B\)</span>的无偏估计，且<span
+class="math inline">\(\text{Cov}(\text{vec}(\hat{B})) = \Sigma \otimes
+(X&#39;X)^{-1}\)</span>。</p>
+<p>当<span
+class="math inline">\(\text{rank}(X)&lt;k\)</span>时，由性质4.1.1的推论(1'')知，
+<span class="math display">\[
+L&#39;\hat{B} = L&#39;(X&#39;X)^{-1}X&#39;Y \stackrel{d}{\sim}
+N_{s\times p}(L&#39;B, \Sigma \otimes L&#39;(X&#39;X)^{-1}L)
+\]</span> 其中<span class="math inline">\(L = X&#39;C\)</span>。则<span
+class="math inline">\(L&#39;\hat{B}\)</span>是<span
+class="math inline">\(L&#39;B\)</span>的无偏估计，其协差阵为<span
+class="math inline">\(\Sigma \otimes
+L&#39;(X&#39;X)^{-1}L\)</span>。</p>
+<p>将<span class="math inline">\(\hat{B}\)</span>代入似然函数，有: <span
+class="math display">\[
+L(\hat{B}, \Sigma|Y) = |\Sigma|^{-n/2} \exp \left\{ -\frac{1}{2}
+\text{tr} \left[ Y&#39;(I_n - X(X&#39;X)^{-1}X&#39;)Y\Sigma^{-1} \right]
+\right\}
+\]</span> 因此，Σ的极大似然估计为 <span class="math display">\[
+\hat{\Sigma} = \frac{1}{n} Y&#39;(I_n - X(X&#39;X)^{-1}X&#39;)Y
+\]</span> 再将<span class="math inline">\(\hat{B}\)</span>和<span
+class="math inline">\(\hat{\Sigma}\)</span>代入似然函数，有: <span
+class="math display">\[
+\max_{B, \Sigma} L(B, \Sigma|Y) = |\hat{\Sigma}|^{-n/2} \exp \left\{
+-\frac{n\rho}{2} \right\}        = |Y&#39;(I_n -
+X(X&#39;X)^{-1}X&#39;)Y|^{-n/2} \left( \frac{n}{e} \right)^{np/2}
+\]</span> 由性质4.1.1的推论(2)知， <span class="math display">\[
+Y&#39;(I_n - X(X&#39;X)^{-1}X&#39;)Y \stackrel{d}{\sim} W_p(n - r,
+\Sigma)\\
+\tilde{\Sigma} = \frac{1}{n - r} Y&#39;(I_n - X(X&#39;X)^{-1}X&#39;)Y
+\]</span> 易知<span
+class="math inline">\(E(\tilde{\Sigma})=\Sigma\)</span>，即<span
+class="math inline">\(\tilde{\Sigma}\)</span>是<span
+class="math inline">\(\Sigma\)</span>的无偏估计。</p>
+<p>由性质4.1.1的推论(3)知，<span
+class="math inline">\(\tilde{\Sigma}\)</span>与<span
+class="math inline">\(\hat{B}\)</span>相互独立。</p>
+<h4 id="最小二乘估计的基本定理">4.3.1 最小二乘估计的基本定理</h4>
+<blockquote>
+<p>不考有约束的。</p>
+</blockquote>
+<h4 id="第一基本定理">第一基本定理</h4>
+<p>令<span class="math inline">\(R_{0}^{2}=\min_{B}(Y - XB)&#39;(Y -
+XB)\)</span>，则 <span class="math display">\[
+R_{0}^{2}\stackrel{d}{\sim}W_{p}(n - r,\Sigma)
+\]</span> 其中<span
+class="math inline">\(\text{rank}(X)=r\)</span>。</p>
+<h3 id="多元线性回归">4.6 多元线性回归</h3>
+<blockquote>
+<p>考X,写成矩阵形式（？）不太理解</p>
+</blockquote>
+<p>多元线性回归模型的定义如下：<br />
+<span class="math display">\[
+Y = 1_n\beta_0&#39;+XB+\varepsilon
+\]</span> 其中：</p>
+<ol type="1">
+<li>因变量<span class="math inline">\(Y\)</span>是<span
+class="math inline">\(n\times p\)</span>阶可观测的随机矩阵，<span
+class="math inline">\(n\geq p\)</span>；</li>
+<li>设计矩阵(预报因子)<span
+class="math inline">\(X\)</span>是已知的<span
+class="math inline">\(n\times k\)</span>阶矩阵，<span
+class="math inline">\(n\geq k\)</span>；</li>
+<li><span
+class="math inline">\((\beta_0&#39;,B)\)</span>称为回归系数，截距<span
+class="math inline">\(\beta_0\)</span>是<span
+class="math inline">\(p\)</span>维向量，斜率<span
+class="math inline">\(B\)</span>是<span class="math inline">\(k\times
+p\)</span>阶矩阵，<span
+class="math inline">\((\beta_0&#39;,B)\)</span>未知；<br />
+</li>
+<li><span class="math inline">\(\varepsilon\)</span>是<span
+class="math inline">\(n\times p\)</span>阶不可观测的随机误差矩阵，<span
+class="math inline">\(\varepsilon\stackrel{d}{\sim}N_{n\times
+p}(0,\Sigma\otimes I_n)\)</span>，<span
+class="math inline">\(\Sigma\)</span>是未知的<span
+class="math inline">\(p\)</span>阶正定阵。</li>
+</ol>
+<p><strong>行与列向量表示</strong> 记<span
+class="math inline">\(Y\)</span>，<span
+class="math inline">\(X\)</span>和<span
+class="math inline">\(\varepsilon\)</span>行与列向量分别为 ： <span
+class="math display">\[
+Y=\begin{pmatrix}y_{11}\\ \vdots\\
+y_{n1}\end{pmatrix}=(y_{(1)},\cdots,y_{(p)})\\
+X=\begin{pmatrix}x_{11}&#39;\\ \vdots\\
+x_{n1}&#39;\end{pmatrix}=(x_{(1)},\cdots,x_{(k)})\\
+\varepsilon=\begin{pmatrix}\varepsilon_{11}\\ \vdots\\
+\varepsilon_{n1}\end{pmatrix}=(\varepsilon_{(1)},\cdots,\varepsilon_{(p)})
+\]</span> 因此，由模型知:<br />
+<span class="math display">\[
+y_{i}&#39;=\beta_0&#39;+x_{i}&#39;B+\varepsilon_{i}&#39;\stackrel{d}{\sim}N_p(\beta_0&#39;+x_{i}&#39;B,\Sigma),\
+1\leq i\leq n
+\]</span> 令<span
+class="math inline">\(\beta_0&#39;=(\beta_{01},\cdots,\beta_{0p})\)</span>，<span
+class="math inline">\(B = (\beta_1,\cdots,\beta_p)\)</span>，则有 :
+<span class="math display">\[
+y_{(j)}=1_n\beta_{0j}+X\beta_j+\varepsilon_{(j)},\ 1\leq j\leq p
+\]</span> 因此，模型可以分解成<span
+class="math inline">\(p\)</span>个一元线性回归模型，这<span
+class="math inline">\(p\)</span>个一元线性回归模型有相同的设计矩阵<span
+class="math inline">\(X\)</span>。</p>
+<p>若令<span class="math inline">\(X^*=(1_n,X)\)</span>，<span
+class="math inline">\(B^*=\begin{pmatrix}\beta_0&#39;\\
+B\end{pmatrix}\)</span>，则模型(11)又可以写为:</p>
+<p>​ <span class="math inline">\(Y = X^*B^*+\varepsilon\)</span>。</p>
+<p>即多元线性回归模型可以转换为多元线性模型。</p>
+<p>假定<span class="math inline">\(\text{rank}(X^*) = k +
+1\)</span>，即<span
+class="math inline">\(X\)</span>列满秩且其列向量与<span
+class="math inline">\(1_n\)</span>线性无关。因此，可以基于多元线性模型的统计推断研究多元线性回归模型。</p>
+<p><strong>一些记号</strong>: <span class="math display">\[
+y_{(j)}=\begin{pmatrix}y_{1j}\\ \vdots\\
+y_{nj}\end{pmatrix},\bar{y}=\begin{pmatrix}\bar{y}_1\\ \vdots\\
+\bar{y}_p\end{pmatrix}=\frac{1}{n}\sum_{i = 1}^{n}y_{ij},\ 1\leq j\leq
+p\\
+x_{(j)}=\begin{pmatrix}x_{1j}\\ \vdots\\
+x_{nj}\end{pmatrix},\bar{x}=\begin{pmatrix}\bar{x}_1\\ \vdots\\
+\bar{x}_k\end{pmatrix}=\frac{1}{n}\sum_{i = 1}^{n}x_{ij},\ 1\leq j\leq k
+\]</span> 最后有点不确定。</p>
+</div><div class="post-end"><div class="post-prev"></div><div class="post-next"><a href="/2024/12/17/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90-Ch9-%E8%81%9A%E7%B1%BB%E5%88%86%E6%9E%90/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0-%E4%B8%8A"><span class="toc-content-number">1.</span> <span class="toc-content-text">期末复习-上</span></a></li><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#%E7%9F%A5%E8%AF%86%E5%A4%8D%E4%B9%A0"><span class="toc-content-number">2.</span> <span class="toc-content-text">知识复习</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ch1-%E5%A4%9A%E5%85%83%E5%88%86%E5%B8%83"><span class="toc-content-number">2.1.</span> <span class="toc-content-text">Ch1 多元分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%9F%A9%E9%98%B5%E7%9F%A5%E8%AF%86"><span class="toc-content-number">2.1.1.</span> <span class="toc-content-text">1.1 矩阵知识</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%A4%9A%E5%85%83%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83"><span class="toc-content-number">2.1.2.</span> <span class="toc-content-text">1.2 多元正态分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0"><span class="toc-content-number">2.1.2.1.</span> <span class="toc-content-text">1.2.1 密度函数</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%BA%BF%E6%80%A7%E5%8F%98%E6%8D%A2%E5%9F%BA%E6%9C%AC"><span class="toc-content-number">2.1.2.2.</span> <span class="toc-content-text">1.2.2 线性变换(基本)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E6%80%A7%E8%B4%A8"><span class="toc-content-number">2.1.2.2.1.</span> <span class="toc-content-text">性质</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0"><span class="toc-content-number">2.1.3.</span> <span class="toc-content-text">1.3 相关系数</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ch2-%E7%94%B1%E5%A4%9A%E5%85%83%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83%E5%AF%BC%E5%87%BA%E7%9A%84%E5%88%86%E5%B8%83"><span class="toc-content-number">2.2.</span> <span class="toc-content-text">Ch2 由多元正态分布导出的分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#wishart%E5%88%86%E5%B8%83"><span class="toc-content-number">2.2.1.</span> <span class="toc-content-text">2.1 Wishart分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%80%A7%E8%B4%A8-1"><span class="toc-content-number">2.2.1.1.</span> <span class="toc-content-text">2.1.1 性质</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#hotelling-t2%E5%88%86%E5%B8%83"><span class="toc-content-number">2.2.2.</span> <span class="toc-content-text">2.2 Hotelling \(T^2\)分布</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ch3-%E5%A4%9A%E5%85%83%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83%E7%9A%84%E4%BC%B0%E8%AE%A1%E4%B8%8E%E6%A3%80%E9%AA%8C"><span class="toc-content-number">2.3.</span> <span class="toc-content-text">Ch3 多元正态分布的估计与检验</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%A4%9A%E5%85%83%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83%E6%A0%B7%E6%9C%AC%E7%BB%9F%E8%AE%A1%E9%87%8F"><span class="toc-content-number">2.3.1.</span> <span class="toc-content-text">3.1 多元正态分布样本统计量</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#barx-v-%E7%9A%84%E5%88%86%E5%B8%83%E6%80%A7%E8%B4%A8"><span class="toc-content-number">2.3.1.1.</span> <span class="toc-content-text">3.1.1 (\(\bar{X}\), \(V\)) 的分布性质</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%A4%9A%E5%85%83%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="toc-content-number">2.3.2.</span> <span class="toc-content-text">3.2 多元正态分布的参数估计</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%9E%81%E5%A4%A7%E4%BC%BC%E7%84%B6%E4%BC%B0%E8%AE%A1"><span class="toc-content-number">2.3.2.1.</span> <span class="toc-content-text">3.2.1 极大似然估计</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%A0%B7%E6%9C%AC%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0"><span class="toc-content-number">2.3.2.2.</span> <span class="toc-content-text">3.2.2 样本相关系数</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%AD%A3%E6%80%81%E6%80%BB%E4%BD%93%E5%9D%87%E5%80%BC%E7%9A%84%E7%BD%AE%E4%BF%A1%E5%9F%9F%E4%BC%B0%E8%AE%A1"><span class="toc-content-number">2.3.2.3.</span> <span class="toc-content-text">3.2.3 正态总体均值的置信域估计</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#a.%E5%8D%95%E6%80%BB%E4%BD%93"><span class="toc-content-number">2.3.2.3.1.</span> <span class="toc-content-text">A.单总体</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-6"><a class="toc-content-link" href="#boldsymbolsigma%E5%B7%B2%E7%9F%A5"><span class="toc-content-number">2.3.2.3.1.1.</span> <span class="toc-content-text">\(\boldsymbol{\Sigma}\)已知</span></a></li><li class="toc-content-item toc-content-level-6"><a class="toc-content-link" href="#sigma%E6%9C%AA%E7%9F%A5"><span class="toc-content-number">2.3.2.3.1.2.</span> <span class="toc-content-text">\(\Sigma\)未知</span></a></li></ol></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#b.%E4%B8%A4%E6%80%BB%E4%BD%93"><span class="toc-content-number">2.3.2.3.2.</span> <span class="toc-content-text">B.两总体</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-6"><a class="toc-content-link" href="#sigma%E5%B7%B2%E7%9F%A5"><span class="toc-content-number">2.3.2.3.2.1.</span> <span class="toc-content-text">\(\Sigma\)已知</span></a></li><li class="toc-content-item toc-content-level-6"><a class="toc-content-link" href="#sigma%E6%9C%AA%E7%9F%A5-1"><span class="toc-content-number">2.3.2.3.2.2.</span> <span class="toc-content-text">\(\Sigma\)未知</span></a></li></ol></li></ol></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%A4%9A%E5%85%83%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83%E7%9A%84%E6%A3%80%E9%AA%8C"><span class="toc-content-number">2.3.3.</span> <span class="toc-content-text">3.3 多元正态分布的检验</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%9D%87%E5%80%BC%E5%90%91%E9%87%8F%E7%9A%84%E6%94%B9%E8%BF%9B%E4%BC%B0%E8%AE%A1"><span class="toc-content-number">2.3.3.1.</span> <span class="toc-content-text">3.3.0 均值向量的改进估计</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#sigma%E5%B7%B2%E7%9F%A5-1"><span class="toc-content-number">2.3.3.1.1.</span> <span class="toc-content-text">\(\Sigma\)已知</span></a></li></ol></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%8D%95%E6%80%BB%E4%BD%93%E5%9D%87%E5%80%BC%E6%A3%80%E9%AA%8C"><span class="toc-content-number">2.3.3.2.</span> <span class="toc-content-text">3.3.1 单总体均值检验</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#boldsymbolsigma%E5%B7%B2%E7%9F%A5%E7%9A%84%E6%83%85%E5%BD%A2"><span class="toc-content-number">2.3.3.2.1.</span> <span class="toc-content-text">(1) \(\boldsymbol{\Sigma}\)已知的情形</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#boldsymbolsigma%E6%9C%AA%E7%9F%A5%E7%9A%84%E6%83%85%E5%BD%A2"><span class="toc-content-number">2.3.3.2.2.</span> <span class="toc-content-text">(2) \(\boldsymbol{\Sigma}\)未知的情形</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E6%A0%97%E5%AD%90%E6%A3%80%E9%AA%8C%E5%8D%95%E6%80%BB%E4%BD%93%E4%B8%A4%E6%80%BB%E4%BD%93%E5%9D%87%E5%80%BC"><span class="toc-content-number">2.3.3.2.3.</span> <span class="toc-content-text">栗子(检验单总体、两总体均值)</span></a></li></ol></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%B8%A4%E4%B8%AA%E5%A4%9A%E5%85%83%E6%80%BB%E4%BD%93%E5%9D%87%E5%80%BC%E6%AF%94%E8%BE%83%E7%9A%84%E6%A3%80%E9%AA%8C"><span class="toc-content-number">2.3.3.3.</span> <span class="toc-content-text">3.3.2
+两个多元总体均值比较的检验</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#sigma-%E5%B7%B2%E7%9F%A5%E7%9A%84%E6%83%85%E5%BD%A2"><span class="toc-content-number">2.3.3.3.1.</span> <span class="toc-content-text">(1) \(\Sigma\) 已知的情形</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#sigma-%E6%9C%AA%E7%9F%A5%E7%9A%84%E6%83%85%E5%BD%A2"><span class="toc-content-number">2.3.3.3.2.</span> <span class="toc-content-text">(2) \(\Sigma\) 未知的情形</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#mle%E5%B0%8F%E7%BB%93"><span class="toc-content-number">2.3.3.3.3.</span> <span class="toc-content-text">MLE小结</span></a></li></ol></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ch4-%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="toc-content-number">2.4.</span> <span class="toc-content-text">Ch4 多元线性模型</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B"><span class="toc-content-number">2.4.1.</span> <span class="toc-content-text">4.1 多元线性模型</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B1-p%E7%BB%B4%E7%9A%84%E6%AD%A3%E6%80%81%E5%88%86%E5%B8%83"><span class="toc-content-number">2.4.1.1.</span> <span class="toc-content-text">例1: p维的正态分布</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B2-%E5%A4%9A%E5%85%83%E6%96%B9%E5%B7%AE%E5%88%86%E6%9E%90"><span class="toc-content-number">2.4.1.2.</span> <span class="toc-content-text">例2: 多元方差分析</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%85%85%E5%88%86%E7%BB%9F%E8%AE%A1%E9%87%8F"><span class="toc-content-number">2.4.2.</span> <span class="toc-content-text">4.2 充分统计量</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%83%85%E5%BD%A21rankxk-x%E5%88%97%E6%BB%A1%E7%A7%A9"><span class="toc-content-number">2.4.2.1.</span> <span class="toc-content-text">情形1：\(rank(X)&#x3D;k\) X列满秩</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E6%80%A7%E8%B4%A84.1.1"><span class="toc-content-number">2.4.2.1.1.</span> <span class="toc-content-text">性质4.1.1</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="toc-content-number">2.4.3.</span> <span class="toc-content-text">4.3 参数估计</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E4%BC%B0%E8%AE%A1%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%AE%9A%E7%90%86"><span class="toc-content-number">2.4.3.1.</span> <span class="toc-content-text">4.3.1 最小二乘估计的基本定理</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%AC%AC%E4%B8%80%E5%9F%BA%E6%9C%AC%E5%AE%9A%E7%90%86"><span class="toc-content-number">2.4.3.2.</span> <span class="toc-content-text">第一基本定理</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92"><span class="toc-content-number">2.4.4.</span> <span class="toc-content-text">4.6 多元线性回归</span></a></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>
