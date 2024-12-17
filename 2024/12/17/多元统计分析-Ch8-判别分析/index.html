@@ -1,0 +1,758 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch8 判别分析 [TOC] 8.0 引入 对观测到的样本判断它属于哪个总体(类)。实际上就干一件事：分类样本。 判别分析的数学描述：已知有k个总体(类)\(G_1,\dots,G_k\), 题目对应的分布函数分别是\(F_1,\dots,F_k\)(属于m维的函数)。给定一个样本y，判断y来自哪个总体(类)。   image-20241216234920580  8.1 距离">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多元统计分析-Ch8-判别分析">
+<meta property="og:url" content="http://example.com/2024/12/17/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90-Ch8-%E5%88%A4%E5%88%AB%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch8 判别分析 [TOC] 8.0 引入 对观测到的样本判断它属于哪个总体(类)。实际上就干一件事：分类样本。 判别分析的数学描述：已知有k个总体(类)\(G_1,\dots,G_k\), 题目对应的分布函数分别是\(F_1,\dots,F_k\)(属于m维的函数)。给定一个样本y，判断y来自哪个总体(类)。   image-20241216234920580  8.1 距离">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-17T06:53:29.000Z">
+<meta property="article:modified_time" content="2024-12-17T06:54:04.751Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="多元统计分析">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary"><title>多元统计分析-Ch8-判别分析 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>多元统计分析-Ch8-判别分析</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2024-12-17</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2024-12-17</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90/">多元统计分析</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约5.5K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch8-判别分析">Ch8 判别分析</h1>
+<p>[TOC]</p>
+<h2 id="引入">8.0 引入</h2>
+<p>对观测到的样本判断它属于哪个总体(类)。<strong>实际上就干一件事：分类样本。</strong></p>
+<p><strong>判别分析的数学描述：</strong>已知有k个总体(类)<span
+class="math inline">\(G_1,\dots,G_k\)</span>,
+题目对应的分布函数分别是<span
+class="math inline">\(F_1,\dots,F_k\)</span>(属于m维的函数)。<strong>给定一个样本y，判断y来自哪个总体(类)。</strong></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241216234920580.png"
+alt="image-20241216234920580" />
+<figcaption aria-hidden="true">image-20241216234920580</figcaption>
+</figure>
+<h2 id="距离判别">8.1 距离判别</h2>
+<p>假设有两个正态总体<span
+class="math inline">\(G_1,G_2\)</span>，分布分别为<span
+class="math inline">\(N_m(\mu_1,V),N_m(\mu_2,V)\)</span>.
+判断样本y来自哪个总体。</p>
+<blockquote>
+<p>扩展欧式距离--&gt;马氏距离(Mahalanobis距离)</p>
+<p>设<span class="math inline">\(x\)</span>和<span
+class="math inline">\(y\)</span>是来自于均值为<span
+class="math inline">\(\mu\)</span>，协方差阵为<span
+class="math inline">\(\Sigma\)</span>的总体<span
+class="math inline">\(G\)</span>的两个样本，定义<strong>样本之间的马氏距离</strong>为:
+<span class="math display">\[
+d^2(x,y)=(x - y)&#39;\Sigma^{-1}(x - y).
+\]</span> 定义<strong><span
+class="math inline">\(x\)</span>与总体的距离</strong>为<span
+class="math inline">\(x\)</span>与均值<span
+class="math inline">\(\mu\)</span>的距离，即: <span
+class="math display">\[
+d^2(x,G)=(x - \mu)&#39;\Sigma^{-1}(x - \mu).
+\]</span></p>
+</blockquote>
+<h3 id="总体具有相同协方差的情形">8.1.1 总体具有相同协方差的情形</h3>
+<p>假定两个总体<span
+class="math inline">\(G_1,G_2\)</span>具有相同的协方差阵<span
+class="math inline">\(V\)</span>.</p>
+<p>我们先考虑总体<span class="math inline">\(G_1\)</span>和<span
+class="math inline">\(G_2\)</span>分别服从正态分布<span
+class="math inline">\(N_m(\mu_1, V)\)</span>和<span
+class="math inline">\(N_m(\mu_2,
+V)\)</span>的距离判别方法，然后给出一般总体的判别方法。</p>
+<blockquote>
+<p>思路：利用样本到总体的马氏距离进行判断。 <span
+class="math display">\[
+d^2(y, G_1)=(y - \mu_1)&#39;V^{-1}(y - \mu_1)\\
+d^2(y, G_2)=(y - \mu_2)&#39;V^{-1}(y - \mu_2)
+\]</span></p>
+</blockquote>
+<p>样本到总体的距离差为: <span class="math display">\[
+d^2(y, G_1)-d^2(y, G_2)=-2\left(y - \frac{\mu_1 +
+\mu_2}{2}\right)&#39;V^{-1}(\mu_1 - \mu_2)
+\]</span> 记: <span class="math display">\[
+\bar{\mu}=\frac{\mu_1 + \mu_2}{2}\\
+W(y)=(y - \bar{\mu})&#39;V^{-1}(\mu_1 - \mu_2)
+\]</span> 有: <span class="math display">\[
+d^2(y, G_1)-d^2(y, G_2)=-2W(y)
+\]</span> 判别准则为: <span class="math display">\[
+\begin{cases}y \in G_1, &amp; \text{若} W(y) \geq 0; \\ y \in G_2, &amp;
+\text{若} W(y) &lt; 0.\end{cases}
+\]</span> 若记<span class="math inline">\(\alpha = V^{-1}(\mu_1 -
+\mu_2)\)</span>，则<span class="math inline">\(W(y)=\alpha&#39;(y -
+\bar{\mu})\)</span>是<span
+class="math inline">\(y\)</span>的线性函数。</p>
+<p><strong>则称<span
+class="math inline">\(W(y)\)</span>是线性判别函数，称<span
+class="math inline">\(\alpha\)</span>是判别系数。</strong></p>
+<blockquote>
+<p>注：上述结果可以推广到非正态分布的情形，只需知道均值和协方差。</p>
+</blockquote>
+<h4 id="a.总体参数未知的情形">A.总体参数未知的情形</h4>
+<p>当<span class="math inline">\(\mu_1\)</span>，<span
+class="math inline">\(\mu_2\)</span>和<span
+class="math inline">\(V\)</span>未知时，需要训练样本来估计总体的这些参数。</p>
+<p>假设已知有总体<span class="math inline">\(G_1\)</span>的<span
+class="math inline">\(n_1\)</span>个样本<span
+class="math inline">\(y_1^{(1)}\)</span>，<span
+class="math inline">\(\cdots\)</span>，<span
+class="math inline">\(y_{n_1}^{(1)}\)</span>，和总体<span
+class="math inline">\(G_2\)</span>的<span
+class="math inline">\(n_2\)</span>个样本<span
+class="math inline">\(y_1^{(2)}\)</span>，<span
+class="math inline">\(\cdots\)</span>，<span
+class="math inline">\(y_{n_2}^{(2)}\)</span>。 令: <span
+class="math display">\[
+\bar{y}^{(1)}=\frac{1}{n_1}\sum_{i = 1}^{n_1}y_i^{(1)},\quad
+\bar{y}^{(2)}=\frac{1}{n_2}\sum_{i = 1}^{n_2}y_i^{(2)}\\
+\begin{align}
+\hat{V}&amp;=\frac{1}{n_1 + n_2 - 2}\left[\sum_{i =
+1}^{n_1}(y_i^{(1)}-\bar{y}^{(1)})(y_i^{(1)}-\bar{y}^{(1)})&#39;+\sum_{i
+=
+1}^{n_2}(y_i^{(2)}-\bar{y}^{(2)})(y_i^{(2)}-\bar{y}^{(2)})&#39;\right]\\
+&amp;\overset{\Delta}=\frac{1}{n_1 + n_2 - 2}[S_1 + S_2]
+\end{align}
+\]</span> 需要注意的是<span
+class="math inline">\(S\)</span>表示离差阵、而<span
+class="math inline">\(V\)</span>表示协方差阵。此时的判别函数为： <span
+class="math display">\[
+W(y)=\left( y - \frac{\bar{y}^{(1)} + \bar{y}^{(2)}}{2}
+\right)&#39;\hat{V}^{-1} (\bar{y}^{(1)} - \bar{y}^{(2)})
+\]</span> 判别准则同上： <span class="math display">\[
+\begin{cases}
+y\in G_1, 若W(y)\ge0\\
+y \in G_2,若W(y)&lt; 0
+\end{cases}
+\]</span></p>
+<h4 id="b.多个总体的判别问题">B.多个总体的判别问题</h4>
+<p>定义：令<span class="math inline">\(D_1,\cdots,D_k\)</span>是<span
+class="math inline">\(R^m\)</span>空间的子集，若它们满足: <span
+class="math display">\[
+D_i \cap D_j = \varnothing,\ i \neq j,\ 1 \leq i &lt; j \leq k\\
+\bigcup_{i = 1}^{k} D_i = R^m
+\]</span> 称<span class="math inline">\(D_1,\cdots,D_k\)</span>为<span
+class="math inline">\(R^m\)</span>的一个划分。</p>
+<p><strong>(1) 总体参数已知的情形</strong></p>
+<p>设有<span class="math inline">\(k\)</span>个总体<span
+class="math inline">\(G_1,\cdots,G_k\)</span>，它们的均值和<strong>协方差阵</strong>分别是<span
+class="math inline">\(\mu_1,\cdots,\mu_k\)</span>和<span
+class="math inline">\(V_1 = \cdots = V_k =
+V\)</span>。这时的(两两)判别函数为: <span class="math display">\[
+W_{ij}(y) = (y - \frac{\mu_i + \mu_j}{2})&#39;V^{-1}(\mu_i - \mu_j),1
+\leq i \neq j \leq k
+\]</span> 判别规则为: <span class="math display">\[
+y属于总体G_{i}，\text{if}\ y\in D_{i},\ 1\leq i\leq k
+\]</span> 其中: <span class="math display">\[
+D_{i}=\{y\in R^{m}:W_{ij}(y)&gt;0,\ 对所有j\neq i成立\},\ 1\leq i\leq k
+\]</span> 若<span class="math inline">\(W_{ij}(y)=\cdots =
+W_{ir}(y)=0\)</span>，则判定 <span
+class="math inline">\(y\)</span>属于总体<span
+class="math inline">\(G_{i}\)</span>，或属于<span
+class="math inline">\(G_{j_{1}}\)</span>，<span
+class="math inline">\(\cdots\)</span>，或属于<span
+class="math inline">\(G_{j_{r}}\)</span>，
+即边界上的点可以判定它属于任意相邻区域所代表的总体。</p>
+<p>(2)<strong>总体参数未知的情形</strong></p>
+<p>假设有来自总体<span class="math inline">\(G_i\)</span>的样本<span
+class="math inline">\(y_1^{(i)},\cdots,y_{n_i}^{(i)}\)</span>，<span
+class="math inline">\(1\leq i\leq k\)</span>。</p>
+<p>记<span class="math inline">\(n=\sum_{i = 1}^{k}n_i\)</span>。令:
+<span class="math display">\[
+\bar{y}^{(i)}=\frac{1}{n_i}\sum_{j = 1}^{n_i}y_j^{(i)},\ 1\leq i\leq k\\
+\hat{V}=\frac{1}{n - k}\sum_{i = 1}^{k}S_i
+\]</span> 则判别函数为: <span class="math display">\[
+W_{ij}(y)=\left(y-\frac{\bar{y}^{(i)}+\bar{y}^{(j)}}{2}\right)&#39;\hat{V}^{-1}(\bar{y}^{(i)}-\bar{y}^{(j)}),\
+1\leq i\neq j\leq k
+\]</span> 判别规则仍为: <span class="math display">\[
+\begin{cases}
+y\in G_1, 若W(y)\ge0\\
+y \in G_2,若W(y)&lt; 0
+\end{cases}
+\]</span></p>
+<h3 id="总体协方差不同">8.1.2 总体协方差不同</h3>
+<p>假设有<span class="math inline">\(k\)</span>个总体<span
+class="math inline">\(G_1,\cdots,G_k\)</span>，它们的均值和协差阵分别是<span
+class="math inline">\((\mu_1,V_1),\cdots,(\mu_k,V_k)\)</span>。</p>
+<h4 id="总体参数已知">总体参数已知</h4>
+<p>令： <span class="math display">\[
+D_i=\left\{y\in R^m:d^2(y,G_i)\leq\min_{1\leq j\leq k,j\neq
+i}d^2(y,G_j)\right\},\ 1\leq i\leq k
+\]</span> 则判别规则为: <span class="math display">\[
+y属于总体G_i\ \text{if}y\in D_i,\ 1\leq i\leq k
+\]</span></p>
+<h4 id="总体参数未知">总体参数未知</h4>
+<p><strong>使用样本均值和样本协方差阵来估计样本</strong>，需要注意的是<span
+class="math inline">\(S\)</span>表示离差阵、而<span
+class="math inline">\(V\)</span>表示协方差阵。记: <span
+class="math display">\[
+\bar{y}^{(i)}=\frac{1}{n_i}\sum_{j = 1}^{n_i}y_j^{(i)},\ 1\leq i\leq k\\
+\hat{V}_i=\frac{S_i}{n_i - 1},\ 1\leq i\leq k
+\]</span> 令: <span class="math display">\[
+\hat{d}^2(y,G_i)=(y - \bar{y}^{(i)})&#39;\hat{V}_i^{-1}(y -
+\bar{y}^{(i)}),\ 1\leq i\leq k
+\]</span> 则判别规则同总体参数已知。</p>
+<h2 id="贝叶斯判别">8.2 贝叶斯判别</h2>
+<blockquote>
+<p><strong>对样本来自哪个总体的可能性有一定的认识，才使用贝叶斯判别。</strong></p>
+</blockquote>
+<p>问题描述： 设有<span class="math inline">\(k\)</span>个总体<span
+class="math inline">\(G_1,\cdots,G_k\)</span>，它们的<span
+class="math inline">\(m\)</span>维密度函数分别为<span
+class="math inline">\(p_1(y),\cdots,p_k(y)\)</span>。 记<span
+class="math inline">\(D_1,\cdots,D_k\)</span>是<span
+class="math inline">\(R^m\)</span>的一个划分。</p>
+<p>判别规则为： <span class="math display">\[
+y属于总体G_i,\text{if}y\in D_i,\ 1\leq i\leq k
+\]</span></p>
+<h3 id="贝叶斯判别法则">8.2.1 贝叶斯判别法则</h3>
+<p>记<span class="math inline">\(L(i,j)\)</span>为样本来自总体<span
+class="math inline">\(G_i\)</span>，但被误判属于总体<span
+class="math inline">\(G_j\)</span>的损失，<span
+class="math inline">\(1\leq i\neq j\leq k\)</span>。 假定样本<span
+class="math inline">\(y\)</span>来自总体<span
+class="math inline">\(G_i\)</span>的先验概率为<span
+class="math inline">\(\pi_i\)</span>，<span class="math inline">\(1\leq
+i\leq k\)</span>，<span class="math inline">\(\sum_{i = 1}^{k}\pi_i =
+1\)</span>。 这等价于， <span
+class="math inline">\(y\)</span>的密度函数为： <span
+class="math display">\[
+y\stackrel{d}{\sim}p(y)=\sum_{i = 1}^{k}\pi_ip_i(y)
+\]</span></p>
+<table>
+<colgroup>
+<col style="width: 36%" />
+<col style="width: 63%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>贝叶斯判别法则</th>
+<th>求解最优划分<span
+class="math inline">\(D_1,\cdots,D_k\)</span>，使得误判的平均损失最小。</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>误判概率(同时发生将其判别为j&amp;误判i)</td>
+<td>给定划分<span class="math inline">\(\{D_i\}_{i =
+1}^{k}\)</span>，样本<span class="math inline">\(y\)</span>来自总体<span
+class="math inline">\(G_i\)</span>，但被误判属于总体<span
+class="math inline">\(G_j\)</span>的概率为 :<span
+class="math inline">\(P(j\vert i;D_1,\cdots,D_k)=\int_{D_j}p_i(y)dy,\
+1\leq i\neq j\leq k\)</span></td>
+</tr>
+<tr class="even">
+<td>判别的平均损失</td>
+<td>给定划分<span class="math inline">\(\{D_i\}_{i =
+1}^{k}\)</span>，相应判别的平均损失为 <span
+class="math inline">\(g(D_1,\cdots,D_k)=\sum_{i = 1}^{k}\pi_i\sum_{j\neq
+i}L(i,j)P(j\vert i;D_1,\cdots,D_k)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>贝叶斯判别法则就是选择划分<span class="math inline">\(\{D_i\}_{i =
+1}^{k}\)</span>，使得判别的平均损失<span
+class="math inline">\(g(D_1,\cdots,D_k)\)</span>最小。</p>
+<blockquote>
+<p>注1： 假定划分<span class="math inline">\(\{D_i\}_{i =
+1}^{k}\)</span>不包含边界。 因此边界<span class="math inline">\(\partial
+D = R^m\backslash\bigcup_{i = 1}^{k}D_i\)</span>。</p>
+<p>假定：若样本<span class="math inline">\(y\stackrel{d}{\sim}\sum_{i =
+1}^{k}\pi_ip_i(y)\)</span>，则<span
+class="math inline">\(P\{y\in\partial D\}=0\)</span>，
+即边界的测度为0。</p>
+<p><strong>Q: 测度为0？</strong></p>
+<p>A:
+边界的测度为0表示边界是“低维流形”，在高维空间中，它的体积（或者概率质量）可以忽略不计。概率论上，如果一个集合的测度为0，则样本落在该集合上的概率为零。</p>
+<ul>
+<li>在一维空间，边界是点（0维），其测度为0。</li>
+<li>在二维空间，边界是曲线（1维），其面积为0。</li>
+<li>在三维空间，边界是曲面（2维），其体积为0。</li>
+</ul>
+<p><strong>边界测度为0的含义</strong>: 贝叶斯判别中，区域边界是由等式
+<span class="math inline">\(h_i(y) = h_j(y)\)</span> 定义的，其中 <span
+class="math inline">\(h_i(y)\)</span> 是将样本 y 判为类别 <span
+class="math inline">\(G_i\)</span>
+的贝叶斯风险。边界的测度为0意味着：<span class="math inline">\(P(y \in
+\{ h_i(y) = h_j(y) \}) = 0\)</span>. 这表示：</p>
+<ul>
+<li><strong>从概率的角度</strong>，样本几乎不可能恰好落在边界上。</li>
+<li>但这并不严格保证“没有样本落在边界上”，因为对于有限样本，可能存在样本
+y 落在边界上。</li>
+</ul>
+<p><strong>Q: 为什么边界测度为0很重要？</strong></p>
+<p>A:
+边界测度为0的性质使得贝叶斯判别区域的定义是严格划分的，区域之间互不重叠，且几乎覆盖整个样本空间;
+确保贝叶斯判别的理论正确性。</p>
+<ul>
+<li>由于边界的概率质量为零，样本落在边界上的概率可以忽略不计。</li>
+<li>因此，贝叶斯判别规则在实际应用中是稳定的，不会因为边界问题产生重大影响。</li>
+</ul>
+</blockquote>
+<h3 id="样本空间中不同类别之间的判别边界测度为0">8.2.2
+样本空间中不同类别之间的判别边界测度为0</h3>
+<blockquote>
+<p>积分区域不同，只有两者相交的地方才是0（？）</p>
+</blockquote>
+<p><strong>定理8.1</strong>：当先验概率<span
+class="math inline">\(\{\pi_i\}_{i = 1}^k\)</span>，总体的密度函数<span
+class="math inline">\(\{p_i(y)\}_{i = 1}^k\)</span>以及损失函数<span
+class="math inline">\(\{L(i,j)\}_{i\neq
+j}\)</span>都给定时，贝叶斯判别的解<span
+class="math inline">\(D_1,\cdots,D_k\)</span>为 : <span
+class="math display">\[
+D_i=\{y:h_i(y)&lt;h_j(y),1\leq j\leq k,j\neq i\},\ 1\leq i\leq k\\
+h_i(y)=\sum_{\substack{j = 1\\j\neq i}}^k\pi_jp_j(y)L(j,i),1\leq i\leq k
+\]</span> 贝叶斯划分边界的测度为0: <span class="math display">\[
+\sum_{i = 1}^k\sum_{\substack{j = 1\\j\neq
+i}}^k\int_{\{h_i(y)=h_j(y)\}}p(x)dx = 0
+\]</span></p>
+<blockquote>
+<p>证明: 若令<span class="math inline">\(L(i,i)=0,1\leq i\leq
+k\)</span>，则平均损失为: <span class="math display">\[
+\begin{align}g(D_1,\cdots,D_k)&amp;=\sum_{i = 1}^k\pi_i\sum_{\substack{j
+= 1\\j\neq i}}^kL(i,j)P(j|i;D_1,\cdots,D_k)\\
+&amp;=\sum_{i = 1}^k\pi_i\sum_{j = 1}^kL(i,j)P(j|i;D_1,\cdots,D_k)\\
+&amp;=\sum_{i = 1}^k\sum_{j = 1}^k\pi_iL(i,j)\int_{D_j}p_i(y)dy\\
+&amp;=\sum_{j = 1}^k\int_{D_j}h_j(y)dy
+\end{align}
+\]</span> 若空间<span
+class="math inline">\(R^n\)</span>存在另一个划分<span
+class="math inline">\(\{D_i^*\}_{i = 1}^k\)</span>，其平均损失为: <span
+class="math display">\[
+g(D_1^*,\cdots,D_k^*)=\sum_{i = 1}^k\int_{D_i^*}h_i(y)dy
+\]</span> 则： <span class="math display">\[
+\begin{align*} &amp;g(D_1,\cdots,D_k)-g(D_1^*,\cdots,D_k^*)\\
+=&amp;\sum_{i = 1}^{k}\sum_{j = 1}^{k}\int_{D_i\cap
+D_j^*}(h_{ij}(y)-h_{ji}(y))p(x)dy \end{align*}
+\]</span> 而由<span class="math inline">\(D_i\)</span>的定义，知在<span
+class="math inline">\(D_i\)</span>上<span
+class="math inline">\(h_{ii}(y)&lt;h_{ji}(y)\)</span>对一切<span
+class="math inline">\(j\neq i\)</span>成立，故: <span
+class="math display">\[
+g(D_1,\cdots,D_k)-g(D_1^*,\cdots,D_k^*)\leq0\\
+g(D_1,\cdots,D_k)\leq g(D_1^*,\cdots,D_k^*)
+\]</span> 说明<span
+class="math inline">\(D_1,\cdots,D_k\)</span>使得平均损失达到极小，它就是贝叶斯判别的解。
+再由<span class="math inline">\(\sum_{i = 1}^k\sum_{\substack{j =
+1\\j\neq i}}^k\int_{\{h_i(y)=h_j(y)\}}p(x)dx = 0\)</span>知，<span
+class="math inline">\(\int_{h_{ii}(y)=h_{ji}(y)}p(x)dx =
+0\)</span>对任意<span class="math inline">\(1\leq i\neq j\leq
+k\)</span>成立。 而边界由集合<span class="math inline">\(\{y\in
+R^m:h_{ii}(y)=h_{ji}(y)\}\)</span>交并运算构成，因此是测度<span
+class="math inline">\(p(x)\)</span>意义下的零测集。</p>
+</blockquote>
+<p>注2：<span
+class="math inline">\(h_{ii}(y)\)</span>表示判定样本属于总体<span
+class="math inline">\(G_i\)</span>的平均损失。 定理表明使总平均损失<span
+class="math inline">\(g(D_1,\cdots,D_k)\)</span>最小与 使每个<span
+class="math inline">\(h_{ii}(y)\)</span>最小是等价的。 注3：若取<span
+class="math inline">\(L(i,j) = 1-\delta_{ij}\)</span>，则贝叶斯解为
+<span class="math display">\[
+D_i = \{y\in R^m:\pi_ip_i(y)&gt;\pi_jp_j(y),j\neq i,1\leq j\leq
+k\}.\quad(13)
+\]</span></p>
+<p>事实上，对任意<span class="math inline">\(1\leq i\leq k\)</span>，有
+<span class="math display">\[
+h_{ii}(y)=\sum_{\substack{j = 1\\j\neq
+i}}^{k}\pi_jp_j(y)L(i,j)=\sum_{\substack{j = 1\\j\neq
+i}}^{k}\pi_jp_j(y)-\pi_ip_i(y)
+\]</span> 由定理8.1得贝叶斯解。</p>
+<h3 id="贝叶斯判别的容许性">8.2.3 贝叶斯判别的容许性</h3>
+<blockquote>
+<p><strong>Q: 容许估计？</strong></p>
+<p>A: 对于一个估计量<span
+class="math inline">\(\hat{\theta}\)</span>，如果存在另一估计量<span
+class="math inline">\(\hat{\theta}&#39;\)</span>，使得<span
+class="math inline">\(R(\theta,\hat{\theta})\geq
+R(\theta,\hat{\theta}&#39;)\)</span>，<span
+class="math inline">\(\forall\theta\in\Theta\)</span>，且至少对一个<span
+class="math inline">\(\theta\in\Theta\)</span>严格不等，则称<span
+class="math inline">\(\hat{\theta}\)</span>为不可容许的。
+如果不存在上述性质的<span
+class="math inline">\(\hat{\theta}&#39;\)</span>，则称<span
+class="math inline">\(\hat{\theta}\)</span>为可容许的。
+要求估计必须是可容许的，就是在要求“风险一致最小”，在大多数情况下可容许的估计是有偏的。</p>
+</blockquote>
+<p>定理8.3 (容许性) 若<span class="math inline">\(\pi_i &gt;
+0\)</span>，<span class="math inline">\(1\leq i\leq
+k\)</span>，则贝叶斯解是容许的。 证明：设<span
+class="math inline">\(D\)</span>为贝叶斯解，如果它不是容许的，则存在另一个划分<span
+class="math inline">\(D^*\)</span>，使得 $ L(i;D_1^<em>,,D_k<sup><em>)
+L(i;D_1,,D_k), ik, $ 且存在某个<span
+class="math inline">\(i_0\)</span>使得 $
+L(i_0;D_1^</em>,,D_k</sup></em>) &lt; L(i_0;D_1,,D_k), $ 因此有 <span
+class="math display">\[
+\begin{align*} g(D_1^*,\cdots,D_k^*) &amp;= \sum_{i = 1}^{k} \pi_i
+L(i;D_1^*,\cdots,D_k^*) \\ &amp;&lt; \sum_{i = 1}^{k} \pi_i
+L(i;D_1,\cdots,D_k) \\ &amp;= g(D_1,\cdots,D_k). \end{align*}
+\]</span> 这与<span
+class="math inline">\(D\)</span>是贝叶斯解矛盾！故<span
+class="math inline">\(D\)</span>是容许的。</p>
+<h4 id="例子什么是栗子吃一口">例子(什么，是栗子，吃一口)</h4>
+<p>例8.4 设两个总体<span class="math inline">\(G_1\)</span>和<span
+class="math inline">\(G_2\)</span>分别为<span
+class="math inline">\(N_m(\mu_1,V)\)</span>和<span
+class="math inline">\(N_m(\mu_2,V)\)</span>， <span
+class="math inline">\(\pi_1&gt;0\)</span>，<span
+class="math inline">\(\pi_2&gt;0\)</span>。此时 <span
+class="math display">\[
+p_1(y)=(2\pi)^{-m/2}|V|^{-1/2}\exp\left\{-\frac{1}{2}(y -
+\mu_1)&#39;V^{-1}(y - \mu_1)\right\}\\
+p_2(y)=(2\pi)^{-m/2}|V|^{-1/2}\exp\left\{-\frac{1}{2}(y -
+\mu_2)&#39;V^{-1}(y - \mu_2)\right\}.
+\]</span> 由(10)知 $ . $ 若<span class="math inline">\(y\in
+D_1\)</span>，则 <span class="math display">\[
+D_1=\{y:\pi_2p_2(y)L(2,1)&lt;\pi_1p_1(y)L(1,2)\}\\
+D_2=\{y:\pi_2p_2(y)L(2,1)&gt;\pi_1p_1(y)L(1,2)\}
+\]</span></p>
+<p><span class="math display">\[
+\begin{align}
+c&amp;\overset{\Delta}{=}\frac{\pi_2L(2,1)}{\pi_1L(1,2)}&lt;\frac{p_1(y)}{p_2(y)}\\
+&amp;&lt;\exp\left\{\frac{1}{2}(y - \mu_1)&#39;V^{-1}(y -
+\mu_1)-\frac{1}{2}(y - \mu_2)&#39;V^{-1}(y - \mu_2)\right\}
+\end{align}
+\]</span></p>
+<p>取对数回到前面的距离判别。</p>
+<p>化简后不难推得 <span class="math display">\[
+\left(y - \frac{\mu_1 + \mu_2}{2}\right)&#39;V^{-1}(\mu_1 - \mu_2) &gt;
+\log c.
+\]</span> 由(1)式即知 <span class="math display">\[
+D_1 = \{y: W(y) &gt; \log c\}\\
+D_2 = \{y: W(y) &lt; \log c\}
+\]</span> 当<span class="math inline">\(\pi_1 = \pi_2 =
+1/2\)</span>，<span class="math inline">\(L(1,2) =
+L(2,1)\)</span>时，<span class="math inline">\(c = 1\)</span>，<span
+class="math inline">\(\log c = 0\)</span>。
+即当两总体先验概率相等，误判损失为常数时，贝叶斯判别与距离判别等价。</p>
+<p><strong>真正的贝叶斯是基于后验概率，进行判别</strong>：</p>
+<p>注4：基于后验概率的判别 当样本<span
+class="math inline">\(y\)</span>已知时，它来自总体<span
+class="math inline">\(G_i\)</span>的条件（后验）概率为 $ P(G_i|y) = , i
+k. $ 则判别准则为 $ y属于总体G_i，若P(G_i|y) = _{1jk} P(G_j|y)，1 i k.
+(14) $</p>
+<blockquote>
+<p>因为密度估计本身存在困难，所以贝叶斯估计只是理论上成立的。</p>
+</blockquote>
+<h2 id="fisher-判别">8.3 Fisher 判别</h2>
+<blockquote>
+<p><strong>总体协方差阵相同、距离判别+正态总体下贝叶斯判别--&gt;线性判别函数。</strong></p>
+</blockquote>
+<p>当总体的协方差阵相同时，距离判别以及正态总体下的贝叶斯判别都导出一个线性判别函数。</p>
+<h3 id="线性判别函数">8.3.1 线性判别函数</h3>
+<p>设<span class="math inline">\(m\)</span>维总体<span
+class="math inline">\(G_i\)</span>的均值和协方差阵分别为<span
+class="math inline">\(\mu_i\)</span>和<span
+class="math inline">\(V_i\)</span>，<span class="math inline">\(1\leq
+i\leq k\)</span>。 给定向量<span class="math inline">\(\alpha\in
+R^m\)</span>，任给样本<span
+class="math inline">\(y\)</span>，考虑它的线性函数<span
+class="math inline">\(\alpha(y)=\alpha&#39;y\)</span>，有 <span
+class="math display">\[
+u_i = E(\alpha(y)|G_i)=\alpha&#39;\mu_i, \quad 1\leq i\leq k\\
+v_i^2 = V_{ar}(\alpha(y)|G_i)=\alpha&#39;V_i\alpha, \quad 1\leq i\leq k
+\]</span> 令： <span class="math display">\[
+B_0 = \sum_{i = 1}^{k} \left(u_i - \frac{1}{k} \sum_{j = 1}^{k}
+u_j\right)^2\\
+E_0 = \sum_{i = 1}^{k} v_i^2 = \sum_{i = 1}^{k} \alpha&#39;V_i\alpha
+\]</span> <span
+class="math inline">\(B_0\)</span>可以看做是方差分析里的组间差，<span
+class="math inline">\(E_0\)</span>是组内差。</p>
+<p><strong>Fisher准则</strong>：选取<span
+class="math inline">\(\alpha^*\)</span>使得 <span
+class="math display">\[
+\alpha^* = \underset{\alpha \neq 0}{\arg\max_{\alpha \in R^m}}
+\Delta(\alpha) = \underset{\alpha \neq 0}{\arg\max_{\alpha \in R^m}}
+\frac{B_0}{E_0}
+\]</span> 称<span
+class="math inline">\(\Delta(\alpha^*)\)</span>为判别效率。</p>
+<p>记<span class="math inline">\(\boldsymbol{\mu} = (\mu_1, \cdots,
+\mu_k)\)</span>，<span class="math inline">\(B = \boldsymbol{\mu}(I_k -
+\frac{1}{k} J_k) \boldsymbol{\mu}&#39;\)</span>，<span
+class="math inline">\(E = \sum_{i = 1}^{k} V_i\)</span>。 易知： <span
+class="math display">\[
+\Delta(\alpha) = \frac{B_0}{E_0} =
+\frac{\alpha&#39;B\alpha}{\alpha&#39;E\alpha}
+\]</span></p>
+<p><strong>定理8.5</strong> ：假设<span
+class="math inline">\(E&gt;0\)</span>，则Fisher准则下的线性判别函数<span
+class="math inline">\(\alpha(y)=\alpha&#39;y\)</span>的解为<span
+class="math inline">\(E^{-1}B\)</span>的最大特征根<span
+class="math inline">\(\lambda_1\)</span>所对应的正则特征向量<span
+class="math inline">\(\alpha_1\)</span>，且相应的判别效率为<span
+class="math inline">\(\Delta(\alpha_1)=\lambda_1\)</span>。</p>
+<blockquote>
+<p>证明：利用二次型的极值性质得。</p>
+<p>注5：当<span class="math inline">\(k = 2\)</span>，<span
+class="math inline">\(E&gt;0\)</span>时，Fisher准则下的线性判别函数和判别效率为
+<span class="math display">\[
+\alpha^{*}(y)=y&#39;(V_1 + V_2)^{-1}(\mu_1 - \mu_2)\\
+\Delta(\alpha^{*})=\frac{1}{2}(\mu_1 - \mu_2)&#39;(V_1 + V_2)^{-1}(\mu_1
+- \mu_2).
+\]</span> 事实上，此时<span class="math inline">\(B = (\mu_1 -
+\mu_2)(\mu_1 - \mu_2)&#39;/2\)</span>，<span class="math inline">\(E =
+V_1 + V_2\)</span>。 不难推知<span
+class="math inline">\(\alpha^{*}=E^{-1}(\mu_1 - \mu_2)\)</span>是<span
+class="math inline">\(E^{-1}B\)</span>的特征向量，其对应非零特征根是：
+<span class="math display">\[
+\lambda^{*}=\Delta(\alpha^{**})=\frac{1}{2}(\mu_1 - \mu_2)&#39;(V_1 +
+V_2)^{-1}(\mu_1 - \mu_2)
+\]</span></p>
+</blockquote>
+<p><strong>总体参数未知的情形</strong></p>
+<p>基于训练样本可以估计总体的均值和协方差阵，进而得到线性判别函数为
+<span class="math display">\[
+\alpha(y) = y&#39;(S_1 + S_2)^{-1}(\bar{y}_1 - \bar{y}_2)
+\]</span></p>
+<blockquote>
+<p>注6: Fisher准则的判别函数不唯一。</p>
+</blockquote>
+<p>事实上，假设<span
+class="math inline">\(\alpha(y)\)</span>（不一定线性）是Fisher准则的判别函数，对任意<span
+class="math inline">\(a &gt; 0\)</span>和<span
+class="math inline">\(b\)</span>，令<span
+class="math inline">\(\alpha^*(y) = a\alpha(y)+b\)</span>，有: <span
+class="math display">\[
+\frac{B_0^*}{E_0^*} = \frac{B_0}{E_0} \Rightarrow \Delta(\alpha^*(y)) =
+\Delta(\alpha(y))
+\]</span> 即<span class="math inline">\(\alpha^*(y) =
+a\alpha(y)+b\)</span>也是Fisher准则的判别函数。</p>
+<h3 id="fisher判别准则">8.3.2 Fisher判别准则</h3>
+<p>对于线性判别函数<span
+class="math inline">\(\alpha(y)=\alpha&#39;y\)</span>，当<span
+class="math inline">\(k = 2\)</span>时，令 $ {}=(_1+_2). $
+Fisher判别准则的划分为 <span class="math display">\[
+D_1=\{y:\alpha&#39;(y - \bar{\mu})\geq0\}\\
+D_2=\{y:\alpha&#39;(y - \bar{\mu})&lt;0\}
+\]</span></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241203114438522.png"
+alt="image-20241203114438522" />
+<figcaption aria-hidden="true">image-20241203114438522</figcaption>
+</figure>
+<h2 id="判别分析实例">8.4 判别分析实例</h2>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241217083815470.png"
+alt="image-20241217083815470" />
+<figcaption aria-hidden="true">image-20241217083815470</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241217083830241.png"
+alt="image-20241217083830241" />
+<figcaption aria-hidden="true">image-20241217083830241</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241217083929679.png"
+alt="image-20241217083929679" />
+<figcaption aria-hidden="true">image-20241217083929679</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241217083944593.png"
+alt="image-20241217083944593" />
+<figcaption aria-hidden="true">image-20241217083944593</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241217084005480.png"
+alt="image-20241217084005480" />
+<figcaption aria-hidden="true">image-20241217084005480</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241217084144577.png"
+alt="image-20241217084144577" />
+<figcaption aria-hidden="true">image-20241217084144577</figcaption>
+</figure>
+<h2 id="误判概率">8.5 误判概率</h2>
+<p>考虑两个正态总体的情形. <span
+class="math inline">\(G_1,G_2\)</span>分别为<span
+class="math inline">\(N_m(\mu_1,V)\)</span>和<span
+class="math inline">\(N_m(\mu_2,V)\)</span>。此时，距离判别、贝叶斯判别和Fisher判别等价判别函数为:
+<span class="math display">\[
+W(y)=(y - \frac{\mu_1+\mu_2}{2})&#39;V^{-1}(\mu_1 - \mu_2)
+\]</span> 记<span class="math inline">\(P(i|j)\)</span>为样本来自<span
+class="math inline">\(G_j\)</span>而被误判为<span
+class="math inline">\(G_i\)</span>的概率，<span
+class="math inline">\(i\neq j\)</span>。则 : <span
+class="math display">\[
+P(2|1)=P\{W(y)\leq d|G_1\}\\
+P(1|2)=P\{W(y)&gt;d|G_2\}
+\]</span> 其中<span class="math inline">\(d\)</span>为某个常数: <span
+class="math display">\[
+d=\begin{cases}0, &amp; \text{距离判别}\\
+\log\frac{\pi_2L(2,1)}{\pi_1L(1,2)}, &amp; \text{贝叶斯判别}\\
+0\text{或其它}, &amp; \text{Fisher判别}\end{cases}
+\]</span></p>
+<h3 id="误判概率总体参数未知的情形">8.5.1
+误判概率：总体参数未知的情形</h3>
+<p><strong>定理8.6</strong> 当<span
+class="math inline">\(\mu_1,\mu_2\)</span>和<span
+class="math inline">\(V\)</span>已知时， <span class="math display">\[
+(W(y)|G_1)\stackrel{d}{\sim}N_1(\frac{a}{2},a)\\
+(W(y)|G_2)\stackrel{d}{\sim}N_1(-\frac{a}{2},a)
+\]</span> 其中<span class="math inline">\(a = (\mu_1 -
+\mu_2)&#39;V^{-1}(\mu_1 - \mu_2)\)</span>。</p>
+<blockquote>
+<p>证明：<span
+class="math inline">\(W(y)\)</span>是线性函数，因此它服从正态分布，且 :
+<span class="math display">\[
+\begin{align}
+E(W(y)|G_1)&amp;=(\mu_1 - \frac{\mu_1+\mu_2}{2})&#39;V^{-1}(\mu_1 -
+\mu_2)\\&amp;=\frac{1}{2}(\mu_1 - \mu_2)&#39;V^{-1}(\mu_1 -
+\mu_2)\\&amp;=\frac{1}{2}a\\\\Var(W(y)|G_1)&amp;=[V^{-1}(\mu_1 -
+\mu_2)]&#39;V[V^{-1}(\mu_1 - \mu_2)]\\&amp;=(\mu_1 -
+\mu_2)&#39;V^{-1}(\mu_1 - \mu_2)\\&amp;=a
+\end{align}
+\]</span> 即知<span
+class="math inline">\((W(y)|G_1)\stackrel{d}{\sim}N_1(\frac{a}{2},a)\)</span>。同理可知:
+<span class="math display">\[
+(W(y)|G_2)\stackrel{d}{\sim}N_1(-\frac{a}{2},a)
+\]</span></p>
+</blockquote>
+<p><strong>推论8.7</strong> 当<span
+class="math inline">\(\mu_1,\mu_2\)</span>和<span
+class="math inline">\(V\)</span>已知时，误判概率为: <span
+class="math display">\[
+P(2|1)=P\{W(y)\leq d|G_1\}=\Phi(\frac{d - \frac{a}{2}}{\sqrt{a}})\\
+P(1|2)=P\{W(y)&gt;d|G_2\}=1 - \Phi(\frac{d+\frac{a}{2}}{\sqrt{a}})
+\]</span> <strong>“d”的确定</strong>：</p>
+<ol type="1">
+<li><p>误判概率最小化：即要求: <span class="math display">\[
+\Phi(\frac{d - \frac{a}{2}}{\sqrt{a}})=1 -
+\Phi(\frac{d+\frac{a}{2}}{\sqrt{a}})
+\]</span> 方程的解为<span class="math inline">\(d =
+0\)</span>，与距离判别一致。</p></li>
+<li><p>误判损失最小化：即要求: <span class="math display">\[
+L(1,2)\Phi(\frac{d - \frac{a}{2}}{\sqrt{a}})=L(2,1)[1 -
+\Phi(\frac{d+\frac{a}{2}}{\sqrt{a}})]
+\]</span> 求解方程即可得<span
+class="math inline">\(d\)</span>。</p></li>
+<li><p><strong>注9</strong>：由<span
+class="math inline">\(P(2\vert1),P(1\vert2)\)</span>式知，<span
+class="math inline">\(a\)</span>越大，误判概率越小。<span
+class="math inline">\(a\)</span>越大，<span
+class="math inline">\(\mu_1\)</span>与<span
+class="math inline">\(\mu_2\)</span>的马氏距离越大，即两个总体越分得开。</p></li>
+</ol>
+<p>类似地，基于训练样本可得判别函数: <span class="math display">\[
+W(y)=(y - \frac{\bar{y}_1+\bar{y}_2}{2})&#39;\hat{V}^{-1}(\bar{y}_1 -
+\bar{y}_2)
+\]</span></p>
+<p><strong>定理8.8</strong> <span
+class="math inline">\(W(y)\)</span>有如下极限分布: <span
+class="math display">\[
+(W(y)|G_1)\stackrel{d}{\rightarrow}N_1(\frac{a}{2},a)(\min(n_1,n_2)\rightarrow\infty)\\
+(W(y)|G_2)\stackrel{d}{\rightarrow}N_1(-\frac{a}{2},a)(\min(n_1,n_2)\rightarrow\infty)
+\]</span> 由定理8.8可得如下误判概率的估计: <span class="math display">\[
+\hat{P}(2|1)=\Phi(\frac{d - \hat{a}}{\sqrt{\hat{a}}}),\ \hat{P}(1|2)=1 -
+\Phi(\frac{d+\hat{a}}{\sqrt{\hat{a}}})
+\]</span> 其中<span class="math inline">\(\hat{a}=(\bar{y}_1 -
+\bar{y}_2)&#39;\hat{V}^{-1}(\bar{y}_1 - \bar{y}_2)\)</span>。</p>
+<p>还可以利用<span
+class="math inline">\(a\)</span>的无偏估计来估计误判概率<span
+class="math inline">\(P(2|1)\)</span>和<span
+class="math inline">\(P(1|2)\)</span>: <span class="math display">\[
+\tilde{a}=\frac{n_1 + n_2 - m - 1}{n_1 + n_2 -
+2}\hat{a}-\frac{mn_1n_2}{n_1 + n_2}
+\]</span> 基于误判概率估计，可以使误判概率极小化来确定<span
+class="math inline">\(d\)</span>。</p>
+<p>进一步，可以由<span
+class="math inline">\(W(y)\)</span>的条件渐近分布的高阶近似公式，得到误判概率更精确的估计，进而确定最优判别准则。</p>
+<h3 id="基于误判概率的判别方法">8.5.2 基于误判概率的判别方法</h3>
+<blockquote>
+<p>假设正态，基于误判概率, 适用面窄</p>
+</blockquote>
+<p>考虑<span class="math inline">\(k = 2\)</span>的贝叶斯情形，<span
+class="math inline">\(\pi_1\)</span>和<span
+class="math inline">\(\pi_2\)</span>是先验概率，<span
+class="math inline">\(\pi_2 = 1 - \pi_1\)</span>。</p>
+<p>那么平均误判概率为: <span class="math display">\[
+P=\pi_1P(2|1)+\pi_2P(1|2)
+\]</span> 以正态总体<span class="math inline">\(G_1 =
+N_m(\mu_1,V_1)\)</span>和<span class="math inline">\(G_2 =
+N_m(\mu_2,V_2)\)</span>，以及线性判别函数<span
+class="math inline">\(\alpha(y)=\alpha&#39;y\)</span>为例。判别规则为:
+<span class="math display">\[
+\begin{cases}y\in G_1, &amp; \text{若}\alpha(y)\geq d\\ y\in G_2, &amp;
+\text{若}\alpha(y)&lt;d\end{cases}
+\]</span> 不难计算得: <span class="math display">\[
+P(2|1)=P\{W(y)\leq d|G_1\}=\Phi\left(\frac{d - u_1}{v_1}\right)\\
+P(1|2)=P\{W(y)&gt;d|G_2\}=1 - \Phi\left(\frac{d - u_2}{v_2}\right)
+\]</span> 求解<span class="math inline">\(\alpha\)</span>和<span
+class="math inline">\(d\)</span>，使得平均误判概率达到极小。 <span
+class="math display">\[
+P = \pi_1\Phi\left(\frac{d - u_1}{v_1}\right)+\pi_2\left[1 -
+\Phi\left(\frac{d - u_2}{v_2}\right)\right]
+\]</span></p>
+</div><div class="post-end"><div class="post-prev"></div><div class="post-next"><a href="/2024/12/16/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90-Ch7-%E5%9B%A0%E5%AD%90%E5%88%86%E6%9E%90/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch8-%E5%88%A4%E5%88%AB%E5%88%86%E6%9E%90"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch8 判别分析</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%BC%95%E5%85%A5"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">8.0 引入</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E8%B7%9D%E7%A6%BB%E5%88%A4%E5%88%AB"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">8.1 距离判别</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%80%BB%E4%BD%93%E5%85%B7%E6%9C%89%E7%9B%B8%E5%90%8C%E5%8D%8F%E6%96%B9%E5%B7%AE%E7%9A%84%E6%83%85%E5%BD%A2"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">8.1.1 总体具有相同协方差的情形</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#a.%E6%80%BB%E4%BD%93%E5%8F%82%E6%95%B0%E6%9C%AA%E7%9F%A5%E7%9A%84%E6%83%85%E5%BD%A2"><span class="toc-content-number">1.2.1.1.</span> <span class="toc-content-text">A.总体参数未知的情形</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#b.%E5%A4%9A%E4%B8%AA%E6%80%BB%E4%BD%93%E7%9A%84%E5%88%A4%E5%88%AB%E9%97%AE%E9%A2%98"><span class="toc-content-number">1.2.1.2.</span> <span class="toc-content-text">B.多个总体的判别问题</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%80%BB%E4%BD%93%E5%8D%8F%E6%96%B9%E5%B7%AE%E4%B8%8D%E5%90%8C"><span class="toc-content-number">1.2.2.</span> <span class="toc-content-text">8.1.2 总体协方差不同</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%80%BB%E4%BD%93%E5%8F%82%E6%95%B0%E5%B7%B2%E7%9F%A5"><span class="toc-content-number">1.2.2.1.</span> <span class="toc-content-text">总体参数已知</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%80%BB%E4%BD%93%E5%8F%82%E6%95%B0%E6%9C%AA%E7%9F%A5"><span class="toc-content-number">1.2.2.2.</span> <span class="toc-content-text">总体参数未知</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%A4%E5%88%AB"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">8.2 贝叶斯判别</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%A4%E5%88%AB%E6%B3%95%E5%88%99"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">8.2.1 贝叶斯判别法则</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%A0%B7%E6%9C%AC%E7%A9%BA%E9%97%B4%E4%B8%AD%E4%B8%8D%E5%90%8C%E7%B1%BB%E5%88%AB%E4%B9%8B%E9%97%B4%E7%9A%84%E5%88%A4%E5%88%AB%E8%BE%B9%E7%95%8C%E6%B5%8B%E5%BA%A6%E4%B8%BA0"><span class="toc-content-number">1.3.2.</span> <span class="toc-content-text">8.2.2
+样本空间中不同类别之间的判别边界测度为0</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%A4%E5%88%AB%E7%9A%84%E5%AE%B9%E8%AE%B8%E6%80%A7"><span class="toc-content-number">1.3.3.</span> <span class="toc-content-text">8.2.3 贝叶斯判别的容许性</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B%E5%AD%90%E4%BB%80%E4%B9%88%E6%98%AF%E6%A0%97%E5%AD%90%E5%90%83%E4%B8%80%E5%8F%A3"><span class="toc-content-number">1.3.3.1.</span> <span class="toc-content-text">例子(什么，是栗子，吃一口)</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#fisher-%E5%88%A4%E5%88%AB"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">8.3 Fisher 判别</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.4.1.</span> <span class="toc-content-text">8.3.1 线性判别函数</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#fisher%E5%88%A4%E5%88%AB%E5%87%86%E5%88%99"><span class="toc-content-number">1.4.2.</span> <span class="toc-content-text">8.3.2 Fisher判别准则</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%88%A4%E5%88%AB%E5%88%86%E6%9E%90%E5%AE%9E%E4%BE%8B"><span class="toc-content-number">1.5.</span> <span class="toc-content-text">8.4 判别分析实例</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E8%AF%AF%E5%88%A4%E6%A6%82%E7%8E%87"><span class="toc-content-number">1.6.</span> <span class="toc-content-text">8.5 误判概率</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E8%AF%AF%E5%88%A4%E6%A6%82%E7%8E%87%E6%80%BB%E4%BD%93%E5%8F%82%E6%95%B0%E6%9C%AA%E7%9F%A5%E7%9A%84%E6%83%85%E5%BD%A2"><span class="toc-content-number">1.6.1.</span> <span class="toc-content-text">8.5.1
+误判概率：总体参数未知的情形</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%9F%BA%E4%BA%8E%E8%AF%AF%E5%88%A4%E6%A6%82%E7%8E%87%E7%9A%84%E5%88%A4%E5%88%AB%E6%96%B9%E6%B3%95"><span class="toc-content-number">1.6.2.</span> <span class="toc-content-text">8.5.2 基于误判概率的判别方法</span></a></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>
