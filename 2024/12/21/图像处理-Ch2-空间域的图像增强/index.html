@@ -1,0 +1,553 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch2 空间域的图像增强 [TOC] The principal objective of enhancement is to proce\(s\) an image so that the result is more suitable than the original image for a specific application.  图像增强的目的：使图像更适于特定应用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图像处理-Ch2-空间域的图像增强">
+<meta property="og:url" content="http://example.com/2024/12/21/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-Ch2-%E7%A9%BA%E9%97%B4%E5%9F%9F%E7%9A%84%E5%9B%BE%E5%83%8F%E5%A2%9E%E5%BC%BA/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch2 空间域的图像增强 [TOC] The principal objective of enhancement is to proce\(s\) an image so that the result is more suitable than the original image for a specific application.  图像增强的目的：使图像更适于特定应用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241221093414873.png">
+<meta property="article:published_time" content="2024-12-21T01:42:43.000Z">
+<meta property="article:modified_time" content="2024-12-21T01:44:07.841Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="图像处理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241221093414873.png"><title>图像处理-Ch2-空间域的图像增强 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>图像处理-Ch2-空间域的图像增强</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2024-12-21</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2024-12-21</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约3.9K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch2-空间域的图像增强">Ch2 空间域的图像增强</h1>
+<p>[TOC]</p>
+<p>The principal objective of enhancement is to proce<span
+class="math inline">\(s\)</span> an image so that the result is more
+suitable than the original image for a specific application.</p>
+<blockquote>
+<p>图像增强的目的：使图像更适于特定应用。</p>
+</blockquote>
+<p>图像增强分为两大类：</p>
+<ul>
+<li>空间域方法：对图像中像素直接操作。</li>
+<li>频率域方法：对图像傅里叶变换进行修改。</li>
+</ul>
+<h2 id="background">Background</h2>
+<p>空间域处理数学表达： <span class="math display">\[
+g(x,y)=T[f(x,y)]
+\]</span></p>
+<ul>
+<li><span class="math inline">\(f(x,y)\)</span>: 输入图像</li>
+<li><span class="math inline">\(g(x,y)\)</span>: 输出图像</li>
+<li><span class="math inline">\(T\)</span>: an operator on <span
+class="math inline">\(f\)</span>, defined over some neighborhood of
+<span class="math inline">\((x, y)\)</span>. 在<span
+class="math inline">\((x,y)\)</span>一个邻域上定义的对<span
+class="math inline">\(f\)</span>的算子。</li>
+</ul>
+<blockquote>
+<p><strong>Q: 算子？邻域？</strong></p>
+<p>A: 算子可应用于单幅图像的pixels or 一组图像的 pixels.</p>
+<p>邻域一般是<span
+class="math inline">\((x,y)\)</span>周边的8个格子(<span
+class="math inline">\(3\times 3,
+(x,y)\)</span>处于中心)、可能还有矩形或是圆形。</p>
+</blockquote>
+<p>最简单的<span class="math inline">\(T\)</span>是邻域<span
+class="math inline">\(1\times 1\)</span>的(也就是只有本身<span
+class="math inline">\((x,y)\)</span>),称为灰度变换函数。 <span
+class="math display">\[
+s=T(r)
+\]</span> <span class="math inline">\(s,r\)</span>分别表示<span
+class="math inline">\(g,f\)</span>在任意点<span
+class="math inline">\((x,y)\)</span>处的灰度。</p>
+<h3 id="灰度变换函数gray-level-transformation">灰度变换函数(Gray-level
+Transformation)</h3>
+<h4 id="对数变换logarithmic">对数变换(Logarithmic)</h4>
+<p><span class="math display">\[
+s=c\log(1+r)
+\]</span></p>
+<p><span class="math inline">\(c\)</span>是常数，<span
+class="math inline">\(r\ge 0\)</span>.</p>
+<p><strong>对数变换的作用</strong>：</p>
+<ul>
+<li><strong>动态范围压缩</strong>：当输入图像的灰度值范围非常宽（例如 0
+到
+10610^6106），直接显示会丢失暗部细节。通过对数变换，可以将宽动态范围压缩到更可管理的范围。</li>
+<li><strong>细节增强</strong>：低强度值区域的细节被拉伸并增强，因此在频谱图像、医学图像中常用。</li>
+</ul>
+<p><strong>对数变换的曲线特性</strong>:</p>
+<ul>
+<li>对数变换的形状固定。此变换的形状类似于<span
+class="math inline">\(\gamma\)</span>曲线，两个尺度上的低值均设置为
+0，高值均设置为 1。</li>
+<li>当 <span class="math inline">\(r\)</span> 较小时，输出 <span
+class="math inline">\(s\)</span>增长较快（细节增强）。</li>
+<li>当 <span class="math inline">\(r\)</span> 较大时，输出 <span
+class="math inline">\(s\)</span> 增长减缓（压缩动态范围）。</li>
+<li>和 <strong>Gamma 校正</strong> 不同，对数变换的曲线形状不可调。</li>
+</ul>
+<h4 id="幂律变换power-law">幂律变换(Power-Law)</h4>
+<p><span class="math display">\[
+s=cr^{\gamma}
+\]</span></p>
+<p>其中，<span class="math inline">\(c,\gamma\)</span>是正常数(positive
+constants)。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241220104929919.png"
+alt="image-20241220104929919" />
+<figcaption aria-hidden="true">image-20241220104929919</figcaption>
+</figure>
+<h4
+id="分段线性变换函数piecewise-linear">分段线性变换函数(Piecewise-Linear)</h4>
+<h5
+id="对比度拉伸contrast-stretching">对比度拉伸(Contrast-Stretching)</h5>
+<p>对比度拉伸是一种用于增强图像对比度的强度变换方法。通过对灰度值的拉伸，使暗区域更暗、亮区域更亮，从而增强图像的视觉效果。</p>
+<p>对比度拉伸的公式可以定义为： <span class="math display">\[
+s = T(r) = \frac{1}{1 + \left(\frac{m}{r}\right)^E}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(s\)</span>: 输出像素的灰度值。</li>
+<li><span class="math inline">\(r\)</span>: 输入像素的灰度值。</li>
+<li><span class="math inline">\(m\)</span>:
+输入图像灰度值的中点（灰度范围的阈值）。</li>
+<li><span class="math inline">\(E\)</span>:
+函数的幂次，用于控制拉伸的坡度（陡峭程度）。</li>
+</ul>
+<p><strong>对比度拉伸的作用</strong>:</p>
+<ul>
+<li><strong>增强图像细节</strong>：使图像中灰度分布更加均匀，提升对比度。</li>
+<li><strong>突出某些特定灰度值区域</strong>：通过调整参数 <span
+class="math inline">\(m\)</span> 和 <span
+class="math inline">\(E\)</span>，可以针对性地增强某些灰度值范围。</li>
+<li><strong>解决低对比度问题</strong>：例如，在过暗或过亮的图像中，灰度值集中在某一小范围内时，拉伸可以增加动态范围，提升视觉效果。</li>
+</ul>
+<h5 id="灰度级分层gray-level-slicing">灰度级分层(Gray-level
+Slicing)</h5>
+<p>突出图像中的特定灰度区间：</p>
+<ul>
+<li><p>method1：(二值图像)
+将感兴趣范围内的所有灰度值显示为一个值、将其他所有灰度值显示为另外一个值。</p></li>
+<li><p>method2：基于下图中的变换，使期望的灰度范围变亮(/变暗)，但保持图像中其他的灰度级不变。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241220105449485.png"
+alt="image-20241220105449485" />
+<figcaption aria-hidden="true">image-20241220105449485</figcaption>
+</figure></li>
+</ul>
+<p><strong>比特平面分层(Bit-plane slicing)</strong>:
+像素值是由比特组成的整数。8比特图像可以视为8个1比特平面组成，其中plane
+1中包含图像中所有图像的最低有效比特、plane
+8包含所有像素的最高有效比特。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241220111120761.png"
+alt="image-20241220111120761" />
+<figcaption aria-hidden="true">image-20241220111120761</figcaption>
+</figure>
+<h3 id="直方图处理histogram-processing">直方图处理(Histogram
+Processing)</h3>
+<p>图像的直方图是一种统计工具，用来描述图像中像素强度（灰度值）的分布情况。</p>
+<p><strong><span
+class="math inline">\(f\)</span>的非归一化直方图定义为：</strong> <span
+class="math display">\[
+h(r_k)=n_k,k=0,1,\dots,L-1
+\]</span></p>
+<p>其中，<span class="math inline">\(r_k\)</span>表示一副<span
+class="math inline">\(L\)</span>级灰度数字图像<span
+class="math inline">\(f(x,y)\)</span>的灰度，<span
+class="math inline">\(n_k\)</span>表示<span
+class="math inline">\(f\)</span>中灰度为<span
+class="math inline">\(r_k\)</span>的像素的数量，并且细分的灰度级称为直方图容器。</p>
+<p><strong><span
+class="math inline">\(f\)</span>的归一化直方图定义为：</strong> <span
+class="math display">\[
+p(r_k)=\frac{h(r_k)}{MN}=\frac{n_k}{MN}
+\]</span> 其中<span
+class="math inline">\(M,N\)</span>分别是图像的行数和列数。(这是书上给出的公式)</p>
+<p>或者也可以写成(PPT中给出的公式)： <span class="math display">\[
+p(r_k)=\frac{h(r_k)}{N}=\frac{n_k}{N}\\
+N=\sum^{L-1}_{k=0}n_k,\ k=0,1,\dots,L-1
+\]</span> 殊途同归。<span
+class="math inline">\(p(r_k)\)</span>是对图像中出现的灰度级<span
+class="math inline">\(r_k\)</span>的概率的估计。对k的所有值，<span
+class="math inline">\(p(r_k)\)</span>的和总是1.</p>
+<h4 id="直方图均衡化histogram-equalization">直方图均衡化(Histogram
+Equalization)</h4>
+<p><strong>直方图均衡化</strong>是一种自动调整图像亮度分布的方法，通过重新分配像素灰度值，使输出图像的灰度直方图尽可能接近均匀分布，从而增强图像的整体对比度。</p>
+<p>假设灰度值最初是连续的，令变量<span
+class="math inline">\(r\)</span>表示待处理图像的灰度。<span
+class="math inline">\(r=[0,L-1]\)</span>, <span
+class="math inline">\(r=0\)</span>黑色，<span
+class="math inline">\(r=L-1\)</span>白色。对于这些满足条件的<span
+class="math inline">\(r\)</span>，我们关注如下的灰度映射： <span
+class="math display">\[
+s=T(r),\quad 0\le r\le L-1
+\]</span> 对于输入图像中的给定灰度值<span
+class="math inline">\(r\)</span>, 它将产生一个输出灰度值<span
+class="math inline">\(s\)</span>。假设：</p>
+<ul>
+<li><span class="math inline">\(T(r)\)</span>在区间<span
+class="math inline">\([0,L-1]\)</span>上是一个单调递增函数.</li>
+<li>对<span class="math inline">\(0\le r\le L-1\)</span>, 有<span
+class="math inline">\(0\le T(r)\le L-1\)</span>.</li>
+</ul>
+<blockquote>
+<p>假使我们想从<span class="math inline">\(s\)</span>逆推回<span
+class="math inline">\(r\)</span>, 那么就是<span
+class="math inline">\(T\)</span>的逆变换。如果想这个倒推成立，那么就需要是严格递增函数，不然自变量与因变量就<strong>不是一一对应的关系</strong>。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241220165317323.png"
+alt="image-20241220165317323" />
+<figcaption aria-hidden="true">image-20241220165317323</figcaption>
+</figure>
+</blockquote>
+<p>直方图均衡化基于概率密度函数(PDF:probability density
+function)，产生一个随机变量。</p>
+<h5 id="连续变量rs">连续变量<span
+class="math inline">\(r,s\)</span></h5>
+<p><span class="math display">\[
+p_s(s)=p_r(r)\left\vert\frac{dr}{ds}\right\vert=p_r(r)\vert\frac 1
+{(L-1)p_r(r)}=\frac 1{L-1},\quad 0\le s\le L-1
+\]</span></p>
+<p>其中<span class="math inline">\(p_r(r),
+p_s(s)\)</span>分别表示两幅不同图像中灰度值<span
+class="math inline">\(r,s\)</span>的概率密度函数(PDF). <span
+class="math inline">\(p\)</span>的下标表明<span
+class="math inline">\(p_r,p_s\)</span>是不同的函数。可见<span
+class="math inline">\(p_s(s)\)</span>是均匀(uniform)PDF, <span
+class="math inline">\(T(r)\)</span>取决于<span
+class="math inline">\(p_r(r)\)</span>, 但<span
+class="math inline">\(p_s(s)\)</span>永远是均匀的。</p>
+<blockquote>
+<p><strong>概率论基本结论：</strong>若已知<span
+class="math inline">\(p_r(r),T(r)\)</span>, 且<span
+class="math inline">\(T(r)\)</span>是连续的且在感兴趣的值域上是可微的，则变换侯的变量<span
+class="math inline">\(s\)</span>的PDF是： <span class="math display">\[
+p_s(s)=p_r(r)\left\vert\frac{dr}{ds}\right\vert
+\]</span> <strong>累计分布函数</strong>(CDF: cumulative distribution
+function)：由于PDF总为正，且函数的积分是函数下方的面积，因此可以证明<span
+class="math inline">\(s=T(r)\)</span>是单调递增函数。 <span
+class="math display">\[
+s=T(r)=\int^r_0 p_r(w)dw
+\]</span> 计算微分： <span class="math display">\[
+\frac{ds}{dr}=\frac{dT(r)}{dr}=\frac{d\left[\int^r_0
+p_r(w)dw\right]}{dr}=p_r(r)\\
+p_s(s)=p_r(r)\left\vert\frac{dr}{ds}\right\vert=p_r(r)*\frac{1}{p_r(r)}=1,\quad
+0\le s\le 1
+\]</span> 假如说<span class="math inline">\(0\le s\le
+L-1\)</span>，则有： <span class="math display">\[
+p_s(s)=p_r(r)\left\vert\frac{dr}{ds}\right\vert=p_r(r)*\frac{1}{(L-1)p_r(r)}=\frac
+1 {L-1}, \quad 0\le s\le L-1
+\]</span></p>
+</blockquote>
+<h5 id="离散变量rs">离散变量<span
+class="math inline">\(r,s\)</span></h5>
+<p>在离散的条件下有,
+下列数学表达。需要注意，第一个是书上给出、第二个是PPT中给出，二者没什么大的差别。灰度级<span
+class="math inline">\(r_k\)</span>在一副图像中出现的概率是： <span
+class="math display">\[
+p_r(r_k)=\frac{h(r_k)}{MN}=\frac{n_k}{MN}
+\\
+p_r(r_k)=\frac{n_k}{N},\quad k=0,1,\dots,L-1
+\]</span> 灰度映射函数是： <span class="math display">\[
+s=T(r_k)=\sum^k_{j-0}p_r(r_j)=\sum^k_{j-0}\frac{n_k}{MN}\\
+s=T(r_k)=\sum^k_{j-0}p_r(r_j)=\sum^k_{j=0}\frac{n_j}{N}
+\]</span> 使用这个函数可以将输入图像中灰度级为<span
+class="math inline">\(r_k\)</span>的每个像素映射到输出图像中灰度级为<span
+class="math inline">\(s_k\)</span>的对应像素，这称为直方图均衡化/直方图线性化变换。</p>
+<h4 id="直方图匹配histogram-matching">直方图匹配(Histogram
+Matching)</h4>
+<p>直方图均衡化产生一个变换函数，试图生成一副具有均匀直方图的输出图像。但有时候不适用，有时候需要<strong>规定待处理图像的直方图形状</strong>。用于生成具有规定直方图图像的方法，称为直方图匹配或是直方图均衡化。</p>
+<p>令<span class="math inline">\(r,z\)</span>是PDF <span
+class="math inline">\(p_r(r),p_z(Z)\)</span>的随机变量。<span
+class="math inline">\(r,z\)</span>分别表示输入图像和输出图像的灰度级。<span
+class="math inline">\(p_z(z)\)</span>是规定的PDF，是我们希望输出图像具有的。</p>
+<blockquote>
+<p><strong>计算直方图匹配三步走</strong>：</p>
+<ol type="1">
+<li>计算输入图像的直方图<span class="math inline">\(p_r(r)\)</span>,
+得到<span class="math inline">\(s_k\)</span></li>
+<li>计算<span
+class="math inline">\(G(z_q)=(L-1)\sum^q_{i=0}p_z(z_i)\)</span>，<span
+class="math inline">\(p_z(z)\)</span>是规定直方图的所有值。</li>
+<li>计算<span class="math inline">\(G(z_q)=s_k\)</span>, 求<span
+class="math inline">\(G^{-1}\)</span>, 找到对应的<span
+class="math inline">\(z_q\)</span>的对应值，匹配，形成直方图规定化后的图像。</li>
+</ol>
+</blockquote>
+<h5 id="连续变量rsz">连续变量<span
+class="math inline">\(r,s,z\)</span></h5>
+<p>令<span
+class="math inline">\(s\)</span>是一个具有如下性质的随机变量： <span
+class="math display">\[
+s=T(r)=(L-1)\int^r_0p_r(w)dw
+\]</span> 定义关于变量<span
+class="math inline">\(z\)</span>的一个函数<span
+class="math inline">\(G\)</span>, 它具有如下的性质： <span
+class="math display">\[
+G(z)=(L-1)\int^z_0p_z(v)dv=s
+\]</span> 由这两个公式可知：<span
+class="math inline">\(G(z)=s=T(r)\)</span>, 因此<span
+class="math inline">\(z\)</span>必定满足条件： <span
+class="math display">\[
+z=G^{-1}(s)=G^{-1}[T(r)]
+\]</span> 使用输入图像算出<span
+class="math inline">\(p_r(r)\)</span>后，就可以得到<span
+class="math inline">\(s\)</span>, 有了<span
+class="math inline">\(s\)</span>, 就能得到<span
+class="math inline">\(p_z(z)\)</span></p>
+<h5 id="离散变量rsz">离散变量<span
+class="math inline">\(r,s,z\)</span></h5>
+<p><span class="math display">\[
+s_k=T(r_k)=(L-1)\sum^k_{j=0}p_r(r_j),\quad k=0,1,\dots,L-1\\
+G(z_q)=(L-1)\sum^q_{i=0}p_z(z_i)=s_k\\
+z_q=G^{-1}(s_k)
+\]</span></p>
+<h2 id="空间滤波spatial-filtering">空间滤波(Spatial Filtering)</h2>
+<ul>
+<li>在空间滤波（相对于频域滤波）中，输出图像是通过对输入图像的像素进行简单计算直接计算得出的。</li>
+<li>空间滤波可以是线性的，也可以是非线性的。</li>
+<li>对于每个输出像素，计算中都会用到输入像素的某个邻域。(空间滤波通过把每个pixel的值替换为该pixel及其邻域的函数值来修改图像)</li>
+</ul>
+<h3 id="线性空间滤波linear-spatial-filtering">线性空间滤波(Linear
+Spatial Filtering)</h3>
+<p>对一幅图像<span class="math inline">\(f_{M\times N}\)</span>,
+大小为<span class="math inline">\(m\times n\)</span>的线性滤波器掩码为：
+<span class="math display">\[
+g(x,y)=\sum^a_{s=-a}\sum^b_{t=-b}w(s,t)f(x+s,y+t)\\
+a=\frac{m-1}{2},b=\frac{n-1}2
+\]</span> 上式称为卷积。Filter
+masks(滤波器掩码)有时也叫做卷积掩码/卷积核。</p>
+<h4 id="correlation-v.s.-convolution">Correlation v.s. Convolution</h4>
+<ul>
+<li>相关运算：在图像上移动核的中心，并且在每个位置计算乘积之和。</li>
+<li>卷积运算：将相关运算的核旋转180°。</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241220224250812.png"
+alt="image-20241220224250812" />
+<figcaption aria-hidden="true">image-20241220224250812</figcaption>
+</figure>
+<p>对于这个例子，</p>
+<ul>
+<li>"same" correlation res: 08242100</li>
+<li>"same" convolution res:01242800</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241220233119440.png"
+alt="image-20241220233119440" />
+<figcaption aria-hidden="true">image-20241220233119440</figcaption>
+</figure>
+<p>平滑核：</p>
+<ul>
+<li>盒式核(box kernel)</li>
+<li>高斯核(Gaussian kernel)</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241220233253937.png"
+alt="image-20241220233253937" />
+<figcaption aria-hidden="true">image-20241220233253937</figcaption>
+</figure>
+<h3
+id="非线性空间滤波nonlinear-spatial-filtering">非线性空间滤波(Nonlinear
+Spatial Filtering)</h3>
+<ul>
+<li>非线性空间过滤通常也使用邻域，但会使用一些其他数学运算。例如，让每个中心点的响应等于其邻域中的最大像素值是一种非线性过滤操作。</li>
+<li>另一个基本区别是，掩码的概念在非线性处理中并不那么普遍。</li>
+</ul>
+<p>给定一个大小为<span class="math inline">\(M\times
+N\)</span>的输入图像<span
+class="math inline">\(f\)</span>和一个大小为<span
+class="math inline">\(m\times n\)</span>的邻域，函数 colfilt
+生成一个最大大小为 <span class="math inline">\(mn × MN\)</span>
+的矩阵，称为 A: 每列对应于以图像中某个位置为中心的邻域所包含的像素。</p>
+<h4
+id="锐化高通空间滤波器sharpening-spatial-filters">锐化(高通)空间滤波器(Sharpening
+Spatial Filters)</h4>
+<blockquote>
+<p>平滑称为低通滤波、锐化称为高通滤波。</p>
+</blockquote>
+<ul>
+<li>锐化的主要目的是突显图像中的精细细节或增强模糊的细节。</li>
+<li>锐化通常通过空间微分来实现。</li>
+</ul>
+<p>数字函数的导数以差分/差值的形式定义。</p>
+<p>对于一阶导数，我们要求它必须满足：（如 Sobel 算子，适合边缘检测）
+<span class="math display">\[
+\frac{\partial f}{\partial x}=f(x+1)-f(x)
+\]</span></p>
+<ol type="1">
+<li>在平坦段（灰度值恒定的区域）必须为零 。</li>
+<li>在灰度阶跃或斜坡的开始处必须非零。</li>
+<li>沿斜坡必须非零 。</li>
+</ol>
+<p>对于二阶导数，我们要求它必须满足：（如 Laplacian
+算子，可以增强图像细节，但可能放大噪声。） <span class="math display">\[
+\frac{\partial^2 f}{\partial x^2}=f(x+1)+f(x-1)-2f(x)
+\]</span></p>
+<ol type="1">
+<li>在平坦段（灰度值恒定的区域）必须为零。</li>
+<li>在灰度阶跃或斜坡的开始和结束处必须非零。</li>
+<li>沿斜率恒定的斜坡必须为零</li>
+</ol>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241220234426807.png"
+alt="image-20241220234426807" />
+<figcaption aria-hidden="true">image-20241220234426807</figcaption>
+</figure>
+<ol type="a">
+<li>图像中水平扫描线的一段，显示斜坡和阶梯边缘以及恒定段。</li>
+<li>扫描线及其导数的值。</li>
+<li>导数图，显示零交叉。在 (a) 和 (c)
+中，为了便于视觉显示，各点用虚线连接起来。</li>
+</ol>
+<h5 id="拉普拉斯laplacian-filter">拉普拉斯(Laplacian Filter)</h5>
+<p>最简单的各向同性导数算子(核)是拉普拉斯，对于两个变量的函数图像<span
+class="math inline">\(d(x,y)\)</span>, 它定义为: <span
+class="math display">\[
+\begin{align}
+\frac{\partial^2 f}{\partial x^2}&amp;=f(x+1,y)+f(x-1,y)-2f(x,y)\\
+\frac{\partial^2 f}{\partial y^2}&amp;=f(x,y+1)+f(x,y-1)-2f(x,y)\\
+\nabla^2 f&amp; = \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2
+f}{\partial y^2}\\
+&amp;= [f(x+1, y) + f(x-1, y) + f(x, y+1) + f(x, y-1)] - 4f(x, y)
+\end{align}
+\]</span>
+这个公式可以使用下面的核进行卷积运算来实现。因此，图像锐化的滤波原理类似于低通滤波，只是使用的系数不同。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241220235220715.png"
+alt="image-20241220235220715" />
+<figcaption aria-hidden="true">image-20241220235220715</figcaption>
+</figure>
+<p><strong>使用拉普拉斯核进行图像增强</strong>：<span
+class="math inline">\(g(x,y)=f(x,y)-\nabla^2 f(x,y)\)</span></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241220235333869.png"
+alt="image-20241220235333869" />
+<figcaption aria-hidden="true">image-20241220235333869</figcaption>
+</figure>
+<p>(a)模糊后的月球北极图像。 (b)使用上述(a)核得到的拉普拉斯图像。
+(c)使用公式<span class="math inline">\(g(x,y)=f(x,y)-\nabla^2 f(x,y),
+c=-1\)</span>得到的锐化后的图像。
+(d)重复相同过程但使用上述(b)核得到的结果。</p>
+<p>拉普拉斯图像往往是黑色的、无特征的。</p>
+<h4
+id="钝化掩蔽和高提升滤波unsharp-masking-and-high-boost-filtering">钝化掩蔽和高提升滤波(Unsharp
+masking and high-boost filtering)</h4>
+<p>钝化掩蔽和高提升滤波是图像锐化的重要技术，主要用于增强图像细节，通过放大图像的高频成分（如边缘和纹理）来突出细节部分。</p>
+<p><strong>钝化掩蔽三步走</strong>：</p>
+<p>钝化掩蔽通过从原图像中减去模糊化版本来实现锐化。 <span
+class="math display">\[
+f_s(x, y) = f(x, y) - \bar{f}(x, y)
+\]</span> 其中<span class="math inline">\(f_s(x, y)\)</span>
+表示锐化后图像，<span class="math inline">\(\bar{f}(x, y)\)</span>
+是图像<span class="math inline">\(f(x, y)\)</span>的模糊版本。</p>
+<ol type="1">
+<li>模糊原图像</li>
+<li>从原图像减去模糊后图像(产生的差称为模板)</li>
+<li>将模板与原图像相加</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241221093414873.png" alt="image-20241221093414873" style="zoom:67%;" /></p>
+<p><strong>高提升滤波</strong></p>
+<p>然后，将加权后的模板与原图像相加, 得到 <span
+class="math inline">\(f_{hb}(x, y)\)</span>： <span
+class="math display">\[
+f_{hb}(x, y) = A f(x, y) - \bar{f}(x, y)
+\]</span> 其中 <span class="math inline">\(A \geq 1\)</span>, <span
+class="math inline">\(\bar{f}(x, y)\)</span>是 <span
+class="math inline">\(f(x, y)\)</span>的模糊版本。.</p>
+<p>更近一步，还能得到： <span class="math display">\[
+f_{hb}(x, y) = (A - 1)f(x, y) + f(x, y) - \bar{f}(x, y)\\
+f_{hb}(x, y) = (A - 1)f(x, y) + f_s(x, y)
+\]</span> 使用拉普拉斯算子进行锐化：当使用<span
+class="math inline">\(\nabla^2f(x, y)\)</span>来计算锐化图像 <span
+class="math inline">\(f_s(x, y)\)</span>,高提升滤波的公式变为： <span
+class="math display">\[
+f_{hb}(x, y) = (A - 1)f(x, y) - \nabla^2f(x, y)\\
+\text{or}\
+f_{hb}(x, y) = (A - 1)f(x, y) + \nabla^2f(x, y)
+\]</span>
+其中拉普拉斯算子用于检测图像的快速灰度变化区域（边缘和细节），这使得锐化能够更直接地基于边缘信息进行。</p>
+</div><div class="post-end"><div class="post-prev"></div><div class="post-next"><a href="/2024/12/20/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-Ch1-Intro/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch2-%E7%A9%BA%E9%97%B4%E5%9F%9F%E7%9A%84%E5%9B%BE%E5%83%8F%E5%A2%9E%E5%BC%BA"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch2 空间域的图像增强</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#background"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">Background</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%81%B0%E5%BA%A6%E5%8F%98%E6%8D%A2%E5%87%BD%E6%95%B0gray-level-transformation"><span class="toc-content-number">1.1.1.</span> <span class="toc-content-text">灰度变换函数(Gray-level
+Transformation)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%AF%B9%E6%95%B0%E5%8F%98%E6%8D%A2logarithmic"><span class="toc-content-number">1.1.1.1.</span> <span class="toc-content-text">对数变换(Logarithmic)</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%B9%82%E5%BE%8B%E5%8F%98%E6%8D%A2power-law"><span class="toc-content-number">1.1.1.2.</span> <span class="toc-content-text">幂律变换(Power-Law)</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%88%86%E6%AE%B5%E7%BA%BF%E6%80%A7%E5%8F%98%E6%8D%A2%E5%87%BD%E6%95%B0piecewise-linear"><span class="toc-content-number">1.1.1.3.</span> <span class="toc-content-text">分段线性变换函数(Piecewise-Linear)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E5%AF%B9%E6%AF%94%E5%BA%A6%E6%8B%89%E4%BC%B8contrast-stretching"><span class="toc-content-number">1.1.1.3.1.</span> <span class="toc-content-text">对比度拉伸(Contrast-Stretching)</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E7%81%B0%E5%BA%A6%E7%BA%A7%E5%88%86%E5%B1%82gray-level-slicing"><span class="toc-content-number">1.1.1.3.2.</span> <span class="toc-content-text">灰度级分层(Gray-level
+Slicing)</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%A4%84%E7%90%86histogram-processing"><span class="toc-content-number">1.1.2.</span> <span class="toc-content-text">直方图处理(Histogram
+Processing)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%9D%87%E8%A1%A1%E5%8C%96histogram-equalization"><span class="toc-content-number">1.1.2.1.</span> <span class="toc-content-text">直方图均衡化(Histogram
+Equalization)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E8%BF%9E%E7%BB%AD%E5%8F%98%E9%87%8Frs"><span class="toc-content-number">1.1.2.1.1.</span> <span class="toc-content-text">连续变量\(r,s\)</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E7%A6%BB%E6%95%A3%E5%8F%98%E9%87%8Frs"><span class="toc-content-number">1.1.2.1.2.</span> <span class="toc-content-text">离散变量\(r,s\)</span></a></li></ol></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%8C%B9%E9%85%8Dhistogram-matching"><span class="toc-content-number">1.1.2.2.</span> <span class="toc-content-text">直方图匹配(Histogram
+Matching)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E8%BF%9E%E7%BB%AD%E5%8F%98%E9%87%8Frsz"><span class="toc-content-number">1.1.2.2.1.</span> <span class="toc-content-text">连续变量\(r,s,z\)</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E7%A6%BB%E6%95%A3%E5%8F%98%E9%87%8Frsz"><span class="toc-content-number">1.1.2.2.2.</span> <span class="toc-content-text">离散变量\(r,s,z\)</span></a></li></ol></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E7%A9%BA%E9%97%B4%E6%BB%A4%E6%B3%A2spatial-filtering"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">空间滤波(Spatial Filtering)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%BA%BF%E6%80%A7%E7%A9%BA%E9%97%B4%E6%BB%A4%E6%B3%A2linear-spatial-filtering"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">线性空间滤波(Linear
+Spatial Filtering)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#correlation-v.s.-convolution"><span class="toc-content-number">1.2.1.1.</span> <span class="toc-content-text">Correlation v.s. Convolution</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E9%9D%9E%E7%BA%BF%E6%80%A7%E7%A9%BA%E9%97%B4%E6%BB%A4%E6%B3%A2nonlinear-spatial-filtering"><span class="toc-content-number">1.2.2.</span> <span class="toc-content-text">非线性空间滤波(Nonlinear
+Spatial Filtering)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E9%94%90%E5%8C%96%E9%AB%98%E9%80%9A%E7%A9%BA%E9%97%B4%E6%BB%A4%E6%B3%A2%E5%99%A8sharpening-spatial-filters"><span class="toc-content-number">1.2.2.1.</span> <span class="toc-content-text">锐化(高通)空间滤波器(Sharpening
+Spatial Filters)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AFlaplacian-filter"><span class="toc-content-number">1.2.2.1.1.</span> <span class="toc-content-text">拉普拉斯(Laplacian Filter)</span></a></li></ol></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E9%92%9D%E5%8C%96%E6%8E%A9%E8%94%BD%E5%92%8C%E9%AB%98%E6%8F%90%E5%8D%87%E6%BB%A4%E6%B3%A2unsharp-masking-and-high-boost-filtering"><span class="toc-content-number">1.2.2.2.</span> <span class="toc-content-text">钝化掩蔽和高提升滤波(Unsharp
+masking and high-boost filtering)</span></a></li></ol></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>
