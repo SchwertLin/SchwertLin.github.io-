@@ -1,0 +1,856 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch3 频率域处理(Image Enhancement in Frequency Domain) [TOC] FT ：将信号表示成各种频率的正弦信号的线性组合。 频谱：\(|F(u, v)| &#x3D; \left[ R^2(u, v) + I^2(u, v) \right]^{\frac{1}{2}}\) 相位角：$ (u, v) &#x3D; ^{-1}$ 功率谱：\(P(u, v) &#x3D; |F(u">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图像处理-Ch3-频率域增强">
+<meta property="og:url" content="http://example.com/2024/12/22/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-Ch3-%E9%A2%91%E7%8E%87%E5%9F%9F%E5%A2%9E%E5%BC%BA/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch3 频率域处理(Image Enhancement in Frequency Domain) [TOC] FT ：将信号表示成各种频率的正弦信号的线性组合。 频谱：\(|F(u, v)| &#x3D; \left[ R^2(u, v) + I^2(u, v) \right]^{\frac{1}{2}}\) 相位角：$ (u, v) &#x3D; ^{-1}$ 功率谱：\(P(u, v) &#x3D; |F(u">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-22T13:55:25.000Z">
+<meta property="article:modified_time" content="2024-12-22T13:56:29.196Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="图像处理">
+<meta name="twitter:card" content="summary"><title>图像处理-Ch3-频率域增强 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>图像处理-Ch3-频率域增强</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2024-12-22</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2024-12-22</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约5.8K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch3-频率域处理image-enhancement-in-frequency-domain">Ch3
+频率域处理(Image Enhancement in Frequency Domain)</h1>
+<p>[TOC]</p>
+<p><strong>FT</strong> ：将信号表示成各种频率的正弦信号的线性组合。</p>
+<p><strong>频谱</strong>：<span class="math inline">\(|F(u, v)| = \left[
+R^2(u, v) + I^2(u, v) \right]^{\frac{1}{2}}\)</span></p>
+<p><strong>相位角</strong>：$ (u, v) = ^{-1}$</p>
+<p><strong>功率谱</strong>：<span class="math inline">\(P(u, v) = |F(u,
+v)|^2 = R^2(u, v) + I^2(u, v)\)</span></p>
+<ul>
+<li><span class="math inline">\(I(u, v)\)</span>：<span
+class="math inline">\(F(u, v)\)</span> 的虚部。</li>
+<li><span class="math inline">\(R(u, v)\)</span>：<span
+class="math inline">\(F(u, v)\)</span> 的实部。</li>
+</ul>
+<h2 id="d-fourier-transform">4.5 2-D Fourier Transform</h2>
+<h3 id="d-impulse">4.5.1 2-D impulse</h3>
+<p><strong>连续</strong>变量<span
+class="math inline">\(t\)</span>和<span
+class="math inline">\(z\)</span>的冲激函数<span
+class="math inline">\(\delta(t,z)\)</span>定义为： <span
+class="math display">\[
+\delta(t,z)=\begin{cases}
+1,\quad t=z=0\\
+0,\quad \text{其他}
+\end{cases}\\
+\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}\delta(t,z)dtdz=1
+\]</span> 取样性质：在冲激处产生函数的值。 <span class="math display">\[
+\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}f(t,z)\delta(t,z)dtdz=f(0,0)\\
+\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}f(t,z)\delta(t-t_0,z-z_0)dtdz=f(t_0,z_0)
+\]</span></p>
+<p><strong>离散</strong>变量x和y，2-D离散冲激定义为(<em>与连续冲激倒是定义一致，在冲激处值为1</em>)：
+<span class="math display">\[
+\delta(x,y)\begin{cases}
+1,\quad x=y=0\\
+0,\quad \text{其他}
+\end{cases}
+\]</span> 取样性质： <span class="math display">\[
+\sum_{x=-\infty}^{\infty}\sum_{y=-\infty}^{\infty}f(x,y)\delta(x,y)=f(0,0)\\
+\sum_{x=-\infty}^{\infty}\sum_{y=-\infty}^{\infty}f(x,y)\delta(x-x_0,y-y_0)=f(x_0,y_0)
+\]</span> ==处理有限维图像时，上述两个公式的限制改为图像的维数。==</p>
+<h3 id="d-fourier-transform-pair变换对">4.5.2 2-D Fourier Transform
+Pair(变换对)</h3>
+<p>2-D Fourier Transform：令<span
+class="math inline">\(f(t,z)\)</span>是两个连续变量<span
+class="math inline">\(t\)</span>,<span
+class="math inline">\(z\)</span>的连续函数。 <span
+class="math display">\[
+F(\mu,v)=\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}f(t,z)e^{-j2\pi(\mu
+t+vz)}dtdz\\
+f(t,z)=\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}F(\mu,v)e^{j2\pi(\mu
+t+vz)}d\mu dv
+\]</span> <span class="math inline">\(\mu, v\)</span>是频率变量；<span
+class="math inline">\(t,z\)</span>是连续空间变量。<strong><span
+class="math inline">\(\mu,v\)</span>定义了连续频率域。</strong></p>
+<blockquote>
+<p>二维盒式函数: <span class="math display">\[
+f(t,z)=\begin{cases}
+A,\quad -\frac T 2\le t\le\frac T 2,-\frac Z 2\le z\le \frac Z 2 \\
+0,\quad \text{其他}
+\end{cases}
+\]</span></p>
+<p>对应的傅里叶变换如下： <span class="math display">\[
+F(\mu,v)&amp;=\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}f(t,z)e^{-j2\pi(\mu
+t+vz)}dtdz\\
+&amp;=\int_{-\frac T 2}^{\frac T 2}\int_{-\frac Z 2}^{\frac Z
+2}Ae^{-j2\pi(\mu t+vz)}dtdz\\
+&amp;=ATZ[\frac{sin(\pi\mu T)}{\pi\mu T}][\frac{sin(\pi v Z )}{\pi v Z}]
+\]</span> 联系到一维情况下连续函数的情况： <span class="math display">\[
+f(t)&amp;=\begin{cases}
+A,\quad -\frac{w}{2}\le t\le \frac{w}{2}\\
+0,\quad \text{其他}
+\end{cases}\\
+F(\mu)&amp;=\int_{-\infty}^{\infty}f(t)e^{-j2\pi\mu t}dt\\
+&amp;=\int_{-\frac w 2}^{\frac w 2}Ae^{-j2\pi\mu t}dt\\
+&amp;=-\frac{A}{2j\pi\mu}[e^{-j2\pi\mu t}]_{-\frac w 2}^{\frac w 2}\\
+&amp;=-\frac{A}{2j\pi\mu}(e^{-j\pi\mu w}-e^{j\pi\mu w})\\
+&amp;=\frac{A}{2j\pi\mu}(e^{j\pi\mu w}-e^{-j\pi\mu w})
+\]</span> 因为<span
+class="math inline">\(e^{j\theta}-e^{-j\theta}=(\cos\theta+j\sin\theta)-(\cos\theta-j\sin\theta)=2j\sin\theta\)</span>,所以：
+<span class="math display">\[
+F(\mu)&amp;=\frac{A}{\pi\mu}\sin(\pi\mu w)\\
+&amp;=Aw\frac{\sin(\pi\mu w)}{\pi\mu w}\\
+&amp;=Aw sinc(\pi\mu w)
+\]</span> 所以对于2-D情况下<span
+class="math inline">\(F(\mu,v)=ATZ[\frac{sin(\pi\mu T)}{\pi\mu
+T}][\frac{sin(\pi v Z )}{\pi v
+Z}]\)</span>，更易理解。看下图：右图是频谱的一部分，谱中0位置与T,Z成反比，当<span
+class="math inline">\(T\gt Z\)</span>，谱沿<span
+class="math inline">\(\mu\)</span>轴更“收缩”。</p>
+</blockquote>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241125115642506.png"
+alt="image-20241125115642506" />
+<figcaption aria-hidden="true">image-20241125115642506</figcaption>
+</figure>
+<h3 id="d-sampling">4.5.3 2-D Sampling</h3>
+<p>先介绍一下<strong>1-D sampling</strong>：</p>
+<p>因为时域与频域对称：<span
+class="math inline">\(f(t)\xrightarrow{\mathrm{FT}}F(\mu),F(t)\xrightarrow{\mathrm{FT}}f(-\mu)\)</span>
+<span class="math display">\[
+\delta(t-t_0)\xrightarrow{\mathrm{FT}}e^{-j2\pi\mu t_0},
+e^{-j2\pi\mu
+t_0}\xrightarrow{\mathrm{FT}}\delta(-\mu-t_0)=\delta(\mu+t_0)
+\]</span> 冲激串： <span class="math display">\[
+S_{\Delta T}(t)=\sum^{\infty}_{k=-\infty}\delta(t-k\Delta
+T)=\sum^{\infty}_{n=-\infty}C_ne^{j\frac{2\pi n}{\Delta T}t}\\
+C_n=\frac{1}{\Delta T}\int_{-\frac{\Delta T}{2}}^{\frac{\Delta
+T}{2}}S_{\Delta T}(t)e^{-j\frac{2\pi n}{\Delta T}t}dt
+\]</span> 当t=0时产生冲激(<span class="math inline">\([-\frac{\Delta
+T}{2},\frac{\Delta T}{2}]\)</span>区间内积分仅包含t=0处冲激)，此时<span
+class="math inline">\(C_n=\frac{1}{\Delta T}\int_{-\frac{\Delta
+T}{2}}^{\frac{\Delta T}{2}}S_{\Delta T}(t)e^{-j\frac{2\pi n}{\Delta
+T}t}dt=\frac{1}{\Delta T}\)</span>: <span class="math display">\[
+S_{\Delta T}(t)=\sum^{\infty}_{n=-\infty}\frac{1}{\Delta
+T}e^{j\frac{2\pi n}{\Delta T}t}
+\]</span> 对<span class="math inline">\(S_{\Delta
+T}(t)\)</span>进行傅里叶变换： <span class="math display">\[
+S_{\Delta T}(t)\xrightarrow{\mathrm{FT}}\frac{1}{\Delta
+T}\sum_{n=-\infty}^{\infty}\delta(\mu-\frac{n}{\Delta T})\\
+e^{\frac{j2\pi n}{\Delta
+T}t}\xrightarrow{\mathrm{FT}}\delta(\mu-\frac{n}{\Delta T})
+\]</span></p>
+<p>对于<strong>2-D冲激串</strong>被定义为: <span class="math display">\[
+S_{\Delta
+T}(t,z)=\sum^{\infty}_{m=-\infty}\sum^{\infty}_{n=-\infty}\delta(t-m\Delta
+T,z-n\Delta Z)
+\]</span> <span class="math inline">\(\Delta T,\Delta
+Z\)</span>是连续函数<span
+class="math inline">\(f(t,z)\)</span>沿t轴和z轴的样本间的间隔。上式描述了沿两个轴无限扩展的一组周期冲激。</p>
+<p><strong>2-D带限函数</strong>：在<span
+class="math inline">\([-\mu_{\max},\mu_{\max}],[-v_{\max},v_{max}]\)</span>建立的频率域矩阵外，<span
+class="math inline">\(f(t,z)\xrightarrow{\mathrm{FT}}0\)</span>： <span
+class="math display">\[
+F(\mu,v)=0, \quad |\mu|\ge\mu_{\max},|v|\ge v_{\max}
+\]</span></p>
+<blockquote>
+<p><strong>带限：当且仅当<span
+class="math inline">\(f(t,z)\)</span>在两个坐标方向无限扩展的时候，<span
+class="math inline">\(f(t,z)\)</span>一般才可能是带限的。</strong></p>
+</blockquote>
+<p><strong>2-D取样定理</strong>：间隔满足<span
+class="math inline">\(\Delta T&lt;\frac 1 {2\mu_{\max}},\Delta Z\lt
+\frac 1 {2v_{\max}}\)</span>or<span class="math inline">\(\frac 1{\Delta
+T}\gt2\mu_{\max},\frac1{\Delta Z}\gt
+2v_{\max}\)</span>，则连续带限函数f(t,z)可由其一组样本无误地复原（无信息丢失）。</p>
+<h3 id="d-dft-idft">4.5.5 2-D DFT, IDFT</h3>
+<p>书上的形式: <span class="math display">\[
+\text{DFT:}\\
+F(u,v)=\sum^{M-1}_{x=0}\sum^{N-1}_{y=0}f(x,y)e^{-j2\pi(\frac{ux}{M}+\frac{vy}{M})}\\
+\text{IDFT}:\\
+f(x,y)=\frac{1}{MN}\sum^{M-1}_{u=0}\sum^{N-1}_{v=0}F(u.v)e^{j2\pi(\frac{ux}{M}+\frac{vy}{M})}
+\]</span>
+PPT中给出的形式（此时这个常数的平方根应包含在正变换和反变换前面，以便形成一个更为对称的变换对）：
+<span class="math display">\[
+\text{DFT:}\\
+F(u,v)=\frac{1}{MN}\sum^{M-1}_{x=0}\sum^{N-1}_{y=0}f(x,y)e^{-j2\pi(\frac{ux}{M}+\frac{vy}{M})}\\
+\text{IDFT}:\\
+f(x,y)=\sum^{M-1}_{u=0}\sum^{N-1}_{v=0}F(u.v)e^{j2\pi(\frac{ux}{M}+\frac{vy}{M})}
+\]</span></p>
+<h2 id="d-dft-idft的性质">4.6 2-D DFT, IDFT的性质</h2>
+<ul>
+<li><p>空间间隔与频率间隔：<strong><span class="math inline">\(\Delta
+u,\Delta v\)</span>与<span class="math inline">\(\Delta T,\Delta
+Z\)</span>成反比。</strong></p>
+<p>对连续函数<span
+class="math inline">\(f(t,z)\)</span>取样生成了一副数字图像<span
+class="math inline">\(f(x,y)\)</span>,它由t方向和z方向所取得<span
+class="math inline">\(M\times N\)</span>个样本组成。令<span
+class="math inline">\(\Delta T,\Delta
+Z\)</span>表示样本间的间隔。频率域对应的离散变量间的间隔分别为<span
+class="math inline">\(\Delta u=\frac{1}{M\Delta T},\Delta
+v=\frac{1}{N\Delta Z}\)</span>。</p></li>
+<li><p>平移(shifting)：</p>
+<ul>
+<li><p>时间平移
+(Time-shifting)：图像在空间域中的平移（时移）会导致频域中乘以一个复指数因子。该复指数因子只影响相位，不影响幅度。
+<span class="math display">\[
+\mathfrak{J}[f(x-x_0, y-y_0)] = F(u, v)e^{-j2\pi\left(\frac{ux_0}{M} +
+\frac{vy_0}{N}\right)}
+\]</span></p></li>
+<li><p>频率平移 (Frequency
+shifting)：空间域中乘以一个复指数因子会导致频率平移。常用于将频域中心
+(0, 0) 平移到图像中心 (如 <code>fftshift</code> 操作)。 <span
+class="math display">\[
+\mathfrak{J}[f(x, y)e^{-j2\pi\left(\frac{u_0x}{M} +
+\frac{v_0y}{N}\right)}] = F(u-u_0, v-v_0)\\
+\mathfrak{J}[f(x, y)(-1)^{x+y}] = F(u-\frac{M}{2}, v-\frac{N}{2})
+\]</span></p></li>
+</ul></li>
+<li><p>对称性(Symmetry):</p>
+<ul>
+<li>平均值 (Average)：<span class="math inline">\(F(0, 0) =
+\frac{1}{MN}\sum_{x=0}^{M-1}\sum_{y=0}^{N-1}f(x, y)\)</span></li>
+<li>共轭对称性 (Conjugate Symmetric)：<span class="math inline">\(F(u,
+v) = F^*(-u, -v)\)</span></li>
+<li>对称性 (Symmetric)：<span class="math inline">\(|F(u, v)| = |F(-u,
+-v)|\)</span></li>
+</ul></li>
+<li><p>分离性 (Separability):
+二维傅里叶变换可以分解为两次一维傅里叶变换(行、列)，这降低了计算复杂度，便于实现快速傅里叶变换（FFT）。
+<span class="math display">\[
+F(u, v) = \frac{1}{N} \sum_{y=0}^{N-1} \left[\frac{1}{M}
+\sum_{x=0}^{M-1} f(x, y) e^{-j 2\pi \frac{ux}{M}}\right] e^{-j 2\pi
+\frac{vy}{N}}
+\]</span></p></li>
+<li><p>旋转
+(Rotation)：图像在空间域中的旋转会导致频域中相应的旋转。如果图像旋转了角度<span
+class="math inline">\(\theta_0\)</span>，其频谱也旋转相同角度。 <span
+class="math display">\[
+f(r, \theta + \theta_0)\iffF(\omega, \phi + \theta_0)
+\]</span></p></li>
+<li><p>周期性 (Periodicity):
+离散傅里叶变换具有周期性，频域中的数据在<span class="math inline">\(M
+\times N\)</span>范围内重复。 <span class="math display">\[
+f(x, y) = f(x + M, y) = f(x, y + N) = f(x + M, y + N)\\
+F(u, v) = F(u + M, v) = F(u, v + N) = F(u + M, v + N)
+\]</span></p></li>
+<li><p>线性性 (Linearity):
+傅里叶变换是线性运算，两个图像的加权组合在频域中仍是对应频域组合的加权和。
+<span class="math display">\[
+\mathfrak{J}[af(x, y) + bg(x, y)] = a\mathfrak{J}[f(x, y)] +
+b\mathfrak{J}[g(x, y)]
+\]</span></p></li>
+<li><p>微分性 (Differentiation):
+图像在空间域中的微分对应频域中的乘法运算。二阶微分对应<span
+class="math inline">\(-4\pi^2(u^2 + v^2)\)</span>，与拉普拉斯算子相关。
+<span class="math display">\[
+\mathfrak{J}\left[\frac{\partial^n f(x, y)}{\partial x^n}\right] =
+(j2\pi u)^n \mathfrak{J}[f(x, y)]\\
+\mathfrak{J}\left[\nabla^2 f(x, y)\right] = -4\pi^2(u^2 + v^2)F(u, v)
+\]</span></p></li>
+<li><p>卷积(Convolution):<span class="math inline">\(\mathfrak{J}[f(x,
+y) * g(x, y)] = F(u, v)G(u, v)\)</span></p></li>
+<li><p>相关(Correlation):<span class="math inline">\(\mathfrak{J}[f(x,
+y) \circ g(x, y)] = F(u, v) \cdot G^*(u, v)\)</span></p></li>
+<li><p>相似性 (Similarity):
+图像在空间域中发生缩放时，频域数据会发生相反的缩放，并且幅度会按照缩放比例调整。
+<span class="math display">\[
+\mathfrak{J}[f(ax, by)] = \frac{1}{|ab|} F\left(\frac{u}{a},
+\frac{v}{b}\right)
+\]</span></p></li>
+</ul>
+<h4 id="总结">4.6.1 总结</h4>
+<table>
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 58%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>名称</th>
+<th>表达式</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>1)</strong> 离散傅里叶变换 (DFT) of<span
+class="math inline">\(f(x, y)\)</span></td>
+<td><span class="math inline">\(F(u, v) = \sum_{x=0}^{M-1}
+\sum_{y=0}^{N-1} f(x, y)e^{-j2\pi\left(\frac{ux}{M} +
+\frac{vy}{N}\right)}\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>2)</strong> 逆离散傅里叶变换 (IDFT) of<span
+class="math inline">\(F(u, v)\)</span></td>
+<td><span class="math inline">\(f(x, y) = \frac{1}{MN} \sum_{u=0}^{M-1}
+\sum_{v=0}^{N-1} F(u, v)e^{j2\pi\left(\frac{ux}{M} +
+\frac{vy}{N}\right)}\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>3)</strong> 频谱</td>
+<td><span class="math inline">\(|F(u, v)| = \sqrt{R^2(u, v) + I^2(u,
+v)}\)</span>, 其中<span class="math inline">\(R = \text{Real}(F), I =
+\text{Imag}(F)\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>4)</strong> 相位角</td>
+<td><span class="math inline">\(\phi(u, v) = \tan^{-1}\left[\frac{I(u,
+v)}{R(u, v)}\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>5)</strong> 极坐标表示</td>
+<td><span class="math inline">\(F(u, v) = |F(u, v)| e^{j\phi(u,
+v)}\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>6)</strong> 功率谱</td>
+<td><span class="math inline">\(P(u, v) = |F(u, v)|^2\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>7)</strong> 平均值</td>
+<td><span class="math inline">\(\bar{f} = \frac{1}{MN} \sum_{x=0}^{M-1}
+\sum_{y=0}^{N-1} f(x, y) = \frac{1}{MN} F(0, 0)\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>8)</strong> 周期性 (<span class="math inline">\(k_1,
+k_2\)</span> 为整数)</td>
+<td><span class="math inline">\(\begin{aligned} F(u, v) &amp;= F(u+k_1M,
+v+k_2N) \\ f(x, y) &amp;= f(x+k_1M, y+k_2N) \end{aligned}\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>9)</strong> 卷积</td>
+<td><span class="math inline">\((f \ast h)(x, y) = \sum_{m=0}^{M-1}
+\sum_{n=0}^{N-1} f(m, n)h(x-m, y-n)\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>10)</strong> 相关</td>
+<td><span class="math inline">\((f \star h)(x, y) = \sum_{m=0}^{M-1}
+\sum_{n=0}^{N-1} f(m, n)h(x+m, y+n)\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>11)</strong> 可分性</td>
+<td>2D DFT 可以通过对图像的每一行（或列）计算 1D
+DFT，再对每一列（或行）计算 1D DFT 得到。详见 Section 4.11。</td>
+</tr>
+<tr class="even">
+<td><strong>12)</strong> 使用DFT算法计算 IDFT</td>
+<td><span class="math inline">\(MNf^*(x, y) = \sum_{u=0}^{M-1}
+\sum_{v=0}^{N-1} F^*(u, v)e^{j2\pi\left(\frac{ux}{M} +
+\frac{vy}{N}\right)}\)</span></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>名称</th>
+<th>傅里叶变换对 (DFT Pairs)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>1)</strong> 对称性质</td>
+<td>参见 Table 4.1</td>
+</tr>
+<tr class="even">
+<td><strong>2)</strong> 线性</td>
+<td><span class="math inline">\(af_1(x, y) + bf_2(x, y) \iff aF_1(u, v)
++ bF_2(u, v)\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>3)</strong> 平移 (通用)</td>
+<td><span class="math inline">\(\begin{aligned} f(x, y)e^{j2\pi(ux_0/M +
+vy_0/N)} &amp;\iff F(u-u_0, v-v_0) \\ f(x-x_0, y-y_0) &amp;\iff F(u,
+v)e^{-j2\pi(ux_0/M + vy_0/N)} \end{aligned}\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>4)</strong> 频域中心移动 (M/2, N/2)</td>
+<td><span class="math inline">\(\begin{aligned} f(x, y)(-1)^{x+y}
+&amp;\iff F(u-M/2, v-N/2) \\ f(x-M/2, y-N/2) &amp;\iff F(u, v)(-1)^{u+v}
+\end{aligned}\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>5)</strong> 旋转</td>
+<td><span class="math inline">\(\begin{aligned} f(r, \theta + \theta_0)
+&amp;\iff F(\omega, \phi + \theta_0) \\ r &amp;= \sqrt{x^2 + y^2}, \quad
+\omega = \sqrt{u^2 + v^2}, \\ \theta &amp;= \tan^{-1}(y/x), \quad \phi =
+\tan^{-1}(v/u) \end{aligned}\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>6)</strong> 卷积定理 †</td>
+<td><span class="math inline">\(\begin{aligned} (f \ast h)(x, y)
+&amp;\iff (F \cdot H)(u, v) \\ (f \cdot h)(x, y) &amp;\iff (1/MN)[(F
+\ast H)(u, v)] \end{aligned}\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>7)</strong> 相关定理 †</td>
+<td><span class="math inline">\(\begin{aligned} (f \star h)(x, y)
+&amp;\iff (F^* \cdot H)(u, v) \\ (f^* \cdot h)(x, y) &amp;\iff (1/MN)[(F
+\star H)(u, v)] \end{aligned}\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>8)</strong> 离散单位脉冲</td>
+<td><span class="math inline">\(\delta(x, y) \iff 1 \iff MN\delta(u,
+v)\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>9)</strong> 矩形</td>
+<td><span class="math inline">\(\text{rec}[a, b] \iff \frac{\sin(\pi
+ua)}{\pi ua} \frac{\sin(\pi vb)}{\pi vb} e^{-j(ua+vb)}\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>10)</strong> 正弦</td>
+<td><span class="math inline">\(\sin(2\pi u_0/M + 2\pi v_0/N) \iff
+j\frac{MN}{2}[\delta(u+u_0, v+v_0) - \delta(u-u_0, v-v_0)]\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>11)</strong> 余弦</td>
+<td><span class="math inline">\(\cos(2\pi u_0/M + 2\pi v_0/N) \iff
+\frac{MN}{2}[\delta(u+u_0, v+v_0) + \delta(u-u_0, v-v_0)]\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>12)</strong> 微分 (假设边界条件为0)</td>
+<td><span class="math inline">\(\begin{aligned} \frac{\partial
+f}{\partial x} &amp;\iff j(2\pi u/M)F(u, v) \\ \frac{\partial^2
+f}{\partial x^2} &amp;\iff -(2\pi u/M)^2F(u, v)
+\end{aligned}\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>13)</strong> 高斯</td>
+<td><span class="math inline">\(A2\pi\sigma^2
+e^{-2\pi^2\sigma^2(u^2+v^2)} \iff Ae^{-(u^2+v^2)/\sigma^2}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>注</strong>：傅里叶变换对对于连续变量可以进一步推导（以<span
+class="math inline">\(t\)</span> 和<span
+class="math inline">\(z\)</span> 表示空间变量，<span
+class="math inline">\(u\)</span> 和<span
+class="math inline">\(v\)</span>
+表示频率变量），这些结果可以通过采样离散变量用于 DFT 工作。</p>
+<h2 id="d-discrete-fourier-transform">2-D Discrete Fourier
+Transform</h2>
+<h3 id="d-fourier-transform-1">2-D Fourier Transform</h3>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>定义</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>傅里叶级数</td>
+<td>任何周期性重复的函数都可以表示为不同频率的正弦和/或余弦之和，每个乘以不同的系数。</td>
+</tr>
+<tr class="even">
+<td>傅里叶变换</td>
+<td>即使不是周期性的函数（但其曲线下面积是有限的）也可以表示为正弦和/或余弦乘以加权函数的积分。</td>
+</tr>
+<tr class="odd">
+<td>频域</td>
+<td>指图像的二维离散傅里叶变换的平面。</td>
+</tr>
+<tr class="even">
+<td>傅里叶变换的目的</td>
+<td>将信号表示为各种频率的正弦信号的线性组合。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="d-continuous-fourier-transform">2-D Continuous Fourier
+Transform</h3>
+<p><span class="math display">\[
+j=\sqrt{-1},\quad e^{j\theta}=\cos\theta+j\sin\theta
+\]</span></p>
+<p>1-D傅里叶变换与逆： <span class="math display">\[
+F(u)=\int^\infty_{-\infty}f(x)e^{-j2\pi u x}dx\\
+f(x)=\int^\infty_{-\infty}F(u)e^{j2\pi u x}du
+\]</span> 2-D傅里叶变换与逆： <span class="math display">\[
+F(u,v)=\int^\infty_{-\infty}\int^\infty_{-\infty}f(x,y)e^{-j2\pi
+(ux+vy)}dxdy\\
+f(x,y)=\int^\infty_{-\infty}\int^\infty_{-\infty}F(u,v)e^{j2\pi(ux+vy)}dudv
+\]</span></p>
+<h3 id="d-discrete-fourier-transform-1">2-D Discrete Fourier
+Transform</h3>
+<h4 id="d-discrete-fourier-transform-2">1-D Discrete Fourier
+Transform</h4>
+<p>1-D离散傅里叶变换和逆是：<span class="math inline">\(u,x =
+0,1,\dots,M-1\)</span> <span class="math display">\[
+F(u)=\frac 1 M\sum^{M-1}_{x=0}f(x)e^{-j\frac{2\pi ux}M}\\
+f(x)=\sum^{M-1}_{u=0}F(u)e^{j\frac{2\pi ux}M}
+\]</span> 因为<span
+class="math inline">\(e^{j\theta}=\cos\theta+\sin\theta\)</span>,离散傅里叶变换可以被写成：
+<span class="math display">\[
+F(u)=\frac 1 M\sum^{M-1}_{x=0}f(x)\left[\cos\frac{2\pi
+ux}M-j\sin\frac{2\pi ux}M\right]
+\]</span></p>
+<ul>
+<li>频率（时间）域：<span
+class="math inline">\(F(u)\)</span>的值所在的域（<span
+class="math inline">\(u\)</span> 的值）；因为<span
+class="math inline">\(u\)</span>决定了变换分量的频率。</li>
+<li>频率（时间）分量：<span class="math inline">\(F(u)\)</span>的<span
+class="math inline">\(M\)</span>个项中的每一个。</li>
+</ul>
+<p><strong>极坐标表示</strong>（谱=函数） <span class="math display">\[
+F(u)=\vert F(u)\vert e^{j\phi(u)}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(F(u)=\left[R(u)^2+I(u)^2\right]^{\frac 1
+2}\)</span>: 幅度谱，用于描述频率成分的强度。</li>
+<li><span
+class="math inline">\(\phi(u)=\tan^{-1}\left(\frac{I(u)}{R(u)}\right)\)</span>
+：相位谱，用于描述频率成分的相位信息。</li>
+<li><span class="math inline">\(R(u)\)</span>是频域函数的实部，<span
+class="math inline">\(I(u)\)</span>是频域函数的虚部。</li>
+</ul>
+<p>功率谱：<span class="math inline">\(P(u)=\vert F(u)\vert^2\)</span>,
+用于量化图像在不同频率处的能量分布，是幅度谱的平方。</p>
+<h4 id="d-discrete-fourier-transform-3">2-D Discrete Fourier
+Transform</h4>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241221110525939.png"
+alt="image-20241221110525939" /> <span class="math display">\[
+F(u,v)=\frac{1}{MN}\sum^{M-1}_{x=0}\sum^{N-1}_{y=0}f(x,y)e^{-j2\pi\left(\frac{ux}M+\frac{vy}N\right)}\\
+f(x,y)=\sum^{M-1}_{x=0}\sum^{N-1}_{y=0}F(u,v)e^{j2\pi\left(\frac{ux}M+\frac{vy}N\right)}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\vert
+F(u,v)\vert=\left[R^2(u,v)^2+I^2(u,v)\right]^{\frac 1 2}\)</span>:
+幅度谱</li>
+<li><span
+class="math inline">\(\phi(u,v)=\tan^{-1}\left[\frac{I(u,v)}{R(u,v)}\right]\)</span>:
+相位谱</li>
+<li><span class="math inline">\(P(u,v)=\vert F(u,v)\vert^2\)</span>:
+功率谱</li>
+</ul>
+<h3
+id="二维离散傅里叶变换的性质properties-of-2-d-dft">二维离散傅里叶变换的性质(Properties
+of 2-D DFT)</h3>
+<ol type="1">
+<li><p>平移(shifting)：</p>
+<ul>
+<li><p>时间平移
+(Time-shifting)：图像在空间域中的平移（时移）导致幅度谱不变、相位谱变化。
+<span class="math display">\[
+\begin{align}
+\mathfrak{J}[f(x-x_0, y-y_0)]&amp;= F(u, v)e^{-j2\pi\left(\frac{ux_0}{M}
++ \frac{vy_0}{N}\right)}\\
+f(x-x_0,y-y_0)&amp;=\sum^{M-1}_{x=0}\sum^{N-1}_{y=0}F(u,v)e^{j2\pi\left(\frac{ux-ux_0}M+\frac{vy-vy_0}N\right)}\\&amp;=\sum^{M-1}_{x=0}\sum^{N-1}_{y=0}F(u,v)e^{j2\pi\left(\frac{ux}M+\frac{vy}N\right)}e^{-j2\pi\left(\frac{ux_0}{M}
++ \frac{vy_0}{N}\right)}\\
+\mathfrak{J}[f(x-x_0, y-y_0)]&amp;= F(u, v)e^{-j2\pi\left(\frac{ux_0}{M}
++ \frac{vy_0}{N}\right)}
+\end{align}
+\]</span></p></li>
+<li><p>频率平移 (Frequency
+shifting)：空间域中乘以一个复指数因子会导致频率平移。式2常用于将频域中心
+(0, 0) 平移到图像中心 (如 <code>fftshift</code> 操作)。 <span
+class="math display">\[
+\mathfrak{J}[f(x, y)e^{j2\pi\left(\frac{u_0x}{M} +
+\frac{v_0y}{N}\right)}] = F(u-u_0, v-v_0)\\
+\mathfrak{J}[f(x, y)(-1)^{x+y}] = F(u-\frac{M}{2}, v-\frac{N}{2})\\
+proof.\ u_0=\frac M 2,v_0=\frac N2\\
+\mathfrak{J}[f(x, y)e^{j2\pi\left(\frac{u_0x}{M} +
+\frac{v_0y}{N}\right)}] =\mathfrak{J}[f(x, y)e^{j\pi(x+y)}]=\cos
+{\pi(x+y)}+j\sin {\pi(x+y)}=(-1)^{x+y}\\
+\]</span></p></li>
+</ul></li>
+<li><p>对称性(Symmetry):</p>
+<ul>
+<li>平均值 (Average)：<span class="math inline">\(F(0, 0) =
+\frac{1}{MN}\sum_{x=0}^{M-1}\sum_{y=0}^{N-1}f(x, y)\)</span>
+是直流量，相当于中心点=平均值。</li>
+<li>共轭对称性 (Conjugate Symmetric)：<span class="math inline">\(F(u,
+v) = F^*(-u, -v)\)</span></li>
+<li>对称性 (Symmetric)：<span class="math inline">\(|F(u, v)| = |F(-u,
+-v)|\)</span></li>
+</ul></li>
+<li><p>分离性 (Separability):
+二维傅里叶变换可以分解为两次一维傅里叶变换(行、列)，这降低了计算复杂度，便于实现快速傅里叶变换（FFT）。
+<span class="math display">\[
+F(u, v) = \frac{1}{N} \sum_{y=0}^{N-1} \left[\frac{1}{M}
+\sum_{x=0}^{M-1} f(x, y) e^{-j 2\pi \frac{ux}{M}}\right] e^{-j 2\pi
+\frac{vy}{N}}
+\]</span></p></li>
+<li><p>旋转
+(Rotation)：图像在空间域中的旋转会导致频域中相应的旋转。如果图像旋转了角度<span
+class="math inline">\(\theta_0\)</span>，其频谱也旋转相同角度。 <span
+class="math display">\[
+f(r, \theta + \theta_0)\iff F(\omega, \phi + \theta_0)
+\]</span></p></li>
+<li><p>周期性 (Periodicity):
+离散傅里叶变换具有周期性，频域中的数据在<span class="math inline">\(M
+\times N\)</span>范围内重复。 <span class="math display">\[
+f(x, y) = f(x + M, y) = f(x, y + N) = f(x + M, y + N)\\
+F(u, v) = F(u + M, v) = F(u, v + N) = F(u + M, v + N)
+\]</span></p></li>
+<li><p>线性性 (Linearity):
+傅里叶变换是线性运算，两个图像的加权组合在频域中仍是对应频域组合的加权和。
+<span class="math display">\[
+\mathfrak{J}[af(x, y) + bg(x, y)] = a\mathfrak{J}[f(x, y)] +
+b\mathfrak{J}[g(x, y)]
+\]</span></p></li>
+<li><p>微分性 (Differentiation):
+图像在空间域中的微分对应频域中的乘法运算。二阶微分对应<span
+class="math inline">\(-4\pi^2(u^2 + v^2)\)</span>，与拉普拉斯算子相关。
+<span class="math display">\[
+\mathfrak{J}\left[\frac{\partial^n f(x, y)}{\partial x^n}\right] =
+(j2\pi u)^n\mathfrak{J}[f(x, y)]= (j2\pi u)^n F(u,v)\\
+\mathfrak{J}\left[\nabla^2 f(x, y)\right] = -4\pi^2(u^2 + v^2)F(u, v)
+\]</span></p></li>
+<li><p>卷积(Convolution):<span class="math inline">\(\mathfrak{J}[f(x,
+y) * g(x, y)] = F(u, v)G(u, v)\)</span></p></li>
+<li><p>相关(Correlation):<span class="math inline">\(\mathfrak{J}[f(x,
+y) \circ g(x, y)] = F(u, v) \cdot G^*(u, v)\)</span></p></li>
+<li><p>相似性 (Similarity):
+图像在空间域中发生缩放时，频域数据会发生相反的缩放，并且幅度会按照缩放比例调整。
+<span class="math display">\[
+\mathfrak{J}[f(ax, by)] = \frac{1}{|ab|} F\left(\frac{u}{a},
+\frac{v}{b}\right)
+\]</span></p></li>
+</ol>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241221120812147.png" /></p>
+<h3 id="一些常用的傅里叶变换对-ft-pairs">一些常用的傅里叶变换对 (FT
+Pairs)</h3>
+<ol type="1">
+<li><p>单位冲激函数(<span class="math inline">\(\delta\)</span>)：<span
+class="math inline">\(\delta(x,y)\leftrightarrow 1\)</span></p>
+<blockquote>
+<p><span
+class="math inline">\(\delta\)</span>函数与其他函数卷积，就等于这个函数本身。
+<span class="math display">\[
+\delta(x)*g(x)\iff F(\delta(x))G(x)\\
+g(x)\iff 1\times G(x)
+\]</span></p>
+</blockquote></li>
+<li><p>高斯函数:
+空间域是高斯函数，频率域仍是高斯函数，但与空间域的标准差成反比。 <span
+class="math display">\[
+A2\pi\sigma^2 \exp(-2\pi^2\sigma^2(x^2 + y^2))\iff A
+\exp\left(-\frac{u^2 + v^2}{2\sigma^2}\right)
+\]</span> 高斯函数的FT仍是高斯函数，中心在<span
+class="math inline">\((0,0)\)</span>频率。 <span class="math display">\[
+\exp(-\pi(x^2 + y^2))\iff\exp(-\pi(u^2 + v^2))
+\]</span></p></li>
+<li><p>正弦函数:
+空间域是正弦函数，频率域则是两个对称的冲激函数，分别位于<span
+class="math inline">\((u_0,v_0),(-u_0,-v_0)\)</span>, 但幅度带有<span
+class="math inline">\(j\)</span>和相反的符号。 <span
+class="math display">\[
+\sin(2\pi u_0x + 2\pi v_0y)\iff\frac{1}{2} j \left[ \delta(u+u_0, v+v_0)
+- \delta(u-u_0, v-v_0) \right]
+\]</span></p></li>
+<li><p>余弦函数:
+空间域是余弦函数，频率域则是两个对称的冲激函数，分别位于<span
+class="math inline">\((u_0,v_0),(-u_0,-v_0)\)</span>. <span
+class="math display">\[
+\cos(2\pi u_0x + 2\pi v_0y)\iff\frac{1}{2} \left[ \delta(u+u_0, v+v_0) +
+\delta(u-u_0, v-v_0) \right]
+\]</span></p></li>
+</ol>
+<blockquote>
+<p>空间域中的正弦信号也在频域中产生两个对称的冲激，但其相位不同于余弦。</p>
+</blockquote>
+<h2 id="filtering-in-the-frequency-domain">Filtering in the Frequency
+Domain</h2>
+<p><strong>卷积定理：</strong><span class="math inline">\(f(x, y) * h(x,
+y)\)</span>与<span class="math inline">\(F(u, v) H(u,
+v)\)</span>组成傅里叶变换对。左边的表达式(空间域卷积)可以通过对右边表达式进行傅里叶反变换获得；右边的表达式可以通过对左式进行正向傅里叶变换获得。<strong>频率域的卷积被简化为空间域的乘法，反之亦然。</strong>
+<span class="math display">\[
+\mathfrak{J}[f(x, y) * h(x, y)]= F(u, v) H(u, v)\\
+\mathfrak{J}[f(x, y)h(x, y)] =F(u, v)* H(u, v)
+\]</span></p>
+<p><strong>相关定理：</strong> <span class="math display">\[
+\mathfrak{J}[f(x, y) \star h(x, y)]= F^*(u, v) H(u, v)\\
+\mathfrak{J}[f^*(x, y)h(x, y)] =F(u, v)\star H(u, v)\\\\
+\mathfrak{J}[f(x, y) \star f(x, y)]=\vert F(u, v) \vert^2\\
+\mathfrak{J}[\vert f(x, y)\vert^2] =F(u, v)\star F(u, v)
+\]</span> <strong>伸缩性质：</strong> <span class="math display">\[
+\mathfrak{J}[f(ax, by)]= \frac{1}{\vert ab\vert}F(\frac u a, \frac v b)
+\]</span></p>
+<blockquote>
+<p>【能量保持 ·
+帕斯瓦尔定理】如果离散的信号是一维的，对每个信号平方求和，再进行傅里叶变换，频域上也能得到一致的平方和。信号再时域和频域之间能量不变。</p>
+</blockquote>
+<h3 id="频域滤波">频域滤波</h3>
+<p><strong>基本思想</strong> ：通过选择一个特定的滤波器传递函数<span
+class="math inline">\(H(u, v)\)</span>来修改图像的傅里叶变换<span
+class="math inline">\(F(u, v)\)</span>。</p>
+<p>基于卷积定理的频域滤波实现：</p>
+<ol type="1">
+<li>通过傅里叶变换将图像从空间域<span class="math inline">\(f(x,
+y)\)</span>转换到频域<span class="math inline">\(F(u,
+v)\)</span>。<br />
+</li>
+<li>在频域中对傅里叶变换结果<span class="math inline">\(F(u,
+v)\)</span>乘以滤波器<span class="math inline">\(H(u, v)\)</span>。</li>
+<li>通过傅里叶逆变换将结果转换回空间域，得到滤波后的图像<span
+class="math inline">\(\mathfrak{J}^{-1}\{H(u, v)F(u,
+v)\}\)</span>。</li>
+</ol>
+<p>Wraparound Error（混叠误差）:
+在频域卷积时，完整信号可以被切分成多个简单信号相加。那么这些简单信号在交叠处：究竟是取信号1的值、还是取信号2的值呢？</p>
+<p><strong>解决方法</strong>： 对图像进行零填充
+(Padding)，扩展信号范围，避免非零部分的干扰。就是改变简单信号的周期，让其周期=完整信号的周期，然后会有一些部分，然后全部=0（这个就叫零填充）。</p>
+<h2
+id="从空域滤波器中获取频域滤波器obtaining-frequency-domain-filters-from-spatial-filters">从空域滤波器中获取频域滤波器(Obtaining
+Frequency Domain Filters from Spatial Filters)</h2>
+<blockquote>
+<p><strong>Q: </strong>Why?</p>
+<p>A: 1.效率 2.有意义的比较</p>
+</blockquote>
+<p>理想低通滤波器(ILPF)：</p>
+<p><span class="math display">\[
+H(u,v)=\begin{cases}
+1, \quad D(u,v)\le D_0\\
+0,\quad D(u,v)&gt; D_0\\
+\end{cases}
+\]</span> 其中<span class="math inline">\(D(u,v)\)</span>是从点<span
+class="math inline">\((u,v)\)</span>到频率矩阵中心<span
+class="math inline">\((0,0)\)</span>的距离: <span
+class="math display">\[
+D(u,v)=\sqrt{\left(u-\frac M 2\right)^2+\left(v-\frac N 2\right)^2}
+\]</span> <img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241222214513984.png"
+alt="image-20241222214513984" /></p>
+<p>巴斯沃斯低通滤波器(Butterworth Lowpass Filters, BLPFs): <span
+class="math display">\[
+H(u,v)=\frac{1}{1+\left[\frac{D(u,v)}{D_0}\right]^{2n}}
+\]</span> 随n增大，会越来越趋近于理想的低通滤波器。当<span
+class="math inline">\(D(u,v)=D_0,\frac{D(u,v)}{D_0}=1,1^n=1\)</span>，因此永远过0.5的点。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241222214442791.png"
+alt="image-20241222214442791" />
+<figcaption aria-hidden="true">image-20241222214442791</figcaption>
+</figure>
+<p>高斯低通滤波器( Gaussian Lowpass Filters, GLPFs) <span
+class="math display">\[
+H(u,v)=\exp\{\frac{-D^2(u,v)}{2D^2_0}\}
+\]</span> <img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241222214703839.png"
+alt="image-20241222214703839" /></p>
+<h2
+id="频率锐化滤波器sharpening-frequency-domain-filters">频率锐化滤波器(Sharpening
+Frequency Domain Filters)</h2>
+<p>通用高通频域滤波器： <span class="math display">\[
+H_{hp}(u,v)=1-H_{lp}(u,v)
+\]</span></p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>高通滤波器</th>
+<th>公式</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>理想高通滤波器</td>
+<td><span class="math inline">\(H(u, v) = \begin{cases} 0 &amp; \text{if
+} D(u, v) \leq D_0 \\ 1 &amp; \text{if } D(u, v) &gt; D_0
+\end{cases}\)</span></td>
+</tr>
+<tr class="even">
+<td>巴斯沃斯高通滤波器</td>
+<td><span class="math inline">\(H(u, v) = \frac{1}{1 + [D_0/D(u,
+v)]^{2n}}\)</span></td>
+</tr>
+<tr class="odd">
+<td>高斯高通滤波器</td>
+<td><span class="math inline">\(H(u, v) = 1 - e^{-D^2(u,
+v)/2D_0^2}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div><div class="post-end"><div class="post-prev"></div><div class="post-next"><a href="/2024/12/22/2024-12-22-%E9%9A%8F%E6%83%B3/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch3-%E9%A2%91%E7%8E%87%E5%9F%9F%E5%A4%84%E7%90%86image-enhancement-in-frequency-domain"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch3
+频率域处理(Image Enhancement in Frequency Domain)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#d-fourier-transform"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">4.5 2-D Fourier Transform</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#d-impulse"><span class="toc-content-number">1.1.1.</span> <span class="toc-content-text">4.5.1 2-D impulse</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#d-fourier-transform-pair%E5%8F%98%E6%8D%A2%E5%AF%B9"><span class="toc-content-number">1.1.2.</span> <span class="toc-content-text">4.5.2 2-D Fourier Transform
+Pair(变换对)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#d-sampling"><span class="toc-content-number">1.1.3.</span> <span class="toc-content-text">4.5.3 2-D Sampling</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#d-dft-idft"><span class="toc-content-number">1.1.4.</span> <span class="toc-content-text">4.5.5 2-D DFT, IDFT</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#d-dft-idft%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">4.6 2-D DFT, IDFT的性质</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-content-number">1.2.0.1.</span> <span class="toc-content-text">4.6.1 总结</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#d-discrete-fourier-transform"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">2-D Discrete Fourier
+Transform</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#d-fourier-transform-1"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">2-D Fourier Transform</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#d-continuous-fourier-transform"><span class="toc-content-number">1.3.2.</span> <span class="toc-content-text">2-D Continuous Fourier
+Transform</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#d-discrete-fourier-transform-1"><span class="toc-content-number">1.3.3.</span> <span class="toc-content-text">2-D Discrete Fourier
+Transform</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#d-discrete-fourier-transform-2"><span class="toc-content-number">1.3.3.1.</span> <span class="toc-content-text">1-D Discrete Fourier
+Transform</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#d-discrete-fourier-transform-3"><span class="toc-content-number">1.3.3.2.</span> <span class="toc-content-text">2-D Discrete Fourier
+Transform</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%BA%8C%E7%BB%B4%E7%A6%BB%E6%95%A3%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E7%9A%84%E6%80%A7%E8%B4%A8properties-of-2-d-dft"><span class="toc-content-number">1.3.4.</span> <span class="toc-content-text">二维离散傅里叶变换的性质(Properties
+of 2-D DFT)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E7%9A%84%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E5%AF%B9-ft-pairs"><span class="toc-content-number">1.3.5.</span> <span class="toc-content-text">一些常用的傅里叶变换对 (FT
+Pairs)</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#filtering-in-the-frequency-domain"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">Filtering in the Frequency
+Domain</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E9%A2%91%E5%9F%9F%E6%BB%A4%E6%B3%A2"><span class="toc-content-number">1.4.1.</span> <span class="toc-content-text">频域滤波</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E4%BB%8E%E7%A9%BA%E5%9F%9F%E6%BB%A4%E6%B3%A2%E5%99%A8%E4%B8%AD%E8%8E%B7%E5%8F%96%E9%A2%91%E5%9F%9F%E6%BB%A4%E6%B3%A2%E5%99%A8obtaining-frequency-domain-filters-from-spatial-filters"><span class="toc-content-number">1.5.</span> <span class="toc-content-text">从空域滤波器中获取频域滤波器(Obtaining
+Frequency Domain Filters from Spatial Filters)</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E9%A2%91%E7%8E%87%E9%94%90%E5%8C%96%E6%BB%A4%E6%B3%A2%E5%99%A8sharpening-frequency-domain-filters"><span class="toc-content-number">1.6.</span> <span class="toc-content-text">频率锐化滤波器(Sharpening
+Frequency Domain Filters)</span></a></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>
