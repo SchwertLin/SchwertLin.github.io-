@@ -1,0 +1,369 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch5 彩色图像处理 [TOC]  Q: 颜色(Color)是什么？ A: 人眼能够感知的部分电磁波信号。 本章需要了解：了解所有颜色空间、字母代表意思、均匀性颜色空间(L, V, B型)  彩色基础 区分不同颜色的特性通常是亮度、色调、饱和度。  亮度：发光强度的消色概念。 色调：混合光波中与主波长相关的属性、表示被观察者感知的主导色。（红色、橙色、黄色） 饱和度：相对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图像处理-Ch5-彩色图像处理">
+<meta property="og:url" content="http://example.com/2024/12/23/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-Ch5-%E5%BD%A9%E8%89%B2%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch5 彩色图像处理 [TOC]  Q: 颜色(Color)是什么？ A: 人眼能够感知的部分电磁波信号。 本章需要了解：了解所有颜色空间、字母代表意思、均匀性颜色空间(L, V, B型)  彩色基础 区分不同颜色的特性通常是亮度、色调、饱和度。  亮度：发光强度的消色概念。 色调：混合光波中与主波长相关的属性、表示被观察者感知的主导色。（红色、橙色、黄色） 饱和度：相对">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-23T10:04:07.000Z">
+<meta property="article:modified_time" content="2024-12-23T10:14:19.591Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="图像处理">
+<meta name="twitter:card" content="summary"><title>图像处理-Ch5-彩色图像处理 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>图像处理-Ch5-彩色图像处理</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2024-12-23</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2024-12-23</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约2.7K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch5-彩色图像处理">Ch5 彩色图像处理</h1>
+<p>[TOC]</p>
+<blockquote>
+<p>Q: 颜色(Color)是什么？</p>
+<p>A: 人眼能够感知的部分电磁波信号。</p>
+<p><strong>本章需要了解：了解所有颜色空间、字母代表意思、均匀性颜色空间(L,
+V, B型)</strong></p>
+</blockquote>
+<h2 id="彩色基础">彩色基础</h2>
+<p>区分不同颜色的特性通常是亮度、色调、饱和度。</p>
+<ul>
+<li>亮度：发光强度的消色概念。</li>
+<li>色调：混合光波中与主波长相关的属性、表示被观察者感知的主导色。（<em>红色、橙色、黄色</em>）</li>
+<li>饱和度：相对的纯度，or
+与一种色调混合的白光量。饱和度与所加的白光量成反比。</li>
+<li>色度：色调+饱和度。</li>
+</ul>
+<p>三色值: <span class="math inline">\(X,Y,Z\)</span></p>
+<p>CIE色度图：<span class="math inline">\(x,y,z=1-(x+y)\)</span>,
+x(红)、y(绿)、z(蓝)</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241223164640062.png"
+alt="image-20241223164640062" />
+<figcaption aria-hidden="true">image-20241223164640062</figcaption>
+</figure>
+<p>CIELAB(CIE L*a*b*模型)：保持色彩一致、独立于设备的色彩模型。</p>
+<ul>
+<li>CIE
+L*a*b*色彩空间是一种与设备无关的色彩空间，能够准确地描述人眼可见的所有颜色。</li>
+<li>它在色彩匹配、色彩差异评估以及色彩管理系统中非常有用。</li>
+<li>它能够在不同的设备（如监视器、打印机等）之间保持一致的色彩表现。</li>
+</ul>
+<p><span class="math display">\[
+L^\ast = 116 \cdot \left( \frac{Y}{Y_n} \right)^\frac{1}{3} - 16\\
+a^\ast = 500 \cdot \left( \left( \frac{X}{X_n} \right)^\frac{1}{3} -
+\left( \frac{Y}{Y_n} \right)^\frac{1}{3} \right)\\
+b^\ast = 200 \cdot \left( \left( \frac{Y}{Y_n} \right)^\frac{1}{3} -
+\left( \frac{Z}{Z_n} \right)^\frac{1}{3} \right)
+\]</span></p>
+<h2 id="彩色模型color-models">彩色模型(Color models)</h2>
+<ul>
+<li>面向硬件：RGB(red, green, blue)</li>
+<li>面向彩色打印开发：CMY，CMYK(cyan, magenta, yellow, black)</li>
+<li>面向人类描述和解释颜色的方式：HSI(hue, saturation, intensity)</li>
+</ul>
+<h3 id="rgbred-green-blue">RGB(red, green, blue)</h3>
+<p>在RGB颜色空间中，表示每个pixel所用的bit数称为像素深度。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241223165514030.png"
+alt="image-20241223165514030" />
+<figcaption aria-hidden="true">image-20241223165514030</figcaption>
+</figure>
+<h3 id="cmy-cmykcyan-magenta-yellowand-black">CMY &amp; CMYK(cyan,
+magenta, yellow/and black)</h3>
+<p>颜料的原色：青色、深红色、黄色(用于彩色打印机)，有时多加黑色。</p>
+<ul>
+<li>白光照射涂有青色颜料的表面时，表面不会反射红光。</li>
+<li>青色从反射的白光中减去红光、白光又等量的红绿蓝光组成。</li>
+</ul>
+<h3 id="hsihue-saturation-intensity">HSI(hue, saturation,
+intensity)</h3>
+<p>观察彩色物体时，我们会用色调(hue)、饱和度(saturation)、亮度(intensity)来描述物体。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241223170706349.png"
+alt="image-20241223170706349" />
+<figcaption aria-hidden="true">image-20241223170706349</figcaption>
+</figure>
+<h3 id="hsvhue-saturation-value">HSV(hue, saturation, value)</h3>
+<p>HSV代表色调（Hue）、饱和度（Saturation）和明度（Value）。</p>
+<ol type="1">
+<li>色调（H）：它是色彩的基本属性，用于区分不同的颜色种类，用角度来度量，取值范围通常是0°
+- 360°。例如，0°或360°代表红色，120°代表绿色，240°代表蓝色。</li>
+<li>饱和度（S）：表示颜色的纯度，取值范围是0 -
+1。饱和度越高，颜色越鲜艳纯粹；饱和度为0时，颜色变为灰色（只有明度信息）。</li>
+<li>明度（V）：也称为亮度，代表颜色的明亮程度，取值范围是0 - 1。</li>
+</ol>
+<h2
+id="颜色空间及其转换converting-to-other-color-spaces">颜色空间及其转换(Converting
+to Other Color Spaces)</h2>
+<blockquote>
+<p>自然界中存在一些颜色，无法使用RGB颜色空间定义。</p>
+<p>XYZ颜色空间可以定义世界上一切颜色。</p>
+</blockquote>
+<p><strong>RGB → NTSC</strong>(YIQ):</p>
+<p>NTSC（National Television Standards
+Committee，美国国家电视标准委员会）颜色空间是一种用于模拟电视广播的颜色编码系统。它将颜色信息分解为亮度（Y）和两个色度分量（I
+和 Q）</p>
+<p>与YUV空间相似：YUV 是一种颜色编码方法，主要用于视频系统。其中 “Y”
+表示亮度（Luminance 或 Luma），也就是灰度值；而 “U” 和 “V”
+表示色度（Chrominance 或 Chroma），用于描述颜色信息。 <span
+class="math display">\[
+\begin{bmatrix} Y \\ I \\ Q \end{bmatrix} = \begin{bmatrix} 0.299 &amp;
+0.587 &amp; 0.114 \\ 0.596 &amp; -0.274 &amp; -0.322 \\ 0.211 &amp;
+-0.523 &amp; 0.312 \end{bmatrix} \begin{bmatrix} R \\ G \\ B
+\end{bmatrix}
+\]</span> <strong>NTSC → RGB</strong>: <span class="math display">\[
+\begin{bmatrix} R \\ G \\ B \end{bmatrix} = \begin{bmatrix} 1.000 &amp;
+0.956 &amp; 0.621 \\ 1.000 &amp; -0.272 &amp; -0.647 \\ 1.000 &amp;
+-1.106 &amp; 1.703 \end{bmatrix} \begin{bmatrix} Y \\ I \\ Q
+\end{bmatrix}
+\]</span> <strong>RGB → YCbCr</strong>(用于编码数字图像):</p>
+<p>YCbCr 是一种颜色空间，其中 “Y” 代表亮度（Luminance），“Cb” 和 “Cr”
+分别代表蓝色色度（Chrominance of Blue）和红色色度（Chrominance of
+Red）。 <span class="math display">\[
+\begin{bmatrix} Y \\ Cb \\ Cr \end{bmatrix} = \begin{bmatrix} 16 \\ 128
+\\ 128 \end{bmatrix} + \begin{bmatrix} 65.481 &amp; 128.553 &amp; 24.966
+\\ -37.797 &amp; -74.203 &amp; 112.000 \\ 112.000 &amp; -93.786 &amp;
+-18.214 \end{bmatrix} \begin{bmatrix} R \\ G \\ B \end{bmatrix} /256
+\]</span> <strong>CMY &amp; CMYK</strong>:</p>
+<p><span class="math display">\[
+\ \begin{bmatrix} C \\ M \\ Y \end{bmatrix} = \begin{bmatrix} 1 \\ 1 \\
+1 \end{bmatrix} - \begin{bmatrix} R \\ G \\ B \end{bmatrix} ,\quad
+\begin{bmatrix} R \\ G \\ B \end{bmatrix} = \begin{bmatrix} 1 \\ 1 \\ 1
+\end{bmatrix} - \begin{bmatrix} C \\ M \\ Y \end{bmatrix}
+\]</span></p>
+<p><strong>RGB → HSI</strong>: <span class="math display">\[
+\begin{align}H &amp;= \begin{cases} \theta &amp; \text{if } B \leq G \\
+360 - \theta &amp; \text{if } B &gt; G \end{cases}\\
+\theta &amp;= \cos^{-1}\left\{\frac{\frac{1}{2}[(R - G)+(R -
+B)]}{\left[(R - G)^2+(R - B)(G - B)\right]^{\frac{1}{2}}}\right\}\\
+S &amp;= 1 - \frac{3}{R + G + B}[\min(R, G, B)]\\
+I &amp;= \frac{1}{3}(R + G + B)
+\end{align}
+\]</span> <strong>HSI → RGB</strong> <strong>RG sector(0° ≤ H &lt;
+120°)</strong>: <span class="math display">\[
+\begin{align}
+B &amp;= I(1 - S)\\
+R &amp;= I\left[1+\frac{S\cos H}{\cos(60° - H)}\right]\\
+G &amp;= 3I-(R + B)
+\end{align}
+\]</span> <strong>HSI → RGB</strong> <strong>GB sector(120° ≤ H &lt;
+240°)</strong>: <span class="math display">\[
+\begin{align}
+H&amp;= H - 120°\\
+R &amp;= I(1 - S)\\
+G &amp;= I\left[1+\frac{S\cos H}{\cos(60° - H)}\right]\\
+B &amp;= 3I-(R + G)
+\end{align}
+\]</span> <strong>BR sector(240° ≤ H ≤ 360°)</strong>: <span
+class="math display">\[
+\begin{align}
+H &amp;= H - 240°\\
+G &amp;= I(1 - S)\\
+B &amp;= I\left[1+\frac{S\cos H}{\cos(60° - H)}\right]\\
+R &amp;= 3I-(G + B)
+\end{align}
+\]</span></p>
+<h2 id="the-basics-of-color-image-processing">The Basics of Color Image
+Processing</h2>
+<p><strong>Q: 如何度量两个颜色之间的相似性</strong>？</p>
+<p>RBG值是向量。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241223173228330.png"
+alt="image-20241223173228330" />
+<figcaption aria-hidden="true">image-20241223173228330</figcaption>
+</figure>
+<p>插值映射函数：</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241223173305100.png"
+alt="image-20241223173305100" />
+<figcaption aria-hidden="true">image-20241223173305100</figcaption>
+</figure>
+<h2 id="working-directly-in-rgb-vector-space">Working Directly in RGB
+Vector Space</h2>
+<p><strong>使用梯度的颜色边缘检测</strong></p>
+<p>梯度（gradient）: <span class="math display">\[
+\nabla f=\left[\begin{array}{l}  G_{x}
+\\  G_{y}  \end{array}\right]=\left[\begin{array}{l}  \frac{\partial
+f}{\partial x} \\  \frac{\partial f}{\partial y}  \end{array}\right]
+\]</span></p>
+<p>幅度（magnitude）: <span class="math display">\[
+|\nabla f|=\operatorname{mag}(\nabla
+f)=\left[G_{x}^{2}+G_{y}^{2}\right]^{1 / 2}=\left[\left(\frac{\partial
+f}{\partial x}\right)^{2}+\left(\frac{\partial f}{\partial
+y}\right)^{2}\right]^{1 / 2}
+\]</span> 角度（angle）: <span class="math display">\[
+\alpha(x, y)=\tan ^{-1}\left(\frac{G_{y}}{G_{x}}\right)  
+\]</span></p>
+<p>r、g和b是沿R、G和B轴的单位向量 : <span class="math display">\[
+u=\frac{\partial R}{\partial x} r+\frac{\partial G}{\partial x}
+g+\frac{\partial B}{\partial x} b,\quad v=\frac{\partial R}{\partial y}
+r+\frac{\partial G}{\partial y} g+\frac{\partial B}{\partial y} b
+\]</span> 定义数量（Quantities）： <span class="math display">\[
+g_{x x}=u \cdot u=u^{T} u=\left|\frac{\partial R}{\partial
+x}\right|^{2}+\left|\frac{\partial G}{\partial
+x}\right|^{2}+\left|\frac{\partial B}{\partial x}\right|^{2}\\
+g_{y y}=v \cdot v=v^{T} v=\left|\frac{\partial R}{\partial
+y}\right|^{2}+\left|\frac{\partial G}{\partial
+y}\right|^{2}+\left|\frac{\partial B}{\partial y}\right|^{2}\\
+g_{x y}=u \cdot v=u^{T} v=\frac{\partial R}{\partial x} \frac{\partial
+R}{\partial y}+\frac{\partial G}{\partial x} \frac{\partial G}{\partial
+y}+\frac{\partial B}{\partial x} \frac{\partial B}{\partial y}
+\]</span> 角度是c(x,y)最大变化率的方向为<span
+class="math inline">\(\theta(x,y)\)</span>, 对应变化率的值为<span
+class="math inline">\(F_{\theta}(x,y)\)</span>: <span
+class="math display">\[
+\theta(x, y)=\frac{1}{2} \tan ^{-1}\left(\frac{2 g_{x y}}{g_{x x}-g_{y
+y}}\right)\\
+F_{\theta}(x, y)=\frac{1}{2}\left\{\left[g_{x x}+g_{y y}+\left(g_{x
+x}-g_{y y}\right) \cos 2 \theta+2 g_{x y} \sin 2 \theta\right]^{1 /
+2}\right\}
+\]</span></p>
+<p><strong>RGB向量空间中的图像分割</strong></p>
+<blockquote>
+<p>如何获得一个感兴趣的模型？</p>
+</blockquote>
+<p>距离度量(欧式距离)： <span class="math display">\[
+\begin{align}
+D(z, m)&amp;=\|z - m\|\\
+&amp;=\left[(z - m)^{T}(z - m)\right]^{1 / 2}\\
+&amp;=\left[\left(z_{R}-m_{R}\right)^{2}+\left(z_{G}-m_{G}\right)^{2}+\left(z_{B}-m_{B}\right)^{2}\right]^{1
+/ 2}
+\end{align}
+\]</span></p>
+<blockquote>
+<p>上式使用欧氏距离。前提是量纲最好一致。</p>
+<p>如果不一致，那么看下面的形式，类似于马氏距离。</p>
+</blockquote>
+<p>一种有用的推广是如下形式的距离度量： <span class="math display">\[
+D(z, m)=\left[(z - m)^{T} C^{-1}(z - m)\right]^{1 / 2}
+\]</span> <span class="math inline">\(C\ge 0,|C|\neq0\)</span>,
+可以被定义为任意形式。</p>
+<h2 id="总结">总结</h2>
+<p>以下是对常见颜色空间及其字母代表意思的介绍，以及对均匀性颜色空间的相关说明。</p>
+<h3 id="常见颜色空间及字母代表意思">常见颜色空间及字母代表意思</h3>
+<ul>
+<li><strong>RGB（Red, Green,
+Blue）</strong>：即红、绿、蓝三原色，是电子显示设备中最常见的颜色空间。通过这三种颜色的不同组合和强度，可以产生各种颜色。在RGB色彩空间中，(0,0,0)表示黑色，(255,255,255)表示白色，数值越大，颜色越亮。</li>
+<li><strong>CMYK（Cyan, Magenta, Yellow,
+Key/Black）</strong>：印刷行业常用的颜色空间，基于颜料的混合原理，其中C代表青，M代表洋红，Y代表黄，K代表黑。在印刷中，通过这四种颜色的油墨混合来呈现出各种颜色。</li>
+<li><strong>HSV（Hue, Saturation, Value）/HSL（Hue, Saturation,
+Lightness）</strong>：这两个颜色空间更贴近人类对颜色的感知方式。HSV中的Hue表示色相，即颜色的种类，如红、橙、黄等；Saturation表示饱和度，指颜色的纯度，饱和度越高，颜色越鲜艳；Value表示亮度，即颜色的明暗程度。HSL的亮度（Lightness）概念稍有不同，使得色彩调整更直观。</li>
+<li><strong>YCbCr</strong>：常用于视频处理，分离了亮度信息（Y）和色度信息（Cb和Cr）。Y表示亮度分量，Cb和Cr分别表示蓝色差和红色差分量，主要用于视频压缩和广播领域。</li>
+<li><strong>CIE
+XYZ</strong>：由国际照明委员会定义的一种与设备无关的颜色空间，试图创建一个与人类视觉系统更为接近的颜色表示。它是基于人眼对不同波长光的响应特性而建立的，为其他颜色空间的转换和计算提供了基础。</li>
+<li><strong>CIE Lab（或CIE L<span class="math inline">\(a^\ast
+b^\ast\)</span>）</strong>：也是由国际照明委员会定义的颜色空间，L表示明度，取值范围是(0,100)，表示从纯黑到纯白；<span
+class="math inline">\(a^\ast\)</span>表示从红色到绿色的范围，取值范围是(-128,127)；<span
+class="math inline">\(b^\ast\)</span>表示从黄色到蓝色的范围，取值范围是(-128,127)
+。</li>
+</ul>
+<h3 id="均匀性颜色空间">均匀性颜色空间</h3>
+<ul>
+<li><strong>CIE
+1964均匀颜色空间</strong>：1964年，CIE采纳了贾德（Judd）和维泽斯基（Wyszecki）的建议，推出了一种均匀亮度和色度的坐标系。在这个坐标系中，引用了UCS坐标系中的色坐标，并引入亮度Y值，构成了亮度与色度综合的三原坐标系统，这三个坐标用U<span
+class="math inline">\(*\)</span>、v<span
+class="math inline">\(*\)</span>和w<span
+class="math inline">\(*\)</span>表示，其中，U<span
+class="math inline">\(*\)</span>和V<span
+class="math inline">\(*\)</span>表示色度指数，W<span
+class="math inline">\(*\)</span>表示明度指数 。</li>
+<li><strong>CIE 1976 L<span class="math inline">\(*\)</span>u<span
+class="math inline">\(*\)</span>v<span
+class="math inline">\(*\)</span>颜色空间（简称CIE
+LUV色空间）</strong>：1976年CIE推出的均匀颜色系统之一。其中L<span
+class="math inline">\(*\)</span>为明度，u<span
+class="math inline">\(*\)</span>、v<span
+class="math inline">\(*\)</span>为色品指数。三者相互垂直构成色空间来描述相对应的亮度和色度量，垂直的轴是明度L<span
+class="math inline">\(*\)</span>，位于水平面且互相垂直的是色品指数u<span
+class="math inline">\(*\)</span>和v<span
+class="math inline">\(*\)</span> 。</li>
+<li><strong>CIE 1976 L<span class="math inline">\(*\)</span>a<span
+class="math inline">\(*\)</span>b<span
+class="math inline">\(*\)</span>颜色空间（简称CIELAB色空间）</strong>：也是1976年CIE推出的均匀颜色系统。L<span
+class="math inline">\(*\)</span>表示米制明度，a<span
+class="math inline">\(*\)</span>和b<span
+class="math inline">\(*\)</span>表示米制色度。
+<ul>
+<li>a<span class="math inline">\(*\)</span>为红-绿色方向，a<span
+class="math inline">\(*\)</span>为正时表示的是红色方向，a<span
+class="math inline">\(*\)</span>为负时表示的是绿色方向；</li>
+<li>b<span class="math inline">\(*\)</span>为黄-蓝色方向，b<span
+class="math inline">\(*\)</span>为正时表示的是黄色方向，b<span
+class="math inline">\(*\)</span>为负时表示的是蓝色方向 。</li>
+</ul></li>
+</ul>
+</div><div class="post-end"><div class="post-prev"></div><div class="post-next"><a href="/2024/12/23/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-Ch4-%E5%9B%BE%E5%83%8F%E5%A4%8D%E5%8E%9F/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch5-%E5%BD%A9%E8%89%B2%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch5 彩色图像处理</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%BD%A9%E8%89%B2%E5%9F%BA%E7%A1%80"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">彩色基础</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%BD%A9%E8%89%B2%E6%A8%A1%E5%9E%8Bcolor-models"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">彩色模型(Color models)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#rgbred-green-blue"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">RGB(red, green, blue)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#cmy-cmykcyan-magenta-yellowand-black"><span class="toc-content-number">1.2.2.</span> <span class="toc-content-text">CMY &amp; CMYK(cyan,
+magenta, yellow&#x2F;and black)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#hsihue-saturation-intensity"><span class="toc-content-number">1.2.3.</span> <span class="toc-content-text">HSI(hue, saturation,
+intensity)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#hsvhue-saturation-value"><span class="toc-content-number">1.2.4.</span> <span class="toc-content-text">HSV(hue, saturation, value)</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E9%A2%9C%E8%89%B2%E7%A9%BA%E9%97%B4%E5%8F%8A%E5%85%B6%E8%BD%AC%E6%8D%A2converting-to-other-color-spaces"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">颜色空间及其转换(Converting
+to Other Color Spaces)</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#the-basics-of-color-image-processing"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">The Basics of Color Image
+Processing</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#working-directly-in-rgb-vector-space"><span class="toc-content-number">1.5.</span> <span class="toc-content-text">Working Directly in RGB
+Vector Space</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-content-number">1.6.</span> <span class="toc-content-text">总结</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%B8%B8%E8%A7%81%E9%A2%9C%E8%89%B2%E7%A9%BA%E9%97%B4%E5%8F%8A%E5%AD%97%E6%AF%8D%E4%BB%A3%E8%A1%A8%E6%84%8F%E6%80%9D"><span class="toc-content-number">1.6.1.</span> <span class="toc-content-text">常见颜色空间及字母代表意思</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%9D%87%E5%8C%80%E6%80%A7%E9%A2%9C%E8%89%B2%E7%A9%BA%E9%97%B4"><span class="toc-content-number">1.6.2.</span> <span class="toc-content-text">均匀性颜色空间</span></a></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>
