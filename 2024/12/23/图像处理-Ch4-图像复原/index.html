@@ -1,0 +1,856 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch4 图像复原 [TOC] 图像退化与复原(Image Degradation and Restoration) 图像复原目的：以某种预定义的方式改善给定图像。  Q: 图像增强 v.s. 图像复原? A: 图像增强是一个主观的过程：自行选定不同的工具，比如低通、高通滤波，使得图像主观上看上去比较美观(因个人审美不同而不同)。 而图像复原的大部分过程是客观的。原先是什么样子、恢">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图像处理-Ch4-图像复原">
+<meta property="og:url" content="http://example.com/2024/12/23/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-Ch4-%E5%9B%BE%E5%83%8F%E5%A4%8D%E5%8E%9F/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch4 图像复原 [TOC] 图像退化与复原(Image Degradation and Restoration) 图像复原目的：以某种预定义的方式改善给定图像。  Q: 图像增强 v.s. 图像复原? A: 图像增强是一个主观的过程：自行选定不同的工具，比如低通、高通滤波，使得图像主观上看上去比较美观(因个人审美不同而不同)。 而图像复原的大部分过程是客观的。原先是什么样子、恢">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241223100806160.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241223120002142.png">
+<meta property="article:published_time" content="2024-12-23T07:15:24.000Z">
+<meta property="article:modified_time" content="2024-12-23T07:16:45.899Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="图像处理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241223100806160.png"><title>图像处理-Ch4-图像复原 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>图像处理-Ch4-图像复原</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2024-12-23</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2024-12-23</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约5.6K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch4-图像复原">Ch4 图像复原</h1>
+<p>[TOC]</p>
+<h2
+id="图像退化与复原image-degradation-and-restoration">图像退化与复原(Image
+Degradation and Restoration)</h2>
+<p>图像复原目的：以某种预定义的方式改善给定图像。</p>
+<blockquote>
+<p><strong>Q: 图像增强 v.s. 图像复原?</strong></p>
+<p>A:
+图像增强是一个主观的过程：自行选定不同的工具，比如低通、高通滤波，使得图像主观上看上去比较美观(因个人审美不同而不同)。</p>
+<p>而图像复原的大部分过程是客观的。原先是什么样子、恢复原来的样子。</p>
+</blockquote>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241222220207927.png"
+alt="image-20241222220207927" /> <span class="math display">\[
+g(x,y)=H[f(x,y)]+\eta(x,y)\\
+g(x,y)=h(x,y)*f(x,y)+\eta(x,y)\\
+G(x,y)=H(u,v)F(u,v)+N(u,v)
+\]</span></p>
+<h2 id="噪声模型noise-models">噪声模型(Noise Models)</h2>
+<p>假设<span class="math inline">\(H(u,v)=1\)</span>: <span
+class="math inline">\(g(x,y)=f(x,y)+\eta(x,y)\)</span></p>
+<h3
+id="i.i.d.空间随机噪声generating-spatial-random-noise-with-a-specified-distribution">i.i.d.空间随机噪声(Generating
+Spatial Random Noise with a Specified Distribution)</h3>
+<p>如果<span class="math inline">\(w\)</span>是在区间<span
+class="math inline">\((0,1)\)</span>上均匀分布的随机变量，那么可以通过求解方程<span
+class="math inline">\(z =
+F_z^{-1}(w)\)</span>得到一个具有特定累积分布函数（CDF）<span
+class="math inline">\(F_z\)</span>的随机变量<span
+class="math inline">\(z\)</span>。 <span class="math display">\[
+z = F_z^{-1}(w)
+\]</span></p>
+<blockquote>
+<p>例：目标是生成具有瑞利（Rayleigh）累积分布函数（CDF）的随机数<span
+class="math inline">\(z\)</span>。</p>
+<p>瑞利分布的累积分布函数（CDF）为: <span class="math display">\[
+F_z(z) =      \begin{cases}     1 - e^{-(z - a)^2/b} &amp; \text{if } z
+\geq a \\     0 &amp; \text{if } z &lt; a     \end{cases}
+\]</span> 通过求解方程<span class="math inline">\(1 - e^{-(z - a)^2/b} =
+w\)</span>，可以得到<span class="math inline">\(z\)</span>的值： <span
+class="math display">\[
+z = a + \sqrt{-b \ln(1 - w)}
+\]</span></p>
+</blockquote>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241222225646091.png"
+alt="image-20241222225646091" />
+<figcaption aria-hidden="true">image-20241222225646091</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241222225734753.png"
+alt="image-20241222225734753" />
+<figcaption aria-hidden="true">image-20241222225734753</figcaption>
+</figure>
+<h3 id="周期噪声periodic-noise">周期噪声(Periodic Noise)</h3>
+<p>在图像中，周期噪声是在图像获取时从电力或机电干扰中产生的。这是<strong>唯一一种空间依赖型噪声</strong>。</p>
+<p><strong>周期噪声信号(Periodic Noise Signal)</strong> ： <span
+class="math display">\[
+r(x, y) = A \sin(2\pi u_0(x + B_x)/M + 2\pi v_0(y + B_y)/N)
+\]</span> 对于傅里叶变换：（实际上无法推出这个，但是大概是这个形式）
+<span class="math display">\[
+R(u, v) = \frac{A}{j2} \left[\exp\left(\frac{j2\pi u_0 B_x}{M}\right)
+\delta(u + u_0, v + v_0) - \exp\left(\frac{j2\pi v_0 B_y}{N}\right)
+\delta(u - u_0, v - v_0)\right]
+\]</span></p>
+<h3 id="估计噪声参数estimating-noise-parameters">估计噪声参数(Estimating
+Noise Parameters)</h3>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241222230449237.png"
+alt="分别是高斯、瑞丽、Erlanga噪声" />
+<figcaption
+aria-hidden="true">分别是高斯、瑞丽、Erlanga噪声</figcaption>
+</figure>
+<p>假如没有被噪声污染，那么图中有三个灰度级，直方图中应该有三根线。但是有噪声，现在每根线向两边扩展。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241222230729794.png"
+alt="image-20241222230729794" />
+<figcaption aria-hidden="true">image-20241222230729794</figcaption>
+</figure>
+<p>图l对应椒盐噪声的直方图：可以看见一共有4条线（两边分别有两条），椒盐噪声产生黑白、黑色估计和原有的背景色重合，于是直方图中最左的线特别的长（大概的解释）。</p>
+<p><strong>估计噪声参数：</strong></p>
+<ol type="1">
+<li><p>周期噪声：对图像的傅里叶谱审视，可以直接发现：比如在除中心的亮点之外，还有其他的亮点。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241222231414852.png"
+alt="image-20241222231414852" />
+<figcaption aria-hidden="true">image-20241222231414852</figcaption>
+</figure></li>
+<li><p>具有先验知识：事先知道这种图像中会存在噪声、会出现在哪个频段。</p></li>
+<li><p>在平坦的图像区域，噪声会暴露出来：比如说一块纯色的地板，应该灰度级是差不多的。</p></li>
+</ol>
+<p><strong>Q: 怎么做？</strong></p>
+<ol type="1">
+<li>最简单的方法是利用图像中的采样数据来估计噪声的均值和方差。</li>
+<li>通过直方图的形状来辨识最接近的概率密度函数(PDF)的匹配。</li>
+<li>假如形状类似高斯，那么高斯只需要均值与方差。</li>
+</ol>
+<blockquote>
+<p><strong>统计矩与中心矩：</strong></p>
+<p>统计矩: <span class="math display">\[
+\mu_n = \sum_{i = 0}^{L - 1} (z_i - m)^n p(z_i) \quad \text{where} \quad
+m = \sum_{i = 0}^{L - 1} z_i p(z_i)
+\]</span> 中心距：</p>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 93%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>n</th>
+<th>对应中心距</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td><span class="math inline">\(\mu_0 = \sum_{i = 0}^{L - 1} (z_i - m)^0
+p(z_i) = 1\)</span></td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td><span class="math inline">\(\mu_1 = \sum_{i = 0}^{L - 1} (z_i - m)
+p(z_i) = \sum_{i = 0}^{L - 1} z_i p(z_i) - m \sum_{i = 0}^{L - 1} p(z_i)
+= 0\)</span></td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td><span class="math inline">\(\mu_2 = \sum_{i = 0}^{L - 1} (z_i - m)^2
+p(z_i) = \text{Var}(z)\)</span></td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<h2
+id="在仅有噪声情况下图像复原-空域滤波">在仅有噪声情况下图像复原-空域滤波</h2>
+<p>如果只有噪声, 图像退化模型可以表示为： <span class="math display">\[
+g(x,y)=f(x,y)+\eta(x,y)\\
+G(u,v)=F(u,v)+N(u,v)
+\]</span></p>
+<h3 id="均值滤波器mean-filters">均值滤波器(Mean Filters)</h3>
+<p>均值相当于：给出一组数，经过一系列运算，得到一个新的值。这个值，比这组数中最小值大，比最大值小，那么调和均值滤波器、反调和均值滤波器就算均值滤波器。</p>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>滤波器</th>
+<th>公式</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>算术平均滤波器</td>
+<td><span class="math inline">\(\hat{f}(x,y) = \frac{1}{mn} \sum_{(s,t)
+\in S_{xy}} g(s,t)\)</span></td>
+</tr>
+<tr class="even">
+<td>几何均值滤波器</td>
+<td><span class="math inline">\(\hat{f}(x,y) = \left[ \prod_{(s,t) \in
+S_{xy}} g(s,t) \right]^{\frac{1}{mn}}\)</span></td>
+</tr>
+<tr class="odd">
+<td>调和均值滤波器</td>
+<td><span class="math inline">\(\hat{f}(x,y) = \frac{mn}{\sum_{(s,t) \in
+S_{xy}} \frac{1}{g(s,t)}}\)</span></td>
+</tr>
+<tr class="even">
+<td>反调和均值滤波器</td>
+<td><span class="math inline">\(\hat{f}(x,y) = \frac{\sum_{(s,t) \in
+S_{xy}} g(s,t)^{Q + 1}}{\sum_{(s,t) \in S_{xy}}
+g(s,t)^{Q}}\)</span></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>调和均值滤波器</strong>能够很好地去除盐噪声，但不能去除椒噪声。对于高斯噪声很好。</p>
+<p><strong>反调和均值滤波器</strong>非常适合消除椒盐噪声。当<span
+class="math inline">\(Q\)</span>为正值时，该滤波器消除胡椒噪声。当<span
+class="math inline">\(Q\)</span>为负值时，它消除盐噪声。它不能同时消除两种噪声。</p>
+<ul>
+<li><p>当Q=0时：<strong>算术均值是反调和均值的一个特例。</strong> <span
+class="math display">\[
+\hat y(x,y)= \frac{\sum_{(s,t) \in S_{xy}} g(s,t)}{\sum_{(s,t) \in
+S_{xy}}1}=\frac{1}{mn}\sum_{(s,t) \in S_{xy}}g(s,t)
+\]</span></p></li>
+<li><p>当Q=-1时：是调和均值滤波器。 <span class="math display">\[
+\hat f(x,y)=\frac{\sum_{(s,t) \in S_{xy}1} }{\sum_{(s,t) \in
+S_{xy}}g(s,t)} =\frac{mn}{\sum_{(s,t) \in S_{xy}}g(s,t)}
+\]</span></p></li>
+</ul>
+</blockquote>
+<h4
+id="统计排序滤波器order-statistics-filters">统计排序滤波器(Order-statistics
+Filters)</h4>
+<p>椒盐噪声反复使用中值滤波器，总能完全去除；同时边缘信息也会丢失。</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 80%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>滤波器</th>
+<th>公式</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>中值滤波器</td>
+<td><span class="math inline">\(\hat{f}(x,y) = \text{median}_{(s,t) \in
+S_{xy}} g(s,t)\)</span></td>
+</tr>
+<tr class="even">
+<td>中点滤波器</td>
+<td><span class="math inline">\(\hat{f}(x,y) = \frac{1}{2} \left[
+\max_{(s,t) \in S_{xy}} g(s,t) + \min_{(s,t) \in S_{xy}} g(s,t)
+\right]\)</span></td>
+</tr>
+<tr class="odd">
+<td>最大滤波器</td>
+<td><span class="math inline">\(\hat{f}(x,y) = \max_{(s,t) \in S_{xy}}
+g(s,t)\)</span></td>
+</tr>
+<tr class="even">
+<td>最小滤波器</td>
+<td><span class="math inline">\(\hat{f}(x,y) = \min_{(s,t) \in S_{xy}}
+g(s,t)\)</span></td>
+</tr>
+<tr class="odd">
+<td>alpha均值滤波器</td>
+<td><span class="math inline">\(\hat{f}(x,y) = \frac{1}{mn - d}
+\sum_{(s,t) \in S_{xy}} g_{r}(s,t)\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2
+id="用频域滤波器消除周期噪声periodic-noise-reduction-by-frequency-domain-filtering">用频域滤波器消除周期噪声(Periodic
+Noise Reduction by Frequency Domain Filtering)</h2>
+<p>关于以下三种滤波器的奇妙比喻：来自王伟强老师。</p>
+<p>入冬时存储的土豆，在开春时会发芽。</p>
+<ul>
+<li>带阻滤波器：连皮肉带芽一起削掉。</li>
+<li>带通滤波器：与带阻合为1体。</li>
+<li>陷波滤波器：只把有芽的部分去除。</li>
+</ul>
+<h3 id="带阻滤波器bandreject-filters">带阻滤波器(Bandreject
+Filters)</h3>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241223093954276.png"
+alt="image-20241223093954276" />
+<figcaption aria-hidden="true">image-20241223093954276</figcaption>
+</figure>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>ideal</th>
+<th>Gaussian</th>
+<th>Butterworth</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(H(u, v) = \begin{cases} 1 &amp; \text{if
+} D(u, v) &lt; D_0 - \frac{W}{2} \\ 0 &amp; \text{if } D_0 - \frac{W}{2}
+\leq D(u, v) \leq D_0 + \frac{W}{2} \\ 1 &amp; \text{if } D(u, v) &gt;
+D_0 + \frac{W}{2} \end{cases}\)</span></td>
+<td>$H(u, v)= $</td>
+<td><span class="math inline">\(H(u, v)=1-\exp\left[-\frac{D^2(u,
+v)}{2D_0^2}\right]\)</span></td>
+</tr>
+<tr class="even">
+<td>这里<span class="math inline">\(D(u,
+v)\)</span>通常表示频率域中的距离，<span
+class="math inline">\(D_0\)</span>和<span
+class="math inline">\(W\)</span>是常数。这种滤波器是一种理想高通滤波器，它在频率域中完全截断了低频部分，保留了高频部分。</td>
+<td>这里<span
+class="math inline">\(n\)</span>是滤波器的阶数。Butterworth高通滤波器是一种常用的滤波器，它在频率域中的响应是平滑过渡的，没有理想滤波器那样的尖锐截断。</td>
+<td>Gaussian高通滤波器也是一种平滑过渡的滤波器，其形状基于高斯函数。</td>
+</tr>
+<tr class="odd">
+<td>当频率距离<span class="math inline">\(D(u, v)\)</span>小于<span
+class="math inline">\(D_0 - \frac{W}{2}\)</span>或大于<span
+class="math inline">\(D_0+\frac{W}{2}\)</span>时，滤波器的响应为1，表示完全通过；当频率距离在<span
+class="math inline">\(D_0 - \frac{W}{2}\)</span>和<span
+class="math inline">\(D_0+\frac{W}{2}\)</span>之间时，滤波器的响应为0，表示完全截断。</td>
+<td>随着<span class="math inline">\(D(u,
+v)\)</span>的增加，滤波器的响应从0逐渐增加到1，过渡的平滑程度由阶数<span
+class="math inline">\(n\)</span>决定。阶数越高，过渡越陡峭。</td>
+<td>它的响应从0逐渐增加到1，过渡更加平滑，没有明显的截断点。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="带通滤波器bandpass-filters">带通滤波器(Bandpass Filters)</h3>
+<p><span class="math display">\[
+H_{bp}=1-H_{br}(u,v)
+\]</span></p>
+<p>带通滤波器执行与带阻滤波器相反的操作。得到噪声信号。</p>
+<blockquote>
+<p>带通滤波器与带阻滤波器是一对儿；低通滤波器与高通滤波器是一对儿。</p>
+</blockquote>
+<h3 id="陷波滤波器notch-filters">陷波滤波器(Notch filters)</h3>
+<p>成对出现。(a)是原图像，可以看见存在一些横纹(噪声)。然会得到(b)是(a)的傅里叶谱；通过(c)中的陷波滤波器的传递函数，可以去除掉噪声。(d)是图像复原后的图；(e)是提取出来的噪声。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241223100806160.png" style="zoom: 80%;" /></p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Ideal</th>
+<th>Gaussian</th>
+<th>Butterworth</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(H(u, v) = \begin{cases} 0 &amp; \text{if
+} D_1(u, v) \leq D_0 \text{ or } D_2(u, v) \leq D_0 \\ 1 &amp;
+\text{else} \end{cases}\)</span></td>
+<td><span class="math inline">\(H(u, v)=1 -
+\exp\left[-\frac{1}{2}\left(\frac{D_1(u, v)D_2(u,
+v)}{D_0^2}\right)\right]\)</span></td>
+<td><span class="math inline">\(H(u, v)=\frac{1}{1 +
+\left[\frac{D_0^2}{D_1(u, v)D_2(u, v)}\right]^n}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(D_1(u, v)\)</span>和<span
+class="math inline">\(D_2(u, v)\)</span>是两个距离度量，<span
+class="math inline">\(D_0\)</span>是一个阈值。</td>
+<td>它的过渡比Butterworth滤波器更平滑。</td>
+<td><span class="math inline">\(n\)</span>是滤波器的阶数。</td>
+</tr>
+<tr class="odd">
+<td>当<span class="math inline">\(D_1(u, v)\)</span>和<span
+class="math inline">\(D_2(u, v)\)</span>都大于<span
+class="math inline">\(D_0\)</span>时，滤波器的传递函数值为1，表示完全通过；否则，传递函数值为0，表示完全截止。</td>
+<td>这种滤波器基于高斯函数，传递函数的值从0逐渐增加到1。</td>
+<td>随着<span class="math inline">\(D_1(u, v)\)</span>和<span
+class="math inline">\(D_2(u,
+v)\)</span>的增加，传递函数的值从0逐渐增加到1。阶数<span
+class="math inline">\(n\)</span>越高，过渡越陡峭。</td>
+</tr>
+</tbody>
+</table>
+<p>公式中还定义了<span class="math inline">\(D_1(u, v)\)</span>和<span
+class="math inline">\(D_2(u, v)\)</span>的具体形式： <span
+class="math display">\[
+D_1(u, v)=\left[\left(u - \frac{M}{2} - u_0\right)^2+\left(v -
+\frac{N}{2} - v_0\right)^2\right]^{\frac 1 2}\\D_2(u, v)=\left[\left(u -
+\frac{M}{2}+u_0\right)^2+\left(v -
+\frac{N}{2}+v_0\right)^2\right]^{\frac 1 2}
+\]</span> 这里<span class="math inline">\(M\)</span>和<span
+class="math inline">\(N\)</span>是图像的尺寸，<span
+class="math inline">\(u_0\)</span>和<span
+class="math inline">\(v_0\)</span>是滤波器的中心坐标。
+这些高通滤波器在图像处理中常用于增强图像的高频细节，例如边缘和纹理。</p>
+<p>不同的滤波器适用于不同的应用场景，第一种滤波器是理想高通滤波器，具有最尖锐的截止，但会导致振铃效应；Butterworth和Gaussian高通滤波器则提供了更平滑的过渡，减少了振铃效应。</p>
+<h2
+id="最佳陷波滤波算法optimum-notch-filtering">最佳陷波滤波算法(Optimum
+Notch Filtering)</h2>
+<p>当存在多个干扰分量时，之前提到的方法并不总是可行的，因为在滤波过程中会去除过多的图像信息。这里讨论的方法是最优的，因为它使恢复估计值<span
+class="math inline">\(\hat{f}(x,y)\)</span>的局部方差最小化。</p>
+<p>首先，通过以下方式获得噪声的初始估计： <span class="math display">\[
+N(u,v) = F_N(u,v)G(u,v)\\
+\eta(x,y) = \mathfrak{J}^{-1}(F_N(u,v)G(u,v))
+\]</span> 其中<span
+class="math inline">\(F_N(u,v)\)</span>被构建为仅通过与干扰模式相关的分量。</p>
+<p>令： <span class="math display">\[
+\hat{f}(x,y) = g(x,y) - w(x,y)\eta(x,y)
+\]</span> <span
+class="math inline">\(\eta(x,y)\)</span>估计已知，我们将确定<strong>调制函数<span
+class="math inline">\(w(x,y)\)</span></strong>，以使<span
+class="math inline">\(\hat{f}(x,y)\)</span>的局部方差最小化。</p>
+<p>目标：局部很好的平滑性，相邻的像素之间比较相似。 <span
+class="math display">\[
+\min \sigma^2(x,y) = \frac{1}{(2a + 1)(2b + 1)} \sum_{s=-a}^{a}
+\sum_{t=-b}^{b} [\hat{f}(x + s, y + t) - \bar{f}]^2\\
+\bar{f} = \frac{1}{(2a + 1)(2b + 1)} \sum_{s=-a}^{a} \sum_{t=-b}^{b}
+\hat{f}(x + s, y + t)
+\]</span> 对上式展开： <span class="math display">\[
+\sigma^2 (x,y)= \frac{1}{(2a + 1)(2b + 1)} \sum_{s=-a}^{a}
+\sum_{t=-b}^{b} \\
+\left[ [g(x + s, y + t) - w(x + s, y + t) \cdot \eta(x + s, y + t)] -
+[\overline{g(x,y)} - \overline{w(x,y)\eta(x,y)}] \right]^2
+\]</span> 这个式子中只有<span
+class="math inline">\(w(x+s,y+t)\)</span>是变量，变量一共有<span
+class="math inline">\((2a+1)(2b+1)w(x+s,y+t)\)</span>个变量。可以看到每一个<span
+class="math inline">\((x,y)\)</span>位置都能建立这样的目标函数、有这么多的变量去求解，实在是难以计算。因此进行简化：将原来的M*N个位置的多目标优化问题，转化为了M*N个i.i.d,优化问题。</p>
+<p>令<span class="math inline">\(w(x + s, y + t) = w(x,y)\)</span>,
+(将<span class="math inline">\((2a+1)(2b+1)\)</span>个变元简化为<span
+class="math inline">\(1\)</span>)我们有单变元函数： <span
+class="math display">\[
+\sigma^2(x,y) = \frac{1}{(2a + 1)(2b + 1)} \sum_{s=-a}^{a}
+\sum_{t=-b}^{b}\\ \left( [g(x + s, y + t) - w(x,y) \cdot \eta(x + s, y +
+t)] - [\overline{g(x,y)} - \overline{w(x,y)\eta(x,y)}] \right)^2
+\]</span> 为了最小化<span
+class="math inline">\(\sigma^2\)</span>，我们求解： <span
+class="math display">\[
+\begin{align}\frac{\partial \sigma^2}{\partial w(x,y)}&amp; = 0\\
+w(x,y) &amp;= \frac{\overline{g(x,y)\eta(x,y)} -
+\bar{g}(x,y)\bar{\eta}(x,y)}{\overline{\eta^2}(x,y) - \bar{\eta}^2(x,y)}
+\end{align}
+\]</span> <span
+class="math inline">\(\overline{\eta^2}(x,y)\)</span>是平方的均值，<span
+class="math inline">\(\bar{\eta}^2(x,y)\)</span>是均值的平方。</p>
+<p>这样我们就能求解出每个位置的weight: <span
+class="math inline">\(w(x,y)\)</span>，需要求M*N次。</p>
+<h2
+id="估计退化函数estimating-the-degradation-function">估计退化函数(Estimating
+the Degradation Function)</h2>
+<p>该节分为以下两个部分进行讨论：</p>
+<ol type="1">
+<li>假设没有噪声的情况：<span
+class="math inline">\(\eta(x,y)=0,g(x,y)=h(x,y)*f(x,y)\)</span></li>
+<li>假设存在噪声的情况，如何处理？</li>
+</ol>
+<p>进行图像复原，第一步要做的，就是找到<span
+class="math inline">\(H(u,v)\)</span>. 有以下三种方法：</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>图像观察估计</th>
+<th>实验估计</th>
+<th>模型估计</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(H_s(u,v) =
+\frac{G_s(u,v)}{\hat{F}_s(u,v)}\)</span></td>
+<td><span class="math inline">\(H(u,v) = \frac{G(u,v)}{A}\)</span></td>
+<td><span class="math inline">\(H(u,v) = \exp\left[-k\left(u^2 +
+v^2\right)\right]^{5/6}\)</span></td>
+</tr>
+<tr class="even">
+<td>设<span
+class="math inline">\(G_s(u,v)\)</span>表示观测到的子图像，<span
+class="math inline">\(\hat{F}_s(u,v)\)</span>表示原始子图像的估计值，并且假设由于我们选择了强信号区域，噪声可以忽略不计，然后可以从<span
+class="math inline">\(H_s(u,v)\)</span>推导出完整函数<span
+class="math inline">\(H(u,v)\)</span>.</td>
+<td></td>
+<td>Hufnagel等人在1964年基于大气湍流的物理特性提出的退化模型. <span
+class="math inline">\(k\rightarrow
+0\)</span>,此时没有大气湍流，相应的<span
+class="math inline">\(H(u,v)=1\)</span>，只有噪声影响了。</td>
+</tr>
+<tr class="odd">
+<td>【一叶知秋】完全不知道图像是怎么获得的、只知道这副污染的图像.</td>
+<td>我知道图像是被何设备何场景下拍摄、且我手里有这个设备、我再对特定的对象(平坦)在同样的条件下拍摄。用这个特殊对象来估计污染图像.</td>
+<td>从高空拍摄地面，会受到气流的影响。</td>
+</tr>
+</tbody>
+</table>
+<h3
+id="运动引起的图像模糊image-blur-due-to-motion">运动引起的图像模糊(Image
+Blur due to Motion)</h3>
+<p>现在，假设一幅图像由于均匀线性运动而变得模糊。 <span
+class="math display">\[
+g(x,y) = \int_{0}^{T} f\left(x - x_0(t),y - y_0(t)\right) dt
+\]</span> <span
+class="math inline">\(T\)</span>是快门时间。然后，它的傅里叶变换是:
+<span class="math display">\[
+\begin{align*} G(u,v) &amp;=
+\int_{-\infty}^{\infty}\int_{-\infty}^{\infty} g(x,y)
+\exp\left[-j2\pi(ux + vy)\right] dxdy\\ &amp;=
+\int_{-\infty}^{\infty}\int_{-\infty}^{\infty} \left[\int_{0}^{T}
+f\left(x - x_0(t),y - y_0(t)\right) dt\right] \exp\left[-j2\pi(ux +
+vy)\right] dxdy\\ &amp;= \int_{0}^{T}
+\left[\int_{-\infty}^{\infty}\int_{-\infty}^{\infty} f\left(x - x_0(t),y
+- y_0(t)\right) \exp\left[-j2\pi(ux + vy)\right] dxdy\right] dt\\
+&amp;= \int_{0}^{T} F(u,v) \exp\left[-j2\pi(ux_0(t) + vy_0(t))\right]
+dt\\ &amp;= F(u,v) \int_{0}^{T} \exp\left[-j2\pi(ux_0(t) +
+vy_0(t))\right]\\\\
+H(u,v)&amp; = \int_{0}^{T} \exp\left[-j2\pi(ux_0(t) + vy_0(t))\right] dt
+dt\end{align*}
+\]</span></p>
+<p>如果<span class="math inline">\(x_0(t) = at/T\)</span>，<span
+class="math inline">\(y_0(t) =
+0\)</span>（垂直方向上没有发生运动，只是在水平方向上抖动了以下），那么：
+<span class="math display">\[
+H(u,v) = \int_{0}^{T} \exp\left(-j2\pi uat/T\right) dt = \frac{T}{\pi
+ua} \sin(\pi ua) \exp\left(-j\pi ua\right)
+\]</span> 如果<span class="math inline">\(y_0(t) =
+bt/T\)</span>而不是0(水平、垂直方向上都发生了运动)，那么： <span
+class="math display">\[
+H(u,v) = \frac{T}{\pi(ua + vb)} \sin(\pi(ua + vb)) \exp\left(-j\pi(ua +
+vb)\right)
+\]</span></p>
+<h2 id="直接逆滤波direct-inverse-filtering">直接逆滤波(Direct Inverse
+Filtering)</h2>
+<p>对于被退化函数<span
+class="math inline">\(H\)</span>退化的图像，最简单的恢复方法是直接逆滤波:
+<span class="math display">\[
+\hat{F}(u,v) = \frac{G(u,v)}{H(u,v)}
+\]</span> 可以看到，这个式子中假设<span
+class="math inline">\(N(u,v)=0\)</span>，且我们需要已知<span
+class="math inline">\(G(u,v),H(u,v)\)</span>.</p>
+<p>那要是<span class="math inline">\(N(u,v)\neq0\)</span>，我们可以得到:
+<span class="math display">\[
+\hat{F}(u,v) = F(u,v) + \frac{N(u,v)}{H(u,v)}
+\]</span> 如果退化函数<span
+class="math inline">\(H(u,v)\)</span>在某一个频率点有零值或非常小的值(一般都是离原点比较远的地方存在)，那么<span
+class="math inline">\(N(u,v)/H(u,v)\)</span>的比值会很大、可能会压制<span
+class="math inline">\(F(u,v)\)</span>的估计，造成<span
+class="math inline">\(F(u,v)\)</span>的估计存在较大误差。</p>
+<p>一种解决方法是利用原点附近退化函数的值来进行逆滤波的计算。比如设置一个半径：<span
+class="math inline">\(u^2+v^2\le R^2\)</span>，足够小的时候来计算<span
+class="math inline">\(\hat F(u,v)\)</span>; <span
+class="math inline">\(u^2+v^2&gt; R^2\)</span>的地方，做低通滤波。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241223120002142.png" alt="image-20241223120002142" style="zoom:80%;" /></p>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 26%" />
+<col style="width: 26%" />
+<col style="width: 26%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>(a)</th>
+<th>(b)</th>
+<th>(c)</th>
+<th>(d)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>这是使用完整滤波器（full filter）进行恢复的结果。</td>
+<td>这是将滤波器函数<span class="math inline">\(H\)</span>在半径为 40
+以外进行截断后进行恢复的结果。</td>
+<td>这是将滤波器函数<span class="math inline">\(H\)</span>在半径为 70
+以外进行截断后进行恢复的结果。</td>
+<td>这是将滤波器函数<span class="math inline">\(H\)</span>在半径为 85
+以外进行截断（cut off outside a radius of 85）后进行恢复的结果。</td>
+</tr>
+<tr class="even">
+<td>图像看起来较为模糊，细节不够清晰。</td>
+<td>good</td>
+<td>better</td>
+<td>依托。</td>
+</tr>
+</tbody>
+</table>
+<p>可以推断出来噪声的频率大于70.（85把噪声包含进去，此时就是<span
+class="math inline">\(N(u,v)/H(u,v)\)</span>的比值会很大、可能会压制<span
+class="math inline">\(F(u,v)\)</span>的估计，造成<span
+class="math inline">\(F(u,v)\)</span>的估计存在较大误差。得到了依托）</p>
+<h2 id="维纳滤波器wiener-filtering">维纳滤波器(Wiener Filtering)</h2>
+<blockquote>
+<p><strong>理论</strong>上最优的一种图像复原方法。</p>
+</blockquote>
+<p><strong>维纳滤波器寻求使统计误差函数最小化的估计值<span
+class="math inline">\(\hat f\)</span></strong> <span
+class="math display">\[
+e^2 = E\{(f - \hat{f})^2\}
+\]</span> <span class="math inline">\(E\)</span>是期望算子，<span
+class="math inline">\(f\)</span>是未退化图像。</p>
+<p>此表达式在频域中的解为: <span class="math display">\[
+\hat{F}(u, v) = \left[\frac{1}{H(u, v)} \frac{|H(u, v)|^2}{|H(u, v)|^2 +
+S_n(u, v)/S_f(u, v)}\right] G(u, v)
+\]</span> 其中 :</p>
+<table>
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 29%" />
+<col style="width: 17%" />
+<col style="width: 22%" />
+<col style="width: 22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">\(H(u, v)\)</span></th>
+<th><span class="math inline">\(|H(u, v)|^2 = H^*(u, v)H(u,
+v)\)</span></th>
+<th><span class="math inline">\(H^*(u, v)\)</span></th>
+<th><span class="math inline">\(S_n(u, v) = |N(u, v)|^2\)</span></th>
+<th><span class="math inline">\(S_f(u, v) = |F(u, v)|^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>退化函数</td>
+<td>---</td>
+<td>是<span class="math inline">\(H(u, v)\)</span>的复共轭</td>
+<td>是噪声的功率谱</td>
+<td>未退化图像的功率谱</td>
+</tr>
+</tbody>
+</table>
+<p>实际上很难在现实中求解：主要是因为<span class="math inline">\(S_n(u,
+v)/S_f(u,
+v)\)</span>、很难求噪声的功率谱以及未退化图像的功率谱。通常使用近似来应用：<span
+class="math inline">\(S_n(u, v)/S_f(u, v)=K\)</span> <span
+class="math display">\[
+\hat{F}(u, v) = \left[\frac{1}{H(u, v)} \frac{|H(u, v)|^2}{|H(u, v)|^2 +
+K}\right] G(u, v)
+\]</span></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241223142412526.png"
+alt="image-20241223142412526" />
+<figcaption aria-hidden="true">image-20241223142412526</figcaption>
+</figure>
+<table>
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 25%" />
+<col style="width: 40%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>(a)(d)(g)原始图像</th>
+<th>(b)(e)(h)逆滤波</th>
+<th>(c)(f)(i)维纳滤波</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>原始的 8 位图像，受到了运动模糊和加性噪声的影响。</td>
+<td>图像的模糊有所减少，但噪声被放大了。</td>
+<td>与逆滤波相比，维纳滤波在减少模糊的同时，较好地抑制了噪声。</td>
+</tr>
+<tr class="even">
+<td>噪声方差降低了一个数量级。</td>
+<td>---</td>
+<td>---</td>
+</tr>
+<tr class="odd">
+<td>噪声方差降低了五个数量级。</td>
+<td>---</td>
+<td>通过降低噪声方差，维纳滤波能够有效地去除噪声并减少模糊。</td>
+</tr>
+</tbody>
+</table>
+<h2
+id="约束最小二乘图像复原算法constrained-least-squares-filtering">约束最小二乘图像复原算法(Constrained
+Least Squares Filtering)</h2>
+<blockquote>
+<p><strong>了解退化函数<span
+class="math inline">\(H\)</span>的问题</strong> -
+在本章讨论的所有方法中，都存在需要了解退化函数<span
+class="math inline">\(H\)</span>的问题。</p>
+<p>维纳算法不好的是：得事先知道噪声功率谱和未退化图像谱，但这个很难知道。</p>
+</blockquote>
+<p>接下来介绍约束最小二乘滤波方法，这个方法只需要知道噪声的均值和方差。</p>
+<p>如果我们用矩阵来模拟退化过程，有： <span class="math display">\[
+g(x,y)=h(x,y)*f(x,y)+\eta(x,y)   \\
+g={H}{f}+{\eta}
+\]</span> 将其转化成矩阵形式，相当于是做<span
+class="math inline">\(vec()\)</span>操作拉伸。比如原先的<span
+class="math inline">\(f(x,y): M\times N\)</span>，现在的<span
+class="math inline">\(f\)</span>是<span class="math inline">\(MN\times
+1\)</span>.</p>
+<p>该方法的核心是<span
+class="math inline">\(H\)</span>对噪声的敏感性问题。一种缓解该问题的方法是基于平滑度的度量进行恢复。</p>
+<p>拉普拉斯（图像的二阶导数:<span class="math inline">\(\nabla^2
+f=\frac{\partial^2f}{\partial x^2}+\frac{\partial^2f}{\partial
+y^2}\)</span>）似乎是一个很好的选择。</p>
+<blockquote>
+<p>一阶导反映变化快慢、二阶导反映了平滑程度。</p>
+</blockquote>
+<p>需要最小化的代价函数<span class="math inline">\(C\)</span>为 : <span
+class="math display">\[
+\min C=\sum_{x = 0}^{M-1}\sum_{y = 0}^{N-1}[\nabla^2 f(x,y)]^2\\
+s.t.\ \|\mathbf{g}-\mathbf{H}\hat{\mathbf{f}}\|=\|\mathbf{\eta}\|
+\]</span></p>
+<p>已知：<span
+class="math inline">\(g,H,\eta\)</span>。该问题在频域的解为 : <span
+class="math display">\[
+\hat{F}(u,v)=\left[\frac{H^*(u,v)}{|H(u,v)|^2+\gamma|P(u,v)|^2}\right]G(u,v)
+\]</span> 其中<span
+class="math inline">\(P(x,y)\)</span>是拉普拉斯算子在空域中的一个形式(傅里叶变换)。
+<span class="math display">\[
+P(x,y)=\begin{pmatrix}     0 &amp; -1 &amp; 0 \\     -1 &amp; 4 &amp; -1
+\\     0 &amp; -1 &amp; 0     \end{pmatrix}
+\]</span></p>
+<p>令<span class="math inline">\(r=g-{H}\hat{f}\)</span>，且<span
+class="math inline">\(\varphi(\gamma)={r}^T{r}=\|{r}\|^2\)</span>。</p>
+<p>可以证明<span class="math inline">\(\varphi(\gamma)\)</span>是<span
+class="math inline">\(\gamma\)</span>的单调递增函数。因此，我们可以调整<span
+class="math inline">\(\gamma\)</span>，使得 :<br />
+<span class="math display">\[
+\|{r}\|^2=\|\mathbf{\eta}\|^2\pm\alpha
+\]</span></p>
+<blockquote>
+<p>当<span class="math inline">\(\alpha\)</span>足够小，那么<span
+class="math inline">\(\|r\|^2\sim\|\eta\|^2\)</span>.
+回看频域的解：<span
+class="math inline">\(\hat{F}(u,v)=\left[\frac{H^*(u,v)}{|H(u,v)|^2+\gamma|P(u,v)|^2}\right]G(u,v)\)</span>.</p>
+<p>已知的条件有：<span
+class="math inline">\(H(u,v),P(u,v),G(u,v)\)</span>,那么当<span
+class="math inline">\(\gamma\)</span>确定时：<span
+class="math inline">\(\gamma\Rightarrow\hat F\Rightarrow \hat
+f\Rightarrow g-H\hat f=r\)</span></p>
+<p>然后根据<span
+class="math inline">\(\|{r}\|^2=\|\mathbf{\eta}\|^2\pm\alpha\)</span>确定<span
+class="math inline">\(\|r\|^2\)</span>是否落入区间，不在区间的话，可以不断地调整<span
+class="math inline">\(\gamma\)</span>,使<span
+class="math inline">\(\|{r}\|^2&lt;\|\mathbf{\eta}\|^2\pm\alpha\)</span>落入邻域。此时，所估计的<span
+class="math inline">\(\hat f\)</span>是问题的解。</p>
+</blockquote>
+<p><strong>Q: 前面假设噪声已知，那实际中如何计算<span
+class="math inline">\(\|{\eta}\|^2\)</span>？</strong><br />
+<span class="math display">\[
+\|\mathbf{\eta}\|^2 =
+MN[\sigma_{\eta}^2+m_{\eta}^2]     \\\begin{cases}\sigma_{\eta}^2=\frac{1}{MN}\sum_{x
+= 0}^{M-1}\sum_{y = 0}^{N-1}[\eta(x,y)-m_{\eta}]^2     \\
+m_{\eta}=\frac{1}{MN}\sum_{x = 0}^{M-1}\sum_{y = 0}^{N-1}\eta(x,y)
+\end{cases}
+\]</span> <span class="math inline">\(\eta^2,
+m_{\eta}^2\)</span>是噪声的方差和期望。</p>
+<blockquote>
+<p><span class="math display">\[
+\begin{align*}       
+\sigma_{\eta}^2&amp;=\frac{1}{MN}\sum_{x = 0}^{M-1}\sum_{y =
+0}^{N-1}[\eta(x,y)-m_{\eta}]^2\\
+&amp;=\frac{1}{MN}\sum_{x = 0}^{M-1}\sum_{y =
+0}^{N-1}[\eta^2(x,y)-2m_{\eta}\eta(x,y)+m_{\eta}^2]\\       &amp;=\frac{1}{MN}\sum_{x
+= 0}^{M-1}\sum_{y = 0}^{N-1}\eta^2(x,y)-2m_{\eta}\frac{1}{MN}\sum_{x =
+0}^{M-1}\sum_{y =
+0}^{N-1}\eta(x,y)+m_{\eta}^2\\       &amp;=\frac{1}{MN}\sum_{x =
+0}^{M-1}\sum_{y =
+0}^{N-1}\eta^2(x,y)-2m_{\eta}^2+m_{\eta}^2\\       &amp;=\frac{1}{MN}\sum_{x
+= 0}^{M-1}\sum_{y = 0}^{N-1}\eta^2(x,y)-m_{\eta}^2 \\
+\sum_{x = 0}^{M-1}\sum_{y = 0}^{N-1}\eta^2(x,y)&amp;=MN[\sigma_{\eta}^2
++ m_{\eta}^2]\\
+\|\mathbf{\eta}\|^2 &amp;= MN[\sigma_{\eta}^2+m_{\eta}^2]
+\end{align*}
+\]</span></p>
+</blockquote>
+<p>下图都展示了经过约束最小二乘滤波处理后的图像。可以看到效果比维纳滤波好一点。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241223151330010.png"
+alt="image-20241223151324230" />
+<figcaption aria-hidden="true">image-20241223151324230</figcaption>
+</figure>
+</div><div class="post-end"><div class="post-prev"></div><div class="post-next"><a href="/2024/12/22/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-Ch3-%E9%A2%91%E7%8E%87%E5%9F%9F%E5%A2%9E%E5%BC%BA/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch4-%E5%9B%BE%E5%83%8F%E5%A4%8D%E5%8E%9F"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch4 图像复原</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%9B%BE%E5%83%8F%E9%80%80%E5%8C%96%E4%B8%8E%E5%A4%8D%E5%8E%9Fimage-degradation-and-restoration"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">图像退化与复原(Image
+Degradation and Restoration)</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%99%AA%E5%A3%B0%E6%A8%A1%E5%9E%8Bnoise-models"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">噪声模型(Noise Models)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#i.i.d.%E7%A9%BA%E9%97%B4%E9%9A%8F%E6%9C%BA%E5%99%AA%E5%A3%B0generating-spatial-random-noise-with-a-specified-distribution"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">i.i.d.空间随机噪声(Generating
+Spatial Random Noise with a Specified Distribution)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%91%A8%E6%9C%9F%E5%99%AA%E5%A3%B0periodic-noise"><span class="toc-content-number">1.2.2.</span> <span class="toc-content-text">周期噪声(Periodic Noise)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%BC%B0%E8%AE%A1%E5%99%AA%E5%A3%B0%E5%8F%82%E6%95%B0estimating-noise-parameters"><span class="toc-content-number">1.2.3.</span> <span class="toc-content-text">估计噪声参数(Estimating
+Noise Parameters)</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%9C%A8%E4%BB%85%E6%9C%89%E5%99%AA%E5%A3%B0%E6%83%85%E5%86%B5%E4%B8%8B%E5%9B%BE%E5%83%8F%E5%A4%8D%E5%8E%9F-%E7%A9%BA%E5%9F%9F%E6%BB%A4%E6%B3%A2"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">在仅有噪声情况下图像复原-空域滤波</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%9D%87%E5%80%BC%E6%BB%A4%E6%B3%A2%E5%99%A8mean-filters"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">均值滤波器(Mean Filters)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%BB%9F%E8%AE%A1%E6%8E%92%E5%BA%8F%E6%BB%A4%E6%B3%A2%E5%99%A8order-statistics-filters"><span class="toc-content-number">1.3.1.1.</span> <span class="toc-content-text">统计排序滤波器(Order-statistics
+Filters)</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E7%94%A8%E9%A2%91%E5%9F%9F%E6%BB%A4%E6%B3%A2%E5%99%A8%E6%B6%88%E9%99%A4%E5%91%A8%E6%9C%9F%E5%99%AA%E5%A3%B0periodic-noise-reduction-by-frequency-domain-filtering"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">用频域滤波器消除周期噪声(Periodic
+Noise Reduction by Frequency Domain Filtering)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%B8%A6%E9%98%BB%E6%BB%A4%E6%B3%A2%E5%99%A8bandreject-filters"><span class="toc-content-number">1.4.1.</span> <span class="toc-content-text">带阻滤波器(Bandreject
+Filters)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%B8%A6%E9%80%9A%E6%BB%A4%E6%B3%A2%E5%99%A8bandpass-filters"><span class="toc-content-number">1.4.2.</span> <span class="toc-content-text">带通滤波器(Bandpass Filters)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E9%99%B7%E6%B3%A2%E6%BB%A4%E6%B3%A2%E5%99%A8notch-filters"><span class="toc-content-number">1.4.3.</span> <span class="toc-content-text">陷波滤波器(Notch filters)</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%9C%80%E4%BD%B3%E9%99%B7%E6%B3%A2%E6%BB%A4%E6%B3%A2%E7%AE%97%E6%B3%95optimum-notch-filtering"><span class="toc-content-number">1.5.</span> <span class="toc-content-text">最佳陷波滤波算法(Optimum
+Notch Filtering)</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E4%BC%B0%E8%AE%A1%E9%80%80%E5%8C%96%E5%87%BD%E6%95%B0estimating-the-degradation-function"><span class="toc-content-number">1.6.</span> <span class="toc-content-text">估计退化函数(Estimating
+the Degradation Function)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E8%BF%90%E5%8A%A8%E5%BC%95%E8%B5%B7%E7%9A%84%E5%9B%BE%E5%83%8F%E6%A8%A1%E7%B3%8Aimage-blur-due-to-motion"><span class="toc-content-number">1.6.1.</span> <span class="toc-content-text">运动引起的图像模糊(Image
+Blur due to Motion)</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E7%9B%B4%E6%8E%A5%E9%80%86%E6%BB%A4%E6%B3%A2direct-inverse-filtering"><span class="toc-content-number">1.7.</span> <span class="toc-content-text">直接逆滤波(Direct Inverse
+Filtering)</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E7%BB%B4%E7%BA%B3%E6%BB%A4%E6%B3%A2%E5%99%A8wiener-filtering"><span class="toc-content-number">1.8.</span> <span class="toc-content-text">维纳滤波器(Wiener Filtering)</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E7%BA%A6%E6%9D%9F%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E5%9B%BE%E5%83%8F%E5%A4%8D%E5%8E%9F%E7%AE%97%E6%B3%95constrained-least-squares-filtering"><span class="toc-content-number">1.9.</span> <span class="toc-content-text">约束最小二乘图像复原算法(Constrained
+Least Squares Filtering)</span></a></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>
