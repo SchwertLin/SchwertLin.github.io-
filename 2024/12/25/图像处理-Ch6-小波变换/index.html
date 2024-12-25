@@ -1,0 +1,1177 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch6 小波变换&amp;其他图像变换 [TOC]   image-20241224161829455  绿色：考、红色：不考、黄色：可看。  Q: 为什么我们需要小波变换？ A: 那当然是因为傅里叶变换有缺陷。时域(空域)上的函数经过傅里叶变换之后，得到频域上对应的函数。当然二者是等价的，但是频域上的函数只含有频域信息、时域上的函数也只含有时域信息。 这就导致了一个问题：我">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图像处理-Ch6-小波变换">
+<meta property="og:url" content="http://example.com/2024/12/25/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-Ch6-%E5%B0%8F%E6%B3%A2%E5%8F%98%E6%8D%A2/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch6 小波变换&amp;其他图像变换 [TOC]   image-20241224161829455  绿色：考、红色：不考、黄色：可看。  Q: 为什么我们需要小波变换？ A: 那当然是因为傅里叶变换有缺陷。时域(空域)上的函数经过傅里叶变换之后，得到频域上对应的函数。当然二者是等价的，但是频域上的函数只含有频域信息、时域上的函数也只含有时域信息。 这就导致了一个问题：我">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241223233552493.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241224094101266.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241225103135159.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241225113151439.png">
+<meta property="article:published_time" content="2024-12-25T11:49:46.000Z">
+<meta property="article:modified_time" content="2024-12-25T11:50:35.022Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="图像处理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241223233552493.png"><title>图像处理-Ch6-小波变换 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>图像处理-Ch6-小波变换</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2024-12-25</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2024-12-25</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约9.4K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch6-小波变换其他图像变换">Ch6 小波变换&amp;其他图像变换</h1>
+<p>[TOC]</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241224161829455.png"
+alt="image-20241224161829455" />
+<figcaption aria-hidden="true">image-20241224161829455</figcaption>
+</figure>
+<p>绿色：考、红色：不考、黄色：可看。</p>
+<blockquote>
+<p><strong>Q: 为什么我们需要小波变换？</strong></p>
+<p>A:
+那当然是因为傅里叶变换有缺陷。时域(空域)上的函数经过傅里叶变换之后，得到频域上对应的函数。当然二者是等价的，但是频域上的函数只含有频域信息、时域上的函数也只含有时域信息。</p>
+<p>这就导致了一个问题：我们没法根据<span
+class="math inline">\(F(u,v)\)</span>还原出原始的具有时间信息的时域函数(就是在一段时间内：存在固定频率的波形、经过不同顺序的排列：显然它们的时域函数不同、但是得到的频域函数确实完全一致的)。这说明傅里叶变换的时候丢失了时间的信息。</p>
+<p>这也和测量不准性一致(海森堡定理)：时域和频域就像跷跷板的两端，我们没法都做到最好、要么取极端、要么取中庸。</p>
+<p>在量子力学中，海森堡不确定性原理指出，我们不能同时精确地测量粒子的位置和动量，类似地，在傅里叶分析中，我们不能同时在时域和频域中获得完全精确的信息。</p>
+<p><strong>Q: 小波变换的优势？</strong></p>
+<p>A: 1. 弥补傅里叶变换丢失时域信息</p>
+<p>​ 2.
+具有多分辨率分析的能力，能够在不同尺度下对信号进行分析(可以在不同分辨率下提取特征).</p>
+</blockquote>
+<h2 id="背景知识bk">背景知识(bk)</h2>
+<h3 id="图像金字塔image-pyramid">图像金字塔(Image Pyramid)</h3>
+<p>一幅图像的金字塔是一系列以金字塔形状排列的分辨率逐步降低的图像集合。</p>
+<p>下图是拉普拉斯金字塔的构建：</p>
+<ol type="1">
+<li>图(a)建立了一个简单的图像金字塔系统。<span
+class="math inline">\(j-1\)</span>级的近似输出用来建立近似值金字塔，包括原始图像的一个or多个近似值。</li>
+<li>图(b)表明：近似值和预测残差金字塔都是以一种迭代的方式进行计算的。<span
+class="math inline">\(2\uparrow\)</span>:上采样(插值)、<span
+class="math inline">\(2\downarrow\)</span>：下采样。</li>
+</ol>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241223214643145.png"
+alt="image-20241223214643145" />
+<figcaption aria-hidden="true">image-20241223214643145</figcaption>
+</figure>
+<p>下图中：上图表示高斯金字塔、下图表示拉普拉斯金字塔。分辨率:512\256\128\64</p>
+<p>若要生成拉普拉斯金字塔，必须先生成高斯金字塔。拉普拉斯金字塔首先从<span
+class="math inline">\(64\times 64\)</span>大小的近似图像开始，预测(
+插值or滤波实现 )<span class="math inline">\(128\times
+128\)</span>的高斯图像。对应的拉普拉斯金字塔图像=原始图像-上采样预测图像(
+得到的插值 )。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241223215653949.png"
+alt="image-20241223215653949" />
+<figcaption aria-hidden="true">image-20241223215653949</figcaption>
+</figure>
+<h3 id="子带编码sub-band-coding">子带编码(Sub-band Coding)</h3>
+<p><strong>子带编码</strong>：一副图像被分解为一系列带限分量的集合，称为子带，它们可以重组在一起无失真地重建原始图像。每个子带可以通过带通滤波得到；因为得到的子带带宽比原始图像带宽小，因此子带可以无损地下采样(
+奈奎斯特定理
+)。原始图像的重建可以通过插值、滤波、叠加单个子带来完成。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241223233552493.png" style="zoom: 80%;" /></p>
+<blockquote>
+<p><strong>Q: 得到的经过上下采样后的<span
+class="math inline">\(g_0(n)\)</span>与原始信号<span
+class="math inline">\(h_0(n)\)</span>一致吗？</strong></p>
+<p>A：通常来是不等的。上采样：插0.</p>
+</blockquote>
+<h4 id="z---变换线性变换">Z - 变换(线性变换)</h4>
+<p>傅里叶变换是Z - 变换的一个特例。当<span
+class="math inline">\(z\)</span>取复平面上单位圆上的一个点<span
+class="math inline">\(e^{jw}\)</span>的时候，就是离散傅里叶变换的形式。
+<span class="math display">\[
+X(z)=\sum_{n =-\infty}^{\infty}x(n)z^{-n}\\
+X(k)=\sum_{n =-\infty}^{\infty}x(n)e^{-jwn}=\sum_{n
+=-\infty}^{\infty}x(n)e^{-j\frac{2\pi}{N}kn},\ k=0,1,\dots,N-1
+\]</span> 其中：<span
+class="math inline">\(x(n)\)</span>是时域信号，<span
+class="math inline">\(z\)</span>是复变量。</p>
+<blockquote>
+<p>e.g. <span
+class="math inline">\(x(n)=\begin{pmatrix}1&amp;3&amp;5&amp;7\end{pmatrix}\)</span>,角标是<span
+class="math inline">\([-1,0,1,2]\)</span></p>
+<p>那么<span
+class="math inline">\(x(z)=1·z+3+5·z^{-1}+7·z^{-2}\)</span>，可见Z-变换是将时域信号转换为一个多项式函数。</p>
+</blockquote>
+<ul>
+<li><p>信号下采样Z-变换： <span class="math display">\[
+\begin{align}
+x_{down}(n)&amp;=x(2n)\\
+X_{down}(z)&amp;=\frac{1}{2}[X(z^{\frac{1}{2}})+X(-z^{\frac{1}{2}})]
+\end{align}
+\]</span></p></li>
+<li><p>信号上采样Z-变换：(上采样中间填充0) <span class="math display">\[
+\begin{align}
+x_{up}(n)&amp;=\begin{cases}x(n/2),&amp;n =
+0,2,4,\cdots\\0,&amp;\text{otherwise}\end{cases}\\
+X_{up}(z)&amp;=X(z^{2})
+\end{align}
+\]</span></p></li>
+</ul>
+<p>结合下采样和上采样，得到: <span class="math display">\[
+\hat{X}(z)=\frac{1}{2}[X(z)+X(-z)]\\\\
+s.t.\begin{cases}
+\hat{x}(n)=Z^{-1}[\hat{X}(z)]\\
+Z^{-1}[\hat{X}(-z)]=(-1)^{n}\hat{x}(n)
+\end{cases}
+\]</span></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241224091614647.png" /></p>
+<p>一个双子带编码和解码系统可表示为： <span class="math display">\[
+\hat{X}(z)=\frac{1}{2}G_{0}(z)[H_{0}(z)X(z)+H_{0}(-z)X(-z)]+\\
+\frac{1}{2}G_{1}(z)[H_{1}(z)X(z)+H_{1}(-z)X(-z)]
+\]</span> 其中滤波器<span
+class="math inline">\(h_{0}(n)\)</span>的输出由变换对定义： <span
+class="math display">\[
+h_{0}(n)*x(n)=\sum_{k}h_{0}(n - k)x(k)\Leftrightarrow H_{0}(z)X(z)
+\]</span> 因为Z-变换是线性变换。重新排列上述方程中的项，得到 ： <span
+class="math display">\[
+\hat{X}(z)=\frac{1}{2}[H_{0}(z)G_{0}(z)+H_{1}(z)G_{1}(z)]X(z)\\+\frac{1}{2}[H_{0}(-z)G_{0}(z)+H_{1}(-z)G_{1}(z)]X(-z)
+\]</span> 我最终想要的结果是<span class="math inline">\(\hat
+X(z)=X(z)\)</span>, 为了无误差地重建输入，施加以下条件： <span
+class="math display">\[
+H_{0}(z)G_{0}(z)+H_{1}(z)G_{1}(z)=2\\
+H_{0}(-z)G_{0}(z)+H_{1}(-z)G_{1}(z)=0
+\]</span> 它们可以合并为单个矩阵表达式: <span class="math display">\[
+[G_{0}(z)\quad G_{1}(z)]H_{m}(z)=[2\quad0]\\
+H_{m}(z)=\begin{bmatrix}H_{0}(z)&amp;H_{0}(-z)\\H_{1}(z)&amp;H_{1}(-z)\end{bmatrix}
+\]</span> 其中<span
+class="math inline">\(H_m(z)\)</span>是分析调制矩阵。</p>
+<p>假设<span
+class="math inline">\(H_{m}(z)\)</span>是非奇异(可逆)，我们可以得到(此处就是非常普通的求解方程<span
+class="math inline">\(A^Tx=b\)</span>): <span class="math display">\[
+\begin{bmatrix}G_{0}(z)\\G_{1}(z)\end{bmatrix}=\frac{2}{\text{det}(H_{m}(z))}\begin{bmatrix}H_{1}(-z)\\-H_{0}(-z)\end{bmatrix}
+\]</span> 上述方程表明<span
+class="math inline">\(G_{0}(z)\)</span>是<span
+class="math inline">\(H_{1}(-z)\)</span>的函数，<span
+class="math inline">\(G_{1}(z)\)</span>是<span
+class="math inline">\(H_{0}(-z)\)</span>的函数。<strong>所以分析和合成滤波器是交叉调制的。</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241224094101266.png" alt="image-20241224094101266" style="zoom: 50%;" /></p>
+<h4
+id="完美重建滤波器组pcfb-perfect-construction-filter-banks">完美重建滤波器组(PCFB,
+Perfect Construction Filter Banks)</h4>
+<h5 id="有限脉冲响应fir滤波器">有限脉冲响应（FIR）滤波器</h5>
+<blockquote>
+<p><strong>Q: 有限脉冲响应（FIR）滤波器?</strong></p>
+<p>A:
+一种能够按照设计好的规则处理信号，并且它对脉冲信号的响应在一段时间后会结束的工具。</p>
+<ul>
+<li><strong>脉冲响应</strong>：当你给一个滤波器一个很特殊的输入，就像用小锤子敲一下（在信号里叫脉冲信号），滤波器会输出一个信号，这个输出信号就叫脉冲响应。</li>
+<li><strong>有限</strong>：对于 FIR
+滤波器，它的脉冲响应在一段时间后就会变成零。通俗来讲，就像是你敲了一下小锤子，滤波器
+“响” 了一会儿，然后就安静下来了，这个 “响” 的时间是有限的。</li>
+</ul>
+<p><strong>Q: 纯延迟？</strong></p>
+<p>A:
+当一个信号通过这个系统时，其输出信号在时间轴上会向后移动一定的时间单位。如果把信号看作是一系列随时间变化的数值，那么经过这个系统后，每个数值出现的时间会推迟，而数值本身的大小等其他特性不变。</p>
+<p>例子：例如，你对着山谷呼喊，声音传播到山谷对面再反射回来，你听到回声的过程就类似于一个延迟。声音本身除了延迟出现之外，没有其他变化。</p>
+</blockquote>
+<p>对于有限脉冲响应（FIR）滤波器，分析调制矩阵<span
+class="math inline">\(H_{m}(z)\)</span>的行列式是纯延迟： <span
+class="math display">\[
+\text{det}(H_{m}(z))=\alpha z^{-(2k + 1)}
+\]</span> <span
+class="math inline">\(z^{-(2k+1)}\)</span>项可以被认为是任意的，因为它只是改变了滤波器的整体延迟。忽略延迟，令<span
+class="math inline">\(\alpha = 2\)</span>并取逆<span
+class="math inline">\(Z\)</span>变换，得到： <span
+class="math display">\[
+\begin{align}
+&amp;g_{0}(n)=(-1)^{n}h_{1}(n)\\
+&amp;g_{1}(n)=(-1)^{n + 1}h_{0}(n)
+\end{align}
+\]</span> 如果<span
+class="math inline">\(\alpha=-2\)</span>，得到的表达式符号反转，即:
+<span class="math display">\[
+\begin{align}
+&amp;g_{0}(n)=(-1)^{n+1}h_{1}(n)\\
+&amp;g_{1}(n)=(-1)^{n}h_{0}(n)
+\end{align}
+\]</span>
+因此，FIR合成滤波器是分析滤波器的交叉调制版本，有且只有一个与分析滤波器方向相反。</p>
+<h5 id="双正交性biorthogonality">双正交性(biorthogonality)</h5>
+<p>现在展示分析和合成滤波器的另一个重要特性：双正交性。</p>
+<p>令<span
+class="math inline">\(P(z)\)</span>为低通分析和合成滤波器传递函数的乘积，得到:
+<span class="math display">\[
+P(z)=G_{0}(z)H_{0}(z)=\frac{2}{\text{det}(H_{m}(z))}H_{0}(z)H_{1}(-z)
+\]</span> 由于<span
+class="math inline">\(\text{det}(H_{m}(z))=-\text{det}(H_{m}(-z))\)</span>，乘积<span
+class="math inline">\(G_{1}(z)H_{1}(z)\)</span>可类似地定义为: <span
+class="math display">\[
+G_{1}(z)H_{1}(z)=\frac{-2}{\text{det}(H_{m}(z))}H_{0}(-z)H_{1}(z)=P(-z)\\
+\therefore G_{1}(z)H_{1}(z)=P(-z)=G_{0}(-z)H_{0}(-z)
+\]</span> 将其代入完美构建方程的约束条件，得到: <span
+class="math display">\[
+\begin{align}
+&amp;\because H_{0}(z)G_{0}(z)+H_{1}(z)G_{1}(z)=2\\
+&amp;\therefore G_{0}(z)H_{0}(z)+G_{0}(-z)H_{0}(-z)=2
+\end{align}
+\]</span> 对<span
+class="math inline">\(G_{0}(z)H_{0}(z)+G_{0}(-z)H_{0}(-z)=2\)</span>两边取逆<span
+class="math inline">\(Z\)</span>变换<span
+class="math inline">\(\begin{cases}\hat{x}(n)=Z^{-1}[\hat{X}(z)]\\
+Z^{-1}[\hat{X}(-z)]=(-1)^{n}\hat{x}(n)\end{cases}\)</span>，得: <span
+class="math display">\[
+\sum_{k}g_{0}(k)h_{0}(n - k)+(-1)^{n}\sum_{k}g_{0}(k)h_{0}(n -
+k)=2\delta(n)\\
+\delta{(n)}=\begin{cases}1 ,&amp;n=0\\0, &amp;n\neq 0\end{cases}
+\]</span> <span
+class="math inline">\(\delta(n)\)</span>是单位脉冲序列，<strong>由于奇数索引项抵消</strong>,
+偶数项有两倍，抵消<span
+class="math inline">\(2\delta(n)\)</span>中的2倍，进一步简化得到: <span
+class="math display">\[
+\sum_{k}g_{0}(k)h_{0}(2n - k)=\langle g_{0}(k),h_{0}(2n -
+k)\rangle=\delta(n)
+\]</span> 类似地，可以证明： <span class="math display">\[
+\begin{align}
+&amp;\langle g_{1}(k),h_{1}(2n - k)\rangle=\delta(n)\\
+&amp;\langle g_{0}(k),h_{1}(2n - k)\rangle = 0\\
+&amp;\langle g_{1}(k),h_{0}(2n - k)\rangle = 0
+\end{align}
+\]</span> 可以建立更一般的表达式 : <span class="math display">\[
+\langle h_{i}(2n - k),g_{j}(k)\rangle=\delta(i - j)\delta(n)\quad
+i,j\in\{0,1\}
+\]</span> 滤波器组满足此条件，即双正交性。
+(每一行：自己和自己内积=1，不同行内积=0，i与j )</p>
+<p><strong>结论</strong>：所有两频段实系数的完美构建滤波器组的分析和合成滤波器脉冲响应都受双正交性约束。</p>
+<h5 id="通解">通解</h5>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241224104037359.png"
+alt="image-20241224104037359" />
+<figcaption aria-hidden="true">image-20241224104037359</figcaption>
+</figure>
+<ul>
+<li><strong>QMF（Quadrature Mirror
+Filter，正交镜像滤波器）</strong>：是一种在数字信号处理中用于子带编码的滤波器。它的特点是低通滤波器和高通滤波器的频率响应是彼此的镜像关系，且满足一定的正交性条件。</li>
+<li><strong>CQF（Conjugate Quadrature
+Filter，共轭正交滤波器）</strong>：也是一种用于数字信号处理的滤波器。</li>
+<li><strong>Orthonormal, 正交滤波器</strong></li>
+<li><strong>被用于后续的快速小波变换的开发。</strong></li>
+</ul>
+<p>重要特性</p>
+<ul>
+<li><strong>双正交性（Biorthogonality）</strong> -
+每种滤波器类型都满足双正交性要求，但它们的生成方式不同，从而定义了不同类别的完美重构滤波器。</li>
+<li><strong>原型滤波器（Prototype Filter）</strong> -
+对于每一类，都有一个“原型”滤波器是按照特定规格设计的，其余的滤波器则是从这个原型滤波器计算得出的。</li>
+</ul>
+<p>除了双正交性，完美重构滤波器组的正交性还定义为： <span
+class="math display">\[
+\langle g_i(n), g_j(n + 2m) \rangle=\delta(i - j)\delta(m),\ i, j = \{0,
+1\}
+\]</span> 可以看到，<span
+class="math inline">\(G_1\)</span>与低通合成滤波器<span
+class="math inline">\(G_0\)</span>通过调制、时域反转和奇数平移相关。此外，<span
+class="math inline">\(H_1\)</span>和<span
+class="math inline">\(H_0\)</span>分别是对应合成滤波器<span
+class="math inline">\(G_1\)</span>和<span
+class="math inline">\(G_0\)</span>的时域反转。</p>
+<p><strong>Z-变化其他两个重要性质：</strong> <span
+class="math display">\[
+x(-n)\iff X(z^{-1})\\
+x(n-k)\iff z^{-k}X(z)
+\]</span></p>
+<p><strong>正交滤波器的逆Z变换</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Filter</th>
+<th>Orthonormal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(H_0(z)\)</span></td>
+<td><span class="math inline">\(G_0(z^{-1})\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(H_1(z)\)</span></td>
+<td><span class="math inline">\(G_1(z^{-1})\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(G_0(z)\)</span></td>
+<td><span
+class="math inline">\(G_0(z)G_0(z^{-1})+G_0(-z)G_0(-z^{-1})=2\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(G_1(z)\)</span></td>
+<td><span class="math inline">\(-z^{-2K+1}G_0(-z^{-1})\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>对表格正交滤波器的适当项取逆Z变换，可以得到： <span
+class="math display">\[
+h_0(n)=g_0(-n),h_1(n)=g_1(-n)\\
+h_i(n)=g_i(2K - 1 - n), i = \{0, 1\}\\\\
+g_1(n)=(-1)^n g_0(2K - 1 - n)\\
+\]</span> 这里<span class="math inline">\(h_0\)</span>、<span
+class="math inline">\(h_1\)</span>、<span
+class="math inline">\(g_0\)</span>、<span
+class="math inline">\(g_1\)</span>是定义的正交滤波器的脉冲响应。</p>
+<blockquote>
+<p>可以看到式(1)与式(2)差了一个<span
+class="math inline">\(2K-1\)</span>,也就是说将<span
+class="math inline">\(g_i\)</span>推迟了<span
+class="math inline">\(2K-1\)</span>个时刻发生。这个对应前面的”有限脉冲响应（FIR）滤波器，分析调制矩阵<span
+class="math inline">\(H_{m}(z)\)</span>的行列式是纯延迟“。</p>
+<p><strong>加上2K-1的目的：</strong>延迟操作可以用来控制信号在时间轴上的位置，确保滤波器的不同部分（如分析滤波器和合成滤波器）在时间上正确对齐。</p>
+</blockquote>
+<h3 id="哈尔变换haar-transform">哈尔变换(Haar Transform)</h3>
+<p>Haar变换（Haar
+[1910]）的基函数是<strong>最古老且最简单的已知正交小波</strong>。Haar变换本身既是可分离的又是对称的，并且可以表示为矩阵形式：
+<span class="math display">\[
+T = HFH^{T}
+\]</span> 其中<span class="math inline">\(F\)</span>是一个<span
+class="math inline">\(N\times N\)</span>矩阵，<span
+class="math inline">\(H\)</span>是一个<span
+class="math inline">\(N\times N\)</span>变换矩阵，<span
+class="math inline">\(T\)</span>是一个结果<span
+class="math inline">\(N\times N\)</span>变换。</p>
+<p>变换矩阵<span class="math inline">\(H\)</span>包含在区间<span
+class="math inline">\(z\in[0,1]\)</span>上定义的Haar基函数<span
+class="math inline">\(h_{k}(z)\)</span>，对于<span
+class="math inline">\(k = 0,\cdots,N - 1\)</span>，其中<span
+class="math inline">\(N = 2^{n}\)</span>。</p>
+<p>为了生成<span class="math inline">\(H\)</span>，我们定义整数<span
+class="math inline">\(k\)</span>，<span class="math inline">\(k =
+2^{p}+q - 1\)</span>，其中<span class="math inline">\(0\leq p\leq n -
+1\)</span>.</p>
+<ul>
+<li>对于<span class="math inline">\(p = 0\)</span>: <span
+class="math inline">\(q = 0/1\)</span></li>
+<li>对于<span class="math inline">\(p\neq0\)</span>：<span
+class="math inline">\(1\leq q\leq 2^{p}\)</span></li>
+</ul>
+<blockquote>
+<p>举例说明：</p>
+<table>
+<thead>
+<tr class="header">
+<th>k/10进制</th>
+<th>k/2进制</th>
+<th>p</th>
+<th>q</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>11</td>
+<td>1011</td>
+<td>3</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>21</td>
+<td>10101</td>
+<td>4</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>Haar基函数是（<span class="math inline">\(z\in[0,1]\)</span>）：
+<span class="math display">\[
+h_{0}(z)=h_{00}(z)=\frac{1}{\sqrt{N}}\\
+h_{k}(z)=h_{pq}(z)=\frac{1}{\sqrt{N}}\begin{cases}2^{p/2},&amp;(q -
+1)/2^{p}\leq z\leq (q - 0.5)/2^{p}\\-2^{p/2},&amp;(q - 0.5)/2^{p}\leq
+z\leq q/2^{p}\\0,&amp;\text{otherwise}
+\end{cases}
+\]</span></p>
+<blockquote>
+<p>q决定正脉冲起始位置、p决定脉冲宽窄。</p>
+</blockquote>
+<p>当<span class="math inline">\(N = 8\)</span>时，对应的<span
+class="math inline">\(k\)</span>、<span
+class="math inline">\(q\)</span>、<span
+class="math inline">\(p\)</span>值,给出了一个表格：</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span
+class="math inline">\(k\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(0\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(1\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(2\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(3\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(4\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(5\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(6\)</span></th>
+<th style="text-align: center;"><span
+class="math inline">\(7\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span
+class="math inline">\(p\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(2\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(2\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(2\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(2\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span
+class="math inline">\(q\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(2\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(1\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(2\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(3\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(4\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong><span class="math inline">\(H_{8}\)</span>矩阵</strong>
+:当<span class="math inline">\(N = 8\)</span>时，<span
+class="math inline">\(H_{8}\)</span>矩阵为： <span
+class="math display">\[
+H_{8}=\frac{1}{\sqrt{8}}\begin{bmatrix}   1 &amp; 1 &amp; 1 &amp; 1
+&amp; 1 &amp; 1 &amp; 1 &amp; 1 \\   1 &amp; 1 &amp; 1 &amp; 1 &amp; -1
+&amp; -1 &amp; -1 &amp; -1 \\   
+\sqrt{2} &amp;\sqrt{2} &amp; -\sqrt{2}&amp; -\sqrt{2} &amp; 0 &amp; 0
+&amp; 0 &amp; 0\\
+0 &amp; 0  &amp;0 &amp; 0 &amp; \sqrt{2} &amp;\sqrt{2} &amp;
+-\sqrt{2}&amp; -\sqrt{2}\\
+2 &amp; -2 &amp; 0 &amp; 0 &amp;0&amp;0&amp;0&amp;0\\   
+0 &amp; 0 &amp; 2 &amp; -2 &amp; 0 &amp; 0 &amp; 0 &amp; 0  \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 2 &amp; -2 &amp; 0 &amp; 0 \\   
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 2 &amp; -2 \\   
+\end{bmatrix}
+\]</span></p>
+<p>哈尔矩阵：第一行永远是1，第二行永远一半1一半-1.</p>
+<p>反正算就完事了。</p>
+<h2
+id="多分辨率展开multi-resolution-expansions">多分辨率展开(Multi-resolution
+Expansions)</h2>
+<p>前面介绍了三种图像处理技术：图像金字塔、子带编码、哈尔变换。这在多分辨率分析(Multi-resolution
+Analysis, MRA)中会用到。</p>
+<p>在多分辨率分析中，尺度函数被用于建立某一函数或是图像的一系列近似值，小波函数对相邻近似值之间的差异进行编码。</p>
+<blockquote>
+<p><strong>Q: 尺度函数、小波函数？</strong></p>
+<p>A: 尺度函数类似于低通滤波器的作用、小波函数描述高通滤波器的作用。</p>
+</blockquote>
+<h3 id="序列展开series-expansions">序列展开(Series Expansions)</h3>
+<p>一个信号或函数<span
+class="math inline">\(f(x)\)</span>通常被分解为一系列展开函数的线性组合，即:
+<span class="math display">\[
+f(x)=\sum_{k}\alpha_{k}\varphi_{k}(x)
+\]</span> 如果扩展是唯一的，即对于任何给定的<span
+class="math inline">\(f(x)\)</span>只有一组<span
+class="math inline">\(\alpha_{k}\)</span>，则<span
+class="math inline">\(\varphi_{k}(x)\)</span>称为基函数，扩展集<span
+class="math inline">\(\{\varphi_{k}(x)\}\)</span>称为可如此表示的函数类的基。</p>
+<p>可表示的函数形成一个函数(张成)空间，称为扩展集的闭包（closed
+span），记为： <span class="math display">\[
+V = \overline{Span_k\{\varphi_{k}(x)\}}
+\]</span> 对于任意张成空间<span
+class="math inline">\(V\)</span>和相应的扩展集<span
+class="math inline">\(\{\varphi_{k}(x)\}\)</span>，存在一组对偶函数<span
+class="math inline">\(\{\tilde{\varphi}_{k}(x)\}\)</span>，可用于通过取对偶<span
+class="math inline">\(\tilde{\varphi}_{k}(x)\)</span>和<span
+class="math inline">\(f(x)\)</span>的积分内积来计算系数<span
+class="math inline">\(\{\alpha_{k}\}\)</span>，即： <span
+class="math display">\[
+\alpha_{k}=\langle\tilde{\varphi}_{k}(x),f(x)\rangle=\int\tilde{\varphi}_{k}^{*}(x)f(x)dx
+\]</span></p>
+<p>计算系数<span
+class="math inline">\(\alpha_{k}\)</span>涉及三种情况、<strong>但基本都是正交小波、只用情况1.</strong></p>
+<p><strong>情况I</strong>：如果扩展函数形成<span
+class="math inline">\(V\)</span>的正交基，即： <span
+class="math display">\[
+\langle\varphi_{j}(x),\varphi_{k}(x)\rangle=\delta_{jk}=\begin{cases}0&amp;j\neq
+k\\1&amp;j = k\end{cases}
+\]</span> 则基及其对偶是等价的。因此<span
+class="math inline">\(\alpha_{k}=\langle\varphi_{k}(x),f(x)\rangle\)</span>。</p>
+<h3 id="尺度函数scaling-function">尺度函数(Scaling Function)</h3>
+<p>现在考虑由实数、平方可积函数<span
+class="math inline">\(\varphi(x)\)</span>的整数平移和二进制尺度组成的扩展函数集<span
+class="math inline">\(\varphi_{j,k}(x)\)</span>，<span
+class="math inline">\(\varphi_{j,k}(x)\)</span>称为尺度函数。 <span
+class="math display">\[
+\varphi_{j,k}(x)=2^{j/2}\varphi(2^{j}x - k)
+\]</span> 对于所有<span class="math inline">\(j,k\in Z\)</span>且<span
+class="math inline">\(\varphi_{j,k}(x)\in
+L^{2}(R)\)</span>都成立；此时<span
+class="math inline">\(k\)</span>确定<span
+class="math inline">\(\varphi_{j,k}(x)\)</span>沿<span
+class="math inline">\(x\)</span>轴的位置，<span
+class="math inline">\(j\)</span>确定<span
+class="math inline">\(\varphi_{j,k}(x)\)</span>的宽度，<span
+class="math inline">\(2^{j/2}\)</span>控制其高度或幅度。</p>
+<blockquote>
+<p>当 <span class="math inline">\(j\)</span> 增大时，<span
+class="math inline">\(2^{j}\)</span> 变大，意味着<span
+class="math inline">\(\varphi(2^{j}x - k)\)</span>中的<span
+class="math inline">\(x\)</span>被压缩，即函数在<span
+class="math inline">\(x\)</span>
+轴上的变化变得更快，<strong>宽度减小</strong>。</p>
+</blockquote>
+<p>通过适当选择基函数<span
+class="math inline">\(\varphi(x)\)</span>，<span
+class="math inline">\(\{\varphi_{j,k}(x)\}\)</span>可以张成<span
+class="math inline">\(L^{2}(R)\)</span>，即所有可度量的平方可积函数的集合。</p>
+<p>对于特定值<span class="math inline">\(j = j_{0}\)</span>，扩展集<span
+class="math inline">\(\{\varphi_{j_{0},k}(x)\}\)</span>是<span
+class="math inline">\(\{\varphi_{j,k}(x)\}\)</span>的子集。可以将该子空间定义为：
+<span class="math display">\[
+V_{j_{0}}=\overline{Span\{\varphi_{j_{0},k}(x)\}}
+\]</span> 由于<span class="math inline">\(V_{j_{0}}\)</span>是<span
+class="math inline">\(\varphi_{j_{0},k}(x)\)</span>在<span
+class="math inline">\(k\)</span>上的张成，如果<span
+class="math inline">\(f(x)\in V_{j_{0}}\)</span>，它可以写成： <span
+class="math display">\[
+f(x)=\sum_{k}\alpha_{k}\varphi_{j_{0},k}(x)
+\]</span> 一般地，对于任何<span
+class="math inline">\(j\)</span>，我们将在<span
+class="math inline">\(k\)</span>上张成的子空间记为: <span
+class="math display">\[
+V_{j}=\overline{Span\{\varphi_{j,k}(x)\}}
+\]</span></p>
+<h4 id="例哈尔尺度函数haar-scaling-func">例：哈尔尺度函数(Haar scaling
+func)</h4>
+<p>哈尔尺度函数是高度为1、宽度为1的尺度函数。 <span
+class="math display">\[
+\varphi(x)=\begin{cases}1,&amp;0\le x\le 1\\
+0,&amp;otherwise
+\end{cases}
+\]</span>
+来自Haar基函数。尺度=1时的宽度是尺度=0时的一半；对于x上已知间隔，尺度=1的尺度函数时尺度=0的2倍(纵坐标的值)。(f):<span
+class="math inline">\(f(x)=\frac
+1{2}\varphi_{1,0}(x)+\varphi_{1,1}(x)-\frac 1 4
+\varphi_{1,4}(x)\)</span></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241224164826414.png"
+alt="image-20241224164826414" />
+<figcaption aria-hidden="true">image-20241224164826414</figcaption>
+</figure>
+<p>上图例子说明：</p>
+<ol type="1">
+<li><strong>增加 <span class="math inline">\(j\)</span>的值（<span
+class="math inline">\(j
+\uparrow\)</span>）</strong>：意味着函数被<strong>缩小</strong>，即
+<span
+class="math inline">\(\varphi_{j,k}(x)\)</span>的宽度变窄，能够捕捉到更<strong>细微的细节</strong>。同时，<span
+class="math inline">\(V_j\)</span>的<strong>容量增大</strong>，能够包含更多具有小尺度变化的函数。</li>
+<li><strong>减少 <span class="math inline">\(j\)</span>的值（<span
+class="math inline">\(j
+\downarrow\)</span>）</strong>：意味着函数被<strong>放大</strong>，即
+<span
+class="math inline">\(\varphi_{j,k}(x)\)</span>的宽度变宽，主要捕捉到<strong>整体的、低频的信息</strong>。</li>
+</ol>
+<h4 id="多分辨率分析的四项基本要求">多分辨率分析的四项基本要求</h4>
+<p>在上面的例子中，简单的尺度函数遵循多分辨率分析的如下4个基本要求：</p>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 30%" />
+<col style="width: 23%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>1.尺度函数与其积分变换正交。</th>
+<th>2.由尺度函数在低尺度上张成的子空间嵌套在高尺度上张成的子空间中。</th>
+<th>3.唯一在所有<span
+class="math inline">\(V_{i}\)</span>中都存在的函数是<span
+class="math inline">\(f(x) = 0\)</span></th>
+<th>4.任何函数都可以以任意精度表示</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Haar尺度函数是紧支撑的，即在一个有限区间(支撑)外函数值为0。</td>
+<td>$V_{-1}V_0 V_1 V_2$, 每个子空间 <span
+class="math inline">\(V_j\)</span>都包含了比前一个子空间 <span
+class="math inline">\(V_{j-1}\)</span>更多的细节信息。这就像是从模糊到清晰，一步步深入地观察信号或图像。</td>
+<td><span class="math inline">\(V_{-\infty}=0\)</span></td>
+<td><span class="math inline">\(V_{\infty}=L^{2}(R)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>在这些条件下，子空间<span
+class="math inline">\(V_{j}\)</span>的展开函数可以表示为子空间<span
+class="math inline">\(V_{j + 1}\)</span>的展开函数的加权和，即： <span
+class="math display">\[
+\varphi_{j,k}(x)=\sum_{n}\alpha_{n}\varphi_{j + 1,n}(x)
+\]</span> 将变量<span
+class="math inline">\(\alpha_{n}\)</span>变换为<span
+class="math inline">\(h_{\varphi}(n)\)</span>，进一步得到： <span
+class="math display">\[
+\varphi_{j,k}(x)=\sum_{n}h_{\varphi}(n)2^{(j + 1)/2}\varphi(2^{(j + 1)}x
+- n)
+\]</span> 对于<span
+class="math inline">\(\varphi(x)=\varphi_{0,0}(x)\)</span>，得到更简单的表达式：
+<span class="math display">\[
+\varphi(x)=\sum_{n}h_{\varphi}(n)\sqrt{2}\varphi(2x - n)
+\]</span> <span
+class="math inline">\(h_{\varphi}(n)\)</span>被称为尺度函数系数，<span
+class="math inline">\(h_{\varphi}\)</span>被称为尺度向量。该MRA方程表明任何子空间的扩展函数都可以由自身的双分辨率副本构建。</p>
+<blockquote>
+<p>Haar函数的尺度函数系数是<span
+class="math inline">\(h_{\varphi}(0)=h_{\varphi}(1)=\frac{1}{\sqrt{2}}\)</span>，所以MRA方程是:
+<span class="math display">\[
+\begin{align}
+\varphi(x)&amp;=\frac{1}{\sqrt{2}}[\sqrt{2}\varphi(2x)]+\frac{1}{\sqrt{2}}[\sqrt{2}\varphi(2x
+- 1)]\\
+\varphi(x)&amp;=\varphi(2x)+\varphi(2x - 1)
+\end{align}
+\]</span></p>
+</blockquote>
+<h3 id="小波函数wavelet-function">小波函数(Wavelet Function)</h3>
+<p>给定一个满足上述MRA要求的尺度函数（scaling
+function），我们可以定义一个<strong>小波函数</strong> <span
+class="math inline">\(\psi(x)\)</span>，它与它的整数平移和二进制尺度一起，跨越了任意两个相邻尺度子空间
+<span class="math inline">\(V_j\)</span> 和 <span
+class="math inline">\(V_{j + 1}\)</span> 之间的差异。</p>
+<p>定义小波函数集： <span class="math display">\[
+\psi_{j,k}(x)=2^{j/2}\psi(2^{j}x - k)
+\]</span> 可以看见这个形式与尺度函数很相似，定义小波子空间： <span
+class="math display">\[
+W_j=\overline{Span_k\{\psi_{j,k}(x)\}}
+\]</span> 注意: 如果 <span class="math inline">\(f(x)\in
+W_j\)</span>，则有<span
+class="math inline">\(f\)</span>可以被该空间的基唯一的线性表示。 <span
+class="math display">\[
+f(x)=\sum_{k}\alpha_{k}\psi_{j,k}(x)
+\]</span></p>
+<h4 id="尺度和小波子空间之间的关系">尺度和小波子空间之间的关系</h4>
+<p>尺度和小波函数子空间的关系是： <span class="math display">\[
+V_{j + 1}=V_j\oplus W_j
+\]</span> 其中 <span
+class="math inline">\(\oplus\)</span>表示空间的直和（类似于集合的并集）。</p>
+<blockquote>
+<p><span class="math inline">\(V_j\)</span> 在 <span
+class="math inline">\(V_{j + 1}\)</span> 中的正交补是 <span
+class="math inline">\(W_j\)</span>，并且 <span
+class="math inline">\(V_j\)</span> 的所有元素与 <span
+class="math inline">\(W_j\)</span> 的元素正交，即 <span
+class="math inline">\(\langle\varphi_{j,k}(x),\psi_{j,l}(x)\rangle =
+0\)</span>，对于所有合适的 <span class="math inline">\(j,k,l\in
+Z\)</span>。</p>
+</blockquote>
+<p>所有可度量、平方可积函数的空间为: <span class="math display">\[
+\begin{align}
+L^{2}(R)&amp;=V_0\oplus W_0\oplus W_1\oplus\cdots\\
+\text{or}\quad L^{2}(R)&amp;=V_1\oplus W_1\oplus W_2\oplus\cdots\\
+\text{or}\quad L^{2}(R)&amp;=\cdots\oplus W_{-2}\oplus W_{-1}\oplus
+V_0\oplus W_0\oplus W_1\oplus W_2\oplus\cdots
+\end{align}
+\]</span> 有一个通用结果, 其中 <span class="math inline">\(j_0\)</span>
+是任意起始尺度。 <span class="math display">\[
+L^{2}(R)=V_{j_0}\oplus W_{j_0}\oplus W_{j_0 + 1}\oplus\cdots
+\]</span>
+由于小波空间存在于由下一个更高分辨率尺度函数张成的空间内，任何小波函数也可以表示为移位的、双分辨率尺度函数的加权和，即:
+<span class="math display">\[
+\psi(x)=\sum_{n}h_{\psi}(n)\sqrt{2}\varphi(2x - n)
+\]</span> 其中 <span class="math inline">\(h_{\psi}(n)\)</span>
+被称为小波函数系数，<span class="math inline">\(h_{\psi}\)</span>
+是小波向量。</p>
+<p>利用小波张成正交补空间且整数小波平移是正交的条件，可以证明由Burrus、Gopinath和Guo
+[1998]提出的： <span class="math display">\[
+h_{\psi}(n)=(-1)^{n}h_{\varphi}(1 - n)
+\]</span></p>
+<h4 id="haar小波函数">Haar小波函数</h4>
+<p>对于Haar小波，相应的小波向量和小波函数是： <span
+class="math display">\[
+\begin{align}
+h_{\psi}(0)&amp;=(-1)^{0}h_{\varphi}(1 - 0)=\frac{1}{\sqrt{2}}\\
+h_{\psi}(1)&amp;=(-1)^{1}h_{\varphi}(1 - 1)=-\frac{1}{\sqrt{2}}\\\\
+\psi(x)&amp;=\sum_{n}h_{\psi}(n)\sqrt{2}\varphi(2x -
+n)\\&amp;=\varphi(2x)-\varphi(2x - 1)\\
+&amp;=\begin{cases}1,&amp;0\le x&lt; 0.5\\-1,&amp;0.5\le x&lt;
+1\\0,&amp; otherwise\end{cases}
+\end{align}
+\]</span></p>
+<p><strong>例：</strong></p>
+<ul>
+<li><p>(a)原小波函数<span
+class="math inline">\(\psi_{0,0}(x)\)</span>、(b)<span
+class="math inline">\(\psi_{0,2}(x)\)</span>、(c)<span
+class="math inline">\(\psi_{1,0}(x)\)</span>：对于空间<span
+class="math inline">\(W_1\)</span>, <span
+class="math inline">\(小波\psi_{1,0}(x)\)</span>比针对<span
+class="math inline">\(W_0\)</span>的小波<span
+class="math inline">\(\psi_{0,2}(x)\)</span>窄，这说明它能表示更加细微的细节。</p></li>
+<li><p>(d)显示了在子空间<span
+class="math inline">\(V_1\)</span>而不在子空间<span
+class="math inline">\(V_0\)</span>中的函数。该函数在前述例子中曾考虑过[见上图Haar尺度函数(f)]。虽然该函数不能在<span
+class="math inline">\(V_0\)</span>中精确表示，但它可以用<span
+class="math inline">\(V_0\)</span>和<span
+class="math inline">\(W_0\)</span>的展开函数进行展开。展开结果如下：
+<span class="math display">\[
+f(x) = f_a(x) + f_d(x)\\
+f_a(x) = \frac{3\sqrt{2}}{4}\varphi_{0,0}(x) -
+\frac{\sqrt{2}}{8}\varphi_{0,2}(x)\\
+f_d(x) = \frac{-\sqrt{2}}{4}\psi_{0,0}(x) -
+\frac{\sqrt{2}}{8}\psi_{0,2}(x)
+\]</span> <span class="math inline">\(f_a(x)\)</span>是<span
+class="math inline">\(f(x)\)</span>使用<span
+class="math inline">\(V_0\)</span>尺度函数的近似，而<span
+class="math inline">\(f_d(x)\)</span>为<span class="math inline">\(f(x)
+- f_a(x)\)</span>的差，用<span
+class="math inline">\(W_0\)</span>小波和表示。这两个展开式，如(e)和(f)所示，将<span
+class="math inline">\(f(x)\)</span>用类似高通和低通滤波器的方法分成两部分。<span
+class="math inline">\(f_a(x)\)</span>的低频部分在<span
+class="math inline">\(f_a(x)\)</span>中得到，<span
+class="math inline">\(f_a(x)\)</span>给出了<span
+class="math inline">\(f(x)\)</span>在每个积分区间上的平均值，而高频细节则在<span
+class="math inline">\(f_d(x)\)</span>中编码。</p></li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241225112021739.png"
+alt="image-20241225112021739" />
+<figcaption aria-hidden="true">image-20241225112021739</figcaption>
+</figure>
+<h2
+id="一维小波变换wavelet-transforms-in-one-dimension">一维小波变换(Wavelet
+Transforms in One Dimension)</h2>
+<blockquote>
+<p>小波函数作为一系列的函数族，需要满足以下两个约束条件：</p>
+<ol type="1">
+<li><p>均值为0：(容许条件，小波函数不应该含有0频分量=函数的平均值) <span
+class="math display">\[
+\int^{\infty}_{-\infty}\Psi(t)dt=0
+\]</span>
+在傅里叶变换中，我们使用正弦函数展开。可以看到正弦函数也满足这个条件。BUT，正弦函数不满足下面这个条件。</p></li>
+<li><p>平方可积(有限能量)： <span class="math display">\[
+\int^{\infty}_{-\infty}|\Psi(t)|^2dt&lt;\infty
+\]</span></p></li>
+</ol>
+<p>文中提及的可度量、平方可积，意思是要满足上面的两个条件。</p>
+</blockquote>
+<h3 id="小波序列展开wavelet-series-expansion">小波序列展开(Wavelet
+series expansion)</h3>
+<p>我们定义函数<span class="math inline">\(f(x)\in
+L^{2}(R)\)</span>相对于小波函数<span
+class="math inline">\(\psi(x)\)</span>和尺度函数<span
+class="math inline">\(\varphi(x)\)</span>的小波级数展开为： <span
+class="math display">\[
+f(x)=\sum_{k}c_{j_{0}}(k)\varphi_{j_{0},k}(x)+\sum_{j =
+j_{0}}^{\infty}\sum_{k}d_{j}(k)\psi_{j,k}(x)
+\]</span> 其中<span
+class="math inline">\(j_{0}\)</span>是任意起始尺度，<span
+class="math inline">\(c_{j_{0}}(k)\)</span>通常被称为近似系数，<span
+class="math inline">\(d_{j}(k)\)</span>被称为细节系数。</p>
+<p>这说明：<strong>任何可度量的、平方可积的一维函数都可以表示为<span
+class="math inline">\(j\ge j_0\)</span>的<span
+class="math inline">\(V_{j0}\)</span>尺度函数和<span
+class="math inline">\(W_j\)</span>小波的加权和。</strong></p>
+<p>如果展开函数形成一个正交基或紧支撑（=尺度函数与其积分变换正交。这是常见情况），展开系数通过以下方式计算：
+<span class="math display">\[
+c_{j_{0}}(k)=\langle f(x),\varphi_{j_{0},k}(x)\rangle=\int
+f(x)\varphi_{j_{0},k}(x)dx\\
+d_{j}(k)=\langle f(x),\psi_{j,k}(x)\rangle=\int f(x)\psi_{j,k}(x)dx
+\]</span></p>
+<h4 id="例yx2的哈尔小波级数展开">例：<span
+class="math inline">\(y=x^2\)</span>的哈尔小波级数展开</h4>
+<p>考虑如下的简单函数，计算使用Haar小波表示它的展开系数。 <span
+class="math display">\[
+y = \begin{cases} x^{2},&amp;0\leq x &lt; 1\\ 0,&amp;\text{otherwise}
+\end{cases}
+\]</span> 解：令<span class="math inline">\(j_{0}=0\)</span>： <span
+class="math display">\[
+\begin{align}
+c_{0}(0)&amp;=\int_{0}^{1}x^{2}\varphi_{0,0}(x)dx=\int_{0}^{1}x^{2}dx=\frac{x^{3}}{3}\Big|_{0}^{1}=\frac{1}{3}\\
+d_{0}(0)&amp;=\int_{0}^{1}x^{2}\psi_{0,0}(x)dx=\int_{0}^{0.5}x^{2}dx-\int_{0.5}^{1}x^{2}dx=-\frac{1}{4}\\
+d_{1}(0)&amp;=\int_{0}^{1}x^{2}\psi_{1,0}(x)dx=\int_{0}^{0.25}x^{2}\sqrt{2}dx-\int_{0.25}^{0.5}x^{2}\sqrt{2}dx=-\frac{\sqrt{2}}{32}\\
+d_{1}(1)&amp;=\int_{0}^{1}x^{2}\psi_{1,1}(x)dx=\int_{0.5}^{0.75}x^{2}\sqrt{2}dx-\int_{0.75}^{1}x^{2}\sqrt{2}dx=-\frac{3\sqrt{2}}{32}
+\end{align}
+\]</span> 将这些值带入小波级数展开式，有：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241225103135159.png" alt="image-20241225103135159" style="zoom: 67%;" /></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241225103229492.png"
+alt="image-20241225103229492" />
+<figcaption aria-hidden="true">image-20241225103229492</figcaption>
+</figure>
+<h3 id="离散小波变换discrete-wavelet-transforms">离散小波变换(Discrete
+Wavelet Transforms)</h3>
+<p>小波级数展开将单个连续变量的函数映射为离散系数序列。如果被展开的函数是离散的，例如连续函数<span
+class="math inline">\(f(x)\)</span>的样本，则展开的系数是函数的离散小波变换(
+DWT )、展开本身是函数的离散小波反变换。</p>
+<p>DWT变换对定义为: <span class="math display">\[
+W_{\varphi}(j_{0},k)=\frac{1}{\sqrt{M}}\sum_{x}f(x)\varphi_{j_{0},k}(x)\\
+W_{\psi}(j,k)=\frac{1}{\sqrt{M}}\sum_{x}f(x)\psi_{j,k}(x) \quad
+\text{for } j\geq j_{0}\\\\
+f(x)=\frac{1}{\sqrt{M}}\sum_{k}W_{\varphi}(j_{0},k)\varphi_{j_{0},k}(x)+\frac{1}{\sqrt{M}}\sum_{j
+= j_{0}}^{\infty}\sum_{k}W_{\psi}(j,k)\psi_{j,k}(x)
+\]</span> 这里<span class="math inline">\(f(x)\)</span>，<span
+class="math inline">\(\varphi_{j_{0},k}(x)\)</span>和<span
+class="math inline">\(\psi_{j,k}(x)\)</span>是离散变量<span
+class="math inline">\(x = 0,1,\cdots,M - 1\)</span>的函数; <span
+class="math inline">\(W_{\varphi}(j_{0},k)\)</span>, <span
+class="math inline">\(W_{\psi}(j,k)\)</span>对应上面小波序列展开中的<span
+class="math inline">\(c_{j_{0}}(k)\)</span>近似系数(低频部分)，<span
+class="math inline">\(d_{j}(k)\)</span>细节系数(高频部分)。</p>
+<blockquote>
+<p>第四版：感觉更简单一点点。</p>
+<p>与傅里叶级数展开类似，上一节的小波级数展开将单个连续变量的函数映射为一系列离散系数。如果被展开的函数是离散的，那么展开的系数就是它们的离散小波变换（DWT），而展开式本身就是函数的逆离散小波变换。</p>
+<p>令<span class="math inline">\(j_0 = 0\)</span>，并将注意力限制在<span
+class="math inline">\(N\)</span>为2的幂次方（即<span
+class="math inline">\(N = 2^J\)</span>）的<span
+class="math inline">\(N\)</span>点离散函数上，我们得到： <span
+class="math display">\[
+f(x)=\frac{1}{\sqrt{N}}\left[T_{\varphi}(0,0)\varphi(x)+\sum_{j = 0}^{J
+- 1}\sum_{k = 0}^{2^{j}-1}T_{\psi}(j,k)\psi_{j,k}(x)\right]
+\]</span> 其中： <span class="math display">\[
+T_{\varphi}(0,0)=\langle f(x),\varphi_{0,0}(x)\rangle=\langle
+f(x),\varphi(x)\rangle=\frac{1}{\sqrt{N}}\sum_{x = 0}^{N -
+1}f(x)\varphi^{*}(x) \\
+T_{\psi}(j,k)=\langle
+f(x),\psi_{j,k}(x)\rangle=\frac{1}{\sqrt{N}}\sum_{x = 0}^{N -
+1}f(x)\psi_{j,k}^{*}(x) \quad (7 - 138)
+\]</span> 其中<span class="math inline">\(j = 0,1,\cdots,J -
+1\)</span>且<span class="math inline">\(k =
+0,1,\cdots,2^{j}-1\)</span>。由上面公式定义的变换系数分别被称为近似系数和细节系数。</p>
+</blockquote>
+<h4 id="例计算一维离散小波变换">例：计算一维离散小波变换</h4>
+<p>考虑四点离散函数：<span class="math inline">\(f(0)=1\)</span>，<span
+class="math inline">\(f(1)=4\)</span>，<span class="math inline">\(f(2)=
+- 3\)</span>，<span
+class="math inline">\(f(3)=0\)</span>。我们将使用Haar尺度和小波函数，并假设<span
+class="math inline">\(f(x)\)</span>的四个样本分布在基函数的支撑集上。</p>
+<p>令<span class="math inline">\(j_{0}=0\)</span>，我们可以计算DWT系数为
+： <span class="math display">\[
+\begin{align}
+W_{\varphi}(0,0)&amp;=\frac{1}{2}\sum_{x =
+0}^{3}f(x)\varphi_{0,0}(x)=\frac{1}{2}[1 + 4 + (- 3)+0]=1\\
+W_{\psi}(0,0)&amp;=\frac{1}{2}[1 + 4 + (- 3)\cdot(- 1)+0\cdot(- 1)]=4\\
+W_{\psi}(1,0)&amp;=\frac{1}{2}[1\cdot\sqrt{2}+4\cdot(-\sqrt{2})+(-
+3)\cdot0+0\cdot0]=- 1.5\sqrt{2}\\
+W_{\psi}(1,1)&amp;=\frac{1}{2}[1\cdot0+4\cdot0+(-
+3)\cdot\sqrt{2}+0\cdot(-\sqrt{2})]=- 1.5\sqrt{2}\end{align}
+\]</span>
+因此，我们的简单四样本函数相对于Haar缩放和小波函数的离散小波变换是<span
+class="math inline">\(\{1, 4, - 1.5\sqrt{2}, -
+1.5\sqrt{2}\}\)</span>。由于变换系数是两个变量——尺度<span
+class="math inline">\(j\)</span>和平移<span
+class="math inline">\(k\)</span>的函数，我们将它们组合成一个有序集合。这个集合中的元素与该函数按顺序排列的Haar变换的元素相同：
+<span class="math display">\[
+t^{H}=\mathbf{A}_{H} f=\frac{1}{2}\left[\begin{array}{cccc} 1 &amp; 1
+&amp; 1 &amp; 1 \\ 1 &amp;1&amp; - 1 &amp; - 1 \\ \sqrt{2} &amp;
+-\sqrt{2} &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; \sqrt{2} &amp;
+-\sqrt{2}  \end{array}\right]\left[\begin{array}{c} 1 \\ 4 \\ - 3 \\ 0
+\end{array}\right]=\left[\begin{array}{c} 1 \\4\\ - 1.5\sqrt{2} \\ -
+1.5\sqrt{2}  \end{array}\right]
+\]</span> 回顾上一节，Haar变换是单个变换域变量（记为<span
+class="math inline">\(u\)</span>）的函数。 方程: <span
+class="math display">\[
+f(x)=\frac 1
+{\sqrt{M}}\left[W_{\varphi}(0,0)\varphi(x)+\sum^{J-1}_{j=0}\sum^{2^j-1}_{k=0}W_{\psi}(j,k)\psi_{j,k}(x)\right]
+\]</span>
+使得能够从其小波变换系数重建原始函数。展开求和式可以构造原始函数： <span
+class="math display">\[
+f(x)=\frac{1}{2}[W_{\varphi}(0,0)\varphi_{0,0}(x)+W_{\psi}(0,0)\psi_{0,0}(x)+W_{\psi}(1,0)\psi_{1,0}(x)+W_{\psi}(1,1)\psi_{1,1}(x)]
+\]</span> 对于<span class="math inline">\(x = 0\)</span>: <span
+class="math display">\[
+f(0)=\frac{1}{2}[1\cdot1 + 4\cdot1+(- 1.5\sqrt{2})\cdot\sqrt{2}+(-
+1.5\sqrt{2})\cdot0]=1
+\]</span> 基本的假设是开始尺度<span
+class="math inline">\(j_0=0\)</span>, 此例的4点DWT是<span
+class="math inline">\(f(x)\)</span>的二尺度分解，即<span
+class="math inline">\(j=\{0,1\}\)</span>.</p>
+<h2 id="快速小波变换the-fast-wavelet-transform">快速小波变换(The Fast
+Wavelet Transform)</h2>
+<blockquote>
+<p><strong>实现DWT的快速实现。</strong></p>
+</blockquote>
+<p>再次考虑MRA方程: <span class="math display">\[
+\varphi(x)=\sum_{n}h_{\varphi}(n)\sqrt{2}\varphi(2x - n)
+\]</span> 将<span class="math inline">\(x\)</span>乘以<span
+class="math inline">\(2^{j}\)</span>，平移<span
+class="math inline">\(k\)</span>，并令<span class="math inline">\(m = 2k
++ n\)</span>，得到 : <span class="math display">\[
+\begin{align}\varphi(2^{j}x -
+k)&amp;=\sum_{n}h_{\varphi}(n)\sqrt{2}\varphi(2(2^{j}x - k)-n)\\
+&amp;=\sum_{n}h_{\varphi}(n)\sqrt{2}\varphi(2^{j+1}x-2k-n)\\
+&amp;=\sum_{m}h_{\varphi}(m - 2k)\sqrt{2}\varphi(2^{j + 1}x - m)
+\end{align}
+\]</span> 对于小波函数，有类似结果： <span class="math display">\[
+\psi(2^{j}x - k)=\sum_{m}h_{\psi}(m - 2k)\sqrt{2}\varphi(2^{j + 1}x - m)
+\]</span> 对于离散小波函数，有： <span class="math display">\[
+W_{\psi}(j,k)=\frac{1}{\sqrt{M}}\sum_{x}f(x)2^{j/2}\psi(2^{j}x - k)
+\]</span> 进一步，有： <span class="math display">\[
+W_{\psi}(j,k)=\frac{1}{\sqrt{M}}\sum_{x}f(x)2^{j/2}\left[\sum_{m}h_{\psi}(m
+- 2k)\sqrt{2}\varphi(2^{j + 1}x - m)\right]
+\]</span> 交换求和与积分并重新排列项，得到 ： <span
+class="math display">\[
+W_{\psi}(j,k)=\sum_{m}h_{\psi}(m -
+2k)\left[\frac{1}{\sqrt{M}}\sum_{x}f(x)2^{(j + 1)/2}\varphi(2^{j + 1}x -
+m)\right]\\
+W_{\psi}(j,k)=\sum_{m}h_{\psi}(m - 2k)W_{\varphi}(j + 1,m)\\
+同理,\ W_{\varphi}(j,k)=\sum_{m}h_{\varphi}(m - 2k)W_{\varphi}(j + 1,m)
+\]</span> 上述方程表示了快速小波变换(FWT),
+揭示了相邻尺度的离散小波变换（DWT）系数之间的显著关系。</p>
+<p>可以看到，尺度<span class="math inline">\(j\)</span>的近似系数<span
+class="math inline">\(W_{\varphi}(j,k)\)</span>和细节系数<span
+class="math inline">\(W_{\psi}(j,k)\)</span>都可以通过将尺度<span
+class="math inline">\(j+1\)</span>的近似系数<span
+class="math inline">\(W_{\varphi}(j +
+1,k)\)</span>与时间反转的缩放向量<span
+class="math inline">\(h_{\varphi}(-n)\)</span>和小波向量<span
+class="math inline">\(h_{\psi}(-n)\)</span>进行卷积，并对结果进行下采样得到。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241225113151439.png" alt="T与W同" style="zoom:50%;margin: 0 auto;" /></p>
+<h3 id="与两频段子带编译码系统的关系">与两频段子带编译码系统的关系</h3>
+<blockquote>
+<p><strong>Q: 两频段子带编译码系统?</strong></p>
+<p>A: 是一种将信号分解为低频和高频子带的系统</p>
+<ol type="1">
+<li><strong>低通通道（Low-Pass Channel）</strong>：对应于尺度滤波器
+<span
+class="math inline">\(h_{\varphi}(n)\)</span>，用于提取信号的低频成分。</li>
+<li><strong>高通通道（High-Pass Channel）</strong>：对应于小波滤波器
+<span
+class="math inline">\(h_{\psi}(n)\)</span>，用于提取信号的高频成分。</li>
+</ol>
+<p><span class="math display">\[
+\sum_{k}g_{0}(k)h_{0}(n - k)+(-1)^{n}\sum_{k}g_{0}(k)h_{0}(n -
+k)=2\delta(n)，\delta{(n)}=\begin{cases}1 ,&amp;n=0\\0, &amp;n\neq
+0\end{cases}\\
+\sum_{k}g_{0}(k)h_{0}(2n - k)=\langle g_{0}(k),h_{0}(2n -
+k)\rangle=\delta(n)\\
+\langle h_{i}(2n - k),g_{j}(k)\rangle=\delta(i - j)\delta(n)\quad
+i,j\in\{0,1\}
+\]</span></p>
+</blockquote>
+<p>上述快速小波变换过程与两频段子带编译码系统的分析部分相同，其中: <span
+class="math display">\[
+h_{0}(n)=h_{\varphi}(-n)\\
+h_{1}(n)=h_{\psi}(-n)
+\]</span> 可以写出 : <span class="math display">\[
+W_{\psi}(j,k)=h_{\psi}(-n)\ast W_{\varphi}(j + 1,n)\big|_{n =
+2k,k\geq0}\\
+W_{\varphi}(j,k)=h_{\varphi}(-n)\ast W_{\varphi}(j + 1,n)\big|_{n =
+2k,k\geq0}
+\]</span> 其中卷积在<span class="math inline">\(n =
+2k(k\geq0)\)</span>时刻进行求值。在非负、偶数时刻，计算卷积与以2为步长进行过滤和抽样的效果相同。</p>
+<p>值得注意的是，滤波器组可以“迭代”以创建多级结构，用于计算两个或多个连续尺度的
+DWT 系数，如图所示。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241225114935315.png"
+alt="image-20241225114935315" />
+<figcaption aria-hidden="true">image-20241225114935315</figcaption>
+</figure>
+<h4 id="例计算一维小波变换">例：计算一维小波变换</h4>
+<p>与上面的例子同：<span
+class="math inline">\(f(n)=\{1,4,-3,0\}\)</span>,
+但现在使用相应的尺度和小波向量： <span class="math display">\[
+h_{\varphi}(n)=\begin{cases}\frac{1}{\sqrt{2}},&amp;n=0,1\\0,&amp;
+otherwise\end{cases}\\\\
+h_{\psi}(n)=\begin{cases}\frac{1}{\sqrt{2}},&amp;n=0\\-\frac{1}{\sqrt{2}},&amp;n=1\\0,&amp;
+otherwise\end{cases}
+\]</span> 这是用于建立FWT滤波器族的函数，它们给出了滤波器系数。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241225115401963.png"
+alt="image-20241225115401963" />
+<figcaption aria-hidden="true">image-20241225115401963</figcaption>
+</figure>
+<h3 id="一维快速小波反变换">一维快速小波反变换</h3>
+<p>上采样序列定义为： <span class="math display">\[
+y_{2\uparrow}(n)=\begin{cases}y(n/2),&amp;n是偶数\\0,&amp;其他\end{cases}
+\]</span> 其中<span
+class="math inline">\(y(n)\)</span>是一维取样序列，上采样因子为2。因子2上取样可以被视为在<span
+class="math inline">\(y(n)\)</span>的每个样本后插入一个0.</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241225165159030.png"
+alt="image-20241225165159030" />
+<figcaption aria-hidden="true">image-20241225165159030</figcaption>
+</figure>
+<h4 id="例计算一维小波反变换">例：计算一维小波反变换</h4>
+<p>快速小波反变换的计算与正变换的计算呈镜像关系。在开始计算之前，先对0级近似系数和细节系数进行上取样，分别得到{4,0},{1,0},然后继续向右移动，卷积，最终可以得到<span
+class="math inline">\(f(x)=T_{\varphi}(2,n)\)</span>.</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241225164731974.png"
+alt="image-20241225164731974" />
+<figcaption aria-hidden="true">image-20241225164731974</figcaption>
+</figure>
+<h3 id="fft与fwt的区别">FFT与FWT的区别</h3>
+<ul>
+<li>计算长度为<span class="math inline">\(M =
+2^j\)</span>序列的FWT所涉及的数学运算量为<span
+class="math inline">\(O(M)\)</span>阶。</li>
+<li>这与FFT算法相比具有优势，FFT算法需要<span
+class="math inline">\(O(M\log M)\)</span>。</li>
+<li>虽然傅里叶基函数（即正弦函数）保证了FFT的存在，但FWT的存在取决于所使用小波的缩放函数的可用性，以及缩放函数和相应小波的正交性（或双正交性）。</li>
+<li>FFT无法同时在时间和频率上分析函数，但FWT可以。</li>
+</ul>
+<h2 id="小波包wavelet-packets">小波包(Wavelet Packets)</h2>
+<p>快速小波变换（FWT）将函数分解为尺度和小波函数之和，其中尺度和小波函数的带框呈对数关系。也就是说，函数的低频内容被分组到窄频带(尺度和小波函数)中，而高频内容被分组到较宽的频带(尺度和小波函数)中。</p>
+<p>如果我们想要对时频平面的划分进行更精细的控制，FWT必须被推广以产生一种更灵活的分解——称为小波包。</p>
+<h3 id="分析树">分析树</h3>
+<p>根节点被赋予最高尺度的近似系数，这些系数是函数本身的样本，而叶子节点继承变换的近似和细节系数输出。<strong>注意：每个节点的系数都是线性展开的权重。</strong></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241225170845632.png"
+alt="image-20241225170845632" />
+<figcaption aria-hidden="true">image-20241225170845632</figcaption>
+</figure>
+<h4 id="例三尺度分析树">例：三尺度分析树</h4>
+<p>例如，上图中的三尺度分析树提供了以下三种展开选项： <span
+class="math display">\[
+\begin{align}
+V_j&amp; = V_{j - 1} \oplus W_{j - 1}\\
+V_j &amp;= V_{j - 2} \oplus W_{j - 2} \oplus W_{j - 1}\\
+V_j &amp;= V_{j - 3} \oplus W_{j - 3} \oplus W_{j - 2} \oplus W_{j - 1}
+\end{align}
+\]</span> 其中 <span
+class="math inline">\(\oplus\)</span>表示空间的直和（类似于集合的并集）。</p>
+<p>分析树也是表示小波包的一种有效机制，小波包不过是对细节进行迭代滤波的常规小波变换。因此，上图(b)中的三尺度FWT分析树变成了下图中的三尺度小波包树。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241225193133942.png"
+alt="image-20241225193133942" />
+<figcaption aria-hidden="true">image-20241225193133942</figcaption>
+</figure>
+<p><span class="math inline">\(A\)</span>表示近似滤波、<span
+class="math inline">\(D\)</span>表示细节滤波。图中的小波包树支持26种不同的分解。例如，<span
+class="math inline">\(V_j\)</span>可以展开为: <span
+class="math display">\[
+V_J = V_{J - 3} \oplus W_{J - 3} \oplus W_{J - 2,A} \oplus W_{J - 2,D}
+\oplus W_{J - 1,AA} \oplus W_{J - 1,AD} \oplus W_{J - 1,DA} \oplus W_{J
+- 1,DD}\\
+V_J = V_{J - 1} \oplus W_{J - 1,D} \oplus W_{J - 1,AA} \oplus W_{J -
+1,AD}
+\]</span> <img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241225194327314.png"
+alt="image-20241225194327314" /></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241225194338398.png"
+alt="image-20241225194338398" />
+<figcaption aria-hidden="true">image-20241225194338398</figcaption>
+</figure>
+<p>一般来说，<span
+class="math inline">\(P\)</span>尺度的一维小波包变换（以及相关的<span
+class="math inline">\(P + 1\)</span>级分析树）支持: <span
+class="math display">\[
+D(P + 1)=[D(P)]^2 + 1
+\]</span> 种独特的分解，其中<span
+class="math inline">\(D(1)=1\)</span>。</p>
+</div><div class="post-end"><div class="post-prev"></div><div class="post-next"><a href="/2024/12/25/2024-12-25-%E5%90%90%E6%A7%BD/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch6-%E5%B0%8F%E6%B3%A2%E5%8F%98%E6%8D%A2%E5%85%B6%E4%BB%96%E5%9B%BE%E5%83%8F%E5%8F%98%E6%8D%A2"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch6 小波变换&amp;其他图像变换</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E8%83%8C%E6%99%AF%E7%9F%A5%E8%AF%86bk"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">背景知识(bk)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%9B%BE%E5%83%8F%E9%87%91%E5%AD%97%E5%A1%94image-pyramid"><span class="toc-content-number">1.1.1.</span> <span class="toc-content-text">图像金字塔(Image Pyramid)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%AD%90%E5%B8%A6%E7%BC%96%E7%A0%81sub-band-coding"><span class="toc-content-number">1.1.2.</span> <span class="toc-content-text">子带编码(Sub-band Coding)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#z---%E5%8F%98%E6%8D%A2%E7%BA%BF%E6%80%A7%E5%8F%98%E6%8D%A2"><span class="toc-content-number">1.1.2.1.</span> <span class="toc-content-text">Z - 变换(线性变换)</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%AE%8C%E7%BE%8E%E9%87%8D%E5%BB%BA%E6%BB%A4%E6%B3%A2%E5%99%A8%E7%BB%84pcfb-perfect-construction-filter-banks"><span class="toc-content-number">1.1.2.2.</span> <span class="toc-content-text">完美重建滤波器组(PCFB,
+Perfect Construction Filter Banks)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E6%9C%89%E9%99%90%E8%84%89%E5%86%B2%E5%93%8D%E5%BA%94fir%E6%BB%A4%E6%B3%A2%E5%99%A8"><span class="toc-content-number">1.1.2.2.1.</span> <span class="toc-content-text">有限脉冲响应（FIR）滤波器</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E5%8F%8C%E6%AD%A3%E4%BA%A4%E6%80%A7biorthogonality"><span class="toc-content-number">1.1.2.2.2.</span> <span class="toc-content-text">双正交性(biorthogonality)</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E9%80%9A%E8%A7%A3"><span class="toc-content-number">1.1.2.2.3.</span> <span class="toc-content-text">通解</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%93%88%E5%B0%94%E5%8F%98%E6%8D%A2haar-transform"><span class="toc-content-number">1.1.3.</span> <span class="toc-content-text">哈尔变换(Haar Transform)</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%A4%9A%E5%88%86%E8%BE%A8%E7%8E%87%E5%B1%95%E5%BC%80multi-resolution-expansions"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">多分辨率展开(Multi-resolution
+Expansions)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%BA%8F%E5%88%97%E5%B1%95%E5%BC%80series-expansions"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">序列展开(Series Expansions)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%B0%BA%E5%BA%A6%E5%87%BD%E6%95%B0scaling-function"><span class="toc-content-number">1.2.2.</span> <span class="toc-content-text">尺度函数(Scaling Function)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B%E5%93%88%E5%B0%94%E5%B0%BA%E5%BA%A6%E5%87%BD%E6%95%B0haar-scaling-func"><span class="toc-content-number">1.2.2.1.</span> <span class="toc-content-text">例：哈尔尺度函数(Haar scaling
+func)</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%A4%9A%E5%88%86%E8%BE%A8%E7%8E%87%E5%88%86%E6%9E%90%E7%9A%84%E5%9B%9B%E9%A1%B9%E5%9F%BA%E6%9C%AC%E8%A6%81%E6%B1%82"><span class="toc-content-number">1.2.2.2.</span> <span class="toc-content-text">多分辨率分析的四项基本要求</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%B0%8F%E6%B3%A2%E5%87%BD%E6%95%B0wavelet-function"><span class="toc-content-number">1.2.3.</span> <span class="toc-content-text">小波函数(Wavelet Function)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%B0%BA%E5%BA%A6%E5%92%8C%E5%B0%8F%E6%B3%A2%E5%AD%90%E7%A9%BA%E9%97%B4%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-content-number">1.2.3.1.</span> <span class="toc-content-text">尺度和小波子空间之间的关系</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#haar%E5%B0%8F%E6%B3%A2%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.2.3.2.</span> <span class="toc-content-text">Haar小波函数</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E4%B8%80%E7%BB%B4%E5%B0%8F%E6%B3%A2%E5%8F%98%E6%8D%A2wavelet-transforms-in-one-dimension"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">一维小波变换(Wavelet
+Transforms in One Dimension)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%B0%8F%E6%B3%A2%E5%BA%8F%E5%88%97%E5%B1%95%E5%BC%80wavelet-series-expansion"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">小波序列展开(Wavelet
+series expansion)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8Byx2%E7%9A%84%E5%93%88%E5%B0%94%E5%B0%8F%E6%B3%A2%E7%BA%A7%E6%95%B0%E5%B1%95%E5%BC%80"><span class="toc-content-number">1.3.1.1.</span> <span class="toc-content-text">例：\(y&#x3D;x^2\)的哈尔小波级数展开</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%A6%BB%E6%95%A3%E5%B0%8F%E6%B3%A2%E5%8F%98%E6%8D%A2discrete-wavelet-transforms"><span class="toc-content-number">1.3.2.</span> <span class="toc-content-text">离散小波变换(Discrete
+Wavelet Transforms)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B%E8%AE%A1%E7%AE%97%E4%B8%80%E7%BB%B4%E7%A6%BB%E6%95%A3%E5%B0%8F%E6%B3%A2%E5%8F%98%E6%8D%A2"><span class="toc-content-number">1.3.2.1.</span> <span class="toc-content-text">例：计算一维离散小波变换</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%BF%AB%E9%80%9F%E5%B0%8F%E6%B3%A2%E5%8F%98%E6%8D%A2the-fast-wavelet-transform"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">快速小波变换(The Fast
+Wavelet Transform)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%B8%8E%E4%B8%A4%E9%A2%91%E6%AE%B5%E5%AD%90%E5%B8%A6%E7%BC%96%E8%AF%91%E7%A0%81%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-content-number">1.4.1.</span> <span class="toc-content-text">与两频段子带编译码系统的关系</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B%E8%AE%A1%E7%AE%97%E4%B8%80%E7%BB%B4%E5%B0%8F%E6%B3%A2%E5%8F%98%E6%8D%A2"><span class="toc-content-number">1.4.1.1.</span> <span class="toc-content-text">例：计算一维小波变换</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%B8%80%E7%BB%B4%E5%BF%AB%E9%80%9F%E5%B0%8F%E6%B3%A2%E5%8F%8D%E5%8F%98%E6%8D%A2"><span class="toc-content-number">1.4.2.</span> <span class="toc-content-text">一维快速小波反变换</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B%E8%AE%A1%E7%AE%97%E4%B8%80%E7%BB%B4%E5%B0%8F%E6%B3%A2%E5%8F%8D%E5%8F%98%E6%8D%A2"><span class="toc-content-number">1.4.2.1.</span> <span class="toc-content-text">例：计算一维小波反变换</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#fft%E4%B8%8Efwt%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-content-number">1.4.3.</span> <span class="toc-content-text">FFT与FWT的区别</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%B0%8F%E6%B3%A2%E5%8C%85wavelet-packets"><span class="toc-content-number">1.5.</span> <span class="toc-content-text">小波包(Wavelet Packets)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%88%86%E6%9E%90%E6%A0%91"><span class="toc-content-number">1.5.1.</span> <span class="toc-content-text">分析树</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B%E4%B8%89%E5%B0%BA%E5%BA%A6%E5%88%86%E6%9E%90%E6%A0%91"><span class="toc-content-number">1.5.1.1.</span> <span class="toc-content-text">例：三尺度分析树</span></a></li></ol></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>
