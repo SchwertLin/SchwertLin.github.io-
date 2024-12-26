@@ -1,0 +1,327 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch9 形态学图像处理  四大算子相应性质。 腐蚀、膨胀、开闭之间的含义、关系  [TOC] 在二值图像中，所讨论的集合是二维整数空间\(\mathbb{Z}^{2}\)中的成员。\(\mathbb{Z}^{2}\)空间中，集合的每个元素都是一个二维向量(元组)，元组的坐标是图像中目标(前景)像素的坐标。 灰度数字图像可以表示为各个集合，这些集合的分量位于\(\mathbb{Z}^{">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图像处理-Ch8-腐蚀膨胀+开闭运算">
+<meta property="og:url" content="http://example.com/2024/12/26/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-Ch8-%E8%85%90%E8%9A%80%E8%86%A8%E8%83%80-%E5%BC%80%E9%97%AD%E8%BF%90%E7%AE%97/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch9 形态学图像处理  四大算子相应性质。 腐蚀、膨胀、开闭之间的含义、关系  [TOC] 在二值图像中，所讨论的集合是二维整数空间\(\mathbb{Z}^{2}\)中的成员。\(\mathbb{Z}^{2}\)空间中，集合的每个元素都是一个二维向量(元组)，元组的坐标是图像中目标(前景)像素的坐标。 灰度数字图像可以表示为各个集合，这些集合的分量位于\(\mathbb{Z}^{">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-26T14:54:15.000Z">
+<meta property="article:modified_time" content="2024-12-26T14:57:04.768Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="图像处理">
+<meta name="twitter:card" content="summary"><title>图像处理-Ch8-腐蚀膨胀+开闭运算 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>图像处理-Ch8-腐蚀膨胀+开闭运算</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2024-12-26</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2024-12-26</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约1.6K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch9-形态学图像处理">Ch9 形态学图像处理</h1>
+<blockquote>
+<p>四大算子相应性质。</p>
+<p>腐蚀、膨胀、开闭之间的含义、关系</p>
+</blockquote>
+<p>[TOC]</p>
+<p>在二值图像中，所讨论的集合是二维整数空间<span
+class="math inline">\(\mathbb{Z}^{2}\)</span>中的成员。<span
+class="math inline">\(\mathbb{Z}^{2}\)</span>空间中，集合的每个元素都是一个二维向量(元组)，元组的坐标是图像中目标(前景)像素的坐标。</p>
+<p>灰度数字图像可以表示为各个集合，这些集合的分量位于<span
+class="math inline">\(\mathbb{Z}^{3}\)</span>空间中：前两个值是坐标，第三个值对应离散灰度值。</p>
+<p>在图像处理中，我们使用两类像素集合的形态学：目标元素和结构元(SE)。目标定义为前景像素集合，结构元按照前景像素和背景像素确定。</p>
+<h2 id="预备知识preliminaries">预备知识(Preliminaries)</h2>
+<p><strong>集合的元素关系</strong></p>
+<p>设<span class="math inline">\(A\)</span>是<span
+class="math inline">\(\mathbb{Z}^{2}\)</span>中的一个集合。如果<span
+class="math inline">\(a=(a_{1},a_{2})\)</span>是<span
+class="math inline">\(A\)</span>的一个元素，那么我们写作<span
+class="math inline">\(a\in A\)</span>。</p>
+<p>类似地，如果<span class="math inline">\(a\)</span>不是<span
+class="math inline">\(A\)</span>的元素，我们写作<span
+class="math inline">\(a\notin A\)</span>。</p>
+<p>没有元素的集合称为空集，用符号<span
+class="math inline">\(\varnothing\)</span>表示。</p>
+<p><strong>集合间的关系</strong></p>
+<p>如果集合<span class="math inline">\(A\)</span>的每个元素也是集合<span
+class="math inline">\(B\)</span>的元素，那么<span
+class="math inline">\(A\)</span>被称为<span
+class="math inline">\(B\)</span>的子集，记为<span
+class="math inline">\(A\subseteq B\)</span>。</p>
+<p>两个集合<span class="math inline">\(A\)</span>和<span
+class="math inline">\(B\)</span>的并集，记为<span
+class="math inline">\(C = A\cup B\)</span>，是属于<span
+class="math inline">\(A\)</span>、<span
+class="math inline">\(B\)</span>或两者的所有元素的集合。</p>
+<p>两个集合<span class="math inline">\(A\)</span>和<span
+class="math inline">\(B\)</span>的交集，记为<span
+class="math inline">\(D = A\cap B\)</span>，是属于<span
+class="math inline">\(A\)</span>和<span
+class="math inline">\(B\)</span>两者的所有元素的集合。</p>
+<p>两个集合<span class="math inline">\(A\)</span>和<span
+class="math inline">\(B\)</span>如果没有共同元素，则称它们是不相交或互斥的。在这种情况下，<span
+class="math inline">\(A\cap B=\varnothing\)</span>。</p>
+<p><strong>集合的运算</strong></p>
+<p>集合<span class="math inline">\(A\)</span>的补集是不包含在<span
+class="math inline">\(A\)</span>中的元素的集合，<span
+class="math inline">\(A^{c}=\{\omega|\omega\notin A\}\)</span>。</p>
+<p>两个集合<span class="math inline">\(A\)</span>和<span
+class="math inline">\(B\)</span>的差，记为<span class="math inline">\(A
+- B\)</span>，定义为<span class="math inline">\(A - B=\{\omega|\omega\in
+A,\omega\notin B\}=A\cap B^{c}\)</span>。</p>
+<p><strong>集合的变换</strong>：<strong>反射和变换都是相对于集合的原点定义的。</strong></p>
+<p>集合<span class="math inline">\(B\)</span>的反射，记为<span
+class="math inline">\(\hat{B}\)</span>，定义为<span
+class="math inline">\(\hat{B}=\{\omega|\omega = -b,b\in
+B\}\)</span>。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226220432527.png"
+alt="image-20241226220432527" />
+<figcaption aria-hidden="true">image-20241226220432527</figcaption>
+</figure>
+<p>集合<span class="math inline">\(A\)</span>通过点<span
+class="math inline">\(z=(z_{1},z_{2})\)</span>的平移，记为<span
+class="math inline">\((A)_{z}\)</span>，定义为<span
+class="math inline">\((A)_{z}=\{c|c = a + z,a\in A\}\)</span>。</p>
+<h2 id="膨胀和腐蚀dilation-and-erosion">膨胀和腐蚀(Dilation and
+Erosion)</h2>
+<p>膨胀扩展集合的组成部分、腐蚀缩小集合的组成部分。</p>
+<h3 id="腐蚀">腐蚀</h3>
+<blockquote>
+<p>一些通俗的解释：<strong>腐蚀</strong>的过程可以想象成图像中的目标“收缩”或“缩小”。具体来说，只有当结构元
+B 完全覆盖在 A 的某个部分时，位置 z 才会被保留在腐蚀后的集合 <span
+class="math inline">\(A \ominus B\)</span> 中。</p>
+</blockquote>
+<p>对于<span class="math inline">\(\mathbb{Z}^{2}\)</span>中的集合<span
+class="math inline">\(A\)</span>和<span
+class="math inline">\(B\)</span>，<span
+class="math inline">\(A\)</span>被<span
+class="math inline">\(B\)</span>腐蚀（erosion），记为<span
+class="math inline">\(A\ominus B\)</span>，定义为： <span
+class="math display">\[
+A\ominus B=\{z|(B)_{z}\subseteq A\}
+\]</span> B是结构元。即<span class="math inline">\(A\)</span>被<span
+class="math inline">\(B\)</span>腐蚀是所有点<span
+class="math inline">\(z\)</span>的集合，使得<span
+class="math inline">\(B\)</span>平移<span
+class="math inline">\(z\)</span>后包含于<span
+class="math inline">\(A\)</span>。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226221402515.png"
+alt="image-20241226221402515" />
+<figcaption aria-hidden="true">image-20241226221402515</figcaption>
+</figure>
+<blockquote>
+<p>集合A元素是图像I的前景像素，背景显示白色。(c)中的虚线边界内的实线边界是B的原点的位移界限。在这个界限内，<span
+class="math inline">\((B)_z\subseteq A\)</span>.</p>
+<p>(d)是一个加长的结构元，它腐蚀的结果如(e)所示，是一条线。</p>
+</blockquote>
+<h3 id="膨胀">膨胀</h3>
+<blockquote>
+<p><strong>膨胀</strong>的过程可以想象成图像中的目标“扩展”或“增长”。具体来说，结构元
+B 在图像 A 上滑动，当结构元的某部分与 A 重叠时，将该位置 z
+添加到膨胀后的集合 <span class="math inline">\(A \oplus B\)</span>
+中。</p>
+</blockquote>
+<p>当<span class="math inline">\(A\)</span>和<span
+class="math inline">\(B\)</span>是<span
+class="math inline">\(\mathbb{Z}^{2}\)</span>中的集合时，<span
+class="math inline">\(A\)</span>被<span
+class="math inline">\(B\)</span>膨胀（dilation），记为<span
+class="math inline">\(A\oplus B\)</span>，定义为: <span
+class="math display">\[
+A\oplus B=\{z|(\hat{B})_{z}\cap A\neq\varnothing\}
+\]</span> 这个等式基于获取<span
+class="math inline">\(B\)</span>关于原点的反射并将这个反射平移<span
+class="math inline">\(z\)</span>。<span
+class="math inline">\(A\)</span>被<span
+class="math inline">\(B\)</span>膨胀就是所有位移<span
+class="math inline">\(z\)</span>的集合，使得<span
+class="math inline">\(\hat{B}\)</span>和<span
+class="math inline">\(A\)</span>至少有一个元素重叠，即： <span
+class="math display">\[
+A\oplus B = \{z|[( \hat{B})_{z}\cap A]\subseteq A\}
+\]</span> <img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226222704052.png"
+alt="image-20241226222704052" /></p>
+<h3 id="膨胀与腐蚀的对偶关系">膨胀与腐蚀的对偶关系</h3>
+<p>膨胀和腐蚀在集合补集和反射方面是相互对偶的，即: <span
+class="math display">\[
+(A\ominus B)^{c}=A^{c}\oplus\hat{B}\\
+(A\oplus B)^c=A^c\ominus \hat B
+\]</span> 上式表明：B对A的腐蚀是<span class="math inline">\(\hat
+B\)</span>对<span class="math inline">\(A^c\)</span>的膨胀的补集，vice
+versa。当结构元相对于其原点对称的时候，有<span
+class="math inline">\(\hat B=B\)</span>,
+<strong>因此对偶性特别有用</strong>。</p>
+<p>证明如下： <span class="math display">\[
+\begin{align}
+(A\ominus B)^{c}&amp;=\{z|(B)_{z}\subseteq A\}^{c}\\
+&amp;=\{z|(B)_{z}\cap A^{c}=\varnothing\}^{c}\\
+&amp;=\{z|(B)_{z}\cap A^{c}\neq\varnothing\}\\
+&amp;=A^{c}\oplus\hat{B}\\\\
+(A\oplus B)^c&amp;=\{z|(\hat{B})_{z}\cap A\neq\varnothing\}^c\\
+&amp;=\{z|(\hat{B})_{z}\cap A=\varnothing\}\\
+&amp;=\{z|(\hat{B})_{z}\subseteq A^c\}\\
+&amp;=A^c\ominus \hat B
+\end{align}
+\]</span></p>
+<h2 id="开闭操作opening-and-closing">开闭操作(Opening and Closing)</h2>
+<ul>
+<li>开运算常用于平滑物体的轮廓、断开狭窄的狭颈、消除细长的突出物；</li>
+<li>闭运算同样平滑轮廓，但会弥合狭窄的断裂和细长的沟壑、消除小孔、填补轮廓中的缝隙。</li>
+</ul>
+<h3 id="开运算">开运算</h3>
+<p>集合<span class="math inline">\(A\)</span>被结构元素<span
+class="math inline">\(B\)</span>的开运算（opening），记为<span
+class="math inline">\(A\circ B\)</span>，定义为： <span
+class="math display">\[
+A\circ B=(A\ominus B)\oplus B
+\]</span> 即<span class="math inline">\(A\)</span>被<span
+class="math inline">\(B\)</span>的开运算就是<span
+class="math inline">\(A\)</span>被<span
+class="math inline">\(B\)</span>腐蚀后再被<span
+class="math inline">\(B\)</span>膨胀的结果。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226224419793.png"
+alt="image-20241226224419793" />
+<figcaption aria-hidden="true">image-20241226224419793</figcaption>
+</figure>
+<h3 id="闭运算">闭运算</h3>
+<p>集合<span class="math inline">\(A\)</span>被结构元素<span
+class="math inline">\(B\)</span>的闭运算（closing），记为<span
+class="math inline">\(A\cdot B\)</span>，定义为： <span
+class="math display">\[
+A\cdot B=(A\oplus B)\ominus B
+\]</span> 即<span class="math inline">\(A\)</span>被<span
+class="math inline">\(B\)</span>的闭运算就是<span
+class="math inline">\(A\)</span>被<span
+class="math inline">\(B\)</span>膨胀后再被<span
+class="math inline">\(B\)</span>腐蚀的结果。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226224435733.png"
+alt="image-20241226224435733" />
+<figcaption aria-hidden="true">image-20241226224435733</figcaption>
+</figure>
+<p>开运算的另一种定义: <span class="math display">\[
+A\circ B=\bigcup\{(B)_z|(B)_z\subseteq A\}
+\]</span> 开运算和闭运算在集合补集和反射方面是相互对偶的，即： <span
+class="math display">\[
+(A\cdot B)^c=(A^c\circ\hat{B})\\
+(A\circ B)^c=(A^c\cdot\hat{B})
+\]</span> 证明： $$ <span class="math display">\[\begin{align}(A\circ
+B)^c&amp;=\left[(A\ominus B)\oplus B\right]^c\\
+&amp;=(A\ominus B)^c\ominus \hat B\\
+&amp;=A^c\oplus \hat B\ominus \hat B\\
+&amp;=(A^c\cdot \hat B)\\\\
+
+(A\cdot B)^c&amp;=\left[(A\oplus B)\ominus B\right]^c\\
+&amp;=(A\oplus B)^c\oplus \hat B\\
+&amp;=A^c\ominus \hat B\oplus \hat B\\
+&amp;=(A^c\circ\hat{B})
+\end{align}\]</span> $$</p>
+<h3 id="性质">性质</h3>
+<p><strong>开运算的性质：</strong></p>
+<ul>
+<li><span class="math inline">\(A\circ B\)</span>是<span
+class="math inline">\(A\)</span>的子集（子图像）。<br />
+</li>
+<li>如果<span class="math inline">\(C\)</span>是<span
+class="math inline">\(D\)</span>的子集，那么<span
+class="math inline">\(C\circ B\)</span>是<span
+class="math inline">\(D\circ B\)</span>的子集。<br />
+</li>
+<li><span class="math inline">\((A\circ B)\circ B = A\circ
+B\)</span></li>
+</ul>
+<p><strong>闭运算的性质：</strong></p>
+<ul>
+<li><span class="math inline">\(A\)</span>是<span
+class="math inline">\(A\cdot B\)</span>的子集（子图像）。<br />
+</li>
+<li>如果<span class="math inline">\(C\)</span>是<span
+class="math inline">\(D\)</span>的子集，那么<span
+class="math inline">\(C\cdot B\)</span>是<span
+class="math inline">\(D\cdot B\)</span>的子集。<br />
+</li>
+<li><span class="math inline">\((A\cdot B)\cdot B = A\cdot
+B\)</span></li>
+</ul>
+<p>由开闭运算的第三个性质可知，对一个集合多次进行开运算或闭运算，在操作一次后就不再有效果。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226224620533.png"
+alt="image-20241226224620533" />
+<figcaption aria-hidden="true">image-20241226224620533</figcaption>
+</figure>
+<blockquote>
+<p>此图展示了用于得到开运算和闭运算结果的形态学运算。</p>
+</blockquote>
+</div><div class="post-end"><div class="post-prev"></div><div class="post-next"><a href="/2024/12/26/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-Ch7-%E5%9B%BE%E5%83%8F%E5%8E%8B%E7%BC%A9/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch9-%E5%BD%A2%E6%80%81%E5%AD%A6%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch9 形态学图像处理</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86preliminaries"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">预备知识(Preliminaries)</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E8%86%A8%E8%83%80%E5%92%8C%E8%85%90%E8%9A%80dilation-and-erosion"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">膨胀和腐蚀(Dilation and
+Erosion)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E8%85%90%E8%9A%80"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">腐蚀</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E8%86%A8%E8%83%80"><span class="toc-content-number">1.2.2.</span> <span class="toc-content-text">膨胀</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E8%86%A8%E8%83%80%E4%B8%8E%E8%85%90%E8%9A%80%E7%9A%84%E5%AF%B9%E5%81%B6%E5%85%B3%E7%B3%BB"><span class="toc-content-number">1.2.3.</span> <span class="toc-content-text">膨胀与腐蚀的对偶关系</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%BC%80%E9%97%AD%E6%93%8D%E4%BD%9Copening-and-closing"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">开闭操作(Opening and Closing)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%BC%80%E8%BF%90%E7%AE%97"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">开运算</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E9%97%AD%E8%BF%90%E7%AE%97"><span class="toc-content-number">1.3.2.</span> <span class="toc-content-text">闭运算</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%80%A7%E8%B4%A8"><span class="toc-content-number">1.3.3.</span> <span class="toc-content-text">性质</span></a></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>

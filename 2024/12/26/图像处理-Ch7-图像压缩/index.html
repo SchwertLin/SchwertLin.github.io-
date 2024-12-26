@@ -1,0 +1,584 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch8 图像压缩  8.1 8.2名词解释(基本含义)，海明码 8.3五大概念理解(自&amp;互信息、信道容量、熵)，物理意义 8.4 8.5 霍夫曼编码+LZW编码+无损编码有损编码看作业题  [TOC] 基础知识(Basis of Image Compression) 图像压缩要解决的问题是：尽量减少表示数字图像所需的数据量。减少数据量的基本原理是去除冗余数据。 “数据压">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图像处理-Ch7-图像压缩">
+<meta property="og:url" content="http://example.com/2024/12/26/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-Ch7-%E5%9B%BE%E5%83%8F%E5%8E%8B%E7%BC%A9/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch8 图像压缩  8.1 8.2名词解释(基本含义)，海明码 8.3五大概念理解(自&amp;互信息、信道容量、熵)，物理意义 8.4 8.5 霍夫曼编码+LZW编码+无损编码有损编码看作业题  [TOC] 基础知识(Basis of Image Compression) 图像压缩要解决的问题是：尽量减少表示数字图像所需的数据量。减少数据量的基本原理是去除冗余数据。 “数据压">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-26T14:53:46.000Z">
+<meta property="article:modified_time" content="2024-12-26T14:56:31.738Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="图像处理">
+<meta name="twitter:card" content="summary"><title>图像处理-Ch7-图像压缩 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>图像处理-Ch7-图像压缩</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2024-12-26</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2024-12-26</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约5.4K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch8-图像压缩">Ch8 图像压缩</h1>
+<blockquote>
+<p>8.1 8.2名词解释(基本含义)，海明码</p>
+<p>8.3五大概念理解(自&amp;互信息、信道容量、熵)，物理意义</p>
+<p>8.4 8.5 霍夫曼编码+LZW编码+无损编码有损编码看作业题</p>
+</blockquote>
+<p>[TOC]</p>
+<h2 id="基础知识basis-of-image-compression">基础知识(Basis of Image
+Compression)</h2>
+<p>图像压缩要解决的问题是：尽量减少表示数字图像所需的数据量。减少数据量的基本原理是去除冗余数据。</p>
+<p>“数据压缩”这个术语指的是减少表示给定信息量所需的数据量。必须明确区分数据和信息。</p>
+<p><strong>数据是传递信息的手段。</strong>由于能够使用各种数量的数据来表示相同的信息量，因此说包含无关或重复信息的表示中含有冗余数据。数据冗余是数字图像压缩中的主要问题，它是一个可以用数学量化的实体。</p>
+<p>如果<span class="math inline">\(n_1\)</span>和<span
+class="math inline">\(n_2\)</span>分别表示两个表示<strong>相同信息的数据集中的信息单元数量</strong>，那么第一个数据集（用<span
+class="math inline">\(n_1\)</span>表示）的相对数据冗余度<span
+class="math inline">\(R_D\)</span>可以定义为: <span
+class="math display">\[
+R_D = 1-\frac{1}{C_R},\quad
+C_R=\frac{n_1}{n_2}
+\]</span> <span class="math inline">\(C_R\)</span>被称为压缩率。</p>
+<ul>
+<li>当<span class="math inline">\(n_1=n_2\)</span>时，<span
+class="math inline">\(C_R = 1\)</span>，<span
+class="math inline">\(R_D=0\)</span>，这意味着第一个数据集相对于第二个数据集没有冗余数据。</li>
+<li>当<span class="math inline">\(n_2\le
+n_1\)</span>时，意味着有显著的压缩和高冗余度。</li>
+<li>当<span class="math inline">\(n_2\ge
+n_1\)</span>时，表明第二个数据集中包含的数据量远远超过原始表达的数据量。</li>
+</ul>
+<p>在数字图像压缩中，<span
+class="math inline">\(n_1\)</span>通常是将图像表示为一个二维灰度值阵列所属需要的比特数。二维灰度矩阵是我们查看和解释图像的首选方式，但是当其变成紧凑的图像表示时，这些格式并不是最优的。二维灰度阵列能被识别和利用的主要三种数据冗余：</p>
+<table>
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 32%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>编码冗余</th>
+<th>空间和时间冗余</th>
+<th>无关信息</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>编码：表示信息主体or事件集合的符号系统。</td>
+<td>空间相关：多数二维灰度值阵列中，每个像素与相邻像素相似。</td>
+<td>含有被人类视觉系统所忽略或与期望用途无关的信息。</td>
+</tr>
+<tr class="even">
+<td>码字：每条信息被赋予的一系列编码符号。</td>
+<td>在相关像素表示中，信息被不必要重复。</td>
+<td>消除这种信息会导致定量信息的丢失，这种信息的去除称为量化。</td>
+</tr>
+<tr class="odd">
+<td>码字长度：每个码字中符号的数量。</td>
+<td>时间相关：相邻帧中的像素相似。</td>
+<td>---</td>
+</tr>
+<tr class="even">
+<td>多数的二维灰度值阵列中，用于表示灰度的8bit编码所包含的bit数，要比表示灰度所需的bit多。</td>
+<td>e.g. 视频序列</td>
+<td>---</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>符号：指字母、数字、bit等。</p>
+</blockquote>
+<h3 id="编码冗余">编码冗余</h3>
+<p>假设一个在区间<span
+class="math inline">\([0,1]\)</span>内的离散随机变量<span
+class="math inline">\(r_k\)</span>表示图像的灰度级，每个灰度级出现的概率为:
+<span class="math display">\[
+p_r(r_k)=\frac{n_k}{MN}, k = 0,1,\cdots,L - 1
+\]</span> 如果<span
+class="math inline">\(l(r_k)\)</span>表示用于表示每个<span
+class="math inline">\(r_k\)</span>的比特数，那么表示每个像素所需的平均比特数为:
+<span class="math display">\[
+\begin{align}L_{avg}&amp;=\sum_{k = 0}^{L - 1}l(r_k)p_r(r_k)\\
+&amp;=\sum_{k = 0}^{L - 1}l(r_k)\frac{n_k}{MN}\\
+MNL_{avg}&amp;=\sum_{k = 0}^{L - 1}l(r_k) n_k
+\end{align}
+\]</span> 对大小为<span class="math inline">\(M\times
+N\)</span>的图像进行编码所需的比特数为<span
+class="math inline">\(MNL_{avg}\)</span>。</p>
+<h4 id="例变长编码的计算">例：变长编码的计算</h4>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226155630558.png"
+alt="image-20241226155630558" />
+<figcaption aria-hidden="true">image-20241226155630558</figcaption>
+</figure>
+<p>code1使用 8 bit编码：<span
+class="math inline">\(L_{avg}=8\)</span></p>
+<p>code2使用变长编码(根据出现概率编码)： <span class="math display">\[
+L_{avg}=0.25*2+0.47+0.25*3+0.03*3=1.81\\
+MNL_{avg}=256*256*1.81\\
+C=\frac{8}{1.81}=4.42\\
+R=1-\frac 1{C}=1-\frac{1}{4.42}=0.774
+\]</span> 因此冗余77.4%。</p>
+<h3 id="空间冗余">空间冗余</h3>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226161131149.png"
+alt="image-20241226161131149" />
+<figcaption aria-hidden="true">image-20241226161131149</figcaption>
+</figure>
+<p>考虑图 (a)和图
+(b)所示的图像。如图(c)和图(d)所示,这些图像实质上有同样的直方图。同时要注意,这两幅直方图都是具有三个波峰的,表明灰度级存在三个主要的值域。</p>
+<p>因为这些图像中的灰度级的出现概率不是等可能性的,所以可以使用变长编码减少由于对像素进行统一长度的编码或自然二进制编码带来的编码冗余。</p>
+<p>然而,编码处理不会改变图像的像素之间相关性的级别。换句话说,用于表示每幅图像的灰度级的编码与像素之间的相关性无关。这些相关来自于图像中对象之间的结构或几何关系。</p>
+<p>图(e)和(f)分别展示了沿每幅图像的一条线计算出的自相关系数。 <span
+class="math display">\[
+\gamma(\Delta n)=\frac{A(\Delta n)}{A(0)}\\
+A(\Delta n)=\frac{1}{N-\Delta n}\sum_{y = 0}^{N - 1-\Delta
+n}f(x,y)f(x,y+\Delta n)
+\]</span></p>
+<h3 id="保真度准则">保真度准则</h3>
+<p>删除"无关视觉"信息会损失真实或定量的图像信息。由于出现信息损失，因此需要一种方法来量化损失。</p>
+<blockquote>
+<p>评价标准:</p>
+<ol type="1">
+<li>客观保真度准则</li>
+<li>主观保真度准则</li>
+</ol>
+</blockquote>
+<h4 id="例客观保真度准则">例：客观保真度准则</h4>
+<p>对于任意的<span class="math inline">\(x\)</span>和<span
+class="math inline">\(y\)</span>值，<span
+class="math inline">\(f(x,y)\)</span>与<span
+class="math inline">\(\hat{f}(x,y)\)</span>之间的误差<span
+class="math inline">\(e(x,y)\)</span>可定义为: <span
+class="math display">\[
+e(x,y)=\hat{f}(x,y) - f(x,y)
+\]</span> 这样两幅图像之间的总误差为: <span class="math display">\[
+\sum_{x = 0}^{M - 1}\sum_{y = 0}^{N - 1}[\hat{f}(x,y) - f(x,y)]
+\]</span> <span class="math inline">\(f(x,y)\)</span>与<span
+class="math inline">\(\hat{f}(x,y)\)</span>之间的均方根误差<span
+class="math inline">\(e_{rms}\)</span>则是该平方误差的平方根: <span
+class="math display">\[
+e_{rms}=\left[\frac{1}{MN}\sum_{x = 0}^{M - 1}\sum_{y = 0}^{N -
+1}[\hat{f}(x,y) - f(x,y)]^{2}\right]^{1/2}
+\]</span></p>
+<h2 id="图像压缩模型image-compression-model">图像压缩模型(Image
+Compression Model)</h2>
+<p>一个压缩系统由两个不同的结构块组成：一个编码器和一个解码器。图像<span
+class="math inline">\(f(x,y)\)</span>输入系统后得到输出图像<span
+class="math inline">\(\hat f(x,y)\)</span>。一般来说，<span
+class="math inline">\(\hat{f}(x,y)\)</span>可能是也可能不是<span
+class="math inline">\(f(x,y)\)</span>的精确副本：</p>
+<ul>
+<li>如果是，该系统是无误差或信息保留的；</li>
+<li>如果不是，重建图像中会存在一定程度的失真。</li>
+</ul>
+<p>图中所示的编码器和解码器都由两个相对独立的功能或子块组成：<code>source/channel</code>(信源/信道)
+,<code>encoder/decoder</code>(编码/解码)</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226163011670.png"
+alt="image-20241226163011670" />
+<figcaption aria-hidden="true">image-20241226163011670</figcaption>
+</figure>
+<h3 id="信源编解码器the-source-encoder-and-decoder">信源编/解码器(The
+Source Encoder and Decoder)</h3>
+<p>信源编码器负责减少或消除输入图像中的任何编码、像素间或心理视觉冗余。</p>
+<ul>
+<li>信源编码器: 映射器、量化器和符号编码器</li>
+<li>信源解码器: 符号解码器和逆映射器</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226163843917.png"
+alt="image-20241226163843917" />
+<figcaption aria-hidden="true">image-20241226163843917</figcaption>
+</figure>
+<h3 id="信道编解码器the-channel-encoder-and-decoder">信道编/解码器(The
+Channel Encoder and Decoder)</h3>
+<p>信道编码器和解码器旨在通过在源编码数据中插入受控形式的冗余来减少信道噪声的影响。由于信源编码器的输出几乎没有冗余，没有这种“受控冗余”，它将<strong>对传输噪声高度敏感</strong>。</p>
+<h4 id="汉明码hamming-encoder-and-decoder">汉明码(Hamming encoder and
+decoder)</h4>
+<p>汉明编码器和解码器是在被编码数据中加入足够的比特，以确保有效码字之间必须有最少数量的比特变化(码字间变化的位数最小)。</p>
+<p><strong>7位汉明(7,4)码字</strong> ：</p>
+<p>将3位冗余码加到4位字中，使任意两个有效码字间的距离为3，则所有的<strong>1
+bit错误</strong>可以<strong>检测并纠正</strong>。 <span
+class="math display">\[
+\begin{align}
+h_1=b_3\oplus b_2\oplus b_0\quad\quad &amp;h_3=b_3\\
+h_2=b_3\oplus b_1\oplus b_0\quad\quad&amp; h_5=b_2\\
+h_4=b_2\oplus b_1\oplus b_0\quad\quad &amp;h_6=b_1\\
+&amp;h_7=b_0
+\end{align}
+\]</span>
+为将汉明码解码，信道解码器必须为先前设立的偶校验的各个字段进行奇校验并检查译码值。1bit错误由<strong>非零奇偶校验字</strong><span
+class="math inline">\(c_4c_2c_1\)</span>给出，其中： <span
+class="math display">\[
+c_1=h_1\oplus h_3\oplus h_5\oplus h_7\\
+c_2=h_2\oplus h_3\oplus h_6\oplus h_7\\
+c_4=h_4\oplus h_5\oplus h_6\oplus h_7
+\]</span>
+如果找到一个非零值，则解码器就只需简单地在校验字指出地位置补充码字比特。</p>
+<h2 id="信息论要素elements-of-information-theory">信息论要素(Elements of
+Information Theory)</h2>
+<p>信息论的基本前提是信息的产生可以被建模为一个概率过程，并且可以以符合直觉的方式进行度量。
+一个以概率<span class="math inline">\(P(E)\)</span>发生的随机事件<span
+class="math inline">\(E\)</span>被认为包含<span
+class="math inline">\(I(E)\)</span>单位的信息。 <span
+class="math display">\[
+I(E)=\log\frac{1}{P(E)}=-\log P(E)
+\]</span> 这个量<span class="math inline">\(I(E)\)</span>通常被称为<span
+class="math inline">\(E\)</span>的自信息。公式中对数的底数决定了用于度量信息的单位。如果使用以<span
+class="math inline">\(m\)</span>为底的对数，度量结果的单位被称为<span
+class="math inline">\(m\)</span>元单元。
+如果选择底数为2，得到的信息单位被称为比特。</p>
+<h3 id="信息信道the-information-channel">信息信道(The Information
+Channel)</h3>
+<p>当自信息在信息源与信息用户之间传送时，称信息源与信息用户之间通过信息信道相连。信息信道时连接信源和用户的物理媒介。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226165623969.png"
+alt="image-20241226165623969" />
+<figcaption aria-hidden="true">image-20241226165623969</figcaption>
+</figure>
+<p>假设图中的信息源从一个有限或可数无限的可能符号集中生成一个随机符号序列。<strong>信源的输出是离散的随机变量。</strong></p>
+<p>信源符号集<span
+class="math inline">\(\{a_1,a_2,\cdots,a_J\}\)</span>被称为源字母表<span
+class="math inline">\(A\)</span>，集合中的元素被称为符号或字母。
+信源产生符号<span class="math inline">\(a_j\)</span>的概率是<span
+class="math inline">\(P(a_j)\)</span>，并且： <span
+class="math display">\[
+\sum_{j = 1}^{J}P(a_j)=1
+\]</span> 一个<span class="math inline">\(J\times1\)</span>向量<span
+class="math inline">\(\mathbf{z}=[P(a_1),P(a_2),\cdots,P(a_J)]^T\)</span>通常被用来表示所有信源符号概率<span
+class="math inline">\(\{P(a_1),P(a_2),\cdots,P(a_J)\}\)</span>。有限总体集合<span
+class="math inline">\((A,\mathbf{z})\)</span>完整地描述了信息源。</p>
+<p>离散信源产生符号<span class="math inline">\(a_j\)</span>的概率是<span
+class="math inline">\(P(a_j)\)</span>。产生单一信源符号所产生的自信息是<span
+class="math inline">\(I(a_j)=-\log P(a_j)\)</span>。</p>
+<p>如果产生<span
+class="math inline">\(k\)</span>个信源符号，根据大数定律，对于足够大的<span
+class="math inline">\(k\)</span>，符号<span
+class="math inline">\(a_j\)</span>（平均而言）将被输出<span
+class="math inline">\(kP(a_j)\)</span>次。因此，从<span
+class="math inline">\(k\)</span>次输出中获得的平均自信息是: <span
+class="math display">\[
+-kP(a_1)\log P(a_1)-kP(a_2)\log P(a_2)-\cdots -kP(a_J)\log P(a_J)\\
+or \quad-k\sum_{j = 1}^{J}P(a_j)\log P(a_j)
+\]</span></p>
+<p>每个信源输出的平均信息，记为<span
+class="math inline">\(H(\mathbf{z})\)</span>： <span
+class="math display">\[
+H(\mathbf{z})=-k\sum_{j = 1}^{J}P(a_j)\log P(a_j)
+\]</span></p>
+<p>这个量被称为信源的不确定性或熵。它定义了通过观察单个信源输出所获得的平均信息量。随着其值的增加，与信源相关的不确定性和信息量也增加。如果信源符号具有相同的概率，熵或不确定性达到最大值，并且信源在每个信源符号上提供最大可能的平均信息量。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226165623969.png"
+alt="image-20241226165623969" />
+<figcaption aria-hidden="true">image-20241226165623969</figcaption>
+</figure>
+<p>因为我们在图中将信道的输入建模为离散随机变量，传递到信道<strong>输出的信息</strong>也是离散随机变量<span
+class="math inline">\(B:\{b_1,b_2,\cdots,b_K\}\)</span>。信息用户接收到符号<span
+class="math inline">\(b_k\)</span>的概率是<span
+class="math inline">\(P(b_k)\)</span>。有限集<span
+class="math inline">\((B,\mathbf{v})\)</span>，其中<span
+class="math inline">\(\mathbf{v}=[P(b_1),P(b_2),\cdots,P(b_K)]^T\)</span>，完整地描述了信道输出，从而也描述了用户接收到的信息。</p>
+<p>给定信道输出的概率<span
+class="math inline">\(P(b_k)\)</span>和信源的概率分布<span
+class="math inline">\(\mathbf{z}\)</span>通过以下表达式相关联： <span
+class="math display">\[
+P(b_k)=\sum_{j = 1}^{J}P(b_k|a_j)P(a_j)
+\]</span> 其中<span
+class="math inline">\(P(b_k|a_j)\)</span>是在信源符号<span
+class="math inline">\(a_j\)</span>产生的条件下，输出符号<span
+class="math inline">\(b_k\)</span>被接收的条件概率。</p>
+<p>这些条件概率排列成一个<span
+class="math inline">\(K×J\)</span>矩阵<span
+class="math inline">\(Q\)</span>： <span class="math display">\[
+Q = \begin{pmatrix} P(b_1|a_1) &amp; P(b_1|a_2) &amp; \cdots &amp;
+P(b_1|a_J) \\ P(b_2|a_1) &amp; P(b_2|a_2) &amp; \cdots &amp; P(b_2|a_J)
+\\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ P(b_K|a_1) &amp;
+P(b_K|a_2) &amp; \cdots &amp; P(b_K|a_J) \end{pmatrix}
+\]</span> 完整输出字母表的概率分布可以由<span
+class="math inline">\(\mathbf{v}=Q\mathbf{z}\)</span>计算得出。</p>
+<p>矩阵<span class="math inline">\(Q\)</span>，其元素<span
+class="math inline">\(q_{kj}=P(b_k|a_j)\)</span>，被称为前向信道传输矩阵或简称为信道矩阵。</p>
+<p>为决定<span
+class="math inline">\(Q\)</span>的信道容量，比如在信息用户观察某一特定输出<span
+class="math inline">\(b_k\)</span>的假设下，先计算信息源的熵。每个<span
+class="math inline">\(b_k\)</span>都有一个条件熵函数，这个条件熵函数，记为<span
+class="math inline">\(H(\mathbf{z}|b_k)\)</span>，可以写成： <span
+class="math display">\[
+H(\mathbf{z}|b_k)=-\sum_{j = 1}^{J}P(a_j|b_k)\log P(a_j|b_k)
+\]</span> <span
+class="math inline">\(P(a_j|b_k)\)</span>是在用户接收到<span
+class="math inline">\(b_k\)</span>的条件下，符号<span
+class="math inline">\(a_j\)</span>由信源发送的概率。这个表达式在所有<span
+class="math inline">\(b_k\)</span>上的期望值是： <span
+class="math display">\[
+\begin{align}H(\mathbf{z}|\mathbf{v})&amp;=\sum_{k =
+1}^{K}H(\mathbf{z}|b_k)P(b_k)\\
+&amp;=-\sum_{j = 1}^{J}\sum_{k = 1}^{K}P(a_j,b_k)\log
+P(a_j|b_k)\end{align}
+\]</span> <span class="math inline">\(P(a_j,b_k)\)</span>是<span
+class="math inline">\(a_j\)</span>和<span
+class="math inline">\(b_k\)</span>的联合概率。也就是说，<span
+class="math inline">\(P(a_j,b_k)\)</span>是<span
+class="math inline">\(a_j\)</span>被发送且<span
+class="math inline">\(b_k\)</span>被接收的概率。</p>
+<p><span
+class="math inline">\(H(\mathbf{z}|\mathbf{v})\)</span>被称为<span
+class="math inline">\(\mathbf{z}\)</span>相对于<span
+class="math inline">\(\mathbf{v}\)</span>的疑义度(条件信息量总平均值)：表示在观察到由其产生的输出符号的情况下，一个信源符号的平均信息量。</p>
+<p><span
+class="math inline">\(H(\mathbf{z})\)</span>是一个信源符号的平均信息，假设不了解输出符号的情况，那么<span
+class="math inline">\(H(\mathbf{z})\)</span>与<span
+class="math inline">\(H(\mathbf{z}|\mathbf{v})\)</span>的差是在观察到单个输出符号时接收到的平均信息。这个差，记为<span
+class="math inline">\(I(\mathbf{z},\mathbf{v})\)</span>，被称为<span
+class="math inline">\(\mathbf{z}\)</span>和<span
+class="math inline">\(\mathbf{v}\)</span>的互信息： <span
+class="math display">\[
+\begin{align}I(\mathbf{z},\mathbf{v})&amp;=H(\mathbf{z})-H(\mathbf{z}|\mathbf{v})\\
+&amp;=\sum_{j = 1}^{J}\sum_{k =
+1}^{K}P(a_j,b_k)\log\frac{P(a_j,b_k)}{P(a_j)P(b_k)}\\
+&amp;=\sum_{j = 1}^{J}\sum_{k =
+1}^{K}P(a_j)q_{kj}\log\frac{q_{kj}}{\sum_{i = 1}^{J}P(a_i)q_{ki}}
+\end{align}
+\]</span> 记<span
+class="math inline">\(P(a_j)=P(a_j,b_1)+P(a_j,b_2)+\cdots
++P(a_j,b_K)\)</span>，得到上式。</p>
+<p>观察信息信道的单个输出时接收到的平均信息量是输入或信源符号概率向量<span
+class="math inline">\(\mathbf{z}\)</span>和信道矩阵<span
+class="math inline">\(Q\)</span>的函数。<span
+class="math inline">\(I(\mathbf{z},\mathbf{v})\)</span>的最小可能值为零，当输入和输出符号在统计上独立时会出现这种情况，此时<span
+class="math inline">\(P(a_j,b_k)=P(a_j)P(b_k),\log 1 =0\)</span>。
+在向量<span
+class="math inline">\(\mathbf{z}\)</span>中所有可能的信源概率选择上，<span
+class="math inline">\(I(\mathbf{z},\mathbf{v})\)</span>的最大值是由信道矩阵<span
+class="math inline">\(Q\)</span>描述的信道容量<span
+class="math inline">\(C\)</span>，即: <span class="math display">\[
+C=\max_{\mathbf{z}}[I(\mathbf{z},\mathbf{v})]
+\]</span>
+信道容量定义了信息能够可靠地通过信道传输的最大速率。此外，信道的容量不依赖于信源的输入概率(即如何使用信道)，而是仅由定义信道的条件概率函数决定。</p>
+<h2 id="无误差压缩error-free-compression">无误差压缩(Error-Free
+Compression)</h2>
+<p>本节重点介绍经典的、主要的无误差压缩策略，通常能提供 2 到 10
+的压缩率。而且，它们对二进制图像和灰度图像同样适用。</p>
+<p>无误差压缩技术通常由两个相对独立的操作组成：</p>
+<ol type="1">
+<li>设计一种图像的替代表示法，以减少像素间的冗余；</li>
+<li>对这种表示进行编码以消除编码冗余。</li>
+</ol>
+<h3 id="变长编码variable-length-coding">变长编码(Variable-Length
+Coding)</h3>
+<p>无误差图像压缩的最简单方法就是减少仅有的编码冗余。编码冗余通常存在于图像灰度级的自然二进制编码过程中。这样做需要变长编码结构,它可把最短的码字赋予出现概率最大的灰度级对于构造这样的码字,这里分析几种最佳的和接近最佳的编码技术。这些技术都是使用信息论的语言进行表达的。实际上,信源符号既可能是图像灰度级,也可能是灰度级映射操作的输出如素差异或行程宽度等)。</p>
+<h4 id="哈夫曼编码huffman-coding">哈夫曼编码(Huffman coding)</h4>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226172551563.png"
+alt="image-20241226172551563" />
+<figcaption aria-hidden="true">image-20241226172551563</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226172600781.png"
+alt="image-20241226172600781" />
+<figcaption aria-hidden="true">image-20241226172600781</figcaption>
+</figure>
+<h4 id="算术编码arithmetic-coding">算术编码(Arithmetic coding)</h4>
+<p>算术编码只为整个信源符号<strong>序列</strong>分配一个算术码字，这个码字定义了一个位于[0,1]之间的实数区间。当信息符号(消息)中的符号增多、用于表示消息的区间变小，而表示该区间所需的信息单元(bit)数量变大。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226173212848.png"
+alt="image-20241226173212848" />
+<figcaption aria-hidden="true">image-20241226173212848</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226173243482.png"
+alt="image-20241226173243482" />
+<figcaption aria-hidden="true">image-20241226173243482</figcaption>
+</figure>
+<h4 id="lzw编码lzw-coding">LZW编码(LZW Coding)</h4>
+<p><strong>LZW编码处理空间冗余。不需要被编码符号中出现的概率的先验知识。</strong></p>
+<p>LZW编码对信源符号的变长序列分配定长码字。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226174156992.png" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226174224834.png" /></p>
+<h3 id="比特平面编码bit-plane-coding">比特平面编码(Bit-Plane
+Coding)</h3>
+<p>原理：将一副多灰度级图像分解为一系列二值图像，并采用以下两种二值压缩方法之一来压缩每幅图像。</p>
+<p><strong>m-bit</strong>单色图像的灰度表示： <span
+class="math display">\[
+a_{m-1}2^{m-1}+a_{m-2}2^{m-2}+\dots+a_{1}2^{1}+a_02^0
+\]</span>
+将该多项式的m个系数分为m个1-bit平面。最低有效bit平面式手机每个像素<span
+class="math inline">\(a_0\)</span>比特生成的，而最高有效bit平面包含<span
+class="math inline">\(a_{m-1}\)</span>bit或系数。</p>
+<p>另外一种分解方法：（这种方法可以减少小灰度级变化的影响）是首先用一个<span
+class="math inline">\(m\)</span>位的格雷码（Gray code）来表示图像，其中:
+<span class="math display">\[
+g_{i}=a_{i}\oplus a_{i + 1}, \quad 0\leq i\leq m - 2\\ g_{m - 1}=a_{m -
+1}
+\]</span> 127:0100 0000, 128: 1100 0000</p>
+<h3 id="无损预测编码lossless-predictive-coding">无损预测编码(Lossless
+Predictive Coding)</h3>
+<p>无损预测编码基于通过提取和编码每个像素中的新信息来消除紧密相邻像素间的冗余。像素的新信息定义为该像素实际值与预测值之间的差值。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226180731123.png"
+alt="image-20241226180731123" />
+<figcaption aria-hidden="true">image-20241226180731123</figcaption>
+</figure>
+<p>预测误差使用变长码进行编码： <span class="math display">\[
+e_n = f_n - \hat{f}_n\\
+f_n = e_n + \hat{f}_n
+\]</span> 解码器从接收到的变长码字中重构<span
+class="math inline">\(e_n\)</span>并执行逆操作。在大多数情况下，预测是由<span
+class="math inline">\(m\)</span>个先前像素的线性组合形成的，即：<br />
+<span class="math display">\[
+\hat{f}_n = \text{round}\left[\sum_{i = 1}^{m} a_i f_{n - i}\right]
+\]</span> 在其他情况下，<span
+class="math inline">\(n\)</span>被用作图像空间坐标和/或图像时间序列中的帧编号（在图像时间序列中）的索引：
+<span class="math display">\[
+\begin{align}
+\hat{f}(x,y) &amp;= \text{round}\left[\sum_{i = 1}^{m} a_i f(x,y -
+i)\right]\\
+&amp;= \text{round}[a f(x,y - 1)] \end{align}
+\]</span></p>
+<h2 id="有损压缩lossy-compression">有损压缩(Lossy Compression)</h2>
+<ul>
+<li>与前文所述的无损方法不同，有损编码基于以降低重建图像的精度为代价来换取更高的压缩率。</li>
+<li>如果能够容忍由此产生的失真（这种失真可能肉眼可见也可能不可见），那么压缩率的提升可能会非常显著。</li>
+<li>许多有损编码技术能够从被压缩超过100:1的数据中重现可识别的单色图像，并且在10:1到50:1的压缩率下得到与原图几乎无法区分的图像。然而，单色图像的无损编码很少能使数据减少超过3:1。</li>
+</ul>
+<h3 id="有损压缩编码lossy-predictive-coding">有损压缩编码(Lossy
+Predictive Coding)</h3>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241226181416789.png" /></p>
+<p>在无损预测编码的模型中加入量化器，并研究由此产生的重建精度和压缩性能之间的权衡关系。
+<span class="math display">\[
+\dot{f}_n = \dot{e}_n + \hat{f}_n
+\]</span>
+大多数预测编码应用中使用的最优预测器能使编码器的均方预测误差最小： <span
+class="math display">\[
+E\{e_n^2\} = E\{[f_n - \hat{f}_n]^2\}
+\]</span> 前提是: <span class="math display">\[
+\dot{f}_n = \dot{e}_n + \hat{f}_n \approx e_n + \hat{f}_n = f_n\\
+\hat{f}_n = \sum_{i = 1}^{m} \alpha_i f_{n - i}
+\]</span> 在这些条件下，最优预测器的设计问题就简化为选择<span
+class="math inline">\(m\)</span>个预测系数，使以下表达式最小： <span
+class="math display">\[
+E\{e_n^2\} = E\left\{\left[f_n - \sum_{i = 1}^{m} \alpha_i f_{n -
+i}\right]^2\right\}
+\]</span> 对上述等式关于每个系数求导，令导数为零，并在假设<span
+class="math inline">\(f_n\)</span>均值为零且方差为<span
+class="math inline">\(\sigma^2\)</span>的条件下求解由此产生的联立方程组，得到:
+<span class="math display">\[
+\alpha = R^{-1}r\\
+R = \begin{bmatrix} E\{f_{n - 1}f_{n - 1}\} &amp; \cdots &amp; E\{f_{n -
+1}f_{n - m}\}\\ \vdots &amp; \ddots &amp; \vdots\\ E\{f_{n - m}f_{n -
+1}\} &amp; \cdots &amp; E\{f_{n - m}f_{n - m}\} \end{bmatrix},
+r = \begin{bmatrix} E\{f_n f_{n - 1}\}\\ \vdots\\ E\{f_n f_{n - m}\}
+\end{bmatrix} ,\alpha = \begin{bmatrix} \alpha_1\\ \vdots\\ \alpha_m
+\end{bmatrix}
+\]</span> 其中<span class="math inline">\(R^{-1}\)</span>是<span
+class="math inline">\(m\times m\)</span>自相关矩阵的逆. <span
+class="math inline">\(r\)</span>和<span
+class="math inline">\(\alpha\)</span>是<span
+class="math inline">\(m\)</span>元素向量。</p>
+<p>因此，对于任何输入图像，使式<span
+class="math inline">\(E\{e_n^2\}\)</span>最小的系数可以通过一系列基本矩阵运算确定。</p>
+<p>使用这些最优系数产生的预测误差方差为: <span class="math display">\[
+\sigma_{e}^2 = \sigma^2 - \alpha^T r = \sigma^2 - \sum_{i = 1}^{m}
+E\{f_n f_{n - i}\}\alpha_i
+\]</span> 通常要求预测系数<span
+class="math inline">\(\alpha\)</span>的总和小于或等于1，即: <span
+class="math display">\[
+\sum_{i = 1}^{m} \alpha_i \leq 1
+\]</span>
+做出这一限制是为了确保预测器的输出落在允许的灰度级范围内，并减少传输噪声的影响，传输噪声在重建图像中通常表现为水平条纹。</p>
+<h2 id="总结">总结</h2>
+<p>信息信道时连接信源和用户的物理媒介。</p>
+<p>信道容量定义了信息能够可靠地通过信道传输的最大速率。 <span
+class="math display">\[
+C=\max_{\mathbf{z}}[I(\mathbf{z},\mathbf{v})]
+\]</span></p>
+</div><div class="post-end"><div class="post-prev"><a href="/2024/12/26/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-Ch8-%E8%85%90%E8%9A%80%E8%86%A8%E8%83%80-%E5%BC%80%E9%97%AD%E8%BF%90%E7%AE%97/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-next"><a href="/2024/12/25/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86-Ch6-%E5%B0%8F%E6%B3%A2%E5%8F%98%E6%8D%A2/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch8-%E5%9B%BE%E5%83%8F%E5%8E%8B%E7%BC%A9"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch8 图像压缩</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86basis-of-image-compression"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">基础知识(Basis of Image
+Compression)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%BC%96%E7%A0%81%E5%86%97%E4%BD%99"><span class="toc-content-number">1.1.1.</span> <span class="toc-content-text">编码冗余</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B%E5%8F%98%E9%95%BF%E7%BC%96%E7%A0%81%E7%9A%84%E8%AE%A1%E7%AE%97"><span class="toc-content-number">1.1.1.1.</span> <span class="toc-content-text">例：变长编码的计算</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%A9%BA%E9%97%B4%E5%86%97%E4%BD%99"><span class="toc-content-number">1.1.2.</span> <span class="toc-content-text">空间冗余</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%BF%9D%E7%9C%9F%E5%BA%A6%E5%87%86%E5%88%99"><span class="toc-content-number">1.1.3.</span> <span class="toc-content-text">保真度准则</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B%E5%AE%A2%E8%A7%82%E4%BF%9D%E7%9C%9F%E5%BA%A6%E5%87%86%E5%88%99"><span class="toc-content-number">1.1.3.1.</span> <span class="toc-content-text">例：客观保真度准则</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%9B%BE%E5%83%8F%E5%8E%8B%E7%BC%A9%E6%A8%A1%E5%9E%8Bimage-compression-model"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">图像压缩模型(Image
+Compression Model)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%BF%A1%E6%BA%90%E7%BC%96%E8%A7%A3%E7%A0%81%E5%99%A8the-source-encoder-and-decoder"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">信源编&#x2F;解码器(The
+Source Encoder and Decoder)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%BF%A1%E9%81%93%E7%BC%96%E8%A7%A3%E7%A0%81%E5%99%A8the-channel-encoder-and-decoder"><span class="toc-content-number">1.2.2.</span> <span class="toc-content-text">信道编&#x2F;解码器(The
+Channel Encoder and Decoder)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%B1%89%E6%98%8E%E7%A0%81hamming-encoder-and-decoder"><span class="toc-content-number">1.2.2.1.</span> <span class="toc-content-text">汉明码(Hamming encoder and
+decoder)</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E4%BF%A1%E6%81%AF%E8%AE%BA%E8%A6%81%E7%B4%A0elements-of-information-theory"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">信息论要素(Elements of
+Information Theory)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%BF%A1%E6%81%AF%E4%BF%A1%E9%81%93the-information-channel"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">信息信道(The Information
+Channel)</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%97%A0%E8%AF%AF%E5%B7%AE%E5%8E%8B%E7%BC%A9error-free-compression"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">无误差压缩(Error-Free
+Compression)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%8F%98%E9%95%BF%E7%BC%96%E7%A0%81variable-length-coding"><span class="toc-content-number">1.4.1.</span> <span class="toc-content-text">变长编码(Variable-Length
+Coding)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%93%88%E5%A4%AB%E6%9B%BC%E7%BC%96%E7%A0%81huffman-coding"><span class="toc-content-number">1.4.1.1.</span> <span class="toc-content-text">哈夫曼编码(Huffman coding)</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%AE%97%E6%9C%AF%E7%BC%96%E7%A0%81arithmetic-coding"><span class="toc-content-number">1.4.1.2.</span> <span class="toc-content-text">算术编码(Arithmetic coding)</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#lzw%E7%BC%96%E7%A0%81lzw-coding"><span class="toc-content-number">1.4.1.3.</span> <span class="toc-content-text">LZW编码(LZW Coding)</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%AF%94%E7%89%B9%E5%B9%B3%E9%9D%A2%E7%BC%96%E7%A0%81bit-plane-coding"><span class="toc-content-number">1.4.2.</span> <span class="toc-content-text">比特平面编码(Bit-Plane
+Coding)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%97%A0%E6%8D%9F%E9%A2%84%E6%B5%8B%E7%BC%96%E7%A0%81lossless-predictive-coding"><span class="toc-content-number">1.4.3.</span> <span class="toc-content-text">无损预测编码(Lossless
+Predictive Coding)</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%9C%89%E6%8D%9F%E5%8E%8B%E7%BC%A9lossy-compression"><span class="toc-content-number">1.5.</span> <span class="toc-content-text">有损压缩(Lossy Compression)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%9C%89%E6%8D%9F%E5%8E%8B%E7%BC%A9%E7%BC%96%E7%A0%81lossy-predictive-coding"><span class="toc-content-number">1.5.1.</span> <span class="toc-content-text">有损压缩编码(Lossy
+Predictive Coding)</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-content-number">1.6.</span> <span class="toc-content-text">总结</span></a></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>
