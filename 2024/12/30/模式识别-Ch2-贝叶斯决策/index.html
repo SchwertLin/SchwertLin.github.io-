@@ -1,0 +1,1098 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch2 贝叶斯决策(Bayesian Decision Theory) [TOC]  \(P( \cdot )\): 表示概率分布函数，\(p(\cdot)\): 表示概率密度函数PDF. \(p(\mathbf{x}|w_i)\)是\(w_i\)关于\(\mathbf{x}\)的似然函数，表明在其他条件都相等的情况下，使得\(p(\mathbf{x}|w_i)\)较大的\(w_i\">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模式识别-Ch2-贝叶斯决策">
+<meta property="og:url" content="http://example.com/2024/12/30/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch2-%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%86%B3%E7%AD%96/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch2 贝叶斯决策(Bayesian Decision Theory) [TOC]  \(P( \cdot )\): 表示概率分布函数，\(p(\cdot)\): 表示概率密度函数PDF. \(p(\mathbf{x}|w_i)\)是\(w_i\)关于\(\mathbf{x}\)的似然函数，表明在其他条件都相等的情况下，使得\(p(\mathbf{x}|w_i)\)较大的\(w_i\">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-30T08:30:40.000Z">
+<meta property="article:modified_time" content="2024-12-30T08:35:29.213Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="模式识别">
+<meta name="twitter:card" content="summary"><title>模式识别-Ch2-贝叶斯决策 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>模式识别-Ch2-贝叶斯决策</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2024-12-30</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2024-12-30</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">模式识别</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约7.1K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch2-贝叶斯决策bayesian-decision-theory">Ch2 贝叶斯决策(Bayesian
+Decision Theory)</h1>
+<p>[TOC]</p>
+<blockquote>
+<p><span class="math inline">\(P( \cdot )\)</span>:
+表示概率分布函数，<span class="math inline">\(p(\cdot)\)</span>:
+表示概率密度函数PDF.</p>
+<p><span class="math inline">\(p(\mathbf{x}|w_i)\)</span>是<span
+class="math inline">\(w_i\)</span>关于<span
+class="math inline">\(\mathbf{x}\)</span>的似然函数，表明在其他条件都相等的情况下，使得<span
+class="math inline">\(p(\mathbf{x}|w_i)\)</span>较大的<span
+class="math inline">\(w_i\)</span>更有可能是真实类别。(likelihood)</p>
+</blockquote>
+<table>
+<colgroup>
+<col style="width: 3%" />
+<col style="width: 37%" />
+<col style="width: 58%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>最小错误率贝叶斯决策</th>
+<th>最小风险贝叶斯决策</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>目标</td>
+<td>使分类的错误率最小。</td>
+<td>使决策的风险最小。</td>
+</tr>
+<tr class="even">
+<td>--</td>
+<td>只考虑了错误分类的概率。</td>
+<td>考虑了不同类型错误的代价。</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>将<span
+class="math inline">\(\mathbf{x}\)</span>分到后验概率最大的一类。</td>
+<td>衡量当样本实际属于某类但被决策<span
+class="math inline">\(\alpha_i\)</span>时所产生的风险, 再进行判别。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="最小错误率bayes决策">最小错误率bayes决策</h2>
+<p><strong>任务：</strong>对于观测样本<span
+class="math inline">\(\mathbf{x}\)</span>, 如何将其分类？</p>
+<table>
+<thead>
+<tr class="header">
+<th>已知</th>
+<th>公式表达</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>类别</td>
+<td><span class="math inline">\(w_i,\quad i=1,\dots,c\)</span></td>
+</tr>
+<tr class="even">
+<td>特征向量</td>
+<td><span
+class="math inline">\(\mathbf{x}=[x_1,\dots,x_d]\in\mathbb{R^d}\)</span></td>
+</tr>
+<tr class="odd">
+<td>先验概率</td>
+<td><span class="math inline">\(P(w_i),\quad
+\sum^c_{i=1}P(w_i)=1\)</span></td>
+</tr>
+<tr class="even">
+<td>条件概率/PDF</td>
+<td><span class="math inline">\(p(\mathbf{x}|w_i)\)</span></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>贝叶斯决策：</strong></p>
+<ul>
+<li><p>后验概率： <span class="math display">\[
+P(w_i | \mathbf{x}) = \frac{p(\mathbf{x} | w_i) P(w_i)}{p(\mathbf{x})} =
+\frac{p(\mathbf{x} | w_i) P(w_i)}{\sum_{j = 1}^{c} p(\mathbf{x} | w_j)
+P(w_j)}
+\]</span></p></li>
+<li><p>决策规则：如果<span
+class="math inline">\(p(w_i|\mathbf{x})=\max_{j=1,2,\dots,c
+}p(w_j|\mathbf{x})\)</span>, 则<span class="math inline">\(\mathbf{x}\in
+w_i\)</span></p></li>
+<li><p>其他等价形式： <span class="math display">\[
+p(\mathbf{x} | w_1) P(w_1) &gt; p(\mathbf{x} | w_2) P(w_2)\\
+l(\mathbf{x}) = \frac{p(\mathbf{x}| w_1)}{p(\mathbf{x} | w_2)} &gt;
+\frac{P(w_2)}{P(w_1)}\\
+- \ln(l(\mathbf{x})) = - \ln(p(\mathbf{x}| w_1)) + \ln(p(\mathbf{x} |
+w_2)) &lt; - \ln(\frac{P(w_2)}{P(w_1)})
+\]</span> 则<span class="math inline">\(\mathbf{x}\in w_1\)</span>,
+否则<span class="math inline">\(\mathbf{x}\in w_2\)</span></p></li>
+</ul>
+</blockquote>
+<p>例子</p>
+<p>假设在某个局部地区细胞中正常(<span
+class="math inline">\(w_1\)</span>)和异常(<span
+class="math inline">\(w_2\)</span>)两类的先验概率为<span
+class="math inline">\(P(w_1)=0.9\)</span>和<span
+class="math inline">\(P(w_2)=0.1\)</span>。现有一待识别细胞，其观测值为<span
+class="math inline">\(x\)</span>，从类条件概率密度分布曲线中查得：<span
+class="math inline">\(p(\mathbf{x}|w_1)=0.2\)</span>，<span
+class="math inline">\(p(\mathbf{x}|w_2)=0.4\)</span>。试对该细胞进行分类。</p>
+<p>解：因为<span
+class="math inline">\(P(w_1|\mathbf{x})&gt;P(w_2|\mathbf{x})\)</span>，根据贝叶斯决策规则，所以合理的决策是将<span
+class="math inline">\(\mathbf{x}\)</span>归为正常类。 <span
+class="math display">\[
+P(w_1|\mathbf{x})=\frac{p(\mathbf{x}|w_1)P(w_1)}{\sum_{j =
+1}^{2}p(\mathbf{x}|w_j)P(w_j)}=\frac{0.2\times0.9}{0.2\times0.9 +
+0.4\times0.1}=0.818\\
+P(w_2|\mathbf{x})=1 - P(w_1|\mathbf{x})=0.182
+\]</span></p>
+<h2 id="最小风险bayes决策">最小风险bayes决策</h2>
+<ul>
+<li>风险是和损失关联在一起的。</li>
+<li>决策/行为：采取的决定。</li>
+<li>决策/行为空间：所有可能采取的各种决策组成的集合。</li>
+<li>每个决策/行为都会带来损失，损失是决策和自然状态(类别)的函数。</li>
+</ul>
+<p><strong>任务：</strong>对于观测样本<span
+class="math inline">\(\mathbf{x}\)</span>,
+将其分到哪一类<strong>风险最小</strong>？</p>
+<table>
+<thead>
+<tr class="header">
+<th>已知</th>
+<th>公式表达</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>类别</td>
+<td><span class="math inline">\(w_i,\quad i=1,\dots,c\)</span></td>
+</tr>
+<tr class="even">
+<td>特征向量</td>
+<td><span
+class="math inline">\(\mathbf{x}=[x_1,\dots,x_d]\in\mathbb{R^d}\)</span></td>
+</tr>
+<tr class="odd">
+<td>先验概率</td>
+<td><span class="math inline">\(P(w_i),\quad
+\sum^c_{i=1}P(w_i)=1\)</span></td>
+</tr>
+<tr class="even">
+<td>条件概率/PDF</td>
+<td><span class="math inline">\(p(\mathbf{x}|w_i)\)</span></td>
+</tr>
+<tr class="odd">
+<td>决策空间</td>
+<td><span class="math inline">\(\{\alpha_i\},\quad
+i=1,2,\dots,a\)</span></td>
+</tr>
+<tr class="even">
+<td>损失函数</td>
+<td><span class="math inline">\(\lambda(\alpha_i|w_j)\)</span></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>损失函数：表示当类别为<span
+class="math inline">\(w_j\)</span>时所采取的决策<span
+class="math inline">\(\alpha_i\)</span>所引起的损失，简记为<span
+class="math inline">\(\lambda_{ij}\)</span> .</p>
+</blockquote>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241229115542615.png"
+alt="image-20241229115542615" />
+<figcaption aria-hidden="true">image-20241229115542615</figcaption>
+</figure>
+<p>那么我们将做出决策<span
+class="math inline">\(\alpha_i\)</span>，但是这个决策对于的<span
+class="math inline">\(\mathbf{x}\)</span>的真实类别是确定的、但是我们不知道。所以我们要计算：</p>
+<p><strong>条件风险：</strong>条件期望风险<span
+class="math inline">\(R(\alpha_i|\mathbf{x})\)</span>, 是随机变量<span
+class="math inline">\(\mathbf{x}\)</span>的函数。 <span
+class="math display">\[
+R(\alpha_i|\mathbf{x})=E[\lambda(\alpha_i|w_j)]=\sum^c_{j=1}\lambda(\alpha_i|w_j)P(w_j|\mathbf{x})
+\]</span></p>
+<blockquote>
+<p><span class="math inline">\(P(w_j|\mathbf{x})\)</span>表示的是<span
+class="math inline">\(\mathbf{x}\)</span>实际类别为<span
+class="math inline">\(w_j\)</span>时的概率，再乘以现在做出了<span
+class="math inline">\(\alpha_i\)</span>决策对应的损失函数，<span
+class="math inline">\(R(\alpha_i|\mathbf{x})\)</span>对应<span
+class="math inline">\(\mathbf{x}\)</span>做了决策<span
+class="math inline">\(\alpha_i\)</span>的损失。</p>
+</blockquote>
+<p><strong>期望风险(总风险)</strong>：将决策规则视为随机变量<span
+class="math inline">\(\mathbf{x}\)</span>的函数，记为<span
+class="math inline">\(\alpha(\mathbf{x})\)</span>。对特征空间中所有可能的样本<span
+class="math inline">\(\mathbf{x}\)</span>采取的决策所造成的期望损失(平均风险)是:
+<span class="math display">\[
+R(\alpha)=\int R(\alpha(\mathbf{x})|\mathbf{x})\cdot p(\mathbf{x})
+d\mathbf{x}
+\]</span></p>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 46%" />
+<col style="width: 46%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>-</th>
+<th>期望风险<span class="math inline">\(R(\alpha)\)</span></th>
+<th>条件风险<span
+class="math inline">\(R(\alpha_i|\mathbf{x})\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>反映对整个特征空间上<strong>所有样本</strong>所采取的<strong>相应决策</strong>所带来的平均风险.</td>
+<td>只反映对<strong>样本<span
+class="math inline">\(\mathbf{x}\)</span></strong>采取<strong>决策<span
+class="math inline">\(\alpha_i\)</span></strong>所带来的风险.</td>
+</tr>
+<tr class="even">
+<td>区别</td>
+<td>理论推导</td>
+<td>实际操作</td>
+</tr>
+<tr class="odd">
+<td>决策规则</td>
+<td>最小化期望风险<span class="math inline">\(\min_aR(a)\)</span></td>
+<td>在各中决策中选择风险最小的决策<span
+class="math inline">\(a=\arg\min_{j=1,\dots,a}R(\alpha_j|\mathbf{x})\)</span></td>
+</tr>
+</tbody>
+</table>
+<h3 id="c2且无拒识">c=2且无拒识</h3>
+<p>假设没有拒识(分类器拒绝分类, 当最大后验不高(置信低),
+可能是不可分的情况)(<span class="math inline">\(a=c=2\)</span>): <span
+class="math display">\[
+R(\alpha_1|\mathbf{x}) =
+\lambda_{11}P(w_1|\mathbf{x})+\lambda_{12}P(w_2|\mathbf{x})\\
+R(\alpha_2|\mathbf{x}) =
+\lambda_{21}P(w_1|\mathbf{x})+\lambda_{22}P(w_2|\mathbf{x})\\
+\]</span> 决策规则：<span
+class="math inline">\(R(\alpha_1|\mathbf{x})&lt;R(\alpha_2|\mathbf{x})\)</span>,
+<span class="math inline">\(\alpha=\alpha_1\)</span>(表示将选择<span
+class="math inline">\(w_1\)</span>是<span
+class="math inline">\(\mathbf{x}\)</span>的类别)</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241229221855631.png"
+alt="image-20241229221855631" />
+<figcaption aria-hidden="true">image-20241229221855631</figcaption>
+</figure>
+<blockquote>
+<p>其他等价形式:</p>
+<p>不失一般性，可以假设<span
+class="math inline">\(\lambda_{11}&lt;\lambda_{21}\)</span>，<span
+class="math inline">\(\lambda_{22}&lt;\lambda_{12}\)</span>，于是有：</p>
+<ul>
+<li>若<span
+class="math inline">\((\lambda_{11}-\lambda_{21})P(w_1|x)&lt;(\lambda_{22}-\lambda_{12})P(w_2|x)\)</span>，则<span
+class="math inline">\(x\inw_1\)</span>；否则<span
+class="math inline">\(x\inw_2\)</span></li>
+<li>若<span
+class="math inline">\(\frac{P(w_1|x)}{P(w_2|x)}&gt;\frac{\lambda_{22}-\lambda_{12}}{\lambda_{11}-\lambda_{21}}\)</span>，则<span
+class="math inline">\(x\inw_1\)</span>；否则<span
+class="math inline">\(x\inw_2\)</span></li>
+<li>若<span
+class="math inline">\(\frac{p(x|w_1)}{p(x|w_2)}&gt;\frac{P(w_2)}{P(w_1)}\cdot\frac{\lambda_{22}-\lambda_{12}}{\lambda_{11}-\lambda_{21}}\)</span>，则<span
+class="math inline">\(x\inw_1\)</span>；否则<span
+class="math inline">\(x\inw_2\)</span></li>
+</ul>
+</blockquote>
+<h4 id="例-最小风险bayes决策">例: 最小风险bayes决策</h4>
+<p>假设在某个局部地区细胞中正常<span
+class="math inline">\((w_1)\)</span>和异常<span
+class="math inline">\((w_2)\)</span>两类的先验概率为<span
+class="math inline">\(P(w_1)=0.9\)</span>和<span
+class="math inline">\(P(w_2)=0.1\)</span>。现有一待识别细胞，其观测值为<span
+class="math inline">\(x\)</span>，从类条件概率密度分布曲线中查得：<span
+class="math inline">\(p(x|w_1)=0.2\)</span>，<span
+class="math inline">\(p(x|w_2)=0.4\)</span>。已知决策风险<span
+class="math inline">\(\lambda_{11}=0\)</span>，<span
+class="math inline">\(\lambda_{12}=6\)</span>，<span
+class="math inline">\(\lambda_{22}=0\)</span>，<span
+class="math inline">\(\lambda_{21}=1\)</span>。试对该细胞进行分类。</p>
+<p>解： 前面已经解得<span
+class="math inline">\(P(w_1|x)=0.818\)</span>；<span
+class="math inline">\(P(w_2|x)=0.182\)</span>；</p>
+<p>进一步计算条件风险： <span class="math display">\[
+R(\alpha_1|x)=\lambda_{11}P(\omega_1|x)+\lambda_{12}P(\omega_2|x)=0\times0.818
++ 6\times0.182=1.092\\
+R(\alpha_2|x)=\lambda_{21}P(\omega_1|x)+\lambda_{22}P(\omega_2|x)=1\times0.818+0\times0.182=0.818
+\]</span> 由于<span
+class="math inline">\(R(\alpha_2|x)&lt;R(\alpha_1|x)\)</span>，即决策为<span
+class="math inline">\(w_2\)</span>的条件风险小于决策为<span
+class="math inline">\(w_1\)</span>的条件风险，因此采取决策行动<span
+class="math inline">\(\alpha_2\)</span>，即判定待别的细胞为异常细胞。</p>
+<h3 id="条件风险是0-1损失">条件风险是0-1损失</h3>
+<p>假如条件风险是0-1损失，则有: <span class="math display">\[
+\lambda(\alpha_i|\omega_j)=\begin{cases}0, &amp; i = j\\1, &amp; i\neq
+j\end{cases},\quad i,j=1,2,\ldots,c\\
+R(\alpha_i|x)=\sum_{j =
+1}^{c}\lambda(\alpha_i|\omega_j)P(\omega_j|x)=\sum_{i\neq
+j}P(\omega_j|x)=1 - P(\omega_i|x)
+\]</span> 那么最小错误决策、最大后验（MAP）：</p>
+<p>若对于所有<span class="math inline">\(j\neq i\)</span>，有<span
+class="math inline">\(P(w_i|x)&gt;P(w_j|x)\)</span>，则判定为<span
+class="math inline">\(w_i\)</span></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241229223319211.png"
+alt="image-20241229223319211" />
+<figcaption aria-hidden="true">image-20241229223319211</figcaption>
+</figure>
+<blockquote>
+<p>此图给出了决策规则+<span class="math inline">\(p(\mathbf{x}|w_i),
+p(w_i|\mathbf{x})\)</span>+似然比<span
+class="math inline">\(\frac{p(\mathbf{x}|w_1)}{p(\mathbf{x}|w_2)}\)</span>.</p>
+<p><strong>存在一个问题：当<span
+class="math inline">\(\theta_a=0.5\)</span>时如何决策？</strong>引入带拒识的决策。</p>
+</blockquote>
+<h3 id="cc1且带拒识">c=c+1且带拒识</h3>
+<blockquote>
+<p><strong>Q: why 拒识？</strong></p>
+<p>错误识别可能带来严重后果。</p>
+<p><strong>Q: 是否每次一定要做出决策</strong>?</p>
+<p>在有的情况下，不做决策比做出错误率很大的决策会更好。</p>
+</blockquote>
+<p>具有c + 1个类别(分类器可以拒绝将样本判为c个类别中的任何一类)</p>
+<p>假设： <span class="math display">\[
+\lambda(\alpha_i | w_j) =  \begin{cases} 0, &amp; i = j \\ \lambda_s,
+&amp; i \neq j \\ \lambda_r, &amp; \text{reject} (\text{通常} \lambda_r
+&lt; \lambda_s) \end{cases}
+\]</span> 风险： <span class="math display">\[
+R(\alpha_i | \mathbf{x}) = \sum_{j = 1}^{c} \lambda(\alpha_i | w_j)
+P(w_j | \mathbf{x})\\
+R_i(\mathbf{x}) \triangleq R(\alpha_i | \mathbf{x}) =  \begin{cases}
+\lambda_s [1 - P(w_i | \mathbf{x})], &amp; i = 1, \ldots, c \\
+\lambda_r, &amp; \text{reject} \end{cases}
+\]</span> 当 <span class="math inline">\(\lambda_s [1 - P(w_i |
+\mathbf{x})] &gt; \lambda_r\)</span>时，选择拒识。</p>
+<p>因此有以下决策规则： <span class="math display">\[
+\arg \min_i R_i(\mathbf{x}) =  \begin{cases} \arg \max_i P(w_i |
+\mathbf{x}), &amp; \text{if } \max_i P(w_i | \mathbf{x}) &gt; 1 -
+\lambda_r / \lambda_s \\ \text{reject}, &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<h3 id="开放集分类bayes决策">开放集分类bayes决策</h3>
+<blockquote>
+<p>传统的分类器：假设训练样本和测试样本都来自预设的C个类别（闭合集,
+Closed set）。</p>
+<p>开放集(Open
+set)：实际环境中，<strong>测试样本可能不属于预设的C个类别</strong>（异常样本,
+outlier）。</p>
+<p>开放集的难点是<strong>异常样本没有训练集</strong>，只能训练已知C类的分类器。</p>
+</blockquote>
+<p><strong>问题表示</strong></p>
+<table>
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 83%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>已知</th>
+<th>公式</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>类别</td>
+<td><span class="math inline">\(w_i, i = 1, \ldots, c\)</span></td>
+</tr>
+<tr class="even">
+<td>先验概率</td>
+<td><span class="math inline">\(\sum_{i = 1}^{c} P(w_i) \leq
+1\)</span></td>
+</tr>
+<tr class="odd">
+<td>后验概率</td>
+<td><span class="math inline">\(\sum_{i = 1}^{c} P(w_i|\mathbf{x})\le
+1,\ \sum^{c+1}_{j=0}P(w_i|\mathbf{x})=1\)</span></td>
+</tr>
+<tr class="even">
+<td>条件概率密度</td>
+<td><span class="math inline">\(p(\mathbf{x} |w_i), (i = 1, \ldots, c)\\
+p(\mathbf{x} |w_{c + 1}) =?\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>分类决策</strong></p>
+<p>假设：<span class="math inline">\(p(\mathbf{x} | w_{c + 1}) =
+\rho\)</span>，<span class="math inline">\(\rho\)</span>为很小的常数</p>
+<p>后验概率： <span class="math display">\[
+P(w_i | \mathbf{x}) =\frac{p(\mathbf{x} | w_i) P(w_i)}{p(\mathbf{x})}=
+\frac{p(\mathbf{x} | w_i) P(w_i)}{\sum_{j = 1}^{c + 1} p(\mathbf{x} |
+w_j) P(w_j)}
+\]</span> 最大后验概率决策： <span class="math display">\[
+\begin{cases} \text{in - class}, &amp; \text{if } \max_{i = 1, \ldots,
+c} p(\mathbf{x} | w_i) P(w_i) &gt; \rho P(w_{c + 1}) \\ \text{outlier},
+&amp; \text{otherwise} \end{cases}
+\]</span></p>
+<h2 id="分类器设计">分类器设计</h2>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241229231009933.png"
+alt="也就是最简单的看后验概率谁大" />
+<figcaption aria-hidden="true">也就是最简单的看后验概率谁大</figcaption>
+</figure>
+<h3 id="判别函数">判别函数</h3>
+<p>用于表达决策规则的某些函数称为判别函数。</p>
+<p>通常定义一组判别函数<span
+class="math inline">\(g_i(\mathbf{x})\)</span>，<span
+class="math inline">\(i =
+1,2,\ldots,c\)</span>用于表示多类决策规则。</p>
+<p>如果<span
+class="math inline">\(g_i(\mathbf{x})&gt;g_j(\mathbf{x})\)</span>对任意<span
+class="math inline">\(j\neq i\)</span>均成立，则将<span
+class="math inline">\(\mathbf{x}\)</span>归于<span
+class="math inline">\(w_i\)</span>类。</p>
+<p>参照贝叶斯决策规则，我们可以定义： <span class="math display">\[
+g_i(\mathbf{x})=P(\omega_i|\mathbf{x})\\
+g_i(\mathbf{x})=p(\mathbf{x}|\omega_i)P(\omega_i)\\
+g_i(\mathbf{x})=\ln(p(\mathbf{x}|\omega_i))+\ln(P(\omega_i))\\
+g_i(\mathbf{x})=\int p(\mathbf{x}|\omega_i)+h(\mathbf{x},\omega_i)\
+\text{更一般情形}
+\]</span></p>
+<h4 id="c2情形下的判别函数">c=2情形下的判别函数</h4>
+<p>对于两类情形，只需要定义一个判别函数：<br />
+<span class="math display">\[
+\begin{align}
+g(\mathbf{x})&amp;=P(w_1|\mathbf{x})-P(w_2|\mathbf{x})\\
+g(\mathbf{x})&amp;=p(\mathbf{x}|w_1)P(w_1)-p(\mathbf{x}|w_2)P(w_2)\\
+g(\mathbf{x})&amp;=\ln(p(\mathbf{x}|w_1))-\ln(p(\mathbf{x}|w_2))+\ln(P(w_1))-\ln(P(w_2))\\
+g(\mathbf{x})&amp;=R(\alpha_1|\mathbf{x})-R(\alpha_2|\mathbf{x})
+\end{align}
+\]</span></p>
+<h4 id="决策面">决策面</h4>
+<p>对于<span
+class="math inline">\(c\)</span>类分类问题，按照决策规则可以把<span
+class="math inline">\(d\)</span>维特征空间分成<span
+class="math inline">\(c\)</span>个决策区域<span
+class="math inline">\(R_i\)</span>，<span class="math inline">\(i =
+1,2,\ldots,c\)</span>。划分决策区域的边界称为决策面。</p>
+<p>各决策域<span
+class="math inline">\(R_i\)</span>被决策面分割而成。这些决策面是特征空间中的超曲面，相邻的两个决策域在决策面上其判别函数值是相等的。如果<span
+class="math inline">\(R_i\)</span>和<span
+class="math inline">\(R_j\)</span>是相邻的，则它们的决策面方程应满足：<span
+class="math inline">\(g_i(\mathbf{x})=g_j(\mathbf{x})\)</span></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241229232340517.png"
+alt="image-20241229232340517" />
+<figcaption aria-hidden="true">image-20241229232340517</figcaption>
+</figure>
+<h4 id="c2情形下的决策面方程">c=2情形下的决策面方程</h4>
+<ul>
+<li><span class="math inline">\(g(\mathbf{x})=0\)</span><br />
+</li>
+<li><span
+class="math inline">\(\mathbf{x}\)</span>为一维时，决策面为一些分界点；二维时，决策面为一些曲线（曲线段）；三维时，决策面为一些曲面（曲面片）；高维时则为一些超曲面（超曲面片）。<br />
+</li>
+<li>若<span
+class="math inline">\(g(\mathbf{x})\)</span>为线性判别函数，则为平面或平面片。</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241229233051655.png"
+alt="image-20241229233051655" />
+<figcaption aria-hidden="true">image-20241229233051655</figcaption>
+</figure>
+<h3 id="分类器设计-1">分类器设计</h3>
+<p>分类器可以看成一个机器，其功能是计算出 c
+个判别函数，然后再从中选出对应于判别函数为最大值的类 作为分类结果。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241229233126442.png"
+alt="image-20241229233126442" />
+<figcaption aria-hidden="true">image-20241229233126442</figcaption>
+</figure>
+<h2 id="高斯密度下的判别函数">高斯密度下的判别函数</h2>
+<h3 id="高斯分布">高斯分布</h3>
+<ol type="1">
+<li>在给定均值和方差的所有分布中，正态分布的熵最大</li>
+<li>根据Central Limit
+Theorem(中心极限定理)，大量独立随机变量之和趋近正态分布</li>
+<li>实际环境中，很多类别的特征分布趋近正态分布</li>
+</ol>
+<blockquote>
+<p>多元正态分布：<span class="math inline">\(\mathbf{x} = [x_1, x_2,
+\ldots, x_d]^T \in \mathbb{R}^d,\ \boldsymbol{\mu} = [\mu_1, \mu_2,
+\ldots, \mu_d]^T \in \mathbb{R}^d\)</span></p>
+<p><span class="math inline">\(\boldsymbol{\Sigma} \in
+\mathbb{R}^{d\times d}\)</span>: <span class="math display">\[
+\sigma_{ij}^2 = E\{(x_{i} - \mu_{i})(x_{j} - \mu_{j})\} =
+\int_{-\infty}^{+\infty} \int_{-\infty}^{+\infty} (x_{i} -
+\mu_{i})(x_{j} - \mu_{j}) p(x_{i}, x_{j}) dx_{i} dx_{j}
+\]</span> 边际分布密度函数： <span class="math display">\[
+p(x_i) = \int_{-\infty}^{+\infty} \cdots \int_{-\infty}^{+\infty}
+p(\mathbf{x}) dx_1 dx_2 \cdots dx_{i - 1} dx_{i + 1} \cdots dx_d
+\]</span></p>
+</blockquote>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 46%" />
+<col style="width: 46%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>单变量正态分布</th>
+<th>多元正态分布</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td><span class="math inline">\(x \sim N(\mu, \sigma^2)\)</span></td>
+<td><span class="math inline">\(\mathbf{x} \sim N_p(\boldsymbol{\mu},
+\boldsymbol{\Sigma})\)</span></td>
+</tr>
+<tr class="even">
+<td>密度函数</td>
+<td>$p(x) = ( - ( )^2 ) $</td>
+<td><span class="math inline">\(p(\mathbf{x}) = \frac{1}{(2\pi)^{d/2}
+\|\boldsymbol{\Sigma}|^{1/2}} \exp \left( - \frac{1}{2} (\mathbf{x} -
+\boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1} (\mathbf{x} -
+\boldsymbol{\mu}) \right)\)</span></td>
+</tr>
+<tr class="odd">
+<td>均值</td>
+<td>$= E{x} = _{-}^{+} x p(x) d $</td>
+<td><span class="math inline">\(\mu_i = E\{x_i\} =
+\int_{-\infty}^{+\infty} \cdots \int_{-\infty}^{+\infty} x_i
+p(\mathbf{x}) d\mathbf{x}_1 d\mathbf{x}_2 \cdots
+d\mathbf{x}_d\\\boldsymbol{\mu} = E\{\mathbf{x}\} \in
+\mathbb{R}^d\)</span></td>
+</tr>
+<tr class="even">
+<td>方差</td>
+<td>$^2 = _{-}^{+} (x - )^2 p(x) d $</td>
+<td><span class="math inline">\(\boldsymbol{\Sigma} = E\{(\mathbf{x} -
+\boldsymbol{\mu})(\mathbf{x} - \boldsymbol{\mu})^T\} = \begin{bmatrix}
+\sigma_{11}^2 &amp; \sigma_{12}^2 &amp; \cdots &amp; \sigma_{1d}^2 \\
+\sigma_{12}^2 &amp; \sigma_{22}^2 &amp; \cdots &amp; \sigma_{2d}^2 \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ \sigma_{1d}^2 &amp;
+\sigma_{2d}^2 &amp; \cdots &amp; \sigma_{dd}^2
+\end{bmatrix}\)</span></td>
+</tr>
+<tr class="odd">
+<td>性质</td>
+<td>$p(x) ,-&lt; x &lt; +,\_{-}^{+} p(x) d = 1 $</td>
+<td><span class="math inline">\(p(x_i) = \int_{-\infty}^{+\infty} \cdots
+\int_{-\infty}^{+\infty} p(\mathbf{x}) d\mathbf{x}_1 d\mathbf{x}_2
+\cdots d\mathbf{x}_{i - 1} d\mathbf{x}_{i + 1} \cdots
+d\mathbf{x}_d\)</span></td>
+</tr>
+</tbody>
+</table>
+<h4 id="等密度轨迹">等密度轨迹</h4>
+<p>等密度轨迹为一超椭球面。从多元正态分布函数可以看出，当其指数项等于常数时，密度<span
+class="math inline">\(p(\mathbf{x})\)</span>的值不变，因此等函数点即为使如下方程为常数的点，即：
+$( - )^T ^{-1} ( - ) = const. $</p>
+<blockquote>
+<p>Mahalanobis距离（马氏距离）: <span
+class="math inline">\(r^2=(\mathbf{x}-\mathbf{\mu})^T\Sigma^{-1}(\mathbf{x}-\mathbf{\mu})\)</span></p>
+</blockquote>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241230094302701.png"
+alt="image-20241230094302701" />
+<figcaption aria-hidden="true">image-20241230094302701</figcaption>
+</figure>
+<h4 id="性质">性质</h4>
+<ol type="1">
+<li><p>不相关性=独立性</p></li>
+<li><p>边缘分布与条件分布均为正态分布</p></li>
+<li><p>多元正态随机变量的线性变换（非奇异）仍为多元正态分布的随机变量</p></li>
+<li><p>线性组合的正态性：若<span
+class="math inline">\(\mathbf{x}\)</span>为多元正态随机变量，则线性组合<span
+class="math inline">\(\mathbf{y} = \mathbf{a}^T
+\mathbf{x}\)</span>是一个一维正态随机变量。</p></li>
+<li><p>对多元正态分布的协方差矩阵<span
+class="math inline">\(\Sigma\)</span>可以进行正交分解。</p>
+<ol type="1">
+<li><p><span class="math display">\[
+\Sigma=U\Lambda U^T
+\]</span></p>
+<p><span class="math inline">\(U\)</span>是<span
+class="math inline">\(\Lambda\)</span>对应特征值的特征向量构成的矩阵，属于<span
+class="math inline">\(R(\Sigma)\)</span>值域空间。</p></li>
+</ol></li>
+<li><p>线性变换 <span class="math inline">\(y=A^T\mathbf{x},\ y\sim
+N(A^T\mu,A^T\Sigma A)\)</span> <span class="math display">\[
+Cov(AX)=ACov(X)A^T\\
+令A_w=U\Lambda^{-1/2},Cov(A^TX)=\Lambda^{-1/2}U\Sigma
+U\Lambda^{-1/2}=\Lambda^{-1/2}\Lambda\Lambda^{-1/2}=I
+\]</span> 白化变换：对<span
+class="math inline">\(\Sigma\)</span>进行归一化变成<span
+class="math inline">\(I\)</span>.</p></li>
+</ol>
+<h3 id="最小错误率贝叶斯决策">最小错误率贝叶斯决策</h3>
+<p>对于<span
+class="math inline">\(c\)</span>类问题，假定各类条件概率密度函数为多元正态分布：
+<span class="math display">\[
+p(\mathbf{x}|\omega_i) \sim N(\boldsymbol{\mu}_i,
+\boldsymbol{\Sigma}_i), \quad i = 1,2,\ldots,c
+\]</span> 判别函数(Quadratic discrimin function (QDF))：$(i = 1,2,,c) $
+<span class="math display">\[
+\begin{align}g_i(\mathbf{x})&amp;=\ln(p(\mathbf{x}|\omega_i))+\ln(P(\omega_i))\\
+&amp;=-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu}_i)^T\boldsymbol{\Sigma}_i^{-1}(\mathbf{x}-\boldsymbol{\mu}_i)-\frac{d}{2}\ln(2\pi)-\frac{1}{2}\ln(|\boldsymbol{\Sigma}_i|)+\ln(P(\omega_i))
+\end{align}
+\]</span> 决策面方程 : <span class="math display">\[
+g_i(\mathbf{x})=g_j(\mathbf{x})\\
+-\frac{1}{2}\left((\mathbf{x}-\boldsymbol{\mu}_i)^T\boldsymbol{\Sigma}_i^{-1}(\mathbf{x}-\boldsymbol{\mu}_i)-(\mathbf{x}-\boldsymbol{\mu}_j)^T\boldsymbol{\Sigma}_j^{-1}(\mathbf{x}-\boldsymbol{\mu}_j)\right)-\frac{1}{2}\ln\left(\frac{|\boldsymbol{\Sigma}_i|}{|\boldsymbol{\Sigma}_j|}\right)+\ln\left(\frac{P(\omega_i)}{P(\omega_j)}\right)=0
+\]</span></p>
+<h4
+id="第一种情形boldsymbolsigma_isigma2mathbfi-quad-i-12ldotsc">第一种情形：<span
+class="math inline">\(\boldsymbol{\Sigma}_i=\sigma^2\mathbf{I}, \quad i
+= 1,2,\ldots,c\)</span></h4>
+<blockquote>
+<p>这表明每个特征向量对应的方差都是<strong>独立</strong>同分布。</p>
+</blockquote>
+<p>协方差矩阵: <span class="math display">\[
+\boldsymbol{\Sigma}_i=\begin{bmatrix} \sigma^2 &amp; 0 &amp; \cdots
+&amp; 0 \\ 0 &amp; \sigma^2 &amp; \cdots &amp; 0 \\ \vdots &amp; \vdots
+&amp; \ddots &amp; \vdots \\ 0 &amp; 0 &amp; \cdots &amp; \sigma^2
+\end{bmatrix}, \quad |\boldsymbol{\Sigma}_i|=\sigma^{2d}, \quad
+\boldsymbol{\Sigma}_i^{-1}=\frac{1}{\sigma^2}\mathbf{I}
+\]</span> 判别函数(Quadratic discrimin function (QDF))： <span
+class="math display">\[
+\begin{align}g_i(\mathbf{x})&amp;=-\frac{1}{2\sigma^2}(\mathbf{x}-\boldsymbol{\mu}_i)^T(\mathbf{x}-\boldsymbol{\mu}_i)-\frac{d}{2}\ln(2\pi)-\frac{1}{2}\ln(\sigma^{2d})+\ln(P(w_i))\\
+&amp;=-\frac{1}{2\sigma^2}(\mathbf{x}-\boldsymbol{\mu}_i)^T(\mathbf{x}-\boldsymbol{\mu}_i)+\ln(P(w_i))\\
+&amp;=-\frac{1}{2\sigma^2}\|\mathbf{x}-\boldsymbol{\mu}_i\|^2_2+\ln(P(w_i))
+\end{align}
+\]</span></p>
+<h5 id="先验概率相等pw_ipw_j">先验概率相等：<span
+class="math inline">\(P(w_i)=P(w_j)\)</span></h5>
+<p>此时，判别函数可进一步简化为： <span class="math display">\[
+g_i(\mathbf{x})=-\frac{1}{2\sigma^2}\|\mathbf{x}-\boldsymbol{\mu}_i\|^2_2
+\]</span> 因此，最小错误率贝叶斯规则相当简单：</p>
+<p>若要对样本<span
+class="math inline">\(\mathbf{x}\)</span>进行分类，只需要计算<span
+class="math inline">\(\mathbf{x}\)</span>到各类均值向量的欧氏距离平方，然后将归于距离最短的一类：
+<span class="math display">\[
+\arg\min_{i = 1,2,\ldots,c}\|\mathbf{x}-\boldsymbol{\mu}_i\|^2
+\]</span> 这种分类器称为<strong>最小距离分类器。</strong></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241230103929713.png"
+alt="计算欧式距离即可" />
+<figcaption aria-hidden="true">计算欧式距离即可</figcaption>
+</figure>
+<h5 id="先验概率不相等pw_ineq-pw_j">先验概率不相等：<span
+class="math inline">\(P(w_i)\neq P(w_j)\)</span></h5>
+<p>判别函数： <span class="math display">\[
+\begin{align}g_i(\mathbf{x})&amp;=-\frac{1}{2\sigma^2}(\mathbf{x}-\boldsymbol{\mu}_i)^T(\mathbf{x}-\boldsymbol{\mu}_i)+\ln(P(w_i))\\
+&amp;=-\frac{1}{2\sigma^2}(\mathbf{x}^T\mathbf{x}-2\boldsymbol{\mu}_i^T\mathbf{x}+\boldsymbol{\mu}_i^T\boldsymbol{\mu}_i)+\ln(P(w_i))\\
+&amp;=\frac{1}{\sigma^2}\boldsymbol{\mu}_i^T\mathbf{x}-\frac{1}{2\sigma^2}\boldsymbol{\mu}_i^T\boldsymbol{\mu}_i+\ln(P(w_i))\\
+&amp;= \mathbf{w}_i^T\mathbf{x}+\mathrm w_{i0}
+\end{align}
+\]</span> 由于每一类的判别函数均包含<span
+class="math inline">\(\mathbf{x}^T\mathbf{x}\)</span>，与下标<span
+class="math inline">\(i\)</span>无关，因此可以进一步简化为线性判别函数,得到判别函数<span
+class="math inline">\(g_i(\mathbf{x})\)</span>是<span
+class="math inline">\(\mathbf{x}\)</span>的线性函数。 <span
+class="math display">\[
+g_i(x)=\mathbf{w}_i^T\mathbf{x}+\mathrm w_{i0}\\
+\begin{cases}\mathbf{w}_i&amp;=\frac{1}{\sigma^2}\boldsymbol{\mu}_i\\
+\mathrm
+w_{i0}&amp;=\ln(P(w_i))-\frac{1}{2\sigma^2}\boldsymbol{\mu}_i^T\boldsymbol{\mu}_i\end{cases}
+\]</span></p>
+<h5 id="决策规则-若g_kmathbfxmax_ig_imathbfx则mathbfxin-w_k">决策规则：
+若<span
+class="math inline">\(g_k(\mathbf{x})=\max_{i}g_i(\mathbf{x})\)</span>，则<span
+class="math inline">\(\mathbf{x}\in w_k\)</span></h5>
+<ul>
+<li><p>判别函数为线性函数的分类器称为线性分类器。</p></li>
+<li><p>线性分类器的决策面方程为：<span
+class="math inline">\(g_i(\mathbf{x}) -
+g_j(\mathbf{x})=0\)</span>所确定的一个超平面。 <span
+class="math display">\[
+g_i(\mathbf{x})-g_j(\mathbf{x})=0 \Rightarrow
+\mathbf{w}^T(\mathbf{x}-\mathbf{x}_0)=0
+\]</span></p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>先验概率相等<span class="math inline">\(P(w_i)=P(w_j)\)</span></th>
+<th>先验概率不等<span class="math inline">\(P(w_i)\neq
+P(w_j)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\mathbf{w}=\boldsymbol{\mu}_i -
+\boldsymbol{\mu}_j\)</span></td>
+<td><span class="math inline">\(\mathbf{w}=\boldsymbol{\mu}_i -
+\boldsymbol{\mu}_j\)</span></td>
+</tr>
+<tr class="even">
+<td><span
+class="math inline">\(\mathbf{x}_0=\frac{1}{2}(\boldsymbol{\mu}_i+\boldsymbol{\mu}_j)\)</span></td>
+<td><span
+class="math inline">\(\begin{align}\mathbf{x}_0&amp;=\frac{1}{2}(\boldsymbol{\mu}_i+\boldsymbol{\mu}_j)-\frac{\sigma^2}{\|\boldsymbol{\mu}_i
+-
+\boldsymbol{\mu}_j\|^2}\ln\left(\frac{P(w_i)}{P(w_j)}\right)(\boldsymbol{\mu}_i
+-
+\boldsymbol{\mu}_j)\\&amp;=\frac{1}{2}(\boldsymbol{\mu}_i+\boldsymbol{\mu}_j)-s_{ij}(\boldsymbol{\mu}_i
+- \boldsymbol{\mu}_j)\end{align}\)</span></td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241230110444219.png"
+alt="image-20241230110444219" />
+<figcaption aria-hidden="true">image-20241230110444219</figcaption>
+</figure>
+<blockquote>
+<p>先验概率相等：取欧式距离的中点划分。</p>
+<p>先验概率不等：根据<span
+class="math inline">\(s_{ij}\)</span>的大小会偏斜
+先验概率较小的一边。</p>
+<ul>
+<li><span class="math inline">\(P(w_i)&gt; P(w_j),s_{ij}&gt;0\)</span>:
+会向<span class="math inline">\(R_j\)</span>偏.</li>
+<li><span class="math inline">\(P(w_i)&lt; P(w_j),s_{ij}&gt;0\)</span>:
+会向<span class="math inline">\(R_i\)</span>偏.</li>
+</ul>
+</blockquote>
+<h4
+id="第二种情形boldsymbolsigma_iboldsymbolsigma-quad-i-12ldotsc">第二种情形：<span
+class="math inline">\(\boldsymbol{\Sigma}_i=\boldsymbol{\Sigma}, \quad i
+= 1,2,\ldots,c\)</span></h4>
+<blockquote>
+<p>各类的协方差矩阵均相等。从几何上看，相当于各类样本集中于以该类均值<span
+class="math inline">\(\boldsymbol{\mu}_i\)</span>为中心但大小和形状相同的椭球内。</p>
+</blockquote>
+<p>判别函数（Quadratic discriminant function (QDF)）： <span
+class="math display">\[
+\begin{align}g_i(\mathbf{x})&amp;=\ln(p(\mathbf{x}|\omega_i))+\ln(P(\omega_i))\\
+&amp;=-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu}_i)^T\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu}_i)-\frac{d}{2}\ln(2\pi)-\frac{1}{2}\ln(|\boldsymbol{\Sigma}|)+\ln(P(\omega_i))\\
+&amp;=-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu}_i)^T\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu}_i)+\ln(P(\omega_i))
+\end{align}
+\]</span></p>
+<h5 id="先验概率相等pw_ipw_j-1">先验概率相等：<span
+class="math inline">\(P(w_i)=P(w_j)\)</span></h5>
+<p>判别函数： <span class="math display">\[
+g_i(\mathbf{x})=r^2 =
+(\mathbf{x}-\boldsymbol{\mu}_i)^T\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu}_i)
+\]</span> 决策规则： 若要对样本<span
+class="math inline">\(\mathbf{x}\)</span>进行分类，只需要计算<span
+class="math inline">\(\mathbf{x}\)</span>到各类均值向量的马氏距离平方，然后将归于距离最短的一类：<br />
+<span class="math display">\[
+\arg\min_{i =
+1,2,\ldots,c}(\mathbf{x}-\boldsymbol{\mu}_i)^T\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu}_i)
+\]</span></p>
+<h5 id="先验概率不相等pw_ineq-pw_j-1">先验概率不相等：<span
+class="math inline">\(P(w_i)\neq P(w_j)\)</span></h5>
+<p>判别函数： <span class="math display">\[
+\
+\begin{align}
+g_i(\mathbf{x})&amp;=-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu}_i)^T\boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu}_i)+\ln(P(\omega_i))
+\\
+&amp;=-\frac{1}{2}(\mathbf{x}^T\boldsymbol{\Sigma}^{-1}\mathbf{x}-2\boldsymbol{\mu}_i^T\boldsymbol{\Sigma}^{-1}\mathbf{x}+\boldsymbol{\mu}_i^T\boldsymbol{\Sigma}^{-1}\boldsymbol{\mu}_i)+\ln(P(\omega_i))
+\\
+&amp;=\boldsymbol\mu_i\boldsymbol\Sigma^{-1}\mathbf{x}-\frac 1 2
+\boldsymbol{\mu}_i^T\boldsymbol{\Sigma}^{-1}\boldsymbol{\mu}_i+\ln(P(\omega_i))
+\\
+&amp;=\mathbf{w}_i^T\mathbf{x}+\mathrm w_{i0}\\\\
+&amp;\begin{cases}
+\mathbf{w}_i&amp;=\boldsymbol{\Sigma}^{-1}\boldsymbol{\mu}_i\\
+\mathrm
+w_{i0}&amp;=\ln(P(\omega_i))-\frac{1}{2}\boldsymbol{\mu}_i^T\boldsymbol{\Sigma}^{-1}\boldsymbol{\mu}_i
+\end{cases}
+\end{align}
+\]</span></p>
+<h5 id="决策面方程g_imathbfx-g_jmathbfx0">决策面方程：<span
+class="math inline">\(g_i(\mathbf{x})-g_j(\mathbf{x})=0\)</span></h5>
+<p>展开可得：<span
+class="math inline">\(\mathbf{w}^T(\mathbf{x}-\mathbf{x}_0)=0\)</span> (
+这是线性判别函数 )</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>先验概率相等<span class="math inline">\(P(w_i)=P(w_j)\)</span></th>
+<th>先验概率不相等<span class="math inline">\(P(w_i)\neq
+P(w_j)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span
+class="math inline">\(\mathbf{w}=\boldsymbol{\Sigma}^{-1}(\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)\)</span></td>
+<td><span
+class="math inline">\(\mathbf{w}=\boldsymbol{\Sigma}^{-1}(\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)\)</span></td>
+</tr>
+<tr class="even">
+<td><span
+class="math inline">\(\mathbf{x}_0=\frac{1}{2}(\boldsymbol{\mu}_i+\boldsymbol{\mu}_j)\)</span></td>
+<td><span
+class="math inline">\(\begin{align}\mathbf{x}_0&amp;=\frac{1}{2}(\boldsymbol{\mu}_i+\boldsymbol{\mu}_j)-\frac{\sigma^2}{\|\boldsymbol{\mu}_i-\boldsymbol{\mu}_j\|^2}\ln\left(\frac{P(w_i)}{P(w_j)}\right)(\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)\\&amp;=\frac{1}{2}(\boldsymbol{\mu}_i+\boldsymbol{\mu}_j)-s_{ij}(\boldsymbol{\mu}_i-\boldsymbol{\mu}_j)
+\end{align}\)</span></td>
+</tr>
+</tbody>
+</table>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241230114735420.png"
+alt="image-20241230114735420" />
+<figcaption aria-hidden="true">image-20241230114735420</figcaption>
+</figure>
+<h4
+id="第三种情形boldsymbolsigma_ineqboldsymbolsigma_j-quad-ij-12ldotsc">第三种情形：<span
+class="math inline">\(\boldsymbol{\Sigma}_i\neq\boldsymbol{\Sigma}_j,
+\quad i,j = 1,2,\ldots,c\)</span></h4>
+<p>判别函数： <span class="math display">\[
+\begin{align}g_i(\mathbf{x})&amp;=\ln(p(\mathbf{x}|\omega_i))+\ln(P(\omega_i))\\
+&amp;=-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu}_i)^T\boldsymbol{\Sigma}_i^{-1}(\mathbf{x}-\boldsymbol{\mu}_i)-\frac{d}{2}\ln(2\pi)-\frac{1}{2}\ln(|\boldsymbol{\Sigma}_i|)+\ln(P(\omega_i))\\
+&amp;=-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu}_i)^T\boldsymbol{\Sigma}_i^{-1}(\mathbf{x}-\boldsymbol{\mu}_i)-\frac{1}{2}\ln(|\boldsymbol{\Sigma}_i|)+\ln(P(\omega_i))\\
+&amp;=\mathbf{x}^T\mathbf{W}_i\mathbf{x}+\mathbf{w}_i^T\mathbf{x}+\mathrm
+w_{i0}\\
+&amp;\begin{cases}
+\mathbf{W}_i &amp;= -\frac{1}{2}\boldsymbol{\Sigma}_i^{-1}\\
+\mathbf{w}_i&amp;=\boldsymbol{\Sigma}_i^{-1}\boldsymbol{\mu}_i\\
+\mathrm
+w_{i0}&amp;=-\frac{1}{2}\boldsymbol{\mu}_i^T\boldsymbol{\Sigma}_i^{-1}\boldsymbol{\mu}_i-\frac{1}{2}\ln(|\boldsymbol{\Sigma}_i|)+\ln(P(\omega_i))
+\end{cases}
+\end{align}
+\]</span> 决策方程： <span class="math display">\[
+g_i(\mathbf{x})-g_j(\mathbf{x})=0\\
+\mathbf{x}^T(\mathbf{W}_i-\mathbf{W}_j)\mathbf{x}+(\mathbf{w}_i-\mathbf{w}_j)^T\mathbf{x}+w_{i0}-w_{j0}=0
+\]</span> 决策面为一个超二次曲面。随着<span
+class="math inline">\(\boldsymbol{\Sigma}_i\)</span>、<span
+class="math inline">\(\boldsymbol{\mu}_i\)</span>、<span
+class="math inline">\(P(w_i)\)</span>等的不同而呈现出超球面、超椭球面、超双曲面或超平面等不同的情形。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241230115549135.png" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241230115726706.png" /></p>
+<h5 id="例子-c2-2d">例子: c=2, 2D</h5>
+<p><span class="math display">\[
+P(\omega_1)=P(\omega_2)=0.5\\\boldsymbol{\mu}_1 = \begin{bmatrix} 3 \\ 6
+\end{bmatrix} ; \boldsymbol{\Sigma}_1 = \begin{bmatrix} 1/2 &amp; 0 \\ 0
+&amp; 2 \end{bmatrix} ; \boldsymbol{\Sigma}_1^{-1} = \begin{bmatrix} 2
+&amp; 0 \\ 0 &amp; 1/2 \end{bmatrix}\\
+\boldsymbol{\mu}_2 = \begin{bmatrix} 3 \\ -2 \end{bmatrix} ;
+\boldsymbol{\Sigma}_2 = \begin{bmatrix} 2 &amp; 0 \\ 0 &amp; 2
+\end{bmatrix} ; \boldsymbol{\Sigma}_2^{-1} = \begin{bmatrix} 1/2 &amp; 0
+\\ 0 &amp; 1/2 \end{bmatrix}
+\]</span></p>
+<p>对于两类问题，<span
+class="math inline">\(\boldsymbol{\Sigma}_i\neq\boldsymbol{\Sigma}_j\)</span>，先验相等。
+<span class="math display">\[
+g_i(\mathbf{x})=-\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu}_i)^T\boldsymbol{\Sigma}_i^{-1}(\mathbf{x}-\boldsymbol{\mu}_i)-\frac{1}{2}\ln(|\boldsymbol{\Sigma}_i|)+\ln(P(\omega_i))
+\]</span> 决策面方程为<span class="math inline">\(g_1(\mathbf{x}) -
+g_2(\mathbf{x}) = 0\)</span>。 <span class="math display">\[
+(\mathbf{x}-\boldsymbol{\mu}_1)^T\boldsymbol{\Sigma}_1^{-1}(\mathbf{x}-\boldsymbol{\mu}_1)+\ln(|\boldsymbol{\Sigma}_1|)=(\mathbf{x}-\boldsymbol{\mu}_2)^T\boldsymbol{\Sigma}_2^{-1}(\mathbf{x}-\boldsymbol{\mu}_2)+\ln(|\boldsymbol{\Sigma}_2|)\\
+(\mathbf{x}-\boldsymbol{\mu}_1)^T\boldsymbol{\Sigma}_1^{-1}(\mathbf{x}-\boldsymbol{\mu}_1)=(x_1
+- 3, x_2 -
+6)\left[\begin{matrix}2&amp;0\\0&amp;1/2\end{matrix}\right]\left[\begin{matrix}x_1
+- 3\\x_2 - 6\end{matrix}\right]\\
+\ln(|\boldsymbol{\Sigma}_1|)=\ln(1)=0,\ln(|\boldsymbol{\Sigma}_2|)=\ln(4)=2\ln(2)\\
+(\mathbf{x}-\boldsymbol{\mu}_2)^T\boldsymbol{\Sigma}_2^{-1}(\mathbf{x}-\boldsymbol{\mu}_2)=(x_1
+- 3, x_2 +
+2)\left[\begin{matrix}1/2&amp;0\\0&amp;1/2\end{matrix}\right]\left[\begin{matrix}x_1
+- 3\\
+x_2 + 2\end{matrix}\right]\\
+\]</span></p>
+<p><span class="math display">\[
+-(2(x_1 - 3)^2+\frac{1}{2}(x_2 - 6)^2)+(\frac{1}{2}(x_1 -
+3)^2+\frac{1}{2}(x_2 + 2)^2)+2\ln(2)=0\\
+-2(x_1 - 3)^2-\frac{1}{2}(x_2 - 6)^2+\frac{1}{2}(x_1 -
+3)^2+\frac{1}{2}(x_2 + 2)^2+2\ln(2)=0\\
+(-2 + \frac{1}{2})(x_1 - 3)^2+(-\frac{1}{2}+\frac{1}{2})(x_2 -
+6)^2+\frac{1}{2}(x_2 + 2)^2+2\ln(2)=0\\
+-\frac{3}{2}(x_1 - 3)^2+\frac{1}{2}(x_2 + 2)^2+2\ln(2)=0\\
+-3(x_1 - 3)^2+(x_2 + 2)^2 + 4\ln(2)=0
+\]</span></p>
+<p>所以，此例子的决策面方程为<span class="math inline">\(-3(x_1 -
+3)^2+(x_2 + 2)^2+4\ln(2)=0\)</span>。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241230120455543.png"
+alt="image-20241230120455543" />
+<figcaption aria-hidden="true">image-20241230120455543</figcaption>
+</figure>
+<h2 id="分类错误率">分类错误率</h2>
+<h3 id="最小错误率贝叶斯决策-1">最小错误率贝叶斯决策</h3>
+<p>样本<span class="math inline">\(x\)</span>的错误率：
+任一决策都可能会有错误。 <span class="math display">\[
+P(\text{error}|\mathbf{x})=\begin{cases}  P(w_2|\mathbf{x}), &amp;
+\text{if we decide } \mathbf{x} \text{ as } w_1\\  P(w_1|\mathbf{x}),
+&amp; \text{if we decide } \mathbf{x} \text{ as } w_2  \end{cases}
+\]</span> <span
+class="math inline">\(P(w_2|x)\)</span>即：当我们将样本<span
+class="math inline">\(x\)</span>判定为第一类<span
+class="math inline">\(w_1\)</span>时，这个判定失误的概率为<span
+class="math inline">\(P(w_2|x)\)</span>；（因为样本以该概率属于第二类）</p>
+<p>样本<span class="math inline">\(x\)</span>的最小错误率： <span
+class="math display">\[
+P(\text{error}|\mathbf{x})=\min(P(\omega_1|\mathbf{x}),P(\omega_2|\mathbf{x}))
+\]</span>
+贝叶斯决策的错误率：贝叶斯决策的错误率定义为<strong>所有服从独立同分布的样本</strong>上的错误率的期望：
+<span class="math display">\[
+P(\text{error})=\int P(\text{error}|\mathbf{x})p(\mathbf{x})dx
+\]</span></p>
+<h4 id="例错误率1d">例：错误率(1D)</h4>
+<p>关于错误率，以一维为例说明：
+考虑一个有关一维样本的两类分类问题。假设决策边界<span
+class="math inline">\(t\)</span>将<span
+class="math inline">\(x\)</span>轴分成两个区域<span
+class="math inline">\(R_1\)</span>和<span
+class="math inline">\(R_2\)</span>。<span
+class="math inline">\(R_1\)</span>为<span
+class="math inline">\((-\infty,t)\)</span>，<span
+class="math inline">\(R_2\)</span>为<span
+class="math inline">\((t,\infty)\)</span>。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241230160243352.png" /></p>
+<p>错误情形：样本在<span
+class="math inline">\(R_1\)</span>中，但属于第二类的概率是存在的，即<span
+class="math inline">\(P(w_2|\mathbf{x})\)</span>；样本在<span
+class="math inline">\(R_2\)</span>中，但属于第一类的概率也是存在的，即<span
+class="math inline">\(P(w_1|\mathbf{x})\)</span>；这两种情形就是决策一个给定样本<span
+class="math inline">\(x\)</span>可能出现错误的概率。</p>
+<p>考虑样本自身的分布后的平均错误率计算如下：<br />
+<span class="math display">\[
+\begin{align}P(\text{error})&amp;=\int_{-\infty}^{t}P(w_2|\mathbf{x})p(\mathbf{x})d\mathbf{x}+\int_{t}^{\infty}P(w_1|x)p(\mathbf{x})d\mathbf{x}\\
+&amp;=\int_{-\infty}^{t}P(\mathbf{x}|w_2)P(w_2)d\mathbf{x}+\int_{t}^{\infty}\\
+&amp;= P(\mathbf{x}\in R_1,w_2)+P(\mathbf{x}\in R_2,w_1)
+\end{align}
+\]</span></p>
+<h3 id="两类情形">两类情形</h3>
+<p>平均错分概率：<br />
+<span class="math display">\[
+P(\text{error})=P(\mathbf{x}\in R_2,w_1)+P(\mathbf{x}\in R_1,w_2)\\
+=\int_{R_2}p(\mathbf{x}|w_1)P(w_1)d\mathbf{x}+\int_{R_1}p(\mathbf{x}|w_2)P(w_2)d\mathbf{x}\\
+=P(\mathbf{x}\in R_2|w_1)P(w_1)+P(\mathbf{x}\in R_1|w_2)P(w_2)
+\]</span></p>
+<h4 id="例子">例子</h4>
+<p>平均错分概率： <span class="math display">\[
+P(\text{error})=\int_{R_2}p(\mathbf{x}|w_1)P(w_1)d\mathbf{x}+\int_{R_1}p(\mathbf{x}|w_2)P(w_2)d\mathbf{x}
+\]</span> <img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20241230161734559.png"
+alt="image-20241230161734559" /></p>
+<h3 id="多类情形">多类情形</h3>
+<p>平均错分概率：<br />
+<span class="math display">\[
+P(\text{error})=\sum_{i = 1}^{c}\sum_{j\neq i}P(x\in R_j,w_i)
+\]</span> 平均分类精度：<br />
+<span class="math display">\[
+\begin{align}
+P(\text{correct})&amp;=\sum_{i = 1}^{c}P(\mathbf{x}\in R_i,w_i)\\
+&amp; =\sum_{i = 1}^{c}P(\mathbf{x}\in R_i|w_i)P(w_i)\\
+&amp; =\int_{R_i}p(\mathbf{x}|w_i)P(w_i)d\mathbf{x}
+\end{align}
+\]</span></p>
+<h2
+id="贝叶斯分类器基于贝叶斯决策的分类器是最优的吗">贝叶斯分类器(基于贝叶斯决策的分类器)是最优的吗？</h2>
+<ul>
+<li>贝叶斯分类器是基于<strong>贝叶斯决策理论</strong>的分类器，其目标是最小化分类的总体风险（即误分类风险）。
+<ul>
+<li>最小风险：通过最小化条件风险（如 0-1 损失），选择最优分类。</li>
+<li>最大后验概率决策 ：在每个样本点 <span
+class="math inline">\(\mathbf{x}\)</span>，选择后验概率最大的类别。</li>
+</ul></li>
+<li>最优的条件：概率密度<span
+class="math inline">\(p(\mathbf{x}|w_i)\)</span>和先验概率<span
+class="math inline">\(P(w_i)\)</span>、风险能<strong>准确估计</strong></li>
+<li>具体的参数法（如正态分布假设）、非参数法（如 Parzen
+窗、核密度估计）是贝叶斯分类器的近似，实际中难以达到最优。</li>
+<li>判别模型（如逻辑回归、支持向量机
+SVM）：回避了概率密度估计，以较小复杂度估计后验概率<span
+class="math inline">\(P(w_i|\mathbf{x})\)</span>或判别函数<span
+class="math inline">\(g(\mathbf{x})\)</span>。</li>
+<li>什么方法能胜过贝叶斯分类器：在不同的特征空间才有可能。</li>
+</ul>
+<blockquote>
+<p><strong>Q1:
+贝叶斯分类器（基于贝叶斯决策的分类器）是最优的吗？</strong></p>
+<ul>
+<li><strong>理论上</strong>：是的，贝叶斯分类器在理论上是最优的分类器，因为它最小化了分类风险。</li>
+<li><strong>实际中</strong>：不一定，因为贝叶斯分类器依赖于概率密度函数的精确估计，而实际中往往难以精确估计这些密度函数，特别是当数据分布复杂或高维时。</li>
+</ul>
+<p><strong>Q2: 什么方法能胜过贝叶斯分类器？</strong></p>
+<ul>
+<li>判别模型，如逻辑回归、SVM、神经网络等，特别是在以下情况下可能胜过贝叶斯分类器：
+<ol type="1">
+<li>数据的真实分布复杂，难以准确建模。</li>
+<li>特征空间高维，生成模型对概率估计的难度更大。</li>
+<li>数据量有限时，生成模型容易过拟合。</li>
+</ol></li>
+</ul>
+</blockquote>
+</div><div class="post-end"><div class="post-prev"></div><div class="post-next"><a href="/2024/12/30/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch1-%E8%80%83%E7%82%B9%E6%80%BB%E7%BB%93-%E7%BB%AA%E8%AE%BA/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch2-%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%86%B3%E7%AD%96bayesian-decision-theory"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch2 贝叶斯决策(Bayesian
+Decision Theory)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%9C%80%E5%B0%8F%E9%94%99%E8%AF%AF%E7%8E%87bayes%E5%86%B3%E7%AD%96"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">最小错误率bayes决策</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%9C%80%E5%B0%8F%E9%A3%8E%E9%99%A9bayes%E5%86%B3%E7%AD%96"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">最小风险bayes决策</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#c2%E4%B8%94%E6%97%A0%E6%8B%92%E8%AF%86"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">c&#x3D;2且无拒识</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B-%E6%9C%80%E5%B0%8F%E9%A3%8E%E9%99%A9bayes%E5%86%B3%E7%AD%96"><span class="toc-content-number">1.2.1.1.</span> <span class="toc-content-text">例: 最小风险bayes决策</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%9D%A1%E4%BB%B6%E9%A3%8E%E9%99%A9%E6%98%AF0-1%E6%8D%9F%E5%A4%B1"><span class="toc-content-number">1.2.2.</span> <span class="toc-content-text">条件风险是0-1损失</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#cc1%E4%B8%94%E5%B8%A6%E6%8B%92%E8%AF%86"><span class="toc-content-number">1.2.3.</span> <span class="toc-content-text">c&#x3D;c+1且带拒识</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%BC%80%E6%94%BE%E9%9B%86%E5%88%86%E7%B1%BBbayes%E5%86%B3%E7%AD%96"><span class="toc-content-number">1.2.4.</span> <span class="toc-content-text">开放集分类bayes决策</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%88%86%E7%B1%BB%E5%99%A8%E8%AE%BE%E8%AE%A1"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">分类器设计</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">判别函数</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#c2%E6%83%85%E5%BD%A2%E4%B8%8B%E7%9A%84%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.3.1.1.</span> <span class="toc-content-text">c&#x3D;2情形下的判别函数</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%86%B3%E7%AD%96%E9%9D%A2"><span class="toc-content-number">1.3.1.2.</span> <span class="toc-content-text">决策面</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#c2%E6%83%85%E5%BD%A2%E4%B8%8B%E7%9A%84%E5%86%B3%E7%AD%96%E9%9D%A2%E6%96%B9%E7%A8%8B"><span class="toc-content-number">1.3.1.3.</span> <span class="toc-content-text">c&#x3D;2情形下的决策面方程</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%88%86%E7%B1%BB%E5%99%A8%E8%AE%BE%E8%AE%A1-1"><span class="toc-content-number">1.3.2.</span> <span class="toc-content-text">分类器设计</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E9%AB%98%E6%96%AF%E5%AF%86%E5%BA%A6%E4%B8%8B%E7%9A%84%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">高斯密度下的判别函数</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83"><span class="toc-content-number">1.4.1.</span> <span class="toc-content-text">高斯分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%AD%89%E5%AF%86%E5%BA%A6%E8%BD%A8%E8%BF%B9"><span class="toc-content-number">1.4.1.1.</span> <span class="toc-content-text">等密度轨迹</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%80%A7%E8%B4%A8"><span class="toc-content-number">1.4.1.2.</span> <span class="toc-content-text">性质</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%9C%80%E5%B0%8F%E9%94%99%E8%AF%AF%E7%8E%87%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%86%B3%E7%AD%96"><span class="toc-content-number">1.4.2.</span> <span class="toc-content-text">最小错误率贝叶斯决策</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E6%83%85%E5%BD%A2boldsymbolsigma_isigma2mathbfi-quad-i-12ldotsc"><span class="toc-content-number">1.4.2.1.</span> <span class="toc-content-text">第一种情形：\(\boldsymbol{\Sigma}_i&#x3D;\sigma^2\mathbf{I}, \quad i
+&#x3D; 1,2,\ldots,c\)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E5%85%88%E9%AA%8C%E6%A6%82%E7%8E%87%E7%9B%B8%E7%AD%89pw_ipw_j"><span class="toc-content-number">1.4.2.1.1.</span> <span class="toc-content-text">先验概率相等：\(P(w_i)&#x3D;P(w_j)\)</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E5%85%88%E9%AA%8C%E6%A6%82%E7%8E%87%E4%B8%8D%E7%9B%B8%E7%AD%89pw_ineq-pw_j"><span class="toc-content-number">1.4.2.1.2.</span> <span class="toc-content-text">先验概率不相等：\(P(w_i)\neq P(w_j)\)</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E5%86%B3%E7%AD%96%E8%A7%84%E5%88%99-%E8%8B%A5g_kmathbfxmax_ig_imathbfx%E5%88%99mathbfxin-w_k"><span class="toc-content-number">1.4.2.1.3.</span> <span class="toc-content-text">决策规则：
+若\(g_k(\mathbf{x})&#x3D;\max_{i}g_i(\mathbf{x})\)，则\(\mathbf{x}\in w_k\)</span></a></li></ol></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E6%83%85%E5%BD%A2boldsymbolsigma_iboldsymbolsigma-quad-i-12ldotsc"><span class="toc-content-number">1.4.2.2.</span> <span class="toc-content-text">第二种情形：\(\boldsymbol{\Sigma}_i&#x3D;\boldsymbol{\Sigma}, \quad i
+&#x3D; 1,2,\ldots,c\)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E5%85%88%E9%AA%8C%E6%A6%82%E7%8E%87%E7%9B%B8%E7%AD%89pw_ipw_j-1"><span class="toc-content-number">1.4.2.2.1.</span> <span class="toc-content-text">先验概率相等：\(P(w_i)&#x3D;P(w_j)\)</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E5%85%88%E9%AA%8C%E6%A6%82%E7%8E%87%E4%B8%8D%E7%9B%B8%E7%AD%89pw_ineq-pw_j-1"><span class="toc-content-number">1.4.2.2.2.</span> <span class="toc-content-text">先验概率不相等：\(P(w_i)\neq P(w_j)\)</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E5%86%B3%E7%AD%96%E9%9D%A2%E6%96%B9%E7%A8%8Bg_imathbfx-g_jmathbfx0"><span class="toc-content-number">1.4.2.2.3.</span> <span class="toc-content-text">决策面方程：\(g_i(\mathbf{x})-g_j(\mathbf{x})&#x3D;0\)</span></a></li></ol></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%AC%AC%E4%B8%89%E7%A7%8D%E6%83%85%E5%BD%A2boldsymbolsigma_ineqboldsymbolsigma_j-quad-ij-12ldotsc"><span class="toc-content-number">1.4.2.3.</span> <span class="toc-content-text">第三种情形：\(\boldsymbol{\Sigma}_i\neq\boldsymbol{\Sigma}_j,
+\quad i,j &#x3D; 1,2,\ldots,c\)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E4%BE%8B%E5%AD%90-c2-2d"><span class="toc-content-number">1.4.2.3.1.</span> <span class="toc-content-text">例子: c&#x3D;2, 2D</span></a></li></ol></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%88%86%E7%B1%BB%E9%94%99%E8%AF%AF%E7%8E%87"><span class="toc-content-number">1.5.</span> <span class="toc-content-text">分类错误率</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%9C%80%E5%B0%8F%E9%94%99%E8%AF%AF%E7%8E%87%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%86%B3%E7%AD%96-1"><span class="toc-content-number">1.5.1.</span> <span class="toc-content-text">最小错误率贝叶斯决策</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B%E9%94%99%E8%AF%AF%E7%8E%871d"><span class="toc-content-number">1.5.1.1.</span> <span class="toc-content-text">例：错误率(1D)</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%B8%A4%E7%B1%BB%E6%83%85%E5%BD%A2"><span class="toc-content-number">1.5.2.</span> <span class="toc-content-text">两类情形</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-content-number">1.5.2.1.</span> <span class="toc-content-text">例子</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%A4%9A%E7%B1%BB%E6%83%85%E5%BD%A2"><span class="toc-content-number">1.5.3.</span> <span class="toc-content-text">多类情形</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%88%86%E7%B1%BB%E5%99%A8%E5%9F%BA%E4%BA%8E%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%86%B3%E7%AD%96%E7%9A%84%E5%88%86%E7%B1%BB%E5%99%A8%E6%98%AF%E6%9C%80%E4%BC%98%E7%9A%84%E5%90%97"><span class="toc-content-number">1.6.</span> <span class="toc-content-text">贝叶斯分类器(基于贝叶斯决策的分类器)是最优的吗？</span></a></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>
