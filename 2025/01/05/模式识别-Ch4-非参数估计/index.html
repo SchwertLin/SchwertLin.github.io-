@@ -1,0 +1,1022 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch4 非参数估计 [TOC]        参数估计方法 非参数估计方法     MLE，贝叶斯估计 Parzen窗方法、KNN   待估计的概率密度函数的形式已知，利用样本来估 计函数中的某些参数。 非参数估计方法不需要对概率密度函数的形式作任何假设，而是直接用样本估计出整个函数。    非参数密度估计  难点：选取小窗大小   小窗">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模式识别-Ch4-非参数估计">
+<meta property="og:url" content="http://example.com/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch4-%E9%9D%9E%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch4 非参数估计 [TOC]        参数估计方法 非参数估计方法     MLE，贝叶斯估计 Parzen窗方法、KNN   待估计的概率密度函数的形式已知，利用样本来估 计函数中的某些参数。 非参数估计方法不需要对概率密度函数的形式作任何假设，而是直接用样本估计出整个函数。    非参数密度估计  难点：选取小窗大小   小窗">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-05T08:17:17.000Z">
+<meta property="article:modified_time" content="2025-01-05T08:20:48.447Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="模式识别">
+<meta name="twitter:card" content="summary"><title>模式识别-Ch4-非参数估计 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>模式识别-Ch4-非参数估计</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2025-01-05</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2025-01-05</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">模式识别</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约6.6K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch4-非参数估计">Ch4 非参数估计</h1>
+<p>[TOC]</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>参数估计方法</th>
+<th>非参数估计方法</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>MLE，贝叶斯估计</td>
+<td>Parzen窗方法、KNN</td>
+</tr>
+<tr class="even">
+<td>待估计的<strong>概率密度函数的形式已知</strong>，利用样本来估
+计函数中的某些参数。</td>
+<td>非参数估计方法<strong>不需要对概率密度函数的形式作任何假设</strong>，而是直接用样本估计出整个函数。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="非参数密度估计">非参数密度估计</h2>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250101162336421.png" /></p>
+<p><strong>难点：选取小窗大小</strong></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250101162517520.png" /></p>
+<ul>
+<li>小窗过宽：由于假定小舱内p(x)为常数，则导致过于平均的估计结果。</li>
+<li>小窗过窄：落入小舱的样本将会
+很少，或者没有样本落入，从而导致对p(x)的估计不连续。</li>
+</ul>
+<h3 id="基本原理">基本原理</h3>
+<ul>
+<li>给定样本集<span class="math inline">\(D = \{x_1, x_2, \cdots,
+x_n\}\)</span>，假定这些样本是从一个服从密度函数<span
+class="math inline">\(p(x)\)</span>的总体分布中独立抽取出来的，目标是给出关于<span
+class="math inline">\(p(x)\)</span>的估计。</li>
+<li>考虑<span class="math inline">\(x\)</span>点处的一个小区域<span
+class="math inline">\(R\)</span>，一个样本落入该区域概率是：</li>
+</ul>
+<p><span class="math display">\[
+P = \int_{R} p(x&#39;) dx&#39;
+\]</span></p>
+<ul>
+<li>若<span class="math inline">\(n\)</span>个随机样本中有<span
+class="math inline">\(k\)</span>个样本落入小区域<span
+class="math inline">\(R\)</span>，<span
+class="math inline">\(k/n\)</span>是对概率<span
+class="math inline">\(P\)</span>的一个很好的估计（无偏估计、最大似然估计）。
+<ul>
+<li>落入<span class="math inline">\(R\)</span>的样本数服从参数为<span
+class="math inline">\(P\)</span>的二项分布。</li>
+<li>当样本数<span
+class="math inline">\(n\)</span>越来越大时，该估计相当精确。</li>
+</ul></li>
+<li>另一方面，假设<span
+class="math inline">\(p(x)\)</span>连续，且小区域<span
+class="math inline">\(R\)</span>的体积<span
+class="math inline">\(V\)</span>足够小，可以假定在该小区域内<span
+class="math inline">\(p(x)\)</span>是常数，则</li>
+</ul>
+<p><span class="math display">\[
+P = \int_{R} p(x&#39;) dx&#39; \approx p(x)V
+\]</span></p>
+<ul>
+<li>于是有<span class="math inline">\(x\)</span>点处的概率密度估计:</li>
+</ul>
+<p><span class="math display">\[
+p(x)V \approx \frac{k}{n} \Rightarrow p(x) \approx \frac{k}{nV}
+\]</span></p>
+<h4 id="收敛性">收敛性</h4>
+<p>对每个样本数<span
+class="math inline">\(n\)</span>，都构造一个包含<span
+class="math inline">\(x\)</span>的小区域<span
+class="math inline">\(R_n\)</span>，从而得到一个区域序列：<span
+class="math inline">\(R_1, R_2, R_3, \cdots\)</span>。令<span
+class="math inline">\(V_n\)</span>表示<span
+class="math inline">\(R_n\)</span>的体积，<span
+class="math inline">\(k_n\)</span>表示落入<span
+class="math inline">\(R_n\)</span>的样本个数。则使用<span
+class="math inline">\(n\)</span>个样本对<span
+class="math inline">\(x\)</span>点处的概率密度估计为： <span
+class="math display">\[
+p_n(x) = \frac{k_n}{nV_n}
+\]</span> 为了使<span class="math inline">\(p_n(x)\)</span>收敛到<span
+class="math inline">\(p(x)\)</span>，需要满足以下三个条件： <span
+class="math display">\[
+\lim_{n \to \infty} V_n = 0; \quad \lim_{n \to \infty} k_n = \infty;
+\quad \lim_{n \to \infty} \frac{k_n}{n} = 0
+\]</span>
+这几个条件说明：随着样本数目的增加，小舱的体积应该尽可能小，同时又必须保证小舱内有充分多的样本，但每个小舱内的样本又必须是总数的很小一部分。</p>
+<p>有两种常见的方法来获得满足这些条件的区域序列：</p>
+<ol type="1">
+<li>指定体积<span class="math inline">\(V_n\)</span>作为<span
+class="math inline">\(n\)</span>的函数，保证<span
+class="math inline">\(p_n(x)\)</span>收敛到<span
+class="math inline">\(p(x)\)</span>。这是Parzen -
+window方法。（对给定的<span
+class="math inline">\(n\)</span>，小舱体积在全局处处保持不变，小舱内的样本数可变）</li>
+<li>指定<span class="math inline">\(k_n\)</span>作为<span
+class="math inline">\(n\)</span>的函数。这里体积<span
+class="math inline">\(V_n\)</span>是增长的，直到它包围<span
+class="math inline">\(x\)</span>的<span
+class="math inline">\(k_n\)</span>个邻居。这是KNN估计方法。（对给定的<span
+class="math inline">\(n\)</span>，小舱内的样本数不变，小舱大小可变）</li>
+</ol>
+<blockquote>
+<p>这两种方法都收敛，尽管很难对它们的有限样本行为做出有意义的陈述。</p>
+</blockquote>
+<table>
+<thead>
+<tr class="header">
+<th>-</th>
+<th><span class="math inline">\(n\)</span>固定，<span
+class="math inline">\(x\)</span>变化</th>
+<th><span class="math inline">\(x\)</span>固定，<span
+class="math inline">\(n\)</span>变化</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Parzen窗</td>
+<td>固定局部区域体积<span class="math inline">\(V\)</span>，<span
+class="math inline">\(k\)</span>变化</td>
+<td><span class="math inline">\(V_n = 1/\sqrt{n}\)</span></td>
+</tr>
+<tr class="even">
+<td>KNN</td>
+<td>固定局部样本数<span class="math inline">\(k\)</span>，<span
+class="math inline">\(V\)</span>变化</td>
+<td><span class="math inline">\(k_n = \sqrt{n}\)</span></td>
+</tr>
+</tbody>
+</table>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250101164520663.png"
+alt="image-20250101164520663" />
+<figcaption aria-hidden="true">image-20250101164520663</figcaption>
+</figure>
+<h2 id="parzen窗估计">Parzen窗估计</h2>
+<h3 id="方法介绍">方法介绍</h3>
+<p>假设<span class="math inline">\(x\)</span>是<span
+class="math inline">\(d\)</span>维空间中的点，并假设小舱是一个超立方体，其棱长为<span
+class="math inline">\(h_n\)</span>，因此其体积为： <span
+class="math display">\[
+V_n=(h_n)^d
+\]</span> 现在的任务：要统计落入以<span
+class="math inline">\(x\)</span>为中心的超立方体内样本的个数<span
+class="math inline">\(k_n\)</span>。为此，定义如下<span
+class="math inline">\(d\)</span>维单位窗函数： <span
+class="math display">\[
+\varphi(u)=\begin{cases}
+1, &amp; \vert u_j\vert\leq\frac{1}{2}, j = 1,2,\cdots,d\\
+0, &amp; \text{otherwise}
+\end{cases} \quad (\text{here } u = [u_1,u_2,\cdots,u_d]^T\in R^d)
+\]</span> <span class="math inline">\(\vert u_j\vert\)</span>表示<span
+class="math inline">\(u\)</span>的每个分量都必须在<span
+class="math inline">\([-\frac 1 2,\frac 1
+2]\)</span>的范围内。该函数在以原点为中心的<span
+class="math inline">\(d\)</span>维单位超立方体内取值为<span
+class="math inline">\(1\)</span>，而在其它地方取值均为零。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250101173733772.png"
+alt="image-20250101173733772" />
+<figcaption aria-hidden="true">image-20250101173733772</figcaption>
+</figure>
+<blockquote>
+<p>个人感觉会比较像：图像处理-傅里叶变换-冲激函数/单位脉冲。</p>
+</blockquote>
+<p>对于点<span class="math inline">\(x\)</span>，考察样本<span
+class="math inline">\(x_i\)</span>是否在以<span
+class="math inline">\(x\)</span>为中心、<span
+class="math inline">\(h_n\)</span>为棱长的超立方体内，可通过如下函数来判定：
+<span class="math display">\[
+\varphi\left(\frac{x - x_i}{h_n}\right)
+\]</span> 上式与<span class="math inline">\(\varphi\left(\frac{x_i -
+x}{h_n}\right)\)</span>等价(因为绝对值的存在)。</p>
+<blockquote>
+<p><strong>Q: 为什么使用<span class="math inline">\(\varphi\left(\frac{x
+- x_i}{h_n}\right)\)</span>?</strong></p>
+<p>A: <span class="math inline">\(\varphi\left(\frac{x -
+x_i}{h_n}\right)\)</span>表示从目标点 <span
+class="math inline">\(x\)</span> 指向样本点 <span
+class="math inline">\(x_i\)</span> 的
+<strong>相对位移</strong>，它是从中心<span
+class="math inline">\(x\)</span> 出发的方向，更符合“以 <span
+class="math inline">\(x\)</span> 为中心”的逻辑</p>
+</blockquote>
+<p>若共有<span class="math inline">\(n\)</span>个样本<span
+class="math inline">\(D =
+\{x_1,x_2,\cdots,x_n\}\)</span>，那么落入以<span
+class="math inline">\(x\)</span>为中心、<span
+class="math inline">\(h_n\)</span>为棱长的超立方体内的样本总数为： <span
+class="math display">\[
+k_n=\varphi\left(\frac{x - x_1}{h_n}\right)+\varphi\left(\frac{x -
+x_2}{h_n}\right)+\cdots+\varphi\left(\frac{x - x_n}{h_n}\right)=\sum_{i
+= 1}^{n}\varphi\left(\frac{x - x_i}{h_n}\right)\\
+p_n(x)=\frac{k_n}{nV_n}=\frac{1}{n}\sum_{i =
+1}^{n}\frac{1}{V_n}\varphi\left(\frac{x - x_i}{h_n}\right)
+\]</span></p>
+<p><span class="math inline">\(p_n(x)\)</span>是一个概率密度函数</p>
+<ul>
+<li><p>定义如下函数： <span class="math display">\[
+\delta_n(x)=\frac{1}{V_n}\varphi\left(\frac{x}{h_n}\right)\Rightarrow
+p_n(x)=\frac{1}{n}\sum_{i = 1}^{n}\delta_n(x - x_i)
+\]</span></p></li>
+<li><p>引入如下积分变换函数：<span
+class="math inline">\(u=\frac{x-x_i}{h_n}\Rightarrow x=h_nu+x_i\)</span>
+<span class="math display">\[
+\int\delta_n(x - x_i)dx=\int\frac{1}{V_n}\varphi\left(\frac{x -
+x_i}{h_n}\right)dx=\frac{1}{V_n}\left|\frac{\partial x}{\partial
+u}\right|\int\varphi(u)du\\=\int\frac{h_n^d}{V_n}\varphi(u)du
+=\int\varphi(u)du = 1\\
+\int p_n(x)dx = \frac{1}{n}\sum_{i = 1}^{n}1 = 1
+\]</span></p></li>
+</ul>
+<h3 id="窗函数的选择">窗函数的选择</h3>
+<blockquote>
+<p><span class="math inline">\(\delta_n(x)\)</span> 确与单位脉冲 <span
+class="math inline">\(\delta(x)\)</span> 非常相似，但它是对 <span
+class="math inline">\(\delta(x)\)</span> 的“平滑近似”：</p>
+<ul>
+<li><span class="math inline">\(\delta_n(x)\)</span> 是
+<strong>有限支持且连续的窗函数</strong>，适用于实际计算。</li>
+<li><span class="math inline">\(\delta(x)\)</span>
+是理想化的数学工具，用于理论分析。</li>
+</ul>
+<p>随着窗口宽度 <span class="math inline">\(h_n\)</span> 逐渐缩小，<span
+class="math inline">\(\delta_n(x)\)</span> 会逐渐逼近 <span
+class="math inline">\(\delta(x)\)</span>。在概率密度估计中，我们用 <span
+class="math inline">\(\delta_n(x)\)</span>
+来平滑地估计分布，而不是使用离散的 Dirac Delta 函数。</p>
+</blockquote>
+<p>一般地，要保证<span class="math inline">\(p_n(x)=\frac{1}{n}\sum_{i =
+1}^{n}\delta_n(x - x_i)\)</span>为一个概率密度函数，只需满足： <span
+class="math display">\[
+\delta_n(x)\geq0,\quad\int\delta_n(x)dx = 1
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\delta_n(x -
+x_i)\)</span>反映了样本<span class="math inline">\(x_i\)</span>对在<span
+class="math inline">\(x\)</span>处概率密度估计贡献的大小，通常与<span
+class="math inline">\(x_i\)</span>到<span
+class="math inline">\(x\)</span>的距离有关。</li>
+<li>概率密度估计<span class="math inline">\(p_n(x)\)</span>就是把<span
+class="math inline">\(D\)</span>中所有观测样本在<span
+class="math inline">\(x\)</span>点的贡献进行平均。</li>
+</ul>
+<p>除了以上窗函数，还可定义其它函数：</p>
+<table>
+<colgroup>
+<col style="width: 38%" />
+<col style="width: 61%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>其他窗函数</th>
+<th>公式</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>方窗（非单位长度）</td>
+<td><span class="math inline">\(\delta(x -
+x_i)=\begin{cases}\frac{1}{h^d}, &amp; \vert x_j -
+x_{i,j}\vert\leq\frac{h}{2}, j = 1,2,\cdots,d\\0, &amp;
+\text{otherwise}\end{cases}\)</span></td>
+</tr>
+<tr class="even">
+<td>正态窗</td>
+<td><span class="math inline">\(\delta(x -
+x_i)=\frac{1}{(2\pi)^{d/2}\vert\Sigma\vert^{1/2}}\exp\left(-\frac{1}{2}(x
+- x_i)^T\Sigma^{-1}(x - x_i)\right)\)</span></td>
+</tr>
+<tr class="odd">
+<td>球窗</td>
+<td><span class="math inline">\(\delta(x -
+x_i)=\begin{cases}\frac{1}{V}, &amp; \vert\vert x - x_i\vert\vert_2\leq
+r\\0, &amp; \text{otherwise}\end{cases}\)</span></td>
+</tr>
+<tr class="even">
+<td>其中<span class="math inline">\(V\)</span>：超球体体积，<span
+class="math inline">\(r\)</span>：超球体半径。</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="窗宽的影响">窗宽的影响</h3>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250101221512198.png" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250101221529112.png" /></p>
+<h3 id="例子用高斯窗估计高斯分布">例子：用高斯窗估计高斯分布</h3>
+<h4 id="d">1-D</h4>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250101221650831.png" /></p>
+<h4 id="d-1">2-D</h4>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250101221711409.png"
+alt="image-20250101221711409" />
+<figcaption aria-hidden="true">image-20250101221711409</figcaption>
+</figure>
+<p>可见：使用小窗宽得到的分类界面比大窗宽的分类界面更复杂。h越大，得到的分布越平滑、h越小得到的分布越尖锐。</p>
+<p><strong>算法特点：</strong></p>
+<ul>
+<li>适用范围广，无论概率函数是规则的或者是不规则的、单峰的还是多峰的；</li>
+<li>当样本数趋于无穷时，Parzen窗估计收敛于真实p(x)；</li>
+<li>但该方法要求样本的数量要大；</li>
+<li>选择合适的窗口函数将有利于提高估计的精度和减少样本的数量。</li>
+<li>与直方图仅仅在每个固定小窗内估计平均密度不同，
+Parzen窗用滑动的小窗来估计每个点上的概率密度。</li>
+</ul>
+<h2 id="k近邻估计">K近邻估计</h2>
+<blockquote>
+<ul>
+<li>Parzen窗估计中，小窗的体积<span
+class="math inline">\(V_n\)</span>被视为样本个数<span
+class="math inline">\(n\)</span>的函数，比如<span
+class="math inline">\(V_n = V_1/\sqrt{n}\)</span>。
+<ul>
+<li>当<span
+class="math inline">\(V_1\)</span>选择得太小，导致大部分区域是空的，会使<span
+class="math inline">\(p_n(x)\)</span>不稳定。</li>
+<li>当<span class="math inline">\(V_1\)</span>选择得太大，则<span
+class="math inline">\(p_n(x)\)</span>会变得过于平坦，从而失去一些重要的空间变化。</li>
+<li><span
+class="math inline">\(K\)</span>近邻估计方法是克服这一问题的一种可能方法。</li>
+</ul></li>
+</ul>
+</blockquote>
+<h3 id="基本方法">基本方法</h3>
+<ul>
+<li><p><span
+class="math inline">\(K\)</span>近邻估计是一种采用大小可变舱的密度估计方法。其基本做法是：根据总样本数确定一个参数<span
+class="math inline">\(k_n\)</span>，要求每个小舱内拥有的样本数目是<span
+class="math inline">\(k_n\)</span>。</p></li>
+<li><p>在估计<span class="math inline">\(x\)</span>点处的概率密度<span
+class="math inline">\(p(x)\)</span>时，我们调整包含<span
+class="math inline">\(x\)</span>的小舱的体积，直到小舱内恰好落入<span
+class="math inline">\(k_n\)</span>个样本，此时有： <span
+class="math display">\[
+p_n(x)=\frac{k_n}{nV_n}
+\]</span> 其中<span class="math inline">\(V_n\)</span>不固定，与<span
+class="math inline">\(x\)</span>的位置相关。</p></li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250101223653644.png"
+alt="图中展示了一个二维平面内的示例，有多个数据点，用红色圆圈圈住了一部分数据点，圆圈内的数据点数量为k_n = 3" />
+<figcaption
+aria-hidden="true">图中展示了一个二维平面内的示例，有多个数据点，用红色圆圈圈住了一部分数据点，圆圈内的数据点数量为k_n
+= 3</figcaption>
+</figure>
+<ul>
+<li><p>在密度较高的区域，窗口 <span
+class="math inline">\(V_n\)</span>会比较小，因为周围样本多，窗口不需要太大就可以包含
+<span class="math inline">\(k_n\)</span>个样本。</p>
+<p>在密度较低的区域，窗口 <span class="math inline">\(V_n\)</span>
+会比较大，因为样本较稀疏，需要更大的范围来找到 <span
+class="math inline">\(k_n\)</span> 个样本。</p></li>
+</ul>
+<h4 id="收敛性分析-k_n的选择对收敛的影响">收敛性分析: <span
+class="math inline">\(k_n\)</span>的选择对收敛的影响</h4>
+<p><span class="math display">\[
+\lim_{n \to \infty} k_n=\infty; \quad \lim_{n \to \infty}
+\frac{k_n}{n}=0
+\]</span></p>
+<ul>
+<li><p><span class="math inline">\(k_n\rightarrow
+\infty\)</span>:当样本数量<span class="math inline">\(n \to
+\infty\)</span> 时，<span class="math inline">\(k_n\)</span>
+应该足够大，这样才能捕捉到整体概率分布。</p></li>
+<li><p><span class="math inline">\(k_n/n\rightarrow 0\)</span>: <span
+class="math inline">\(k_n\)</span>
+的增长速度不能太快，否则窗口太大，局部密度信息会丢失。</p></li>
+</ul>
+<p><span class="math inline">\(x\)</span>点处，概率密度函数<span
+class="math inline">\(p(x)\)</span>的估计值为<span
+class="math inline">\(p_n(x)=\frac{k_n}{nV_n}\)</span>。如果取<span
+class="math inline">\(k_n=\sqrt{n}\)</span>，则 <span
+class="math display">\[
+p_n(x)=\frac{\sqrt{n}}{nV_n}\Rightarrow
+p(x)\approx\frac{1}{\sqrt{n}V_n}\Rightarrow
+V_n\approx\frac{1}{\sqrt{n}p(x)}=\frac{V_1}{\sqrt{n}},\ V_1=\frac1{p(x)}
+\]</span> （与Parzen窗方法不同，<span
+class="math inline">\(V_1\)</span>不再是一个固定的值，而是<strong>与密度相关</strong>）</p>
+<h4 id="p_nx一维下解析表达式"><span
+class="math inline">\(p_n(x)\)</span>一维下解析表达式</h4>
+<p>在<span
+class="math inline">\(x\)</span>点处，概率密度函数的估计值为<span
+class="math inline">\(p_n(x)=\frac{k_n}{nV_n}\)</span>。<strong>关键是如何计算<span
+class="math inline">\(V_n\)</span>。</strong></p>
+<p>对于一维来讲，考虑最近邻情形，即<span class="math inline">\(k_n =
+1\)</span>。假定样本<span class="math inline">\(x_1\)</span>是<span
+class="math inline">\(x\)</span>点的最近邻样本，则<span
+class="math inline">\(x\)</span>点处的最近邻估计为：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250101230852756.png"
+alt="image-20250101230852756" /> <span class="math display">\[
+p_n(x)=\frac{k_n}{nV_n}=\frac{1}{2n|x - x_1|}
+\]</span> 此时，<span
+class="math inline">\(K\)</span>近邻估计在特征空间积分为正无穷，不是严格意义的概率密度函数。</p>
+<p>考虑<span class="math inline">\(k_n\)</span>近邻情形，此时：</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250101230932916.png"
+alt="图中展示了k_n = 3和k_n = 5时的概率密度函数估计曲线，横轴为x，纵轴为p(x)，曲线上有一些红点标记数据点位置" />
+<span class="math display">\[
+p_n(x)=\frac{k_n}{nV_n}=\frac{k_n}{2n|x - x_{k_nN}|}
+\]</span></p>
+<p>对于多维情形，可以用球来度量<span
+class="math inline">\(K\)</span>近邻小舱，也可以用立方体包围盒来度量<span
+class="math inline">\(K\)</span>近邻小舱。比如，采用立方体包围盒： <span
+class="math display">\[
+p_n(x)=\frac{k_n}{nV_n}=\frac{k_n}{2^d n \prod_{i = 1}^{d}|x^i -
+x_{k_nN}^i|}
+\]</span> <img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250101231025432.png"
+alt="图中展示了二维情形下的示意图，有两个数据点用红色圆圈标记，分别是x和x_{k_nN}，用线段连接并标注了V的长度" /></p>
+<h2 id="k近邻分类器">K近邻分类器</h2>
+<h3 id="最近邻分类器">最近邻分类器</h3>
+<blockquote>
+<p>自己就是自己的邻居。</p>
+</blockquote>
+<table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 73%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>1-NN</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>方法</td>
+<td>对测试样本<span
+class="math inline">\(x\)</span>，将其与训练样本逐一进行比较，找出<strong>距离<span
+class="math inline">\(x\)</span>最近的训练样本</strong>，以该样本的类别作为<span
+class="math inline">\(x\)</span>的类别。</td>
+</tr>
+<tr class="even">
+<td>直观理解</td>
+<td>给定训练样本集<span
+class="math inline">\(D\)</span>，对于测试样本<span
+class="math inline">\(x\)</span>，假设<span
+class="math inline">\(x&#39;\in D\)</span>为其最近邻样本，<span
+class="math inline">\(\omega_m\)</span>是<span
+class="math inline">\(x&#39;\)</span>的类别标签。如果<span
+class="math inline">\(x&#39;\)</span>与<span
+class="math inline">\(x\)</span>充分接近，有理由相信它们的类别相同，或者类后验概率相同，即对任意类别<span
+class="math inline">\(\omega_i\)</span>，<span
+class="math inline">\(P(\omega_i\vert x&#39;)\approx P(\omega_i\vert
+x)\)</span>。</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\omega_i\)</span>类的判别函数</td>
+<td><span class="math inline">\(g_i(x)=\max_{x_j\in\omega_i} -
+d(x,x_j),\quad i = 1,2,\cdots,c\)</span></td>
+</tr>
+<tr class="even">
+<td>决策规则</td>
+<td><span class="math inline">\(\arg\max_{i\in\{1,\cdots,c\}}
+g_i(x)\)</span></td>
+</tr>
+</tbody>
+</table>
+<h4 id="例子">例子</h4>
+<p>现有7个二维向量：<span
+class="math inline">\(x_1=(1,0)^T\)</span>，<span
+class="math inline">\(x_2=(0,1)^T\)</span>，<span
+class="math inline">\(x_3=(0, - 1)^T\)</span>，<span
+class="math inline">\(x_4=(0,0)^T\)</span>，<span
+class="math inline">\(x_5=(0,2)^T\)</span>，<span
+class="math inline">\(x_6=(0, - 2)^T\)</span>，<span
+class="math inline">\(x_7=(-2,0)^T\)</span>。假定前三个为<span
+class="math inline">\(\omega_1\)</span>类，后四个为<span
+class="math inline">\(\omega_2\)</span>类。画出最近邻法决策面。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250101232511839.png" /></p>
+<h4 id="最近邻规则的错误率分析">最近邻规则的错误率分析</h4>
+<ul>
+<li><p>研究表明，在训练样本足够多时，最近邻决策可以取得很好的效果。</p></li>
+<li><p>我们对最近邻规则的行为分析将针对获得无限样本条件平均错误概率<span
+class="math inline">\(P(e\vert
+x)\)</span>，其中平均是相对于训练样本而言的。一般来说，无条件平均错误概率将通过对所有<span
+class="math inline">\(x\)</span>平均<span class="math inline">\(P(e\vert
+x)\)</span>得到： <span class="math display">\[
+P(e)=\int P(e|x)p(x)dx
+\]</span></p></li>
+<li><p>我们应该记得贝叶斯决策规则通过对每个<span
+class="math inline">\(x\)</span>最小化<span
+class="math inline">\(P(e\vert x)\)</span>来最小化<span
+class="math inline">\(P(e)\)</span>。</p></li>
+<li><p>再次回顾如果我们令<span class="math inline">\(P^*(e\vert
+x)\)</span>是<span class="math inline">\(P(e\vert
+x)\)</span>的最小可能值，且<span
+class="math inline">\(P^*\)</span>是<span
+class="math inline">\(P(e)\)</span>的最小可能值，那么贝叶斯错误率：
+<span class="math display">\[
+P^*(e|x)=1 - P(\omega_m|x),P^*=\int P^*(e|x)p(x)dx\\
+\omega_m=\arg\max_i P(\omega_i|x_i)
+\]</span></p></li>
+</ul>
+<p><strong>评估最近邻规则的平均错误概率</strong>: 特别地，如果<span
+class="math inline">\(P_n(e)\)</span>是<span
+class="math inline">\(n\)</span> - 样本错误率，并且如果我们定义: <span
+class="math display">\[
+P(e)=\lim_{n\rightarrow\infty}P_n(e)
+\]</span> 那么，我们有: <span class="math display">\[
+P^*\leq P(e)\leq P^*\left(2 - \frac{c}{c - 1}P^*\right)
+\]</span> <img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102084927049.png"
+alt="最近邻法的渐近错误率 总落入在如下阴影之中" /></p>
+<p>这个结论告诉我们：最近邻法的渐近错误率最坏不会超过两倍的贝叶斯错误率，而最好则有可能接近或达到贝叶斯错误率。</p>
+<h5 id="推导过程">推导过程</h5>
+<ul>
+<li><strong>最近邻规则的错误率</strong>：</li>
+</ul>
+<p><span class="math display">\[
+P(e)=\int P(e|x)p(x)dx\\
+P(e|x)=\int P(e|x,x&#39;)p(x&#39;|x)dx&#39;,\quad （x&#39;：x的最近邻）
+\]</span></p>
+<p>当<span class="math inline">\(n\rightarrow\infty\)</span>，<span
+class="math inline">\(p(x&#39;\vert x)\)</span>（<span
+class="math inline">\(x&#39;\)</span>为<span
+class="math inline">\(x\)</span>的最近邻的概率）趋近以<span
+class="math inline">\(x\)</span>为中心的delta函数。对<span
+class="math inline">\(P(e\vert x,x&#39;)\)</span>，假设<span
+class="math inline">\(x\)</span>和<span
+class="math inline">\(x&#39;\)</span>（最近训练样本，与<span
+class="math inline">\(x\)</span>独立）的类别标号分别为<span
+class="math inline">\(\theta\)</span>和<span
+class="math inline">\(\theta&#39;\)</span>，</p>
+<p><span class="math display">\[
+P(\theta,\theta_n&#39;|x,x_n&#39;)=P(\theta|x)P(\theta_n&#39;|x_n&#39;)\\
+P_n(e|x,x_n&#39;)=1 - \sum_{i =
+1}^{c}P(\theta=\omega_i,\theta_n&#39;=\omega_{i}&#39;|x,x_n&#39;)=1 -
+\sum_{i = 1}^{c}P(\omega_i|x)P(\omega_i|x_n&#39;)\\
+\lim_{n\rightarrow\infty}P_n(e|x)=\int\left[1 - \sum_{i =
+1}^{c}P(\omega_i|x)P(\omega_i|x_n&#39;)\right]\delta(x_n&#39; -
+x)dx_n&#39;=1 - \sum_{i = 1}^{c}P^2(\omega_i|x)
+\]</span></p>
+<ul>
+<li><p><strong>渐近错误率</strong> <span class="math display">\[
+P=\lim_{n\rightarrow\infty}P_n(e)=\lim_{n\rightarrow\infty}\int
+P_n(e|x)p(x)dx=\int\left[1 - \sum_{i =
+1}^{c}P^2(\omega_i|x)\right]p(x)dx
+\]</span></p></li>
+<li><p><strong>1 - NN规则的错误界</strong> <span class="math display">\[
+\sum_{i = 1}^{c}P^2(\omega_i|x)=P^2(\omega_m|x)+\sum_{i\neq
+m}P^2(\omega_i|x) （当P_i(i\neq m)相等时最小化）\\
+P^*(e|x)=1 - P(\omega_m|x)（贝叶斯错误）\\
+P(\omega_i|x)=\begin{cases}\frac{ P^*(e|x)}{c-1},&amp;i\neq m\\1-
+P^*(e|x),&amp;i=m\end{cases}\\
+  \sum_{i = 1}^{c}P^2(\omega_i|x)\geq(1 -
+P^*(e|x))^2+\frac{P^{*2}(e|x)}{c - 1}\\
+  1 - \sum_{i = 1}^{c}P^2(\omega_i|x)\leq2P^*(e|x)-\frac{c}{c -
+1}P^{*2}(e|x)
+\]</span></p></li>
+<li><p><strong>错误率</strong> <span class="math display">\[
+P=\int\left[1 - \sum_{i = 1}^{c}P^2(\omega_i|x)\right]p(x)dx\Rightarrow
+P\leq2P^*\\
+\text{Var}[P^*(e|x)]=\int\left[P^*(e|x)-P^*\right]^2p(x)dx\\=\int
+P^{*2}(e|x)p(x)dx - P^{*2}\geq0\Rightarrow\int P^{*2}(e|x)p(x)dx\geq
+P^{*2}
+\]</span></p></li>
+<li><p><strong>错误界</strong> <span class="math display">\[
+P^*\leq P\leq P^*\left(2 - \frac{c}{c - 1}P^*\right)
+\]</span></p></li>
+</ul>
+<h3 id="k近邻分类器-1">K近邻分类器</h3>
+<blockquote>
+<p>在很多情况下，将决策建立在最近邻样本上有一定的风险。（数据分布复杂，存在噪声）</p>
+</blockquote>
+<ul>
+<li>一种自然的改进就是引入<strong>投票机制</strong>：选择前<span
+class="math inline">\(k\)</span>个距离测试样本最近的训练样本，用它们的类别投票来决定新样本的类别。</li>
+<li>给定训练集<span class="math inline">\(D\)</span>，对测试样本<span
+class="math inline">\(x\)</span>，设<span
+class="math inline">\(X_{kNN}\)</span>是<span
+class="math inline">\(x\)</span>在<span
+class="math inline">\(D\)</span>中的<span
+class="math inline">\(k\)</span>个最近邻样本。设<span
+class="math inline">\(\omega_i\)</span>类的判别函数<span
+class="math inline">\(g_i(x)=k_i\)</span>，<span
+class="math inline">\(k_i\)</span>是<span
+class="math inline">\(X_{kNN}\)</span>中<span
+class="math inline">\(\omega_i\)</span>类样本的个数。</li>
+<li>决策规则：<span class="math inline">\(\text{arg
+max}_{i\in\{1,\cdots,c\}} g_i(x)\)</span></li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102085448252.png"
+alt="image-20250102085448252" />
+<figcaption aria-hidden="true">image-20250102085448252</figcaption>
+</figure>
+<h4 id="k近邻分类器与k近邻估计的关系">K近邻分类器与K近邻估计的关系</h4>
+<p>假设训练集<span class="math inline">\(D\)</span>包含<span
+class="math inline">\(n\)</span>个样本，其中<span
+class="math inline">\(\omega_i\)</span>类样本<span
+class="math inline">\(n_i\)</span>个，<span class="math inline">\(n =
+\sum_{i = 1}^{c} n_i\)</span>。</p>
+<p>测试样本<span class="math inline">\(x\)</span>处，包含<span
+class="math inline">\(k\)</span>个最近邻样本的区域体积为<span
+class="math inline">\(V\)</span>，其中<span
+class="math inline">\(\omega_i\)</span>类样本<span
+class="math inline">\(k_i\)</span>个，<span class="math inline">\(k =
+\sum_{i = 1}^{c} k_i\)</span>。</p>
+<p>则类条件概率密度<span class="math inline">\(p(x\vert
+\omega_i)\)</span>和类先验概率<span
+class="math inline">\(p(\omega_i)\)</span>的估计为： <span
+class="math display">\[
+p_n(x|\omega_i)=\frac{k_i}{nV},\quad p(\omega_i)=\frac{n_i}{n}
+\]</span> 样本<span class="math inline">\(x\)</span>的类后验概率为：
+<span class="math display">\[
+p_n(\omega_i|x)=\frac{p_n(x|\omega_i)p(\omega_i)}{\sum_{j = 1}^{c}
+p_n(x|\omega_j)p(\omega_j)}=\frac{k_i}{k}\\
+\omega_m = \text{arg max}_i \{p_n(\omega_i|x)\}
+\]</span> 这就是<span class="math inline">\(k\)</span>近邻分类器.</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102085719768.png"
+alt="image-20250102085719768" />
+<figcaption aria-hidden="true">image-20250102085719768</figcaption>
+</figure>
+<h4 id="k近邻的快速计算">K近邻的快速计算</h4>
+<ul>
+<li>搜索<span class="math inline">\(K\)</span>近邻的计算复杂度：<span
+class="math inline">\(O(dnK)\)</span>--d:样本dim, n:训练样本数,
+K:测试样本数量</li>
+<li>快速搜索策略：
+<ul>
+<li>部分距离(partial distance)</li>
+<li>搜索树</li>
+<li>剪辑/压缩算法(pruning, condensing)</li>
+</ul></li>
+</ul>
+<h5 id="部分距离">部分距离</h5>
+<p><span class="math display">\[
+\text{部分维度 }(r &lt; d):\quad D_r^2(a,b)=\sum_{i = 1}^{r}(a_i -
+b_i)^2
+\]</span></p>
+<p>如果部分平方距离已经超过当前最近邻的全局最小距离，可以提前停止后续维度的计算，从而节省计算时间。如果部分平方距离大于<span
+class="math inline">\(D^2(x,x&#39;)\)</span>就终止计算。</p>
+<h5 id="搜索树">搜索树</h5>
+<p>使用搜索树（例如
+kd-tree）对训练样本进行组织，可以高效查找最近邻。基本思想是：</p>
+<ul>
+<li>将样本按照特定规则划分成树状结构。</li>
+<li>测试样本从根节点开始递归搜索，只访问相关子树，从而快速找到最近邻。</li>
+</ul>
+<p>在实际应用中，kd-tree 是常用的搜索树结构，尤其适用于低维空间。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102091051796.png"
+alt="搜索树的示例：树中有多个节点，当前搜索值为x = 0.3，用箭头指向搜索路径" />
+<figcaption
+aria-hidden="true">搜索树的示例：树中有多个节点，当前搜索值为x =
+0.3，用箭头指向搜索路径</figcaption>
+</figure>
+<h5 id="压缩近邻法">压缩近邻法</h5>
+<blockquote>
+<p>考虑近邻法的分类原理，远离分类边界的样本对于分类决策没有贡献。只要能够找出各类样本中最有利于与其它类相互区分的代表性样本，则可将很多训练样本去掉，简化决策过程中的计算。</p>
+</blockquote>
+<p><strong>压缩近邻法</strong>通过减少训练样本的数量来加速分类：</p>
+<ol type="1">
+<li><p>删除冗余样本：对于类别边界之外的样本（远离决策边界的样本），它们对分类结果的贡献很小，可以删除。</p></li>
+<li><p>保留代表样本：通过算法挑选最能区分不同类别的样本点，形成代表性集合
+<span class="math inline">\(X_S\)</span>。</p></li>
+<li><p>算法过程：</p>
+<ul>
+<li><p>将样本集分为两个活动的子集：<span
+class="math inline">\(X_S\)</span>和<span
+class="math inline">\(X_G\)</span>，前者称为储存集（Storage），后者称为备选集（GrabBag）。首先，在算法开始时，<span
+class="math inline">\(X_S\)</span>中只有一个样本，其余样本均在<span
+class="math inline">\(X_G\)</span>中。</p></li>
+<li><p>遍历<span
+class="math inline">\(X_G\)</span>中的每一个样本，如果采用<span
+class="math inline">\(X_S\)</span>中的样本能够对其正确分类，则该样本仍然保留在<span
+class="math inline">\(X_G\)</span>中，否则移动到<span
+class="math inline">\(X_S\)</span>中，从而扩大代表集合。依次重复进行上述操作，直到没有样本需要搬移为止。</p></li>
+<li><p>最后，用<span
+class="math inline">\(X_S\)</span>中的样本作为代表样本，对新来的样本进行分类。</p></li>
+</ul></li>
+</ol>
+<h2 id="距离度量">距离度量</h2>
+<p><strong>距离度量是模式分类的基础</strong>： 设有<span
+class="math inline">\(d\)</span>维空间的三个样本<span
+class="math inline">\(x\)</span>、<span
+class="math inline">\(y\)</span>和<span
+class="math inline">\(z\)</span>，记<span
+class="math inline">\(d(\cdot,\cdot)\)</span>为一个<span
+class="math inline">\(R^d\times R^d\rightarrow
+R\)</span>的映射，如满足如下几个条件则<span
+class="math inline">\(d(\cdot,\cdot)\)</span>为一个距离：</p>
+<table>
+<thead>
+<tr class="header">
+<th>性质</th>
+<th>对应公式</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>非负性</td>
+<td><span class="math inline">\(d(x,y)\geq0\)</span></td>
+</tr>
+<tr class="even">
+<td>自相似性</td>
+<td><span class="math inline">\(d(x,x) = 0\)</span></td>
+</tr>
+<tr class="odd">
+<td>对称性</td>
+<td><span class="math inline">\(d(x,y)=d(y,x)\)</span></td>
+</tr>
+<tr class="even">
+<td>三角不等式</td>
+<td><span class="math inline">\(d(x,y)\leq d(x,z)+d(z,y)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>距离可以描述点对间的相异程度，距离越大，两个点越不相似；距离越小，两个点越相似。</p>
+<p>设<span class="math inline">\(x,y\in
+R^d\)</span>，Minkowski距离度量定义如下： <span class="math display">\[
+d(x,y)=\left(\sum_{i = 1}^{d}|x_i - y_i|^q\right)^{\frac{1}{q}}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(q = 1\)</span>时，$d(x,y)=_{i =
+1}^{d}x_i - y_i$（城区距离/曼哈顿距离）</li>
+<li><span class="math inline">\(q = 2\)</span>时，<span
+class="math inline">\(d(x,y)=\sqrt{\sum_{i = 1}^{d}\vert x_i - y_i\vert
+^2}\)</span>（欧氏距离）</li>
+<li><span class="math inline">\(q=\infty\)</span>时，$d(x,y)=_{1id}x_i -
+y_i$（切比雪夫距离）</li>
+</ul>
+<h3 id="欧氏距离">欧氏距离</h3>
+<p><span class="math display">\[
+x = \left[\begin{matrix}x_1\\x_2\\\vdots\\x_d\end{matrix}\right]\in
+R^d,\quad y =
+\left[\begin{matrix}y_1\\y_2\\\vdots\\y_d\end{matrix}\right]\in R^d\\
+d(x,y)=\sqrt{\sum_{i = 1}^{d}(x_i - y_i)^2}=\left((x - y)^T(x -
+y)\right)^{\frac{1}{2}}
+\]</span></p>
+<h3 id="mahalanobis马氏距离">Mahalanobis（马氏）距离</h3>
+<p>设<span class="math inline">\(x,y\in R^d\)</span>，定义如下： <span
+class="math display">\[
+d(x,y)=\sqrt{(x - y)^T M(x - y)}
+\]</span> （其中，<span
+class="math inline">\(M\)</span>是半正定矩阵）</p>
+<ul>
+<li><span
+class="math inline">\(M\)</span>为单位矩阵时，退化为欧氏距离。</li>
+<li><span
+class="math inline">\(M\)</span>为对角矩阵时，退化为特征加权欧氏距离。</li>
+<li>由<span class="math inline">\(M = Q^TQ\)</span>，<span
+class="math inline">\(d(x,y)=\sqrt{(x - y)^T M(x - y)}=\sqrt{(Qx -
+Qy)^T(Qx - Qy)}\)</span>，可看作是在新特征空间中的欧氏距离。</li>
+</ul>
+<h3 id="性质">性质</h3>
+<p><strong>距离对坐标变换敏感</strong>：</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102094407298.png"
+alt="左图有两个点在X_1 - X_2坐标系下，右图是在经过\alpha X_1变换后的坐标系下的两个点" />
+<figcaption aria-hidden="true">左图有两个点在<span
+class="math inline">\(X_1 - X_2\)</span>坐标系下，右图是在经过<span
+class="math inline">\(\alpha
+X_1\)</span>变换后的坐标系下的两个点</figcaption>
+</figure>
+<p><strong>向量间距离的扩展</strong>：</p>
+<ul>
+<li>分布间距离：KL散度、交叉熵</li>
+<li>集合间距离：见chapter 9（聚类）</li>
+</ul>
+<p><strong>距离通常是无监督概念</strong></p>
+<ul>
+<li>如何利用先验知识、监督信息？</li>
+</ul>
+<h3 id="tangent-distance切向距离">Tangent Distance（切向距离）</h3>
+<p>切向距离用于处理因
+<strong>变换</strong>（如平移、旋转、缩放等）导致的样本相似性问题。</p>
+<blockquote>
+<p><strong>Q: 变换对距离的影响?</strong></p>
+<p>A: 例如：</p>
+<ul>
+<li>图像的平移、旋转或缩放可能导致类内距离（同一类别样本的距离）变大，而超过类间距离（不同类别样本的距离）。</li>
+<li>直接使用欧氏距离可能会导致错误分类。</li>
+</ul>
+</blockquote>
+<h4 id="定义">定义</h4>
+<table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 73%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>定义</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>变换的参数化表示</td>
+<td>给定一个样本<span class="math inline">\(x\)</span>,通过变换函数<span
+class="math inline">\(s(x,\alpha)\)</span>生成变换后的样本。<span
+class="math inline">\(s\)</span>:变换函数，<span
+class="math inline">\(\alpha\)</span>:变换的参数(例如平移距离、旋转角度)</td>
+</tr>
+<tr class="even">
+<td>变换下的样本空间</td>
+<td>样本 <span class="math inline">\(x\)</span> 在变换 <span
+class="math inline">\(s\)</span> 下生成的所有可能样本组成一个流形：<span
+class="math inline">\(S_x=\{x&#39;\vert \exists\alpha \text{ for which }
+x&#39; = s(x,\alpha)\}\)</span></td>
+</tr>
+<tr class="odd">
+<td>样本<span class="math inline">\(y\)</span>到<span
+class="math inline">\(x\)</span>的切向距离</td>
+<td>定义<span class="math inline">\(y\)</span>到流形<span
+class="math inline">\(S_x\)</span>的最小距离是：（该距离对变换<span
+class="math inline">\(s\)</span>具有不变性）<span
+class="math inline">\(d(x,y)=\min_{x&#39;\in S_x}\vert \vert y -
+x&#39;\vert \vert =\min_{\alpha}\vert \vert y - s(x,\alpha)\vert
+\vert\)</span></td>
+</tr>
+</tbody>
+</table>
+<h4 id="线性近似流形s_x">线性近似流形<span
+class="math inline">\(S_x\)</span></h4>
+<blockquote>
+<p><strong>Q: 流形？</strong></p>
+<p>A: <strong>流形（Manifold）</strong>
+是数学中用来描述复杂形状的一种概念，可以看作是局部上类似于欧几里得空间的几何对象。它广泛应用于几何、物理学和机器学习中，尤其是在高维空间中建模复杂数据分布。</p>
+<p>简单来说：<strong>局部像平坦的欧几里得空间</strong>，但<strong>全局可能是弯曲的</strong>。</p>
+<p>例子：地球=二维流形，局部是二维平面、全局是球体。</p>
+</blockquote>
+<p>由于流形 <span class="math inline">\(S_x\)</span>
+的结构可能复杂，我们可以用一个线性子空间近似它。</p>
+<ul>
+<li><p>对变换<span class="math inline">\(s\)</span>的线性近似: <span
+class="math inline">\(s\)</span>在<span class="math inline">\(\alpha =
+0\)</span>点的泰勒展开，其中<span class="math inline">\(T=\frac{\partial
+s(x,0)}{\partial\alpha}\vert_{\alpha=0}\)</span>称为切向量（tangent
+vector） <span class="math display">\[
+s(x,\alpha)=s(x,0)+\frac{\partial s(x,0)}{\partial\alpha}\alpha +
+O(\alpha^2)\approx x+\alpha T
+\]</span></p></li>
+<li><p>用线性子空间近似<span class="math inline">\(S_x\)</span>: <span
+class="math inline">\(\{x&#39;\vert \exists\alpha \text{ for which }
+x&#39; = x+\alpha T\}\)</span></p></li>
+<li><p>样本<span class="math inline">\(y\)</span>到<span
+class="math inline">\(x\)</span>的切向距离：（<span
+class="math inline">\(y\)</span>到子空间的最小距离） <span
+class="math display">\[
+\min_{\alpha}\vert \vert y-(x+\alpha T)\vert \vert
+\]</span></p></li>
+</ul>
+<h4 id="多参数变换">多参数变换</h4>
+<p>假设变换<span class="math inline">\(s\)</span>包含<span
+class="math inline">\(m\)</span>个变换参数：<span
+class="math inline">\(\alpha=(\alpha_1,\alpha_2,\cdots,\alpha_m)\)</span>，例如：</p>
+<p><span
+class="math inline">\(\alpha_1,\alpha_2,\alpha_3\)</span>分别表示旋转角度、水平位移、垂直位移</p>
+<p>此时，变换<span class="math inline">\(s\)</span>下样本<span
+class="math inline">\(x\)</span>的表示:（样本空间中的<span
+class="math inline">\(m\)</span>维流形） <span class="math display">\[
+S_x=\{x&#39;\vert \exists\alpha\in R^m \text{ for which } x&#39; =
+s(x,\alpha)\}
+\]</span> 对应的线性近似为： <span class="math display">\[
+\{x&#39;\vert \exists\alpha\in R^m \text{ for which } x&#39; = x+\sum_{i
+= 1}^{m}\alpha_i T_i\}
+\]</span> 其中<span class="math inline">\(T_i=\frac{\partial
+s(x,\alpha)}{\partial\alpha_i}\vert _{\alpha =
+0}\)</span>是第i个变换参数的切向量。</p>
+<p>样本<span class="math inline">\(y\)</span>到<span
+class="math inline">\(x\)</span>的切向距离定义为： <span
+class="math display">\[
+\min_{\alpha\in R^m}\vert \vert y-(x+\sum_{i = 1}^{m}\alpha_i T_i)\vert
+\vert
+\]</span></p>
+<h3 id="距离度量学习">距离度量学习</h3>
+<p>使用不同的距离度量，会得到不同的分类结果。</p>
+<ul>
+<li>为了反映特征之间的关联关系</li>
+<li>为了充分利用先验知识</li>
+<li>反映特定问题的特定需求</li>
+</ul>
+<p>在某些机器学习任务中（如聚类、分类等），我们需要定义一个适当的距离度量，用于衡量数据点之间的相似性或不相似性。</p>
+<p>然而，标准的欧氏距离可能不足以捕捉数据的复杂关系，尤其是当有<strong>侧信息
+(side information)</strong> 时，这些侧信息可以指导距离度量的优化。</p>
+<p>假设我们有一组数据点 <span
+class="math inline">\(\{x_i\}\)</span>（位于 <span
+class="math inline">\(R^d\)</span> 空间），并且有以下侧信息：</p>
+<ul>
+<li><strong>Must-link</strong> 集合 S：<span class="math inline">\((x_i,
+x_j)\)</span> 表示 <span class="math inline">\(x_i\)</span> 和 <span
+class="math inline">\(x_j\)</span>
+应该是相似的（即，它们应该在同一类中）。</li>
+<li><strong>Cannot-link</strong> 集合 D：<span
+class="math inline">\((x_i, x_j)\)</span> 表示 <span
+class="math inline">\(x_i\)</span> 和 <span
+class="math inline">\(x_j\)</span>
+应该是不相似的（即，它们应该属于不同的类）。</li>
+</ul>
+<p>这些信息告诉我们哪些点需要在距离上更靠近，哪些点需要更远。</p>
+<p>我们希望学习一个距离度量，使得：</p>
+<ul>
+<li>对于 Must-link 对，点之间的距离尽可能小。</li>
+<li>对于 Cannot-link 对，点之间的距离尽可能大。</li>
+</ul>
+<p>为了实现这一目标，可以使用一个参数化的马氏距离 (Mahalanobis
+Distance)： <span class="math display">\[
+d_A(x, y) = \sqrt{(x - y)^T A (x - y)}
+\]</span> 其中 <span class="math inline">\(A\)</span>
+是一个半正定矩阵（<span class="math inline">\(A \ge
+0\)</span>），用来学习距离度量。</p>
+<p>优化目标： <span class="math display">\[
+\max_A \sum_{(x_i, x_j) \in D} d_A(x_i, x_j)\\
+s.t.\sum_{(x_i, x_j) \in S} [d_A(x_i, x_j)]^2 \leq 1
+\]</span></p>
+<ul>
+<li><p>希望 Cannot-link 集合中的点的距离尽可能大。</p></li>
+<li><p>确保 Must-link 集合中的点的距离尽可能小。</p></li>
+<li><p>保证 <span class="math inline">\(A\)</span>
+是一个半正定矩阵，使得距离 <span class="math inline">\(d_A(x,
+y)\)</span> 是有效的。</p></li>
+</ul>
+</div><div class="post-end"><div class="post-prev"><a href="/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch5-%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-next"><a href="/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch3-%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch4-%E9%9D%9E%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch4 非参数估计</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E9%9D%9E%E5%8F%82%E6%95%B0%E5%AF%86%E5%BA%A6%E4%BC%B0%E8%AE%A1"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">非参数密度估计</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="toc-content-number">1.1.1.</span> <span class="toc-content-text">基本原理</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%94%B6%E6%95%9B%E6%80%A7"><span class="toc-content-number">1.1.1.1.</span> <span class="toc-content-text">收敛性</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#parzen%E7%AA%97%E4%BC%B0%E8%AE%A1"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">Parzen窗估计</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">方法介绍</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%AA%97%E5%87%BD%E6%95%B0%E7%9A%84%E9%80%89%E6%8B%A9"><span class="toc-content-number">1.2.2.</span> <span class="toc-content-text">窗函数的选择</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%AA%97%E5%AE%BD%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="toc-content-number">1.2.3.</span> <span class="toc-content-text">窗宽的影响</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%BE%8B%E5%AD%90%E7%94%A8%E9%AB%98%E6%96%AF%E7%AA%97%E4%BC%B0%E8%AE%A1%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83"><span class="toc-content-number">1.2.4.</span> <span class="toc-content-text">例子：用高斯窗估计高斯分布</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#d"><span class="toc-content-number">1.2.4.1.</span> <span class="toc-content-text">1-D</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#d-1"><span class="toc-content-number">1.2.4.2.</span> <span class="toc-content-text">2-D</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#k%E8%BF%91%E9%82%BB%E4%BC%B0%E8%AE%A1"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">K近邻估计</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">基本方法</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%94%B6%E6%95%9B%E6%80%A7%E5%88%86%E6%9E%90-k_n%E7%9A%84%E9%80%89%E6%8B%A9%E5%AF%B9%E6%94%B6%E6%95%9B%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="toc-content-number">1.3.1.1.</span> <span class="toc-content-text">收敛性分析: \(k_n\)的选择对收敛的影响</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#p_nx%E4%B8%80%E7%BB%B4%E4%B8%8B%E8%A7%A3%E6%9E%90%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-content-number">1.3.1.2.</span> <span class="toc-content-text">\(p_n(x)\)一维下解析表达式</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#k%E8%BF%91%E9%82%BB%E5%88%86%E7%B1%BB%E5%99%A8"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">K近邻分类器</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%9C%80%E8%BF%91%E9%82%BB%E5%88%86%E7%B1%BB%E5%99%A8"><span class="toc-content-number">1.4.1.</span> <span class="toc-content-text">最近邻分类器</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-content-number">1.4.1.1.</span> <span class="toc-content-text">例子</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%9C%80%E8%BF%91%E9%82%BB%E8%A7%84%E5%88%99%E7%9A%84%E9%94%99%E8%AF%AF%E7%8E%87%E5%88%86%E6%9E%90"><span class="toc-content-number">1.4.1.2.</span> <span class="toc-content-text">最近邻规则的错误率分析</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E6%8E%A8%E5%AF%BC%E8%BF%87%E7%A8%8B"><span class="toc-content-number">1.4.1.2.1.</span> <span class="toc-content-text">推导过程</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#k%E8%BF%91%E9%82%BB%E5%88%86%E7%B1%BB%E5%99%A8-1"><span class="toc-content-number">1.4.2.</span> <span class="toc-content-text">K近邻分类器</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#k%E8%BF%91%E9%82%BB%E5%88%86%E7%B1%BB%E5%99%A8%E4%B8%8Ek%E8%BF%91%E9%82%BB%E4%BC%B0%E8%AE%A1%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-content-number">1.4.2.1.</span> <span class="toc-content-text">K近邻分类器与K近邻估计的关系</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#k%E8%BF%91%E9%82%BB%E7%9A%84%E5%BF%AB%E9%80%9F%E8%AE%A1%E7%AE%97"><span class="toc-content-number">1.4.2.2.</span> <span class="toc-content-text">K近邻的快速计算</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E9%83%A8%E5%88%86%E8%B7%9D%E7%A6%BB"><span class="toc-content-number">1.4.2.2.1.</span> <span class="toc-content-text">部分距离</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E6%90%9C%E7%B4%A2%E6%A0%91"><span class="toc-content-number">1.4.2.2.2.</span> <span class="toc-content-text">搜索树</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E5%8E%8B%E7%BC%A9%E8%BF%91%E9%82%BB%E6%B3%95"><span class="toc-content-number">1.4.2.2.3.</span> <span class="toc-content-text">压缩近邻法</span></a></li></ol></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F"><span class="toc-content-number">1.5.</span> <span class="toc-content-text">距离度量</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%AC%A7%E6%B0%8F%E8%B7%9D%E7%A6%BB"><span class="toc-content-number">1.5.1.</span> <span class="toc-content-text">欧氏距离</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#mahalanobis%E9%A9%AC%E6%B0%8F%E8%B7%9D%E7%A6%BB"><span class="toc-content-number">1.5.2.</span> <span class="toc-content-text">Mahalanobis（马氏）距离</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%80%A7%E8%B4%A8"><span class="toc-content-number">1.5.3.</span> <span class="toc-content-text">性质</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#tangent-distance%E5%88%87%E5%90%91%E8%B7%9D%E7%A6%BB"><span class="toc-content-number">1.5.4.</span> <span class="toc-content-text">Tangent Distance（切向距离）</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-content-number">1.5.4.1.</span> <span class="toc-content-text">定义</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%BA%BF%E6%80%A7%E8%BF%91%E4%BC%BC%E6%B5%81%E5%BD%A2s_x"><span class="toc-content-number">1.5.4.2.</span> <span class="toc-content-text">线性近似流形\(S_x\)</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%A4%9A%E5%8F%82%E6%95%B0%E5%8F%98%E6%8D%A2"><span class="toc-content-number">1.5.4.3.</span> <span class="toc-content-text">多参数变换</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F%E5%AD%A6%E4%B9%A0"><span class="toc-content-number">1.5.5.</span> <span class="toc-content-text">距离度量学习</span></a></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2025 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>

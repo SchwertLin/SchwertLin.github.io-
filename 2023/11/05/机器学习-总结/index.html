@@ -1,0 +1,1499 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Contents [TOC] Ch1 Overview of ML 对ML的分类： 监督学习(Supervised learning) 其基本思想是给定数据集中的样本是带有&quot;正确答案&quot;的,学习这些数据之后,再来新样本时,可以做出预测. 常见的问题有垃圾邮件分类。 无监督学习(Unsupervised learning) 给定数据集没有标签。常用算法：聚类。常见问题：新闻分类、细分市">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习-总结">
+<meta property="og:url" content="http://example.com/2023/11/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Contents [TOC] Ch1 Overview of ML 对ML的分类： 监督学习(Supervised learning) 其基本思想是给定数据集中的样本是带有&quot;正确答案&quot;的,学习这些数据之后,再来新样本时,可以做出预测. 常见的问题有垃圾邮件分类。 无监督学习(Unsupervised learning) 给定数据集没有标签。常用算法：聚类。常见问题：新闻分类、细分市">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-05T08:14:58.000Z">
+<meta property="article:modified_time" content="2025-01-05T08:16:36.294Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary"><title>机器学习-总结 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>机器学习-总结</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2023-11-05</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2025-01-05</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约1.1W字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h2 id="contents">Contents</h2>
+<p>[TOC]</p>
+<h2 id="ch1-overview-of-ml">Ch1 Overview of ML</h2>
+<p>对ML的分类：</p>
+<p>监督学习(Supervised learning)
+其基本思想是给定数据集中的样本是带有"正确答案"的,学习这些数据之后,再来新样本时,可以做出预测.
+常见的问题有垃圾邮件分类。</p>
+<p>无监督学习(Unsupervised learning)
+给定数据集没有标签。常用算法：聚类。常见问题：新闻分类、细分市场。</p>
+<p><strong>Application:</strong></p>
+<ul>
+<li>Supervised learning:
+<ul>
+<li>Linear Classifier</li>
+<li>Support Vector Machines (hard SVM, soft SVM)</li>
+<li>Kernel Methods</li>
+<li>Deep Learning</li>
+</ul></li>
+<li>Unsupervised learning:
+<ul>
+<li>Linear Discriminant Analysis(LDA)</li>
+<li>Principle Component Analysis (PCA)</li>
+<li>Generative Models(e.g. GMM, K-means--clustering)</li>
+</ul></li>
+</ul>
+<h3 id="supervised-learning">Supervised learning</h3>
+<p>一些参数以及符号：</p>
+<p>Model <span class="math inline">\(f\)</span>， Loss Function <span
+class="math inline">\(\mathcal{L}\)</span>，模型中的参数<span
+class="math inline">\(\theta\)</span>，输入输出<span
+class="math inline">\((x_i,y_i)\)</span></p>
+<p>The objective of the supervised learning is to <strong>find the
+parameters</strong> that minimises the average loss: <span
+class="math display">\[
+\min_{\theta}\frac 1 n \sum_{i=1}^n \mathcal{L}(f(x_i;\theta),y_i)
+\]</span></p>
+<h3 id="unsupervised-learning">Unsupervised learning</h3>
+<p>Learning patterns when no specific target output values are
+supplied.(实际上就是没有label)</p>
+<p><strong>Examples</strong>:</p>
+<ul>
+<li>Clustering: group data into groups</li>
+<li>Building probabilistic model to explain data</li>
+<li>Anomaly detection</li>
+</ul>
+<p>Types of machine learning: shallow vs. deep
+（传统机器学习VS深度学习）</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Traditional machine learning</th>
+<th>Deep learning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Important step: feature design</td>
+<td>Allows raw input</td>
+</tr>
+<tr class="even">
+<td>Usually work with “feature vectors”</td>
+<td>End-to-end learning</td>
+</tr>
+<tr class="odd">
+<td>Mapping function is simple, with relatively small number of
+parameters</td>
+<td>Complex models, with millions of parameters</td>
+</tr>
+<tr class="even">
+<td>Works well if the input can be captured by vectors, small to medium
+number of samples</td>
+<td>Works well if the “right feature” is unknown or the input is complex
+and a large number of samples are available</td>
+</tr>
+</tbody>
+</table>
+<p>进行ML的流程：</p>
+<ol type="1">
+<li>Problem formulation – What is the input? What is the expected
+outcome?(输入输出？)</li>
+<li>Data collection
+<ol type="1">
+<li>Collect data</li>
+<li>Annotation（给data以label）</li>
+</ol></li>
+<li>Design machine learning algorithm
+<ol type="1">
+<li>Choose the machine learning model</li>
+<li>Choose the objective function</li>
+</ol></li>
+<li>Training machine learning model: Learn the decision system from
+training data</li>
+<li>Applying machine learning model</li>
+</ol>
+<h3 id="数学基础">数学基础</h3>
+<p><span class="math display">\[
+\sum^N_{i=1}a_i=\sum_ia_i=\sum_ja_j\\
+\sum^M_{i=1}\sum^N_{j=1}a_{ij}=\sum_{i,j}a_{ij}\\
+\sum^M_{i=1}\sum^N_{j=1}a_ib_j=(\sum_ia_i)(\sum_jb_j)=(\sum_ia_i)(\sum_ib_i)E
+\]</span></p>
+<h4 id="线性代数">线性代数</h4>
+<p>I为单位阵。(E)</p>
+<p><span
+class="math inline">\(\Lambda\)</span>视为对角矩阵，只在对角线上的元素可以非0，其他元素都是0。</p>
+<p>矩阵转置： <span class="math display">\[
+(AB)^T=B^TA^T\\
+(ABC)^T=C^TB^TA^T
+\]</span> 逆矩阵inverse: <span class="math display">\[
+AA^{-1}=I
+\]</span> 矩阵的迹（也就是对角线上的元素相加，被称之为<span
+class="math inline">\(Tr(A)\)</span>）： <span class="math display">\[
+Tr(A)=\sum_ia_{ii},Tr(a)=a\\
+Tr(A+B)=Tr(A)+Tr(B)\\
+Tr(X^TY)=Tr(XY^T)=Tr(Y^TX)=Tr(YX^T)
+\]</span> 两个<strong>向量</strong>的内积： <span
+class="math display">\[
+\langle x,y \rangle=x^Ty=\sum_ix_iy_i
+\]</span> p-norm: <span class="math display">\[
+L1:||x||_2=\sqrt{\sum_ix_i^2}\\
+L2:||x||_1=\sum_i|x_i|\\
+Lp:||x||_p=(\sum_i|x_i|^p)^{\frac 1 p}
+\]</span> 欧几里得范数（Frobenius norm）： <span class="math display">\[
+||A||_F = \sqrt{ \sum_{ij}a^2_{ij}}=\sqrt{Tr(AA^T)}=\sqrt{Tr(A^TA)}
+\]</span></p>
+<p>特征向量和特征值： <span class="math display">\[
+Au=\lambda u\\
+(A-\lambda I)u=0
+\]</span> 矩阵的特征分解： <span class="math display">\[
+A=Q\Lambda Q^{-1}
+\]</span></p>
+<blockquote>
+<p>A: diagonal
+matrix，其中除了主对角线上的元素，其他位置上的元素都为零。其第i个对角值为A的第i个特征值。</p>
+<p>Q: 每一列column是第i个特征值对应的特征向量。</p>
+</blockquote>
+<p>如果A是对称的（symmetric）--对角阵天然对称： <span
+class="math display">\[
+A=A^T\\
+A=Q\Lambda Q^T\\
+Q^TQ=QQ^T=I
+\]</span> 其中Q满足了正交矩阵（Orthogonal Matrix）的性质</p>
+<h4 id="矩阵求导">矩阵求导</h4>
+<p>首先<span class="math inline">\(||w||^2_2=w^Tw=\langle
+w,w\rangle\)</span> <span class="math display">\[
+\frac{\partial Ax}{\partial x}=A\\
+\frac{\partial x^TA}{\partial x}=A^T\\
+\frac{\partial x^TAx}{\partial x}=Ax+A^Tx\\
+\frac{\partial a^Txx^Tb}{\partial x}=ab^Tx+ba^Tx\\
+\frac{\partial [f(x)g(x)]}{\partial x}=\frac{\partial f(x)}{\partial
+x}g(x)+\frac{\partial g(x)}{\partial x}f(x)
+\]</span></p>
+<h4 id="概率与统计">概率与统计</h4>
+<p>期望Expectations：</p>
+<p>离散的情况:<span class="math inline">\(E[X]=\sum_ix_ip_i\)</span></p>
+<p>连续的情况:<span
+class="math inline">\(E[X]=\int_{\mathbb{R}}xf(x)dx\)</span></p>
+<p>方差Variance： <span class="math display">\[
+Var(X)=E[(X-E[X])^2]\\
+=E[X^2-2XE[X]+E^2[X]]\\
+=E[X^2]-E^2[X]
+\]</span> 贝叶斯、最大似然估计在下面有公式，此处不赘述。</p>
+<h3 id="优化问题的种类">优化问题的种类</h3>
+<p>Type of optimization problems：</p>
+<ul>
+<li>Continuous vs. Discrete: binary or Integer variables</li>
+<li>Linear vs. Nonlinear</li>
+<li>Convex vs. nonconvex</li>
+</ul>
+<p>对于凸优化问题(Convex Optimization)</p>
+<p>其==Global optimum=Local optimum==.</p>
+<p>证明属于convex function: <span class="math display">\[
+If\ x,y\in \Omega,then\ \theta x+(1-\theta)y\in\Omega\\
+f(\theta x+(1-\theta )y)\le\theta f(x)+(1-\theta)f(y)
+\]</span></p>
+<p><img
+src="https://picdm.sunbangyan.cn/2023/11/07/2d8c6cf568bc276e7d3e277d85d4d67e.png" /></p>
+<h2 id="ch2-classification">Ch2 Classification</h2>
+<p>classification与regression的对比：</p>
+<table>
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 59%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Classification</th>
+<th>Regression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>predict labels</td>
+<td>predict values</td>
+</tr>
+<tr class="even">
+<td>categorical, often no order</td>
+<td>deal with ordered values</td>
+</tr>
+<tr class="odd">
+<td>all differences are equal</td>
+<td>some differences are bigger than others</td>
+</tr>
+</tbody>
+</table>
+<p>classifier的一种划分：</p>
+<ul>
+<li>binary 二分类</li>
+<li>multi-class 多分类</li>
+<li>multi-label 多标签</li>
+</ul>
+<p>classifier的划分以及应用：</p>
+<ul>
+<li><p>instance-based(KNN): classifiers use observation directly(no
+underlying model)</p>
+<blockquote>
+<p>K-Nearest neighbours just checks what the class of nearby training
+data are</p>
+</blockquote></li>
+<li><p>generative(Naive Bayes): build a generative statistic model</p>
+<blockquote>
+<p>Naïve Bayes attempts to model the underlying probability
+distributions of data</p>
+</blockquote></li>
+<li><p>discriminative(Decision Tree): directly estimate a decision
+rule/boundary</p>
+<blockquote>
+<p>Decision trees are concerned with establishing the boundaries between
+classes</p>
+</blockquote></li>
+</ul>
+<p>欧式距离 Euclidean Distance: <span
+class="math inline">\(d(a,b)=\sqrt{\sum(a_i-b_i)^2}\)</span></p>
+<p>马氏距离(估计不考)Mahalanobis Distance: <span
+class="math inline">\(d(a,b)=\sqrt{(a-b)^TM(a-b)}\)</span></p>
+<h3 id="knn">KNN</h3>
+<p>Test Error的计算：假设classifier是<span
+class="math inline">\(h\)</span>，那么对于<span
+class="math inline">\(x_i\)</span>我们的预测结果是<span
+class="math inline">\(h(x_i)\)</span>。如果预测结果与实际的结果<span
+class="math inline">\(y_i\)</span>之间不同，那么error<span
+class="math inline">\(\epsilon_{te}=\epsilon_{te}+1\)</span>.</p>
+<p>当<span class="math inline">\(k\)</span>值变化的时候，训练误差(<span
+class="math inline">\(\epsilon_{tr}\)</span>)和测试误差(<span
+class="math inline">\(\epsilon_{te}\)</span>)又会如何变化？有如下三种情况。</p>
+<blockquote>
+<p><span class="math inline">\(k\)</span>值代表的是取周围的<span
+class="math inline">\(k\)</span>个邻居。</p>
+</blockquote>
+<ol type="1">
+<li>当<span class="math inline">\(k\)</span>值较小(例如<span
+class="math inline">\(k=1\)</span>)时，模型的复杂度较高。每个测试样本只考虑其最近的一个邻居，这可能导致模型对噪声和局部变化非常敏感。在这种情况下，训练误差<span
+class="math inline">\(\epsilon_{tr}\)</span>很低，因为模型会完美地匹配训练样本，但测试误差<span
+class="math inline">\(\epsilon_{te}\)</span>较高，因为模型在未见过的样本上可能无法泛化。</li>
+<li>当<span class="math inline">\(k\)</span>值较大时(例如<span
+class="math inline">\(k=10\)</span>)，模型的复杂度较低。考虑更多的邻居可以平滑决策边界并减少噪声的影响。在这种情况下，训练误差<span
+class="math inline">\(\epsilon_{tr}\)</span>可能会增加，因为模型会更多地考虑其他类别的样本，测试误差<span
+class="math inline">\(\epsilon_{te}\)</span>可能会减少，因为模型在未见过的样本上更具泛化能力。</li>
+<li>当<span class="math inline">\(k\)</span>值等于样本数量时(例如<span
+class="math inline">\(k=n\)</span>，其中<span
+class="math inline">\(n\)</span>是样本数量)，相当于使用全部训练数据作为邻居。在这种情况下，模型的复杂度较低，因为它会考虑所有训练样本的投票。训练误差<span
+class="math inline">\(\epsilon_{tr}\)</span>可能会增加，因为模型更加保守。测试误差<span
+class="math inline">\(\epsilon_{te}\)</span>可能会减少，因为模型使用了更多的信息。</li>
+</ol>
+<p>KNN is a type of lazy learning(实际上并没有train的过程)</p>
+<blockquote>
+<ul>
+<li>Lazy: learning only occurs when you see the test example</li>
+<li>Eager: learn a model prior to seeing the test example</li>
+</ul>
+</blockquote>
+<p>KNN的好处与坏处（评价）：</p>
+<table>
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 64%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Advantages</th>
+<th>Disadvantages</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Easy to understand</td>
+<td>Hard to find a good distance measure</td>
+</tr>
+<tr class="even">
+<td>Very flexible decision boundaries</td>
+<td>Irrelevant features and noise reduce performance significantly</td>
+</tr>
+<tr class="odd">
+<td>No learning required</td>
+<td>Cannot handle more than a few dozen attributes (Curse of
+Dimensionality)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Computationally expensive</td>
+</tr>
+</tbody>
+</table>
+<h4 id="overfitting与underfitting">overfitting与underfitting</h4>
+<table>
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 44%" />
+<col style="width: 44%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>overfitting</th>
+<th>underfitting</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>特征</td>
+<td>Model could fit any data(trainset上结果很好), also fit the
+noise(testset上的结果很烂)</td>
+<td>Model is too inflexible to match the data, too few learnable
+parameters, wrong learnable
+parameters(在trainset和testset上表现都很烂，根本没训练好)</td>
+</tr>
+<tr class="even">
+<td>解决方法solution</td>
+<td>Less complex model, More data, Regularisation (soft reduction in
+parameters)</td>
+<td>Better data/pre-processing, More complex model, Less
+regularisation</td>
+</tr>
+</tbody>
+</table>
+<h4 id="validation-set">Validation set</h4>
+<p>在机器学习中，我们通常将数据集划分为训练集（Training
+Set）、验证集和测试集（Test Set）。验证集（Validation
+Set）是用于模型选择和超参数调优的一个独立数据集。</p>
+<p>训练集: 用于模型的参数估计和训练过程</p>
+<p>测试集:用于评估最终模型的性能</p>
+<p>验证集:用于选择不同模型和调整超参数的过程</p>
+<p><strong>Cross validation</strong>: 其中的Leave-one-out
+cross-validation。将数据集分为多个子集，拿一个作为validation。</p>
+<h3 id="naive-bayes">Naive Bayes</h3>
+<p><strong>一些背景知识：</strong></p>
+<p>Bayes的limitations：需要有data，无data不工作（基于数据的统计，生成概率）。</p>
+<p>Bayes公式：<span
+class="math inline">\(P(y|x)=\frac{P(y)P(x|y)}{P(x)}\)</span>，<span
+class="math inline">\(P(y|x)\)</span>:
+表述的是在x事件发生的背景下y事件发生的概率。</p>
+<p>如果说是独立的：<span
+class="math inline">\(P(XY)=P(X)P(Y)\)</span></p>
+<p>极大似然估计：<span
+class="math inline">\(y_{ML}=\mathop{\arg\max}\limits_{y\in
+Y}[P(X|y)]\)</span></p>
+<p>Naive Bayes：将Bayes
+Theorem应用于有着先验(Prior)概率或者可能性的数据集中。</p>
+<p>Naive的来由：数据属性之间的相关性，我们假设是独立的（assume
+independence）。</p>
+<p>Multinomial Naïve Bayes： <span class="math display">\[
+P(A\&amp;B)=P(A)\times P(B)\\
+P(Y|A\&amp;B)=\frac{P(Y)*P(A|Y)*P(B|Y)}{P(X)}
+\]</span> 将极大似然估计(Maximum likelihood,
+假设数据是从某个参数化的概率分布中生成的，我们要找到使得给定数据的概率最大化的参数值，用偏导计算
+)应用在Naive Bayes中：<span class="math inline">\(\max_\lambda\prod
+P(x_i|y;\lambda)\)</span></p>
+<p>而这样不好计算，于是变成对数函数：<span
+class="math inline">\(\max_\lambda\sum_i
+log(P(x_i|y;\lambda))\)</span></p>
+<blockquote>
+<p><span class="math inline">\(P(x_i|y;\lambda)\)</span>: 其中<span
+class="math inline">\(\lambda\)</span> 代表其中的参数。</p>
+</blockquote>
+<h4 id="application">Application</h4>
+<p>Bag of words(词袋)</p>
+<ul>
+<li>X：words</li>
+<li>Y：是否是垃圾邮件(spam)--二分类问题</li>
+</ul>
+<p>举例：“the most interesting film this summer”</p>
+<p><span
+class="math inline">\(P(doc|c)=P(the|c)P(most|c)P(interesting|c)P(film|c)P(in|c)P(the|c)P(summer|c)\)</span></p>
+<p><strong>数学原理</strong>：<span class="math inline">\(\hat
+c\)</span>是我们想要得到的最终结果，也就是是否是垃圾邮件的判定。以下公式的推导是基于朴素贝叶斯假设，通过计算每个类别c的后验概率<span
+class="math inline">\(P(c|d)\)</span>来选择最有可能的类别，实现对文档进行分类。
+<span class="math display">\[
+P(d|c)&amp;=\prod_{i\in positions}P(w_i|c)\\
+\hat c&amp;=\mathop{\arg\max}\limits_{c}P(c|d)\\
+&amp;=\mathop{\arg\max}\limits_{c}P(d|c)P(c)\\
+&amp;=\mathop{\arg\max}\limits_{c}\prod_{i\in positions}P(w_i|c)P(c)
+\]</span></p>
+<blockquote>
+<ul>
+<li>P(d|c)：这表示在给定类别c的条件下，文档d出现的概率。它是通过假设文档中的每个词（<span
+class="math inline">\(w_i\)</span>）在给定类别c的条件下是独立的，并且通过对这些条件概率的乘积来计算的。具体而言，这个公式使用了一个位置集合（positions），表示文档中被考虑的词的位置，然后计算每个位置上词<span
+class="math inline">\(w_i\)</span>在给定类别c的条件下的概率<span
+class="math inline">\(P(w_i|c)\)</span>，并将它们相乘得到<span
+class="math inline">\(P(d|c)\)</span>。</li>
+<li><span class="math inline">\(\hat
+c\)</span>：这表示通过贝叶斯决策规则（Bayes' decision
+rule）选择的最有可能的类别。在这个公式中，我们通过计算每个类别c的后验概率<span
+class="math inline">\(P(c|d)\)</span>来选择最有可能的类别。根据贝叶斯定理，<span
+class="math inline">\(P(c|d)\)</span>可以通过<span
+class="math inline">\(P(d|c)P(c)\)</span>计算得到。</li>
+<li><span
+class="math inline">\(P(c)\)</span>：这表示类别c在整个数据集中出现的概率，也称为类别的先验概率。它可以通过计算在训练数据中类别c的频率来估计。</li>
+</ul>
+</blockquote>
+<p>接下来要如何计算呢？还是一样的，<span
+class="math inline">\(\prod\)</span>不好处理，我们转换为log+<span
+class="math inline">\(\sum\)</span>。 <span class="math display">\[
+\prod_{i\in positions}P(w_i|c)P(c)&amp;=\sum_{i\in
+positions}log(P(w_i|c))+log(P(c))\\
+&amp;=\sum_{k\in|V|}n_klog(P(w_i|c))+log(P(c))
+\]</span> <span class="math inline">\(n_k\)</span> : The number of
+occurrences of the k th word in the vocabulary. It can be zero or
+non-zero. 词汇表中<span class="math inline">\(w_i\)</span>的计数，<span
+class="math inline">\(w_i\)</span>代表文档document中其中的某个word。</p>
+<p><span class="math inline">\(|V|\)</span>: The list of vocabulary,
+词汇表的大小</p>
+<h3 id="decision-tree">Decision Tree</h3>
+<p>一个决策的过程，我们需要确定：</p>
+<ul>
+<li>Which variable to test</li>
+<li>What to test it against</li>
+<li>What function to apply to a variable prior to a test</li>
+</ul>
+<p>决策树模拟了一个树形结构，其中每个内部节点表示对一个特征的测试，每个分支代表测试的结果，每个叶节点代表一个类别或回归值。它的构建过程从根节点开始，选择最佳的特征进行测试。选择的依据可以是信息增益（Information
+Gain：<span
+class="math inline">\(Entropy=\sum-p_ilog(p_i)\)</span>）、基尼系数（Gini
+Impurity）或其他度量。通过测试特征将数据集划分为不同的子集，然后递归地在每个子集上重复这个过程，直到达到停止条件，如达到最大深度、节点包含的样本数小于某个阈值或节点中的样本属于同一个类别。</p>
+<ul>
+<li>分类问题中：决策树的叶节点表示一个类别，通过在树上从根节点到叶节点的路径，决策树可以对新的样本进行分类。</li>
+<li>回归问题中：叶节点表示一个预测值，通过在树上从根节点到叶节点的路径，决策树可以对新的样本进行回归预测。</li>
+</ul>
+<h2 id="ch3-regression">Ch3 Regression</h2>
+<p>对regression与classification的区分：</p>
+<p>classification中Y是离散变量，regression中Y是连续变量。</p>
+<p><strong>Application</strong></p>
+<ul>
+<li>房价预测</li>
+<li>图像处理(Image processing)</li>
+<li>人数统计(Crowd counting)</li>
+<li>生成声音(Generate sounding)</li>
+</ul>
+<h3 id="linear-regression">Linear Regression</h3>
+<p>线性回归：给定一些样本点，找出一条可以拟合的曲线。 <span
+class="math display">\[
+y=&amp;f(x)\\
+y=&amp;w^Tx=\sum^D_{k=1}w_kx_k\\
+err=&amp;(f(x)-\hat y)^2\\
+\mathcal{L}=&amp;\sum^N_{i=1}(f(x_i)-\hat y_i)^2\\
+=&amp;\sum^N_{i=1}(w^Tx_i-\hat y_i)^2\\
+=&amp;||w^TX-\hat y||^2
+\]</span> 计算<span class="math inline">\(\min
+\mathcal{L}\)</span>求其对w的导数=0,<span
+class="math inline">\(w^*=\mathop{\arg\min}\limits_{w}\mathcal{L}\)</span>：
+<span class="math display">\[
+\frac{\partial\mathcal{L}}{\partial w}&amp;=0\\
+\frac{\partial{||w^T X-\hat y||^2}}{\partial w}&amp;=0\\
+w&amp;=(XX^T)^{-1}X\hat y^T
+\]</span> 上述的<span class="math inline">\(\hat
+y\)</span>代表最终的结果是一个值scalar，但如果最终的结果是一个向量，则写成<span
+class="math inline">\(\hat Y\)</span>。 <span class="math display">\[
+w=(XX^T)^{-1}X\hat Y^T
+\]</span></p>
+<p>不能用Regression去Classification的理由：</p>
+<ul>
+<li><p>Limitation:</p>
+<p>– Put unnecessary requirements to the predicted output</p>
+<p>– May increase the fitting difficulty and lead to bad training
+result</p></li>
+<li><p>But why is it commonly used in practice?</p>
+<p>– Close-form solution, less storage for low</p>
+<p>-dimensional data</p>
+<p>– Quick update for incremental learning, distributed
+learning</p></li>
+</ul>
+<h3 id="regularized-regression">Regularized Regression</h3>
+<p>即添加了正则化惩罚项regularization的Linear Regression。</p>
+<p>regularization的用途？</p>
+<ul>
+<li>避免过拟合 avoid overfitting</li>
+<li>Enforce certain property of solution</li>
+</ul>
+<p>其形式：<span class="math inline">\(\mathcal{L}=||w^TX-\hat
+y||^2+\Omega(w)\)</span>, <span
+class="math inline">\(\Omega(w)\)</span>为正则化惩罚项。</p>
+<blockquote>
+<p>对p-范式的介绍(p-Norm)： <span class="math display">\[
+||x||_p=(\sum^d_{j=1}|x^j|^p)^{\frac 1 p}
+\]</span> 当p=1的时候：Lasso Regression</p>
+<p>当p=2的时候：Ridge Regression</p>
+</blockquote>
+<h4 id="ridge-regression">Ridge Regression</h4>
+<p>其Loss function的形式是： <span class="math display">\[
+\mathcal{L}=||w^TX-\hat y||^2_2+\lambda||w||^2_2
+\]</span> 对其求解： <span class="math display">\[
+w=(XX^T+\lambda I)^{-1}X\hat y^T
+\]</span> 如果<span
+class="math inline">\(XX^T\)</span>不是可逆的，可能就不能写成<span
+class="math inline">\((XX^T)^{-1}\)</span>，这意味着此处有多种方法去处理（而不是求逆）。如果加上一个正则化，那么它总是可逆的。It
+essentially provides a criterion for choosing the optimal solution among
+multiple equivalent solutions of the first-term。</p>
+<h4 id="lasso-regression">Lasso Regression</h4>
+<p>其Loss Function的形式是： <span class="math display">\[
+\mathcal{L}=||w^TX-\hat y||^2_2+\lambda||w||_1
+\]</span></p>
+<ul>
+<li>L1 norm encourages sparse solution. This could be useful for
+understanding the impact of various factors, e.g. perform feature
+selection.</li>
+<li>Sometimes it can lead to an improved performance since it can
+<strong>suppressing noisy factors</strong>. 其原因是：计算出来<span
+class="math inline">\(2XX^Tw=2X\hat
+y^T-\lambda\)</span>。使得某些特征的<span
+class="math inline">\(w\)</span>可以取0。</li>
+<li>Unfortunately, it does not have a close-form solution.</li>
+</ul>
+<h3 id="support-vector-regression">Support Vector Regression</h3>
+<p>Key idea: if the fitting error is already small enough, do not make
+it smaller.</p>
+<p>SVR通过在二维空间中找到一个最优超平面来实现对回归过程的建模。由于这个最优超平面仅考虑到了在训练集周围边缘的点，使得模型对数据点的过拟合现象进行有效地避免。同时，根据再投影误差作为惩罚项的复杂度控制参数可以很好地调节回归模型的灵活性。</p>
+<p>硬间隔（Hard-margin）: <span class="math display">\[
+&amp;\min \frac 1 2 ||w||^2\\
+s.t. &amp;y_i-wx_i-b\le\epsilon\\
+&amp;w_ix_i+b-y_i\le\epsilon
+\]</span> 软间隔（Soft-margin）： <span class="math display">\[
+\min \frac 1 2 ||w||^2+C\sum^m_{i=1}(\xi_i+\xi_i^*)\\
+s.t.\begin{cases}
+&amp;y_i-wx_i-b\le\epsilon+\xi_i\\
+&amp;wx_i+b-y_i\le\epsilon+\xi_i^*\\
+&amp;\xi_i,\xi_i^*\ge0,i=1,\dots,m
+\end{cases}
+\]</span> SVR: <span class="math display">\[
+\min_{w,b}\frac 1 2 ||w||^2+\sum_{i}\max(1-y_i(w^Tx_i+b),0)
+\]</span> <span
+class="math inline">\(\max(1-y_i(w^Tx_i+b),0)\)</span>表示在<span
+class="math inline">\(1-y_i(w^Tx_i+b)\)</span>与0之间取大的那个。</p>
+<p>如果<span
+class="math inline">\((w^Tx_i+b)\)</span>是binary的：那么假设对于positive
+class是正数，对于negative class 是负数。当decision
+value不够大（或者是不够小）的时候，我们就会“激活”这个惩罚项。</p>
+<h4 id="dual-form-of-svr">Dual form of SVR</h4>
+<p>原始问题： <span class="math display">\[
+\min \frac 1 2 ||w||^2+C\sum^m_{i=1}(\xi_i+\xi_i^*)\\
+s.t.\begin{cases}
+&amp;y_i-wx_i-b\le\epsilon+\xi_i\\
+&amp;wx_i+b-y_i\le\epsilon+\xi_i^*\\
+&amp;\xi_i,\xi_i^*\ge0,i=1,\dots,m
+\end{cases}
+\]</span> 对偶问题（dual problem）： <span class="math display">\[
+\max=
+\begin{cases}
+\frac 1 2
+\sum^{m}_{i,j=1}(\alpha_i-\alpha_i^*)(\alpha_j-\alpha_j^*)\langle
+x_i,x_j \rangle\\
+-\epsilon
+\sum^m_{i=1}(\alpha_i+\alpha_i^*)+\sum^m_{i=1}y_i(\alpha_i-\alpha_i^*)
+\end{cases}\\
+s.t. \sum^m_{i=1}(\alpha_i-\alpha_i^*)=0;0\le \alpha_i,\alpha_i^*\le C
+\]</span></p>
+<h2 id="ch45-linear-classification-and-svm">Ch4&amp;5 Linear
+Classification and SVM</h2>
+<p>属于statistical ML。</p>
+<p><strong>Primal Problem VS Dual Problem</strong>: 原始问题is
+hard。对偶问题的解恰好对应着原始问题的解，因此只要能解决对偶问题，就意味着我们解出了原始问题。</p>
+<h3 id="linear-classifiers">Linear Classifiers</h3>
+<p>在线性的分类器中处理分类，就是计算特征的线性组合： <span
+class="math display">\[
+s_c=\sum_iw_i^cx_i+b_c\\
+s_c=w_c^Tx+b_c
+\]</span> 如果是二分类问题：结果大于0，属于class 1，结果小于0，属于class
+2。</p>
+<h3 id="convex-theorem">Convex Theorem</h3>
+<p>==用于证明一个function是否是convex的==</p>
+<p>如果一个函数是凸函数，那么它将满足： $$</p>
+<p>$$</p>
+<h3 id="svm">SVM</h3>
+<p>目标：find a hyperplane <span class="math inline">\(w^Tx-b=0\)</span>
+使得距离两类samples的距离都比较远。</p>
+<h4 id="hard-margin">Hard-margin</h4>
+<p>因此我们一开始的goal function是：<span class="math inline">\(\max
+\frac 2 {||w||}\)</span></p>
+<p>该形式可以转化成: <span class="math display">\[
+\min \frac1 2 ||w||^2\\
+s.t.\ y_i*(w\cdot x+b)\ge 1
+\]</span>
+该形式符合凸优化理论，可以使用拉格朗日乘子法解决问题（Lagrangian Dual
+Problem） <span class="math display">\[
+\mathcal{L}=\frac 1 2||w||^2-\sum\alpha_i[y_i*(w\cdot x_i+b)-1]
+\]</span> <span class="math inline">\(\alpha_i\)</span>: Lagrange
+Multiplier</p>
+<p>对<span class="math inline">\(\mathcal{L}\)</span>求解偏导： <span
+class="math display">\[
+\frac{\partial \mathcal{L}}{\partial w}=w-\sum\alpha_iy_ix_i=0\\
+w=\sum\alpha_iy_ix_i\\\\
+\frac{\partial \mathcal{L}}{\partial b}=\sum\alpha_iy_i=0
+\]</span></p>
+<ul>
+<li><span class="math inline">\(w\)</span> : is a weighted sum of the
+input vectors (<span class="math inline">\(x_i\)</span> )</li>
+<li>很多情况下<span class="math inline">\(\alpha_i=0\)</span>: because
+this point doesn’t contribute to the margin</li>
+</ul>
+<p>再把<span
+class="math inline">\(w=\sum\alpha_iy_ix_i\)</span>代进<span
+class="math inline">\(\mathcal{L}\)</span>中，使得<span
+class="math inline">\(\mathcal{L}\)</span>中没有<span
+class="math inline">\(w\)</span>，只有<span
+class="math inline">\(\alpha_i\)</span>一个参数。 <span
+class="math display">\[
+\mathcal{L}=&amp;\frac 1 2w^Tw-\sum\alpha_i[y_i*(w\cdot x_i+b)-1]\\
+=&amp;\frac 1 2
+(\sum\alpha_iy_ix_i)(\sum\alpha_jy_jx_j)-\sum\alpha_i[y_i\sum\alpha_jy_jx_j\cdot
+x_i]+b\sum\alpha_iy_i+\sum\alpha_i\\
+\]</span> 因为：<span class="math inline">\(\frac{\partial
+\mathcal{L}}{\partial b}=\sum\alpha_iy_i=0\)</span> <span
+class="math display">\[
+\mathcal{L}=&amp;\frac 1 2
+(\sum\alpha_iy_ix_i)(\sum\alpha_jy_jx_j)-\sum\alpha_i[y_i\sum\alpha_jy_jx_j\cdot
+x_i]+\sum\alpha_i\\
+=&amp;\sum\alpha_i-\frac 1 2 (\sum\alpha_iy_ix_i)(\sum\alpha_jy_jx_j)\\
+=&amp;\sum\alpha_i-\frac 1 2 \sum_i\sum_j\alpha_i\alpha_jy_iy_jx_ix_j
+\]</span></p>
+<h4 id="soft-margin">Soft-margin</h4>
+<p>其goal function： <span class="math display">\[
+\min \frac 1 2 ||w||^2+C\sum^m_i\xi_i\\
+s.t.\ y_i*(w\cdot x+b)\ge 1-\xi_i\\
+\xi_i\ge0
+\]</span> 对于参数<span class="math inline">\(C\)</span>:</p>
+<ul>
+<li>Low C: we don’t pay anything for these violations (width is
+king)</li>
+<li>High C: we pay a lot for violations (no violations is king)</li>
+</ul>
+<blockquote>
+<p>突然在PPT中介绍了一下hinge loss——</p>
+<p>Hinge Loss: 一种常用的损失函数。Hinge
+Loss用于衡量样本的分类错误和分类边界的间隔。其在soft-margin中的定义如下：
+<span class="math display">\[
+\min \frac 1 2||w||^2+C\sum^m_i\max(0,1-y_i*(w\cdot x+b))
+\]</span> <span class="math inline">\(y_i\)</span>:
+表示样本的真实标签（通常为-1或1）</p>
+<p><span class="math inline">\(w\cdot x+b\)</span>:
+表示样本的预测分类（即决策函数输出的值）。</p>
+<p>Hinge
+Loss的目标是使正确分类的样本的损失为0，并增大错误分类样本的损失。在软间隔分类中，Hinge
+Loss通常与正则化项结合使用，以平衡分类错误和模型复杂度。通过最小化Hinge
+Loss和正则化项，可以得到一个具有较小间隔违规和较小模型复杂度的分类模型，从而在训练集上和测试集上获得良好的性能。</p>
+</blockquote>
+<p>接下来继续我们soft-margin的求解部分： <span class="math display">\[
+\mathcal{L}=\frac 1 2
+||w||^2+C\sum^m_i\xi_i+\sum_i\alpha_i(1-\xi_i-y_i(w^Tx_i+b))-\sum_i\beta_i\xi_i
+\]</span> 求解偏导，因为只是加了其他项，所以<span
+class="math inline">\(\frac{\partial \mathcal{L}}{\partial
+w}\)</span>不变，此处求解<span class="math inline">\(\frac{\partial
+\mathcal{L}}{\partial \xi_i}\)</span> <span class="math display">\[
+\frac{\partial \mathcal{L}}{\partial \xi_i}=C-\alpha_i-\beta_i=0\\
+\alpha_i=C-\beta_i
+\]</span> 其他的<span class="math inline">\(\frac{\partial
+\mathcal{L}}{\partial w}\)</span>以及<span
+class="math inline">\(\frac{\partial \mathcal{L}}{\partial
+b}\)</span>均不变。</p>
+<p>KKT条件： <span class="math display">\[
+\begin{cases}
+stationarity:&amp;\nabla\mathcal{L}(x^*,{\mu_i})=\nabla
+f(x^*)+\sum_i\mu_i\nabla g_i(x^*)=0\\
+primary\ feasibility:&amp;g_i(x^*)\le 0\\
+dual\ feasibility:&amp;\mu_i^*\ge0\\
+complementary\ slackness:&amp;\mu_i^*g_i(x^*)=0
+\end{cases}
+\]</span> 对比一下hard-margin以及soft-margin的拉格朗日函数： <span
+class="math display">\[
+\mathcal{L}=\frac 1 2||w||^2-\sum\alpha_i[y_i*(w\cdot x_i+b)-1]\\
+\mathcal{L}=\frac 1 2
+||w||^2+C\sum^m_i\xi_i+\sum_i\alpha_i(1-\xi_i-y_i(w^Tx_i+b))-\sum_i\beta_i\xi_i
+\]</span> 我们容易发现：<span class="math inline">\(\frac{\partial
+\mathcal{L}}{\partial w}\)</span>以及<span
+class="math inline">\(\frac{\partial \mathcal{L}}{\partial
+b}\)</span>均不变。</p>
+<p>对于soft-margin将<span
+class="math inline">\(w=\sum\alpha_iy_ix_i\)</span>代进去： <span
+class="math display">\[
+\mathcal{L}=&amp;\frac 1 2
+||w||^2+C\sum^m_i\xi_i+\sum_i\alpha_i(1-\xi_i-y_i(w^Tx_i+b))-\sum_i\beta_i\xi_i\\
+=&amp;\frac 1 2
+\sum_i\sum_j\alpha_i\alpha_jy_iy_jx_ix_j+C\sum^m_i\xi_i+\sum_i\alpha_i-\sum_i\alpha_i\xi_i-\sum_i\sum_j\alpha_i\alpha_jy_iy_jx_ix_j+b\sum_i\alpha_iy_i-\sum_i\beta_i\xi_i\\
+\]</span> 因为：<span
+class="math inline">\(\sum_i\alpha_i\xi_i+\sum_i\beta_i\xi_i=C\sum_i^m\xi_i\)</span>(<span
+class="math inline">\(\frac{\partial \mathcal{L}}{\partial
+\xi_i}=C-\alpha_i-\beta_i=0\)</span>)以及<span
+class="math inline">\(\frac{\partial \mathcal{L}}{\partial
+b}=\sum\alpha_iy_i=0\)</span> <span class="math display">\[
+\mathcal{L}=\sum\alpha_i-\frac 1 2
+\sum_i\sum_j\alpha_i\alpha_jy_iy_jx_ix_j
+\]</span> 你会发现soft-margin计算出来的<span
+class="math inline">\(\mathcal{L}\)</span>和hard-margin的也是一样的。</p>
+<p>因此对偶问题是： <span class="math display">\[
+\max_{\alpha_i}[\sum_i\alpha_i-\frac 1 2
+\sum_i\sum_j\alpha_i\alpha_jy_iy_jx_ix_j]\\
+s.t.\ 0\le\alpha_i\le C,\sum_i\alpha_iy_i=0
+\]</span> 我们的原问题是： <span class="math display">\[
+\min \frac 1 2 ||w||^2+C\sum^m_i\xi_i\\
+s.t.\ y_i*(w\cdot x+b)\ge 1-\xi_i\\
+\xi_i\ge0
+\]</span> 怎么从对偶问题转化为原问题呢？</p>
+<p><span class="math inline">\(w^*\)</span>比较简单： <span
+class="math display">\[
+w^*=\sum\alpha_i^*y_ix_i
+\]</span> 对于<span class="math inline">\(b\)</span>：</p>
+<ul>
+<li>Find a $_i^*(0, 𝐶) $vector</li>
+<li>Thus, <span class="math inline">\(y_i(w^Tx_i+b^*)=1\)</span></li>
+<li>Thus, <span class="math inline">\(b^*=y_i-w^Tx_i\)</span></li>
+</ul>
+<p>在soft
+margin的情况下，由于存在一些样本落在间隔边界内部，因此选择多个支持向量计算偏置b可能更合适。一种常见的做法是选择所有满足<span
+class="math inline">\(0 &lt; \alpha_i &lt;
+C\)</span>的支持向量，并计算它们的平均值作为偏置b。</p>
+<p><span class="math display">\[
+\mu_i^*g_i(x^*)=0\ \forall i\\
+\]</span></p>
+<h2 id="ch6-pca-lda-and-dimensionality-reduction">Ch6 PCA, LDA and
+Dimensionality reduction</h2>
+<h3 id="dimensionality-reduction">Dimensionality reduction</h3>
+<p>其基本原理是：Preserve “useful” information in low dimensional
+data.</p>
+<p>其常用的方法：PCA，LDA</p>
+<p>reasons:</p>
+<ul>
+<li>Extract underlying factors</li>
+<li>Reduce data noise
+<ul>
+<li>Face recognition</li>
+<li>Applied to image de-noising</li>
+</ul></li>
+<li>Reduce the number of model parameters
+<ul>
+<li>Avoid over-fitting</li>
+<li>Reduce computational cost</li>
+</ul></li>
+<li>Visualization</li>
+</ul>
+<h3 id="pcaprincipal-component-analysis">PCA(Principal Component
+Analysis)</h3>
+<p>==无监督学习方法。==</p>
+<p>PCA：</p>
+<ul>
+<li>Transform data to remove redundant information</li>
+<li>Keep the most informative dimensions after the transformation</li>
+</ul>
+<p>其步骤:</p>
+<ul>
+<li><p>去中心化(De-correlating data): Correlation can be removed by
+rotating the data point or coordinate</p></li>
+<li><p>计算协方差矩阵，找特征向量与特征值(Eigen decomposition) <span
+class="math display">\[
+A=Q\Lambda Q^T\\
+QQ^T=Q^TQ=I
+\]</span> 此处的<span
+class="math inline">\(I\)</span>是单位矩阵，A是对称矩阵，式2式正交矩阵Q的性质，<span
+class="math inline">\(\Lambda\)</span>是协方差矩阵。</p></li>
+</ul>
+<p>英文版：</p>
+<ol type="1">
+<li>Subtract mean</li>
+<li>Calculate the covariance matrix</li>
+<li>Calculate eigenvectors and eigenvalues of the covariance matrix</li>
+<li>Rank eigenvectors by its corresponding eigenvalues</li>
+<li>Obtain P with its row vectors corresponding to the top k
+eigenvectors</li>
+</ol>
+<p>其数学原理：<span
+class="math inline">\(X_c\)</span>是中心化数据矩阵（每个数据减去其均值向量之后的结果）</p>
+<p>因此原始的协方差矩阵为： <span class="math display">\[
+C_X=\frac 1 n X_cX_c^T
+\]</span> 我们想找到一个矩阵P,可以对数据去中心化： <span
+class="math display">\[
+Y=PX_c\\
+C_Y=\frac 1 n PX_c(PX_c)^T=\frac 1 nPX_cX_c^TP^T
+\]</span> 有因为：<span class="math inline">\(C_X=\frac 1 n
+X_cX_c^T\)</span>，代进去得： <span class="math display">\[
+C_Y=\frac 1 nPX_cX_c^TP^T=\frac 1 {n^2}PC_XP^T
+\]</span> 对<span
+class="math inline">\(X_cX_c^T\)</span>进行特征分解：<span
+class="math inline">\(X_cX_c^T=Q\Lambda Q^T\)</span> <span
+class="math display">\[
+C_Y=\frac 1 nPX_cX_c^TP^T=\frac 1 nPQ\Lambda Q^TP^T
+\]</span> 令<span class="math inline">\(P=Q^T\)</span>,<span
+class="math inline">\(C_Y=\frac 1 n \Lambda\)</span></p>
+<p>High dimensionality issue（Kernel PCA）</p>
+<ol type="1">
+<li>Centralize data</li>
+<li>Calculate the kernel matrix</li>
+<li>Perform Eigen-decomposition on the kernel matrix and obtain its
+eigenvector <span class="math inline">\(V\)</span></li>
+<li>Obtain the Eigenvector of the covariance matrix by <span
+class="math inline">\(u=Xv\)</span></li>
+</ol>
+<h3 id="ldalinear-discriminative-analysis">LDA(Linear Discriminative
+Analysis)</h3>
+<p><strong>有监督学习</strong>：利用了样本的类别标签信息来进行模型训练和分类。</p>
+<p>Supervised information ：</p>
+<ol type="1">
+<li>Class label</li>
+<li>Data from the same class =&gt; Become close</li>
+<li>Data from different classes =&gt; far from each other</li>
+</ol>
+<p>LDA假设数据满足高斯分布，并且根据类别信息进行有监督训练。它的目标是通过最大化不同类别之间的距离（类间散度）和最小化同一类别内部的方差（类内散度），来实现在新的低维空间中使得不同类别更好地可分的投影。</p>
+<p>将数据投影到低维空间，其新的均值以及方差如下： <span
+class="math display">\[
+\hat \mu=&amp;\frac 1 N\sum^N_{i=1}p^Tx_i=p^T\frac 1 N
+\sum^N_{i=1}x_i=p^T\mu\\
+\hat \sigma^2=&amp;\frac 1 N \sum^N_{i=1}(p^Tx_i-p^T\mu)^2\\
+=&amp;\frac 1 N \sum^N_{i=1}p^T(x_i-\mu)(x_i-\mu)^Tp\\
+=&amp;p^T(\frac 1 N \sum^N_{i=1}(x_i-\mu)(x_i-\mu)^T)p
+\]</span> 类内(between)以及类间(within)散度: <span
+class="math display">\[
+S_b=(\mu_1-\mu_2)(\mu_1-\mu_2)^T\\
+S_w=\sum_{j=1,2}\frac 1 {N_j}\sum^{N_j}_{i=1}(x_i-\mu)(x_i-\mu)^T
+\]</span> 其目标函数是： <span class="math display">\[
+\max \frac{p^TS_bp}{p^TS_wp}
+\]</span> 将上述形式化为拉格朗日对偶问题的形式： <span
+class="math display">\[
+\max p^TS_bp\\
+s.t.\ p^TS_wp=1\\\\
+\mathcal{L}=p^TS_bp-\lambda(p^TS_wp-1)
+\]</span> 对其求偏导得： <span class="math display">\[
+\frac{\partial \mathcal{L}}{\partial p}=0\\
+2S_bp-2\lambda S_wp=0\\
+S_bp=\lambda S_wp\\
+S_w^{-1}S_bp=\lambda p
+\]</span> 得到的形式刚好是求解特征向量的标准形式(<span
+class="math inline">\(Ax=\lambda x\)</span>)</p>
+<p>At optimum, we have <span
+class="math inline">\(p^{*^T}S_bp^*=\lambda\)</span></p>
+<p>表示在最优条件下，投影向量<span
+class="math inline">\(p\)</span>的转置与类内散度矩阵<span
+class="math inline">\(S_b\)</span>的乘积再与<span
+class="math inline">\(p\)</span>相乘的结果等于<span
+class="math inline">\(\lambda\)</span>。</p>
+<p>这个方程用于确定最佳的投影向量<span
+class="math inline">\(p\)</span>，使得类别之间的差异最大化，同时类内方差最小化。<span
+class="math inline">\(S_b\)</span>是类间散度矩阵，表示不同类别之间的差异程度。<span
+class="math inline">\(\lambda\)</span>是一个标量，表示投影向量<span
+class="math inline">\(p\)</span>在最优条件下的特征值。</p>
+<p><strong>如果<span class="math inline">\(S_w\)</span>
+不是可逆的(invertible)的：</strong>就使用<span
+class="math inline">\((S_w+\lambda I)^{-1}\)</span>(这个是可逆的)</p>
+<p>如果LDA且Multi-class: <span class="math display">\[
+S_b=\sum^C_{i=1,j=1}(\mu_i-\mu_j)(\mu_i-\mu_j)^T=\sum_i(\mu_i-\mu)(\mu_i-\mu)^T\\
+S_w=\sum^C_{j=1}\sum_{i\in C_j}(x_i-\mu)(x_i-\mu)^T\\
+\max \frac{trace(P^TS_bP)}{reace(P^TS_wP)}
+\]</span> 在<span
+class="math inline">\(S_w^{-1}S_b\)</span>中选择前C个特征向量，最多可以有C个投影，这取决与矩阵的秩：
+<span class="math display">\[
+rank(S_w^{-1}S_b)\le rank(S_b)\le C
+\]</span></p>
+<h2 id="ch7-clustering">Ch7 Clustering</h2>
+<h3 id="unsupervised-learning-1">Unsupervised learning</h3>
+<p>Learning without supervision</p>
+<ul>
+<li>Find the distribution of data</li>
+<li>Learning to generate samples</li>
+<li>Clustering</li>
+<li>Anomaly detection</li>
+<li>Feature learning</li>
+</ul>
+<p>Clustering</p>
+<ul>
+<li>One of the most important unsupervised learning tasks</li>
+<li>Clustering is the process of identifying groups, or clusters, of
+data points in a (usually) multidimensional space.</li>
+<li>Connection to distribution modeling: related to mixture model</li>
+</ul>
+<p>Clustering: discover groups such that samples within a group are more
+similar to each other than samples across groups.</p>
+<p>Clustering的Application：</p>
+<ul>
+<li>Segmentation</li>
+<li>Superpixel</li>
+<li>Vector quantization in Bag-of-feature model</li>
+</ul>
+<p>Clustering的Ingredient:</p>
+<ul>
+<li>A dissimilarity function between samples</li>
+<li>A loss function to evaluate clusters</li>
+<li>Algorithm that optimizes this loss function</li>
+</ul>
+<p>衡量dissimilarity function: <span class="math display">\[
+D(x_i,X_i&#39;)=\sqrt{\sum^p_{i=1}(x_{ij}-x_{i&#39;j})^2}
+\]</span> <span class="math inline">\(x_{ij}\)</span>: <span
+class="math inline">\(x_i\)</span>的特征点，j=1,2,<span
+class="math inline">\(\dots\)</span>,p</p>
+<p>Clustering is invariant to rotation and translation of features,
+<strong>but not to scaling</strong>.</p>
+<h3 id="k-means-clustering">K-means Clustering</h3>
+<p>Basic idea:</p>
+<ul>
+<li>Each sample can only fall into one of the k groups</li>
+<li>From each group, we can calculate the mean vectors, that is, the
+average of samples falling into a group</li>
+<li>Any sample should be closest to the mean vector of its own group
+than the mean vectors of other groups</li>
+</ul>
+<p>K-means take an <strong>iterative</strong> approach for solving the
+problem.</p>
+<p><strong>Algorithm</strong>:</p>
+<ul>
+<li>E-step: fixed the current mean vectors of each group. If a sample is
+closest to the i-th mean vector, then the sample is assigned to the i-th
+group</li>
+<li>M-step: fixed the assignment, calculate the mean vector of each
+group</li>
+<li>Iterate E step and M step, until converge</li>
+</ul>
+<p><strong>Questions</strong>:</p>
+<p>Why using those two steps can lead to converged result?</p>
+<blockquote>
+<p>通过反复迭代E-steps和M-steps,
+K-means算法会逐渐优化簇分配和质心的位置，直到达到收敛状态。在收敛状态下，簇分配不再发生变化，质心的位置也相对稳定。这意味着算法已经找到了一个相对稳定的聚类结果，达到了收敛状态。</p>
+</blockquote>
+<p>Why always calculate mean vectors?</p>
+<blockquote>
+<p>为了更新簇的位置，并在每次迭代中重新计算数据点与质心之间的距离，从而进行簇分配。</p>
+</blockquote>
+<p>What is the objective function of k-means clustering algorithm?</p>
+<p>– Objective function will give a measurement of the goodness of
+clustering results</p>
+<blockquote>
+<p><span class="math display">\[
+\mathcal{J} = \sum_{i=1}^{n} \sum_{i=1}^K r_{ik} ||x_i - μ_k||^2_2
+\]</span></p>
+<p><span class="math inline">\(r_{ik}\)</span>: Each point will be
+assigned to one of the prototypes, the distance between the point to the
+prototype is the cost of the assignment. We are seeking the optimal
+assignment that can minimize the cost.</p>
+<p><span class="math inline">\(\mu_k\)</span>: We are also seeking the
+optimal prototypes that can minimize the total cost.</p>
+</blockquote>
+<p>Choose K? <strong>Cross validation</strong></p>
+<p><strong>Limitations of k-means</strong></p>
+<ol type="1">
+<li>Hard assignments of data points to clusters can cause a small
+perturbation to a data point to flip it to another cluster</li>
+<li>Assumes spherical clusters and equal probabilities for each
+cluster</li>
+<li>Those limitations can be solved by GMM based clustering</li>
+</ol>
+<h3 id="gaussian-mixture-modelsgmm">Gaussian Mixture Models(GMM)</h3>
+<p>混合高斯模型：GMM can characterize the distribution that contains K
+clusters.
+GMM假设观察的数据点是从多个高斯分布的混合中生成的，每一个高斯分布有一个<span
+class="math inline">\(\pi_k\)</span>(weight)，表示选择这种分布的可能性。
+<span class="math display">\[
+多元高斯分布：P(x)=\mathcal{N}(x|\mu_k,\Sigma_k)=\frac{exp(-\frac{1}{2}(x-\mu)^T\Sigma^{-1})(x-\mu)}{\sqrt{(2\pi)^k|\Sigma|}}\\
+高斯混合模型：P(x)=\sum^K_{k=1}\pi_k\mathcal{N}(x|\mu_k,\Sigma_k),\sum^K_{k=1}\pi_k=1,0\le\pi_k\le1
+\]</span> Generative process:</p>
+<ol type="1">
+<li><p>Randomly select the k-th Gaussian distribution according to <span
+class="math inline">\(\pi_k\)</span></p></li>
+<li><p>Randomly sample x from the selected Gaussian</p>
+<p>distribution</p></li>
+</ol>
+<p><span class="math display">\[
+P(\gamma=k)=\pi_k\\
+P(x|\gamma=k)=\mathcal{N}(x|\mu_k,\sum_k)\\
+P(x)=\sum^K_{k=1}\pi_k\mathcal{N}(x|\mu_k,\Sigma_k)
+\]</span></p>
+<p><span class="math inline">\(\gamma\)</span>: latent variable,
+指每个数据点的潜在成分或类别标签，其实际值是未观测到的。GMM假设观测数据是由多个高斯分布组成的混合体，每个高斯分布对应一个类别或成分。<span
+class="math inline">\(\gamma\)</span>表示每个数据点属于哪个成分或类别。</p>
+<p><strong>Latent Variable</strong>：</p>
+<ol type="1">
+<li>Intermediate results inside a generative process</li>
+<li>Each sample is associated with a latent variable</li>
+<li>We do not know its exact value</li>
+<li>But we can infer how likely it can be</li>
+</ol>
+<p>对于隐变量，我们无法直接观察或测量它，但是它对最终的结果有影响。只能推测其可能性。</p>
+<blockquote>
+<p>比如学生的学习能力，是latent
+variable，会对考试结果产生影响，但是我们不能确切地衡量学生地学习能力。</p>
+</blockquote>
+<p>parameter estimation for GMM: <strong>use
+MLE(最大似然估计)，然后求解偏导<span
+class="math inline">\(\frac{\partial \mathcal{L}}{\partial
+\theta}=0\)</span></strong></p>
+<p>在GMM中，估计模型参数通常采用期望最大化算法（Expectation-Maximization，EM算法）。EM算法通过迭代的方式，交替进行E步和M步。</p>
+<p>EM algorithm solution to GMM</p>
+<ul>
+<li><p>E-step: calculate the posterior probability about the latent
+variable (for each <span class="math inline">\(x_i\)</span> calc prob
+<span class="math inline">\(r’_{ik}\)</span> for each cluster, this
+corresponds to assigning <span class="math inline">\(x_i\)</span> to a
+cluster in
+k-means)--根据当前的模型参数，计算每个数据点属于每个成分的后验概率（即给定数据点的观测值和模型参数，该数据点属于每个成分的概率）
+<span class="math display">\[
+r&#39;_{ik}=P(r_{ik}=1|x_i)=\frac{\mathcal{N}(x_i|\mu_k,\Sigma_K)\pi_k}{\sum^K_{j=1}\mathcal{N}(x_i|\mu_j,\Sigma_j)\pi_j}
+\]</span></p></li>
+<li><p>M-step: estimate parameters based the expectation of latent
+variables (recalc GMM based on estimate in step E, in k-means this is
+recalc the
+centroids)--使用这些后验概率更新模型参数，包括成分的均值、协方差矩阵和每个成分的权重。
+<span class="math display">\[
+\pi_k=\frac{\sum_i r&#39;_{ik}}{N}\\
+\mu_k=\frac{\sum_ir&#39;_{ik}x_i}{\sum_ir&#39;_{ik}}\\
+\Sigma_K=\frac{\sum_ir&#39;_{ik}(x_i-\mu_k)x_i-\mu_k)^T}{\sum_ir&#39;_{ik}}
+\]</span></p></li>
+</ul>
+<p>EM algorithm (More general case)</p>
+<ol type="1">
+<li>The above solution represents a special case of a more general
+method called EM-algorithm</li>
+<li>It is widely used for learning the probabilistic models with latent
+variable inside its generative process.</li>
+<li>It iterates between an E-step and an M-step.<br />
+</li>
+<li>We can theoretically prove that each step will lead to a nonincrease
+of loss function</li>
+<li>The iterative process will converge to a local minimum</li>
+</ol>
+<p>其通用形式如下:</p>
+<ul>
+<li><p>E-step:计算隐变量的后验概率:<span
+class="math inline">\(P(z|x,\theta^t)\)</span>, <span
+class="math inline">\(\theta^t\)</span>是目前模型的参数</p></li>
+<li><p>M-step:基于期望的似然估计更新模型参数 <span
+class="math display">\[
+\theta^{t+1}=\mathop{\arg\max}\limits_{\theta}E_{z|x,\theta}\log
+P(z,x|\theta)=\int P(z|x,\theta^t)\log(P(x|\theta,z)P(z|theta))dz
+\]</span></p></li>
+</ul>
+<p><strong>与K-means 的 connection</strong>：</p>
+<ul>
+<li>E-step in GMM is a soft version of K-means. <span
+class="math inline">\(r_{ik}\in[0,1]\)</span>, instead of <span
+class="math inline">\(\{0,1\}\)</span>.</li>
+<li>M-step in GMM estimates the probabilities and the covariance matrix
+of each cluster in addition to the means.</li>
+<li>All <span class="math inline">\(\pi_k\)</span> are equal. <span
+class="math inline">\(\sum_k=\delta^2I\)</span>, as <span
+class="math inline">\(\delta^2\rightarrow0,r_{ik}\rightarrow\{0,1\}\)</span>,
+and the 2 methods coincide.</li>
+</ul>
+<h2 id="ch8-kernel-method">Ch8 Kernel Method</h2>
+<p>Kernel function的性质（证明Mercer定理）：</p>
+<ul>
+<li>positive semi-definite(半正定)：<span
+class="math inline">\(c^Tkc\ge0\)</span></li>
+</ul>
+<blockquote>
+<p>Mercer定理：如果K(x,
+y)满足一定的条件，那么它可以表示为一个内积空间中的正定核函数，即存在一个特征空间（称为希尔伯特空间），以及一个映射ϕ(x)将数据映射到该空间中，使得K(x,
+y)可以表示为内积的形式。</p>
+<p>如果对于任意的n个实数<span class="math inline">\(a_1, a_2, ...,
+a_n\)</span>和Ω中的n个点<span class="math inline">\(x_1, x_2, ...,
+x_n\)</span>，矩阵<span class="math inline">\(K = [K(x_i,
+x_j)]\)</span>是对称的，并且对于任意非零的向量<span
+class="math inline">\(c = (c_1, c_2, ..., c_n)\)</span>，有<span
+class="math inline">\(∑∑c_ic_jK(x_i, x_j) ≥ 0\)</span>，那么K(x,
+y)是一个半正定核函数。</p>
+</blockquote>
+<h4 id="polynomial-kernel">Polynomial Kernel</h4>
+<p>多次项核函数，比较常用。其形式如下： <span class="math display">\[
+K(x_i,x_j)=(x_i\cdot x_j+c)^d
+\]</span></p>
+<h4 id="radial-basis-function-kernel高斯核">Radial Basis Function
+Kernel(高斯核)</h4>
+<p>更常用的核函数，其形式如下： <span class="math display">\[
+K(x_i,x_j)=e^{-\gamma(x_i-x_j)^2}\\
+=e^{-\frac{||x_i-x_j||^2}{2\sigma^2}}
+\]</span></p>
+<h3 id="kernel-in-svm">Kernel in SVM</h3>
+<p>我们原始的对偶问题是： <span class="math display">\[
+\mathcal{L}=\sum\alpha_i-\frac 1 2
+\sum_i\sum_j\alpha_i\alpha_jy_iy_jx_ix_j
+\]</span> 新的对偶问题实际上是把<span
+class="math inline">\(x\)</span>换成了<span
+class="math inline">\(\phi(x)\)</span>(升维): <span
+class="math display">\[
+\mathcal{L}=\sum\alpha_i-\frac 1 2
+\sum_i\sum_j\alpha_i\alpha_jy_iy_j\phi(x_i)\phi(x_j)
+\]</span>
+我们选定核函数：<em>原先的升维函数不宜求解，但核函数可以求解</em> <span
+class="math display">\[
+k(x_i,x_j)=\phi(x_i)\cdot\phi(x_j)
+\]</span></p>
+<blockquote>
+<ul>
+<li>We stop caring about what the transform represents</li>
+<li>We start caring about how well it classifies our data</li>
+</ul>
+</blockquote>
+<p>其他详细地推导没有，主要是在CVX中的应用。</p>
+<h3 id="kernel-in-k-means">Kernel in K-means</h3>
+<p>Map the data space into some kernel space.</p>
+<p>Hope this new space better allows the data to be separated!</p>
+<p>下面是K-means的过程：</p>
+<p>1.Assigning Points to Clusters</p>
+<p>(原来的) <span class="math display">\[
+assign(x_i)=\mathop{\arg\min}\limits_{k}||x_i-\mu_k||^2\\
+=(x_i-\mu_k)^T(x_i-\mu_k)
+\]</span> （将<span class="math inline">\(x_i\)</span>换成了<span
+class="math inline">\(\phi(x_i)\)</span>的） <span
+class="math display">\[
+assign(x_i)=\mathop{\arg\min}\limits_{k}||\phi(x_i)-\mu_k||^2\\
+=(\phi(x_i)-\mu_k)^T(\phi(x_i)-\mu_k)
+\]</span> 2.Defining Cluster Mid-Points</p>
+<p>(原来的) <span class="math display">\[
+\mu_k=\frac 1 {N_k}\sum^N_{i=1}z_{ik}x_i
+\]</span> <span class="math inline">\(Z_{ik}=1\)</span>：样本<span
+class="math inline">\(x_i\)</span>属于k类，=0不属于k类</p>
+<p>（将<span class="math inline">\(x_i\)</span>换成了<span
+class="math inline">\(\phi(x_i)\)</span>的） <span
+class="math display">\[
+\mu_k=\frac {\sum_{i=1}z_{ik}\phi(x_i)}{\sum_{i=1}z_{ik}}
+\]</span></p>
+<h3 id="kernel-in-linear-regression">Kernel in Linear Regression</h3>
+<p>原来的： <span class="math display">\[
+\sum_i||w^Tx_i-y_i||^2
+\]</span> 现在的： <span class="math display">\[
+\sum_i||w^T\phi(x_i)-y_i||^2
+\]</span> 我们令<span
+class="math inline">\(w=\sum_j\alpha_jx_j+o\)</span>,代入目标函数得：
+<span class="math display">\[
+\sum_i||(\sum_j\alpha_jx_j+o)^Tx_i-y_i||^2_2\\
+=\sum_i||\sum_j\alpha_jx_i\cdot x_j+x_i\cdot o-y_i||^2_2\\
+=\sum_i||\sum_j\alpha_jK(x_i,x_j)+K(x_i,o)-y_i||^2_2\\
+=\sum_i||\sum_j\alpha_jK(x_i,x_j)-y_i||^2_2
+\]</span></p>
+<blockquote>
+<p>o: 映射函数φ(x)可能带入的一个额外 bias term</p>
+<p><span class="math inline">\(K(x_i,o)=0\)</span>:</p>
+<ol type="1">
+<li>o不代表任何一个实际样本点。它仅仅表示引入核技巧可能带来的一个额外的bias项。</li>
+<li>因此,任何样本点<span
+class="math inline">\(x_i\)</span>与o的距离<span
+class="math inline">\(||x_i -
+o||\)</span>都是无定义的。无法直接计算核函数值。</li>
+<li>因此就直接定义=0</li>
+</ol>
+</blockquote>
+<h3 id="kernel-in-pca">Kernel in PCA</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 49%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tasks</th>
+<th>Problems</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Replace x with <span class="math inline">\(\phi(x)\)</span></td>
+<td>Centralising the data</td>
+</tr>
+<tr class="even">
+<td>Turn everything into dot products</td>
+<td>Calculating the covariance matrix</td>
+</tr>
+<tr class="odd">
+<td>Use <span class="math inline">\(K(x_i , x_j )\)</span> a lot</td>
+<td>Calculating the projection matrix</td>
+</tr>
+<tr class="even">
+<td>Never use <span class="math inline">\(\phi(x)\)</span></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><span class="math display">\[
+Cov=X^TX\\
+Cov(k,m)=\sum_i^nX_i^kX^m_i\\
+=\sum^n_{i,j=1}c_ic_jk(x_ix_j)=c^TKc\ge0
+\]</span></p>
+<p><strong>计算协方差矩阵</strong>： <span class="math display">\[
+\bar X\bar X^Tv=\lambda v\\
+\]</span></p>
+<blockquote>
+<p><span class="math inline">\(\bar X\)</span>: centralised data
+matrix(d x n)</p>
+<p>d: 属性的维数，n：有多少样本</p>
+<p><span class="math inline">\(\bar X\bar X^T\)</span>:(d x
+d)协方差矩阵</p>
+<p><span class="math inline">\(v\)</span>: 协方差矩阵的特征向量</p>
+</blockquote>
+<p>经过kernel matrix: <span class="math display">\[
+\bar X\bar X^Tv&#39;=\lambda v&#39;\\
+v=\bar Xv&#39;
+\]</span> <strong>计算去中心化</strong>： <span class="math display">\[
+\bar k(x_i,x_j)=(\varphi(x_i)-\mu)^T(c-\mu)\\
+=(\varphi(x_i)-\frac 1 N\sum_k\varphi(x_k))^T(\varphi(x_j)-\frac 1
+N\sum_k\varphi(x_k))\\
+=\varphi(x_i)\cdot\varphi(x_j)-\frac 1
+N\sum_k\varphi(x_i)\cdot\varphi(x_k)-\frac 1
+N\sum_k\varphi(x_j)\cdot\varphi(x_k)-\frac 1
+{N^2}\sum_k\varphi(x_i)\cdot\varphi(x_j)\\
+=k(x_i,x_j)-\frac 1 N \sum_kk(x_i,x_k)-\frac 1 N \sum_kk(x_j,x_k)-\frac
+1 {N^2} \sum_{ij}k(x_i,x_j)\\
+K&#39;=K-1_NK-k1_N+1_NK1_N
+\]</span></p>
+<blockquote>
+<p><span class="math inline">\(1_N\)</span> here represents a NxN matrix
+filled with 1/N</p>
+</blockquote>
+<p><strong>计算投影矩阵</strong>：原来是<span
+class="math inline">\(y=P^T(x-\mu)\)</span>,现在是： <span
+class="math display">\[
+y_k=p_k^T(\varphi(x_t)-\mu)
+\]</span> 带入<span class="math inline">\(v=\varphi(\bar
+X)v&#39;\)</span>: <span class="math display">\[
+y_k=v&#39;^T_k\varphi(\bar X)^T(\varphi(x_t)-\frac 1
+N\sum_i\varphi(x_i))\\
+=v&#39;^T_k(\varphi(X)-\frac 1 N\sum_i\varphi(x_i))^T(\varphi(x_t)-\frac
+1 N\sum_i\varphi(x_i))
+\]</span></p>
+<h2 id="ch9-ensemble-method">Ch9 Ensemble Method</h2>
+<p>When to use?</p>
+<ul>
+<li>Individual decisions are cheap, so making many of them is easy</li>
+<li>Making an expert is expensive or impossible</li>
+<li>Your amateurs are independent of each other</li>
+</ul>
+<h3 id="decision-tree-1">Decision Tree</h3>
+<p>Entropy=<span class="math inline">\(\sum-p_i\log_2p_i\)</span>(Gini
+Function), <span class="math inline">\(p_i\)</span>代表属于class i
+的概率</p>
+<p>Gini Coefficient of
+Purity是利用Gini不均衡度来度量分类问题样本集合的纯程度。它服判定模型预测性能的一个指标(衡量决策树每个节点的纯度):</p>
+<ul>
+<li>它通过计算样本集合中的类分布不均衡程度,来反映纯度程度。</li>
+<li>如果样本全是同一类,类分布最均衡,Gini值为0,这也就是100%的纯度。</li>
+<li>否则不同类样本混杂,Gini值越高,表示纯度越低。</li>
+</ul>
+<p><strong>The Flaw of the Decision Tree</strong>:</p>
+<ul>
+<li>We have a series of decisions, but some of these decisions can only
+be conceived of as overfitting.
+（根据训练数据集递归地构建依赖于数据的决策边界,不断地细分训练集样本）</li>
+<li>There are numerous places we could place decision boundaries.
+(会导致决策边界过于复杂，训练集效果不错，但是测试集的效果很差)</li>
+<li>How can we avoid these overfit decision
+boundaries?--比如剪枝，或限定最大树深</li>
+</ul>
+<h3 id="random-forest">Random Forest</h3>
+<p>定义：A random forest is a series of decision trees which are
+randomized. You then apply your new measurement to each decision tree,
+picking the aggregate decision by voting.</p>
+<p>容易出现的问题：</p>
+<ul>
+<li>Some potential decision boundaries represent overfitting.</li>
+<li>Some features are not representative of generalisation.</li>
+</ul>
+<p>我们使用bootstrapping方法（随机有放回地采样--random selection with
+replacement）得到子数据集（subsets）</p>
+<p>值得考虑地问题是：</p>
+<p>How many trees?</p>
+<ul>
+<li>Too few trees:
+<ul>
+<li>Might interpret random variation as signal.</li>
+<li>Biased towards individual trees.</li>
+</ul></li>
+<li>Too many trees: Slow?</li>
+</ul>
+<p>How many dimensions/tree? --从实践来看一般是<span
+class="math inline">\(\sqrt{D}\)</span>或是<span
+class="math inline">\(\log(D)\)</span></p>
+<p><strong>Bagging doesn’t choose a random subset of
+dimensions</strong></p>
+<blockquote>
+<ul>
+<li>Bagging算法为了减轻过拟合,其主要思想是从原始训练数据集中采样出多个并行的子数据集,来训练多个基学习器模型。(采样过程使用的是boostrapping方法)</li>
+<li>但在采样子数据集时,Bagging采样的是样本实例,而不是特征维度。</li>
+<li>也就是说,每个子数据集中包含的是原始所有特征维度对应的一部分样本。而不是随机选择一部分特征维度。</li>
+</ul>
+</blockquote>
+<h3 id="boosting">Boosting</h3>
+<p>idea: We build a classifier, but it incorrectly classifies some
+samples, we can further train this classifier to perform better on the
+incorrectly labelled samples(从错误中学习）</p>
+<ul>
+<li>We make decisions based on a weighted decision of minimal ‘weak
+classifiers’ (stumps)</li>
+<li>After we have built our ‘one stump’ we can judge how good it is, by
+the number of instances it gets wrong.</li>
+</ul>
+<p><span class="math display">\[
+\alpha=\frac1 2\ln(\frac{1-TotalError}{TotalError})
+\]</span></p>
+<p><span class="math inline">\(\alpha\)</span>代表每个decision tree
+在最终的决策中的贡献程度。我们通过它更新权重： <span
+class="math display">\[
+w_{new}=w_{old}\times e^a
+\]</span></p>
+<h4 id="adaboost">Adaboost</h4>
+<p>目标函数： <span class="math display">\[
+\min_{\{a_k,\theta_m\}}\sum_ie^{-y_ih_m(x_i)}\\
+h_m(x)=\alpha_1h(x;\theta_1)+\dots+\alpha_mh(x;\theta_m)
+\]</span> loss function: <span class="math display">\[
+e^{-yh_m(x)}
+\]</span></p>
+<p>还有其他的boost的方法，比如XGboost，Gradient Boost。</p>
+<h4 id="添加weak-learner">添加weak learner</h4>
+<p>第<span class="math inline">\(m^{th}\)</span>轮添加： <span
+class="math display">\[
+\sum^n_{i=1}e^{-y_i[h_{m-1}(x_i)+\alpha_mh(x_i;\theta_m)]}\\
+=\sum^n_{i=1}e^{-y_ih_{m-1}(x_i)-y_i\alpha_mh(x_i;\theta_m)}
+\]</span> 因为<span class="math inline">\(e^{-y_i
+h_{m-1}(x_i)}=W_i^{m-1}\)</span>,也就是上一轮的结果(对w更新)： <span
+class="math display">\[
+W_i^m=\sum^n_{i=1}W_i^{m-1}e^{-y_i\alpha_mh(x_i;\theta_m)}
+\]</span></p>
+<p>对<span class="math inline">\(h_m\)</span>的更新： <span
+class="math display">\[
+h_m(x_i)=h_{m-1}+\alpha_mh(x_i;\theta_m)
+\]</span></p>
+<p>What do we have in common?</p>
+<ul>
+<li>We are weighting our bad decisions higher (i.e., boosting)</li>
+<li>We are using ensemble learning</li>
+</ul>
+<h2 id="ch10-deep-learning">Ch10 Deep Learning</h2>
+<p>关于Loss的介绍：</p>
+<ol type="1">
+<li>Loss is some measure of the error between the predicted and target
+values</li>
+<li>A metric for determining how well a model has trained</li>
+<li>Lower loss/cost/error =&gt; better model =&gt; better learned
+parameters</li>
+</ol>
+<p>我们常用的Loss是MSE(Mean Squared Error): <span
+class="math display">\[
+MSE(X,h_{\theta})=\frac1 m\sum^m_{i=1}(\theta^Tx_i-y_i)^2
+\]</span></p>
+<p>全局最小值以及局部最小值：Global Minimum is the smallest error out of
+all possible parameter configurations, Local Minimum is the smallest
+error in some region of space.</p>
+<p>一般使用梯度下降(Gradient Descent)来更新参数： <span
+class="math display">\[
+\theta_{n+1}=\theta_n-\eta\nabla_{\theta}MSE(\theta_n)
+\]</span></p>
+<h3 id="learning-rateeta">Learning Rate(<span
+class="math inline">\(\eta\)</span>)</h3>
+<p><span class="math inline">\(\eta\)</span> is a Hyperparameter!</p>
+<p>Choice of learning rate is very important:</p>
+<ul>
+<li>Too small… takes forever to train, can easily get stuck in tiny
+local minima</li>
+<li>Too big… can overstep or become unstable</li>
+</ul>
+<p><strong>Activation
+Function</strong>：常用的有sigmoid，relu，Tanh函数</p>
+<p>Softmax:将结果转化为概率分布 <span class="math display">\[
+softmax:\frac{exp(s_k(x))}{\sum^K_{i=1}exp(s_i(x))}\\
+cost\ function:\mathcal{J}(\theta)=-\frac 1 m
+\sum^m_{i=1}\sum^K_{k=1}y_k^i\log(\hat p_k^i)
+\]</span></p>
+<h3 id="neural-networks">Neural Networks</h3>
+<p>Terms:</p>
+<ul>
+<li>Iterations (one per ‘batch)</li>
+<li>Epochs (one per ‘all samples’)</li>
+<li>Batches(对于图片来说就是mega-pixels)</li>
+</ul>
+<h3 id="cnn">CNN</h3>
+<p>其步骤如下：</p>
+<p>1.卷积层(Convolutional Layer)--利用padding补全</p>
+<ul>
+<li>使用卷积操作提取图像中的特征,如边缘、色彩等。</li>
+<li>参数包括过滤器(kernel)和偏置。</li>
+</ul>
+<p>2.池化层(Pooling Layer)</p>
+<ul>
+<li>对特征图区域进行下采样,降低空间维度,增加翻转不变性和控制过拟合。</li>
+<li>常用最大池化和平均池化。</li>
+</ul>
+<p>3.激活层(Activation Layer)</p>
+<ul>
+<li>为卷积层和全连接层添加非线性机能,如ReLU、Sigmoid、Tanh等。</li>
+</ul>
+<ol type="1">
+<li>全连接层(Fully Connected Layer)</li>
+</ol>
+<ul>
+<li>将上一层特征整合成一维数组,与该层权值相乘实现分类或回归功能。</li>
+</ul>
+<p>4.Softmax层</p>
+<ul>
+<li>将全连接层输出进行Softmax归一化,输出概率评分实现分类。</li>
+</ul>
+<h2 id="考点整理">考点整理</h2>
+<p>cross-validation:</p>
+<p>我们学习的不同方法是属于有监督学习还是无监督学习？</p>
+<p>LDA,PCA,GMM,SVR等等</p>
+<p>instance/generative/discriminative的区别以及应用</p>
+<p>SVM的公式推导，各个概念的定义：margin,soft/hard-margin,dual/primal
+problem</p>
+<p>集成学习中的概念、回归模型的特点</p>
+<p>K-means,GMM概念</p>
+<p>PCA的概念以及过程，LDA概念，核函数的证明</p>
+<p>最后有关CNN的计算：整体的过程以及参数的个数</p>
+</div><div class="post-end"><div class="post-prev"><a href="/2024/12/01/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90-Ch1-%E5%A4%9A%E5%85%83%E5%88%86%E5%B8%83/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-next"><a href="/2023/11/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-Ch7-10/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#contents"><span class="toc-content-number">1.</span> <span class="toc-content-text">Contents</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ch1-overview-of-ml"><span class="toc-content-number">2.</span> <span class="toc-content-text">Ch1 Overview of ML</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#supervised-learning"><span class="toc-content-number">2.1.</span> <span class="toc-content-text">Supervised learning</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#unsupervised-learning"><span class="toc-content-number">2.2.</span> <span class="toc-content-text">Unsupervised learning</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80"><span class="toc-content-number">2.3.</span> <span class="toc-content-text">数学基础</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0"><span class="toc-content-number">2.3.1.</span> <span class="toc-content-text">线性代数</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%9F%A9%E9%98%B5%E6%B1%82%E5%AF%BC"><span class="toc-content-number">2.3.2.</span> <span class="toc-content-text">矩阵求导</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%A6%82%E7%8E%87%E4%B8%8E%E7%BB%9F%E8%AE%A1"><span class="toc-content-number">2.3.3.</span> <span class="toc-content-text">概率与统计</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98%E7%9A%84%E7%A7%8D%E7%B1%BB"><span class="toc-content-number">2.4.</span> <span class="toc-content-text">优化问题的种类</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ch2-classification"><span class="toc-content-number">3.</span> <span class="toc-content-text">Ch2 Classification</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#knn"><span class="toc-content-number">3.1.</span> <span class="toc-content-text">KNN</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#overfitting%E4%B8%8Eunderfitting"><span class="toc-content-number">3.1.1.</span> <span class="toc-content-text">overfitting与underfitting</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#validation-set"><span class="toc-content-number">3.1.2.</span> <span class="toc-content-text">Validation set</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#naive-bayes"><span class="toc-content-number">3.2.</span> <span class="toc-content-text">Naive Bayes</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#application"><span class="toc-content-number">3.2.1.</span> <span class="toc-content-text">Application</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#decision-tree"><span class="toc-content-number">3.3.</span> <span class="toc-content-text">Decision Tree</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ch3-regression"><span class="toc-content-number">4.</span> <span class="toc-content-text">Ch3 Regression</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#linear-regression"><span class="toc-content-number">4.1.</span> <span class="toc-content-text">Linear Regression</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#regularized-regression"><span class="toc-content-number">4.2.</span> <span class="toc-content-text">Regularized Regression</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#ridge-regression"><span class="toc-content-number">4.2.1.</span> <span class="toc-content-text">Ridge Regression</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#lasso-regression"><span class="toc-content-number">4.2.2.</span> <span class="toc-content-text">Lasso Regression</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#support-vector-regression"><span class="toc-content-number">4.3.</span> <span class="toc-content-text">Support Vector Regression</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#dual-form-of-svr"><span class="toc-content-number">4.3.1.</span> <span class="toc-content-text">Dual form of SVR</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ch45-linear-classification-and-svm"><span class="toc-content-number">5.</span> <span class="toc-content-text">Ch4&amp;5 Linear
+Classification and SVM</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#linear-classifiers"><span class="toc-content-number">5.1.</span> <span class="toc-content-text">Linear Classifiers</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#convex-theorem"><span class="toc-content-number">5.2.</span> <span class="toc-content-text">Convex Theorem</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#svm"><span class="toc-content-number">5.3.</span> <span class="toc-content-text">SVM</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#hard-margin"><span class="toc-content-number">5.3.1.</span> <span class="toc-content-text">Hard-margin</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#soft-margin"><span class="toc-content-number">5.3.2.</span> <span class="toc-content-text">Soft-margin</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ch6-pca-lda-and-dimensionality-reduction"><span class="toc-content-number">6.</span> <span class="toc-content-text">Ch6 PCA, LDA and
+Dimensionality reduction</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#dimensionality-reduction"><span class="toc-content-number">6.1.</span> <span class="toc-content-text">Dimensionality reduction</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#pcaprincipal-component-analysis"><span class="toc-content-number">6.2.</span> <span class="toc-content-text">PCA(Principal Component
+Analysis)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#ldalinear-discriminative-analysis"><span class="toc-content-number">6.3.</span> <span class="toc-content-text">LDA(Linear Discriminative
+Analysis)</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ch7-clustering"><span class="toc-content-number">7.</span> <span class="toc-content-text">Ch7 Clustering</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#unsupervised-learning-1"><span class="toc-content-number">7.1.</span> <span class="toc-content-text">Unsupervised learning</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#k-means-clustering"><span class="toc-content-number">7.2.</span> <span class="toc-content-text">K-means Clustering</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#gaussian-mixture-modelsgmm"><span class="toc-content-number">7.3.</span> <span class="toc-content-text">Gaussian Mixture Models(GMM)</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ch8-kernel-method"><span class="toc-content-number">8.</span> <span class="toc-content-text">Ch8 Kernel Method</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#polynomial-kernel"><span class="toc-content-number">8.0.1.</span> <span class="toc-content-text">Polynomial Kernel</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#radial-basis-function-kernel%E9%AB%98%E6%96%AF%E6%A0%B8"><span class="toc-content-number">8.0.2.</span> <span class="toc-content-text">Radial Basis Function
+Kernel(高斯核)</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#kernel-in-svm"><span class="toc-content-number">8.1.</span> <span class="toc-content-text">Kernel in SVM</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#kernel-in-k-means"><span class="toc-content-number">8.2.</span> <span class="toc-content-text">Kernel in K-means</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#kernel-in-linear-regression"><span class="toc-content-number">8.3.</span> <span class="toc-content-text">Kernel in Linear Regression</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#kernel-in-pca"><span class="toc-content-number">8.4.</span> <span class="toc-content-text">Kernel in PCA</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ch9-ensemble-method"><span class="toc-content-number">9.</span> <span class="toc-content-text">Ch9 Ensemble Method</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#decision-tree-1"><span class="toc-content-number">9.1.</span> <span class="toc-content-text">Decision Tree</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#random-forest"><span class="toc-content-number">9.2.</span> <span class="toc-content-text">Random Forest</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#boosting"><span class="toc-content-number">9.3.</span> <span class="toc-content-text">Boosting</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#adaboost"><span class="toc-content-number">9.3.1.</span> <span class="toc-content-text">Adaboost</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%B7%BB%E5%8A%A0weak-learner"><span class="toc-content-number">9.3.2.</span> <span class="toc-content-text">添加weak learner</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ch10-deep-learning"><span class="toc-content-number">10.</span> <span class="toc-content-text">Ch10 Deep Learning</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#learning-rateeta"><span class="toc-content-number">10.1.</span> <span class="toc-content-text">Learning Rate(\(\eta\))</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#neural-networks"><span class="toc-content-number">10.2.</span> <span class="toc-content-text">Neural Networks</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#cnn"><span class="toc-content-number">10.3.</span> <span class="toc-content-text">CNN</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E8%80%83%E7%82%B9%E6%95%B4%E7%90%86"><span class="toc-content-number">11.</span> <span class="toc-content-text">考点整理</span></a></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2025 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>

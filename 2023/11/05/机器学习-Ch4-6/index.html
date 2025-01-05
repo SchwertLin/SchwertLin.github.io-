@@ -1,0 +1,383 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="主要内容:SVM、PCA、LDA Contents [TOC] Ch4&amp;5 Linear Classification and SVM 属于statistical ML。 Primal Problem VS Dual Problem: 原始问题is hard。对偶问题的解恰好对应着原始问题的解，因此只要能解决对偶问题，就意味着我们解出了原始问题。 Linear Classi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习-Ch4-6">
+<meta property="og:url" content="http://example.com/2023/11/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-Ch4-6/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="主要内容:SVM、PCA、LDA Contents [TOC] Ch4&amp;5 Linear Classification and SVM 属于statistical ML。 Primal Problem VS Dual Problem: 原始问题is hard。对偶问题的解恰好对应着原始问题的解，因此只要能解决对偶问题，就意味着我们解出了原始问题。 Linear Classi">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-05T08:09:31.000Z">
+<meta property="article:modified_time" content="2025-01-05T08:15:53.112Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary"><title>机器学习-Ch4-6 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>机器学习-Ch4-6</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2023-11-05</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2025-01-05</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约2.5K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><p>主要内容:<code>SVM</code>、<code>PCA</code>、<code>LDA</code></p>
+<h2 id="contents">Contents</h2>
+<p>[TOC]</p>
+<h2 id="ch45-linear-classification-and-svm">Ch4&amp;5 Linear
+Classification and SVM</h2>
+<p>属于statistical ML。</p>
+<p><strong>Primal Problem VS Dual Problem</strong>: 原始问题is
+hard。对偶问题的解恰好对应着原始问题的解，因此只要能解决对偶问题，就意味着我们解出了原始问题。</p>
+<h3 id="linear-classifiers">Linear Classifiers</h3>
+<p>在线性的分类器中处理分类，就是计算特征的线性组合： <span
+class="math display">\[
+s_c=\sum_iw_i^cx_i+b_c\\
+s_c=w_c^Tx+b_c
+\]</span> 如果是二分类问题：结果大于0，属于class 1，结果小于0，属于class
+2。</p>
+<h3 id="svm">SVM</h3>
+<p>目标：find a hyperplane <span class="math inline">\(w^Tx-b=0\)</span>
+使得距离两类samples的距离都比较远。</p>
+<h4 id="hard-margin">Hard-margin</h4>
+<p>因此我们一开始的goal function是：<span class="math inline">\(\max
+\frac 2 {||w||}\)</span></p>
+<p>该形式可以转化成: <span class="math display">\[
+\min \frac1 2 ||w||^2\\
+s.t.\ y_i*(w\cdot x+b)\ge 1
+\]</span>
+该形式符合凸优化理论，可以使用拉格朗日乘子法解决问题（Lagrangian Dual
+Problem） <span class="math display">\[
+\mathcal{L}=\frac 1 2||w||^2-\sum\alpha_i[y_i*(w\cdot x_i+b)-1]
+\]</span> <span class="math inline">\(\alpha_i\)</span>: Lagrange
+Multiplier</p>
+<p>对<span class="math inline">\(\mathcal{L}\)</span>求解偏导： <span
+class="math display">\[
+\frac{\partial \mathcal{L}}{\partial w}=w-\sum\alpha_iy_ix_i=0\\
+w=\sum\alpha_iy_ix_i\\\\
+\frac{\partial \mathcal{L}}{\partial b}=\sum\alpha_iy_i=0
+\]</span></p>
+<ul>
+<li><span class="math inline">\(w\)</span> : is a weighted sum of the
+input vectors (<span class="math inline">\(x_i\)</span> )</li>
+<li>很多情况下<span class="math inline">\(\alpha_i=0\)</span>: because
+this point doesn’t contribute to the margin</li>
+</ul>
+<p>再把<span
+class="math inline">\(w=\sum\alpha_iy_ix_i\)</span>代进<span
+class="math inline">\(\mathcal{L}\)</span>中，使得<span
+class="math inline">\(\mathcal{L}\)</span>中没有<span
+class="math inline">\(w\)</span>，只有<span
+class="math inline">\(\alpha_i\)</span>一个参数。 <span
+class="math display">\[
+\mathcal{L}=&amp;\frac 1 2w^Tw-\sum\alpha_i[y_i*(w\cdot x_i+b)-1]\\
+=&amp;\frac 1 2
+(\sum\alpha_iy_ix_i)(\sum\alpha_jy_jx_j)-\sum\alpha_i[y_i\sum\alpha_jy_jx_j\cdot
+x_i]+b\sum\alpha_iy_i+\sum\alpha_i\\
+\]</span> 因为：<span class="math inline">\(\frac{\partial
+\mathcal{L}}{\partial b}=\sum\alpha_iy_i=0\)</span> <span
+class="math display">\[
+\mathcal{L}=&amp;\frac 1 2
+(\sum\alpha_iy_ix_i)(\sum\alpha_jy_jx_j)-\sum\alpha_i[y_i\sum\alpha_jy_jx_j\cdot
+x_i]+\sum\alpha_i\\
+=&amp;\sum\alpha_i-\frac 1 2 (\sum\alpha_iy_ix_i)(\sum\alpha_jy_jx_j)\\
+=&amp;\sum\alpha_i-\frac 1 2 \sum_i\sum_j\alpha_i\alpha_jy_iy_jx_ix_j
+\]</span></p>
+<h4 id="soft-margin">Soft-margin</h4>
+<p>其goal function： <span class="math display">\[
+\min \frac 1 2 ||w||^2+C\sum^m_i\xi_i\\
+s.t.\ y_i*(w\cdot x+b)\ge 1-\xi_i\\
+\xi_i\ge0
+\]</span> 对于参数<span class="math inline">\(C\)</span>:</p>
+<ul>
+<li>Low C: we don’t pay anything for these violations (width is
+king)</li>
+<li>High C: we pay a lot for violations (no violations is king)</li>
+</ul>
+<blockquote>
+<p>突然在PPT中介绍了一下hinge loss——</p>
+<p>Hinge Loss: 一种常用的损失函数。Hinge
+Loss用于衡量样本的分类错误和分类边界的间隔。其在soft-margin中的定义如下：
+<span class="math display">\[
+\min \frac 1 2||w||^2+C\sum^m_i\max(0,1-y_i*(w\cdot x+b))
+\]</span> <span class="math inline">\(y_i\)</span>:
+表示样本的真实标签（通常为-1或1）</p>
+<p><span class="math inline">\(w\cdot x+b\)</span>:
+表示样本的预测分类（即决策函数输出的值）。</p>
+<p>Hinge
+Loss的目标是使正确分类的样本的损失为0，并增大错误分类样本的损失。在软间隔分类中，Hinge
+Loss通常与正则化项结合使用，以平衡分类错误和模型复杂度。通过最小化Hinge
+Loss和正则化项，可以得到一个具有较小间隔违规和较小模型复杂度的分类模型，从而在训练集上和测试集上获得良好的性能。</p>
+</blockquote>
+<p>接下来继续我们soft-margin的求解部分： <span class="math display">\[
+\mathcal{L}=\frac 1 2
+||w||^2+C\sum^m_i\xi_i+\sum_i\alpha_i(1-\xi_i-y_i(w^Tx_i+b))-\sum_i\beta_i\xi_i
+\]</span> 求解偏导，因为只是加了其他项，所以<span
+class="math inline">\(\frac{\partial \mathcal{L}}{\partial
+w}\)</span>不变，此处求解<span class="math inline">\(\frac{\partial
+\mathcal{L}}{\partial \xi_i}\)</span> <span class="math display">\[
+\frac{\partial \mathcal{L}}{\partial \xi_i}=C-\alpha_i-\beta_i=0\\
+\alpha_i=C-\beta_i
+\]</span> 其他的<span class="math inline">\(\frac{\partial
+\mathcal{L}}{\partial w}\)</span>以及<span
+class="math inline">\(\frac{\partial \mathcal{L}}{\partial
+b}\)</span>均不变。</p>
+<p>KKT条件： <span class="math display">\[
+\begin{cases}
+stationarity:&amp;\nabla\mathcal{L}(x^*,{\mu_i})=\nabla
+f(x^*)+\sum_i\mu_i\nabla g_i(x^*)=0\\
+primary\ feasibility:&amp;g_i(x^*)\le 0\\
+dual\ feasibility:&amp;\mu_i^*\ge0\\
+complementary\ slackness:&amp;\mu_i^*g_i(x^*)=0
+\end{cases}
+\]</span> 对比一下hard-margin以及soft-margin的拉格朗日函数： <span
+class="math display">\[
+\mathcal{L}=\frac 1 2||w||^2-\sum\alpha_i[y_i*(w\cdot x_i+b)-1]\\
+\mathcal{L}=\frac 1 2
+||w||^2+C\sum^m_i\xi_i+\sum_i\alpha_i(1-\xi_i-y_i(w^Tx_i+b))-\sum_i\beta_i\xi_i
+\]</span> 我们容易发现：<span class="math inline">\(\frac{\partial
+\mathcal{L}}{\partial w}\)</span>以及<span
+class="math inline">\(\frac{\partial \mathcal{L}}{\partial
+b}\)</span>均不变。</p>
+<p>对于soft-margin将<span
+class="math inline">\(w=\sum\alpha_iy_ix_i\)</span>代进去： <span
+class="math display">\[
+\mathcal{L}=&amp;\frac 1 2
+||w||^2+C\sum^m_i\xi_i+\sum_i\alpha_i(1-\xi_i-y_i(w^Tx_i+b))-\sum_i\beta_i\xi_i\\
+=&amp;\frac 1 2
+\sum_i\sum_j\alpha_i\alpha_jy_iy_jx_ix_j+C\sum^m_i\xi_i+\sum_i\alpha_i-\sum_i\alpha_i\xi_i-\sum_i\sum_j\alpha_i\alpha_jy_iy_jx_ix_j+b\sum_i\alpha_iy_i-\sum_i\beta_i\xi_i\\
+\]</span> 因为：<span
+class="math inline">\(\sum_i\alpha_i\xi_i+\sum_i\beta_i\xi_i=C\sum_i^m\xi_i\)</span>(<span
+class="math inline">\(\frac{\partial \mathcal{L}}{\partial
+\xi_i}=C-\alpha_i-\beta_i=0\)</span>)以及<span
+class="math inline">\(\frac{\partial \mathcal{L}}{\partial
+b}=\sum\alpha_iy_i=0\)</span> <span class="math display">\[
+\mathcal{L}=\sum\alpha_i-\frac 1 2
+\sum_i\sum_j\alpha_i\alpha_jy_iy_jx_ix_j
+\]</span> 你会发现soft-margin计算出来的<span
+class="math inline">\(\mathcal{L}\)</span>和hard-margin的也是一样的。</p>
+<p>因此对偶问题是： <span class="math display">\[
+\max_{\alpha_i}[\sum_i\alpha_i-\frac 1 2
+\sum_i\sum_j\alpha_i\alpha_jy_iy_jx_ix_j]\\
+s.t.\ 0\le\alpha_i\le C,\sum_i\alpha_iy_i=0
+\]</span> 我们的原问题是： <span class="math display">\[
+\min \frac 1 2 ||w||^2+C\sum^m_i\xi_i\\
+s.t.\ y_i*(w\cdot x+b)\ge 1-\xi_i\\
+\xi_i\ge0
+\]</span> 怎么从对偶问题转化为原问题呢？</p>
+<p><span class="math inline">\(w^*\)</span>比较简单： <span
+class="math display">\[
+w^*=\sum\alpha_i^*y_ix_i
+\]</span> 对于<span class="math inline">\(b\)</span>：</p>
+<ul>
+<li>Find a $_i^*(0, 𝐶) $vector</li>
+<li>Thus, <span class="math inline">\(y_i(w^Tx_i+b^*)=1\)</span></li>
+<li>Thus, <span class="math inline">\(b^*=y_i-w^Tx_i\)</span></li>
+</ul>
+<p>在soft
+margin的情况下，由于存在一些样本落在间隔边界内部，因此选择多个支持向量计算偏置b可能更合适。一种常见的做法是选择所有满足<span
+class="math inline">\(0 &lt; \alpha_i &lt;
+C\)</span>的支持向量，并计算它们的平均值作为偏置b。</p>
+<p><span class="math display">\[
+\mu_i^*g_i(x^*)=0\ \forall i\\
+\]</span></p>
+<h2 id="ch6-pca-lda-and-dimensionality-reduction">Ch6 PCA, LDA and
+Dimensionality reduction</h2>
+<h3 id="dimensionality-reduction">Dimensionality reduction</h3>
+<p>其基本原理是：Preserve “useful” information in low dimensional
+data.</p>
+<p>其常用的方法：PCA，LDA</p>
+<p>reasons:</p>
+<ul>
+<li>Extract underlying factors</li>
+<li>Reduce data noise
+<ul>
+<li>Face recognition</li>
+<li>Applied to image de-noising</li>
+</ul></li>
+<li>Reduce the number of model parameters
+<ul>
+<li>Avoid over-fitting</li>
+<li>Reduce computational cost</li>
+</ul></li>
+<li>Visualization</li>
+</ul>
+<h3 id="pcaprincipal-component-analysis">PCA(Principal Component
+Analysis)</h3>
+<p>==无监督学习方法。==</p>
+<p>PCA：</p>
+<ul>
+<li>Transform data to remove redundant information</li>
+<li>Keep the most informative dimensions after the transformation</li>
+</ul>
+<p>其步骤:</p>
+<ul>
+<li><p>去中心化(De-correlating data): Correlation can be removed by
+rotating the data point or coordinate</p></li>
+<li><p>计算协方差矩阵，找特征向量与特征值(Eigen decomposition) <span
+class="math display">\[
+A=Q\Lambda Q^T\\
+QQ^T=Q^TQ=I
+\]</span> 此处的<span
+class="math inline">\(I\)</span>是单位矩阵，A是对称矩阵，式2式正交矩阵Q的性质，<span
+class="math inline">\(\Lambda\)</span>是协方差矩阵。</p></li>
+</ul>
+<p>英文版：</p>
+<ol type="1">
+<li>Subtract mean</li>
+<li>Calculate the covariance matrix</li>
+<li>Calculate eigenvectors and eigenvalues of the covariance matrix</li>
+<li>Rank eigenvectors by its corresponding eigenvalues</li>
+<li>Obtain P with its row vectors corresponding to the top k
+eigenvectors</li>
+</ol>
+<p>其数学原理：<span
+class="math inline">\(X_c\)</span>是中心化数据矩阵（每个数据减去其均值向量之后的结果）</p>
+<p>因此原始的协方差矩阵为： <span class="math display">\[
+C_X=\frac 1 n X_cX_c^T
+\]</span> 我们想找到一个矩阵P,可以对数据去中心化： <span
+class="math display">\[
+Y=PX_c\\
+C_Y=\frac 1 n PX_c(PX_c)^T=\frac 1 nPX_cX_c^TP^T
+\]</span> 有因为：<span class="math inline">\(C_X=\frac 1 n
+X_cX_c^T\)</span>，代进去得： <span class="math display">\[
+C_Y=\frac 1 nPX_cX_c^TP^T=\frac 1 {n^2}PC_XP^T
+\]</span> 对<span
+class="math inline">\(X_cX_c^T\)</span>进行特征分解：<span
+class="math inline">\(X_cX_c^T=Q\Lambda Q^T\)</span> <span
+class="math display">\[
+C_Y=\frac 1 nPX_cX_c^TP^T=\frac 1 nPQ\Lambda Q^TP^T
+\]</span> 令<span class="math inline">\(P=Q^T\)</span>,<span
+class="math inline">\(C_Y=\frac 1 n \Lambda\)</span></p>
+<p>High dimensionality issue（Kernel PCA）</p>
+<ol type="1">
+<li>Centralize data</li>
+<li>Calculate the kernel matrix</li>
+<li>Perform Eigen-decomposition on the kernel matrix and obtain its
+eigenvector <span class="math inline">\(V\)</span></li>
+<li>Obtain the Eigenvector of the covariance matrix by <span
+class="math inline">\(u=Xv\)</span></li>
+</ol>
+<h3 id="ldalinear-discriminative-analysis">LDA(Linear Discriminative
+Analysis)</h3>
+<p><strong>有监督学习</strong>：利用了样本的类别标签信息来进行模型训练和分类。</p>
+<p>Supervised information ：</p>
+<ol type="1">
+<li>Class label</li>
+<li>Data from the same class =&gt; Become close</li>
+<li>Data from different classes =&gt; far from each other</li>
+</ol>
+<p>LDA假设数据满足高斯分布，并且根据类别信息进行有监督训练。它的目标是通过最大化不同类别之间的距离（类间散度）和最小化同一类别内部的方差（类内散度），来实现在新的低维空间中使得不同类别更好地可分的投影。</p>
+<p>将数据投影到低维空间，其新的均值以及方差如下： <span
+class="math display">\[
+\hat \mu=&amp;\frac 1 N\sum^N_{i=1}p^Tx_i=p^T\frac 1 N
+\sum^N_{i=1}x_i=p^T\mu\\
+\hat \sigma^2=&amp;\frac 1 N \sum^N_{i=1}(p^Tx_i-p^T\mu)^2\\
+=&amp;\frac 1 N \sum^N_{i=1}p^T(x_i-\mu)(x_i-\mu)^Tp\\
+=&amp;p^T(\frac 1 N \sum^N_{i=1}(x_i-\mu)(x_i-\mu)^T)p
+\]</span> 类内(between)以及类间(within)散度: <span
+class="math display">\[
+S_b=(\mu_1-\mu_2)(\mu_1-\mu_2)^T\\
+S_w=\sum_{j=1,2}\frac 1 {N_j}\sum^{N_j}_{i=1}(x_i-\mu)(x_i-\mu)^T
+\]</span> 其目标函数是： <span class="math display">\[
+\max \frac{p^TS_bp}{p^TS_wp}
+\]</span> 将上述形式化为拉格朗日对偶问题的形式： <span
+class="math display">\[
+\max p^TS_bp\\
+s.t.\ p^TS_wp=1\\\\
+\mathcal{L}=p^TS_bp-\lambda(p^TS_wp-1)
+\]</span> 对其求偏导得： <span class="math display">\[
+\frac{\partial \mathcal{L}}{\partial p}=0\\
+2S_bp-2\lambda S_wp=0\\
+S_bp=\lambda S_wp\\
+S_w^{-1}S_bp=\lambda p
+\]</span> 得到的形式刚好是求解特征向量的标准形式(<span
+class="math inline">\(Ax=\lambda x\)</span>)</p>
+<p>At optimum, we have <span
+class="math inline">\(p^{*^T}S_bp^*=\lambda\)</span></p>
+<p>表示在最优条件下，投影向量<span
+class="math inline">\(p\)</span>的转置与类内散度矩阵<span
+class="math inline">\(S_b\)</span>的乘积再与<span
+class="math inline">\(p\)</span>相乘的结果等于<span
+class="math inline">\(\lambda\)</span>。</p>
+<p>这个方程用于确定最佳的投影向量<span
+class="math inline">\(p\)</span>，使得类别之间的差异最大化，同时类内方差最小化。<span
+class="math inline">\(S_b\)</span>是类间散度矩阵，表示不同类别之间的差异程度。<span
+class="math inline">\(\lambda\)</span>是一个标量，表示投影向量<span
+class="math inline">\(p\)</span>在最优条件下的特征值。</p>
+<p><strong>如果<span class="math inline">\(S_w\)</span>
+不是可逆的(invertible)的：</strong>就使用<span
+class="math inline">\((S_w+\lambda I)^{-1}\)</span>(这个是可逆的)</p>
+<p>如果LDA且Multi-class: <span class="math display">\[
+S_b=\sum^C_{i=1,j=1}(\mu_i-\mu_j)(\mu_i-\mu_j)^T=\sum_i(\mu_i-\mu)(\mu_i-\mu)^T\\
+S_w=\sum^C_{j=1}\sum_{i\in C_j}(x_i-\mu)(x_i-\mu)^T\\
+\max \frac{trace(P^TS_bP)}{reace(P^TS_wP)}
+\]</span> 在<span
+class="math inline">\(S_w^{-1}S_b\)</span>中选择前C个特征向量，最多可以有C个投影，这取决与矩阵的秩：
+<span class="math display">\[
+rank(S_w^{-1}S_b)\le rank(S_b)\le C
+\]</span></p>
+</div><div class="post-end"><div class="post-prev"><a href="/2023/11/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-Ch7-10/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-next"><a href="/2023/11/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-Ch1-3/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#contents"><span class="toc-content-number">1.</span> <span class="toc-content-text">Contents</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ch45-linear-classification-and-svm"><span class="toc-content-number">2.</span> <span class="toc-content-text">Ch4&amp;5 Linear
+Classification and SVM</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#linear-classifiers"><span class="toc-content-number">2.1.</span> <span class="toc-content-text">Linear Classifiers</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#svm"><span class="toc-content-number">2.2.</span> <span class="toc-content-text">SVM</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#hard-margin"><span class="toc-content-number">2.2.1.</span> <span class="toc-content-text">Hard-margin</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#soft-margin"><span class="toc-content-number">2.2.2.</span> <span class="toc-content-text">Soft-margin</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ch6-pca-lda-and-dimensionality-reduction"><span class="toc-content-number">3.</span> <span class="toc-content-text">Ch6 PCA, LDA and
+Dimensionality reduction</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#dimensionality-reduction"><span class="toc-content-number">3.1.</span> <span class="toc-content-text">Dimensionality reduction</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#pcaprincipal-component-analysis"><span class="toc-content-number">3.2.</span> <span class="toc-content-text">PCA(Principal Component
+Analysis)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#ldalinear-discriminative-analysis"><span class="toc-content-number">3.3.</span> <span class="toc-content-text">LDA(Linear Discriminative
+Analysis)</span></a></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2025 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>

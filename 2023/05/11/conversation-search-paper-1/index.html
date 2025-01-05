@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Large Language Models Know Your Contextual Search Intent: A Prompting Framework for Conversational Search  present a framework called LLMCS: perform few-shot conversational query rewriting for convers">
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Large Language Models Know Your Contextual Search Intent: A Prompting Framework for Conversational Search   present a framework called LLMCS: perform few-shot conversational query rewriting for">
 <meta property="og:type" content="article">
 <meta property="og:title" content="conversation search paper-1">
 <meta property="og:url" content="http://example.com/2023/05/11/conversation-search-paper-1/index.html">
 <meta property="og:site_name" content="Schwertlilien">
-<meta property="og:description" content="Large Language Models Know Your Contextual Search Intent: A Prompting Framework for Conversational Search  present a framework called LLMCS: perform few-shot conversational query rewriting for convers">
+<meta property="og:description" content="Large Language Models Know Your Contextual Search Intent: A Prompting Framework for Conversational Search   present a framework called LLMCS: perform few-shot conversational query rewriting for">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.328888.xyz/2023/05/10/iYAW2z.png">
 <meta property="og:image" content="https://i.328888.xyz/2023/05/10/iYDlzX.png">
@@ -30,23 +30,39 @@
 <div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>conversation search paper-1</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2023-05-11</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2023-05-11</time></div>
 
 <div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/conversation-search/">conversation search</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/natural-language-processing/">natural language processing</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/paper-note/">paper note</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
-<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约0.9K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h4 id="Large-Language-Models-Know-Your-Contextual-Search-Intent-A-Prompting-Framework-for-Conversational-Search"><a href="#Large-Language-Models-Know-Your-Contextual-Search-Intent-A-Prompting-Framework-for-Conversational-Search" class="headerlink" title="Large Language Models Know Your Contextual Search Intent: A Prompting Framework for Conversational Search"></a>Large Language Models Know Your Contextual Search Intent: A Prompting Framework for Conversational Search</h4><blockquote>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约0.8K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h4
+id="large-language-models-know-your-contextual-search-intent-a-prompting-framework-for-conversational-search">Large
+Language Models Know Your Contextual Search Intent: A Prompting
+Framework for Conversational Search</h4>
+<blockquote>
 <ul>
-<li>present a framework called LLMCS: perform few-shot conversational query rewriting for conversational search.</li>
-<li>3 methods to generate <code>multiple query rewrites</code> &amp; <code>hypothetical responses</code><ul>
-<li>aggregating them into an integrated representation (robustly represent usr’ real contextual search intent)</li>
-</ul>
-</li>
+<li>present a framework called LLMCS: perform few-shot conversational
+query rewriting for conversational search.</li>
+<li>3 methods to generate <code>multiple query rewrites</code> &amp;
+<code>hypothetical responses</code>
+<ul>
+<li>aggregating them into an integrated representation (robustly
+represent usr' real contextual search intent)</li>
+</ul></li>
 <li>Experiment: on CAsT-19, CAsT-20</li>
 </ul>
 </blockquote>
-<p>**KYW: **<code>Conversational research</code>,<code>passage retrieval</code>,<code>LMMs</code></p>
-<h5 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h5><p>A common and intuitive thread of existing methods for <code>CS</code>:&#x3D;&#x3D;CQR&#x3D;&#x3D;(conversational query rewriting): employ a rewriting model to rewrite the current query into a de-contextualized one, then freely adopt any ad-hoc search model.</p>
-<p>&#x3D;&#x3D;BUT CANNOT handle real conversational search scenarios&#x3D;&#x3D;</p>
-<p><img src="https://i.328888.xyz/2023/05/10/iYAW2z.png"></p>
+<p><strong>KYW:
+</strong><code>Conversational research</code>,<code>passage retrieval</code>,<code>LMMs</code></p>
+<h5 id="intro">Intro</h5>
+<p>A common and intuitive thread of existing methods for
+<code>CS</code>:==CQR==(conversational query rewriting): employ a
+rewriting model to rewrite the current query into a de-contextualized
+one, then freely adopt any ad-hoc search model.</p>
+<p>==BUT CANNOT handle real conversational search scenarios==</p>
+<p><img src="https://i.328888.xyz/2023/05/10/iYAW2z.png" /></p>
 <blockquote>
 <p>few-shot conversational query rewriting?</p>
-<p>aim to <strong>reformulate a concise conversational query</strong> to <strong>a fully specified, context-independent query</strong> that can be effectively handled by existing information retrieval systems. This technique is presented in a paper that proposes a few-shot generative approach to conversational query rewriting.(small samples)</p>
+<p>aim to <strong>reformulate a concise conversational query</strong> to
+<strong>a fully specified, context-independent query</strong> that can
+be effectively handled by existing information retrieval systems. This
+technique is presented in a paper that proposes a few-shot generative
+approach to conversational query rewriting.(small samples)</p>
 </blockquote>
 <p>3methods of LLMCS framework:</p>
 <ul>
@@ -54,97 +70,139 @@
 <li>rewriting-then-response prompt</li>
 <li>rewriting-and-response prompt</li>
 </ul>
-<p><strong>Main Ideas:</strong> use LLM to generate query rewrites &amp; longer hypothetical system responses.</p>
-<p>&#x3D;&#x3D;BUT HOW TO  AGGREGATE THESE RESULTS?&#x3D;&#x3D;</p>
-<p><strong>Advantages:</strong> </p>
+<p><strong>Main Ideas:</strong> use LLM to generate query rewrites &amp;
+longer hypothetical system responses.</p>
+<p>==BUT HOW TO AGGREGATE THESE RESULTS?==</p>
+<p><strong>Advantages:</strong></p>
 <ul>
-<li>additionally generating hypothetical responses(improve performance)</li>
-<li>filter out incorrect search intent, enhance the reasonable ones(aggregate)</li>
+<li>additionally generating hypothetical responses(improve
+performance)</li>
+<li>filter out incorrect search intent, enhance the reasonable
+ones(aggregate)</li>
 </ul>
-<h5 id="Methodology"><a href="#Methodology" class="headerlink" title="Methodology"></a>Methodology</h5><ol>
-<li>recap of CQR–say it again(no use)</li>
+<h5 id="methodology">Methodology</h5>
+<ol type="1">
+<li>recap of CQR--say it again(no use)</li>
 </ol>
-<p>first, we focus on the task of conversational passage and retrieval.<br>$$<br>C^t&#x3D;(q^1,r^1,\ldots,q^{t-1},r^{t-1})<br>$$<br>$q: question, r: results, C: context$</p>
-<p><img src="https://i.328888.xyz/2023/05/10/iYDlzX.png"></p>
-<ol start="2">
+<p>first, we focus on the task of conversational passage and retrieval.
+<span class="math display">\[
+C^t=(q^1,r^1,\ldots,q^{t-1},r^{t-1})
+\]</span> <span class="math inline">\(q: question, r: results, C:
+context\)</span></p>
+<p><img src="https://i.328888.xyz/2023/05/10/iYDlzX.png" /></p>
+<ol start="2" type="1">
 <li>three methods</li>
 </ol>
 <ul>
-<li>Rewriting Prompt–tips:</li>
+<li>Rewriting Prompt--tips:</li>
 </ul>
 <p>under the multi-turn information-seeking dialog context,</p>
-<p>add a few complete multi-turn <strong>search-oriented conversations</strong> with corresponding manual rewrites as examples for demonstration.</p>
-<p>For $t$-th: only provide $Rewrite: C^t$</p>
+<p>add a few complete multi-turn <strong>search-oriented
+conversations</strong> with corresponding manual rewrites as examples
+for demonstration.</p>
+<p>For <span class="math inline">\(t\)</span>-th: only provide <span
+class="math inline">\(Rewrite: C^t\)</span></p>
 <blockquote>
-<p>even if it’s easy and simple prompting, high efficient.</p>
+<p>even if it's easy and simple prompting, high efficient.</p>
 </blockquote>
-<p><img src="https://i.328888.xyz/2023/05/11/iYs5SV.png"></p>
+<p><img src="https://i.328888.xyz/2023/05/11/iYs5SV.png" /></p>
 <ul>
 <li>Rewriting-then-response prompt</li>
 </ul>
-<p>use the rewrite(just generated)-&gt;generate a hypothetical response(have relevant info to answer this question)</p>
-<p><strong>The instruction changed into generating a correct ans under rewrite.</strong></p>
+<p>use the rewrite(just generated)-&gt;generate a hypothetical
+response(have relevant info to answer this question)</p>
+<p><strong>The instruction changed into generating a correct ans under
+rewrite.</strong></p>
 <ul>
 <li>Rewriting-and-respense prompt</li>
 </ul>
-<p>instead of a two-stage manner, generate them all at once with an integrated instruction</p>
+<p>instead of a two-stage manner, generate them all at once with an
+integrated instruction</p>
 <blockquote>
-<p>&#x3D;&#x3D;why?&#x3D;&#x3D; “If A MODEL DOES NOT GENERATE THE MARKER WORD(LIKE <code>RESPONSE:</code>)CORRECTLY, WE CONSIDER IT A GENERATION FAILURE AND DROP IT.”</p>
-<p>which it means, if the generated text don’t include the marker word, even if the text is quite close to the response, we still do not think this’s a response.</p>
+<p>==why?== "If A MODEL DOES NOT GENERATE THE MARKER WORD(LIKE
+<code>RESPONSE:</code>)CORRECTLY, WE CONSIDER IT A GENERATION FAILURE
+AND DROP IT."</p>
+<p>which it means, if the generated text don't include the marker word,
+even if the text is quite close to the response, we still do not think
+this's a response.</p>
 <p>ok, it just simplifies our solutions and methods.( I THINK SO )</p>
 </blockquote>
-<ol start="3">
+<ol start="3" type="1">
 <li>introduce the <strong>chain-of-mind</strong></li>
 </ol>
-<p>make LLM decompose a reasoning task into multiple intermediate steps(中间步骤)</p>
+<p>make LLM decompose a reasoning task into multiple intermediate
+steps(中间步骤)</p>
 <p>+chain-of-mind</p>
 <blockquote>
 <p><code>Rewrite: &#123;rewrite&#125;</code> into</p>
-<p> <code>Rewrite: &#123;chain-of-thought&#125;. So the question should be rewritten as: &#123;rewrite&#125;</code></p>
+<p><code>Rewrite: &#123;chain-of-thought&#125;. So the question should be rewritten as: &#123;rewrite&#125;</code></p>
 </blockquote>
-<ol start="4">
+<ol start="4" type="1">
 <li>aggregation and retrieval</li>
 </ol>
-<p>aggregate (multiple rewrites and hypothetical responses) into <strong>an integrated representation</strong>.</p>
+<p>aggregate (multiple rewrites and hypothetical responses) into
+<strong>an integrated representation</strong>.</p>
 <ul>
-<li>$N$ query rewrites $Q&#x3D;(\hat q_1,\ldots,\hat q^N)$</li>
-<li>$M$ hypothetical responses $\R&#x3D;(\hat r_{i1},\ldots,\hat r_{iM})$ for each rewrite $\hat q_i$</li>
+<li><span class="math inline">\(N\)</span> query rewrites <span
+class="math inline">\(Q=(\hat q_1,\ldots,\hat q^N)\)</span></li>
+<li><span class="math inline">\(M\)</span> hypothetical responses <span
+class="math inline">\(\R=(\hat r_{i1},\ldots,\hat r_{iM})\)</span> for
+each rewrite <span class="math inline">\(\hat q_i\)</span></li>
 </ul>
-<p>to encode each of them into a high-D search intent vector and aggregate these intent vectors into a <strong>final intent vector $v$</strong>. </p>
+<p>to encode each of them into a high-D search intent vector and
+aggregate these intent vectors into a <strong>final intent vector <span
+class="math inline">\(v\)</span></strong>.</p>
 <p>3 ways:</p>
 <ul>
-<li><p>Maxprob: directly use the highest probability ones.(&#x3D;&#x3D;high efficiency&#x3D;&#x3D;)<br>$$<br>For\ Rewrite: &amp;v&#x3D;f(\hat q_1)\<br>For\ RTR\ and\ RAR:&amp;v&#x3D;\frac{f(\hat q_1)+f(\hat r_{11})}{2}<br>$$</p>
-</li>
-<li><p>Self-Consistency: is proposed for the reasoning tasks -推理任务(the final ans is from a fixed answer set)But in conversational search, there is no fixed standard ans.</p>
+<li><p>Maxprob: directly use the highest probability ones.(==high
+efficiency==) <span class="math display">\[
+For\ Rewrite: &amp;v=f(\hat q_1)\\
+For\ RTR\ and\ RAR:&amp;v=\frac{f(\hat q_1)+f(\hat r_{11})}{2}
+\]</span></p></li>
+<li><p>Self-Consistency: is proposed for the reasoning tasks
+-推理任务(the final ans is from a fixed answer set)But in conversational
+search, there is no fixed standard ans.</p>
 <ul>
-<li><p>maybe <strong>some</strong> of generated rewrites and responses are correct.</p>
-</li>
-<li><p>choose the cluster center of all intent vectors as final vector.</p>
-</li>
-<li><p>$$<br>\hat q^*&#x3D;&amp;\frac 1 N \sum^N_{i&#x3D;1}f(\hat q_i)\<br>v&#x3D;&amp;\arg\max_{f(\hat q_i)}f(\hat q_i)^\top\cdot \hat q^*<br>$$</p>
-</li>
-<li><p>$\hat q^*$ is the cluster center vector. </p>
-</li>
-<li><p>For RTR: 1. select the intent vector $f(\hat q_k),f(\hat r_{kz})$(from response, based on $\hat q_k$). 𝑘 and 𝑧 are the finally selected indexes of the rewrite and the response, respectively.</p>
-</li>
-<li><p>$$<br>k&#x3D;\arg\max_i f(\hat q_i)^\top\cdot \hat q^<em>\<br>\hat r^</em><em>k&#x3D;\frac 1 M \sum^M</em>{j&#x3D;1}f(\hat r_{kj})\<br>z&#x3D;\arg\max_j f(\hat r_{kj})^\top\cdot \hat r^*<em>k\<br>v&#x3D;\frac{f(\hat q_k)+f(\hat r</em>{kz})}{2}<br>$$</p>
-</li>
-<li><p>For RAR: no need to select response!(for one $q$, only related one $r$)</p>
-</li>
-<li><p>$$<br>v &#x3D;\frac{f(\hat q_k)+f(\hat r_{𝑘1})}2<br>$$</p>
-</li>
-</ul>
-</li>
+<li><p>maybe <strong>some</strong> of generated rewrites and responses
+are correct.</p></li>
+<li><p>choose the cluster center of all intent vectors as final
+vector.</p></li>
+<li><p><span class="math display">\[
+\hat q^*=&amp;\frac 1 N \sum^N_{i=1}f(\hat q_i)\\
+v=&amp;\arg\max_{f(\hat q_i)}f(\hat q_i)^\top\cdot \hat q^*
+\]</span></p></li>
+<li><p><span class="math inline">\(\hat q^*\)</span> is the cluster
+center vector.</p></li>
+<li><p>For RTR: 1. select the intent vector <span
+class="math inline">\(f(\hat q_k),f(\hat r_{kz})\)</span>(from response,
+based on <span class="math inline">\(\hat q_k\)</span>). 𝑘 and 𝑧 are the
+finally selected indexes of the rewrite and the response,
+respectively.</p></li>
+<li><p><span class="math display">\[
+k=\arg\max_i f(\hat q_i)^\top\cdot \hat q^*\\
+\hat r^*_k=\frac 1 M \sum^M_{j=1}f(\hat r_{kj})\\
+z=\arg\max_j f(\hat r_{kj})^\top\cdot \hat r^*_k\\
+v=\frac{f(\hat q_k)+f(\hat r_{kz})}{2}
+\]</span></p></li>
+<li><p>For RAR: no need to select response!(for one <span
+class="math inline">\(q\)</span>, only related one <span
+class="math inline">\(r\)</span>)</p></li>
+<li><p><span class="math display">\[
+v =\frac{f(\hat q_k)+f(\hat r_{𝑘1})}2
+\]</span></p></li>
+</ul></li>
 <li><p>Mean: get avg</p>
 <ul>
-<li><p>$$<br>①\ v&#x3D;\frac 1 N \sum^N_{i&#x3D;1}f(\hat q_i)\<br>②\ v&#x3D;\frac{\sum^N_{i&#x3D;1}[f(\hat q_i)+\sum^M_{j&#x3D;1}f(\hat r_{ij})]}{N(M+1)}<br>$$</p>
-</li>
-<li><p>①for rewrite,②for RAR&amp;RTR.</p>
-</li>
+<li><p><span class="math display">\[
+①\ v=\frac 1 N \sum^N_{i=1}f(\hat q_i)\\
+②\ v=\frac{\sum^N_{i=1}[f(\hat q_i)+\sum^M_{j=1}f(\hat r_{ij})]}{N(M+1)}
+\]</span></p></li>
+<li><p>①for rewrite,②for RAR&amp;RTR.</p></li>
+</ul></li>
 </ul>
-</li>
-</ul>
-</div><div class="post-end"><div class="post-prev"><a href="/2024/12/01/%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90-Ch1-%E5%A4%9A%E5%85%83%E5%88%86%E5%B8%83/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-next"><a href="/2023/03/28/2023-3-28/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#Large-Language-Models-Know-Your-Contextual-Search-Intent-A-Prompting-Framework-for-Conversational-Search"><span class="toc-content-number">1.</span> <span class="toc-content-text">Large Language Models Know Your Contextual Search Intent: A Prompting Framework for Conversational Search</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#Intro"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">Intro</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#Methodology"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">Methodology</span></a></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+</div><div class="post-end"><div class="post-prev"><a href="/2023/11/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-Ch1-3/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-next"><a href="/2023/03/28/2023-3-28/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#large-language-models-know-your-contextual-search-intent-a-prompting-framework-for-conversational-search"><span class="toc-content-number">1.</span> <span class="toc-content-text">Large
+Language Models Know Your Contextual Search Intent: A Prompting
+Framework for Conversational Search</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#intro"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">Intro</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#methodology"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">Methodology</span></a></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
   tex2jax: {
     inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
     displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
@@ -158,7 +216,7 @@ MathJax.Hub.Queue(function() {
     all[i].SourceElement().parentNode.className += ' has-jax';
   }
 });
-</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2025 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
 <script>const GLOBAL_CONFIG = {
   comment: { theme: 'preferred_color_scheme'}
 }

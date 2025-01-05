@@ -1,0 +1,1027 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch7 特征提取与特征变换   image-20250103152522497  [TOC] 引言        特征提取的目的 特征变换的目的     提取观测数据的内在特性 降低特征空间的维度，增加数据密度、降低过拟合 风险   减少噪声影响 便于分析和减少后续步骤的计算量   提高稳定性 减少特征之间可能存在的相关性、有利于分类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模式识别-Ch7-特征提取与特征选择">
+<meta property="og:url" content="http://example.com/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch7-%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96%E4%B8%8E%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch7 特征提取与特征变换   image-20250103152522497  [TOC] 引言        特征提取的目的 特征变换的目的     提取观测数据的内在特性 降低特征空间的维度，增加数据密度、降低过拟合 风险   减少噪声影响 便于分析和减少后续步骤的计算量   提高稳定性 减少特征之间可能存在的相关性、有利于分类">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-05T08:18:04.000Z">
+<meta property="article:modified_time" content="2025-01-05T08:41:09.041Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="模式识别">
+<meta name="twitter:card" content="summary"><title>模式识别-Ch7-特征提取与特征选择 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>模式识别-Ch7-特征提取与特征选择</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2025-01-05</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2025-01-05</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">模式识别</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约6.7K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch7-特征提取与特征变换">Ch7 特征提取与特征变换</h1>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103152522497.png"
+alt="image-20250103152522497" />
+<figcaption aria-hidden="true">image-20250103152522497</figcaption>
+</figure>
+<p>[TOC]</p>
+<h2 id="引言">引言</h2>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 69%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>特征提取的目的</th>
+<th>特征变换的目的</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>提取观测数据的内在特性</td>
+<td>降低特征空间的维度，增加数据密度、降低过拟合 风险</td>
+</tr>
+<tr class="even">
+<td>减少噪声影响</td>
+<td>便于分析和减少后续步骤的计算量</td>
+</tr>
+<tr class="odd">
+<td>提高稳定性</td>
+<td>减少特征之间可能存在的相关性、有利于分类</td>
+</tr>
+</tbody>
+</table>
+<p><strong>特征提取</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>提取对象</th>
+<th>提取方式</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>语音特征提取</td>
+<td>局部特征提取方法：<code>LBP</code>, <code>SIFT</code></td>
+</tr>
+<tr class="even">
+<td>文本特征提取</td>
+<td>全局特征提取方法：<code>词袋模型</code>, <code>HoG</code></td>
+</tr>
+<tr class="odd">
+<td>视觉特征提取</td>
+<td>---</td>
+</tr>
+</tbody>
+</table>
+<p><strong>特征变换</strong>：根据特征变换关系不同</p>
+<table>
+<colgroup>
+<col style="width: 49%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>线性特征变换</th>
+<th>非线性特征变换</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>采用线性映射将原特征变换至一个新的空间（通常维度更低）</td>
+<td>采用非线性映射将原特征变换至一个新的空间（通常性能更好）</td>
+</tr>
+<tr class="even">
+<td><code>PCA</code>,<code>LDA</code>,<code>ICA</code></td>
+<td><code>KPCA</code>,<code>KLDA</code>,<code>Isomap</code>,<code>LLE</code>,<code>HLLE</code>,<code>LSTA</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="特征提取">特征提取</h2>
+<h3 id="文本特征提取">文本特征提取</h3>
+<p>将文本内容转化为向量的过程。将一个文档表示成一个向量，向量的相似性反应文档的相似性。</p>
+<h4 id="向量空间模型bow-tf-idf">向量空间模型(BOW, TF-IDF)</h4>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103140257192.png"
+alt="image-20250103140257192" />
+<figcaption aria-hidden="true">image-20250103140257192</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103140308914.png"
+alt="image-20250103140308914" />
+<figcaption aria-hidden="true">image-20250103140308914</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103140514019.png"
+alt="image-20250103140514019" />
+<figcaption aria-hidden="true">image-20250103140514019</figcaption>
+</figure>
+<h4 id="词向量模型word2vec">词向量模型(word2vec)</h4>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103140606343.png"
+alt="image-20250103140606343" />
+<figcaption aria-hidden="true">image-20250103140606343</figcaption>
+</figure>
+<h3 id="视觉特征提取">视觉特征提取</h3>
+<h4 id="局部二值模式lbp">局部二值模式（LBP）</h4>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103141211845.png"
+alt="image-20250103141211845" />
+<figcaption aria-hidden="true">image-20250103141211845</figcaption>
+</figure>
+<h2 id="特征变换">特征变换</h2>
+<p>对已有向量特征进行变换，得到新特征的过程。</p>
+<h3 id="维数缩减">维数缩减</h3>
+<blockquote>
+<p>维度灾难是指当数据的维度（特征数）过高时，模型计算复杂度高、存储开销大、距离计算变得不准确，甚至模型性能下降的问题。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103141444290.png"
+alt="image-20250103141444290" />
+<figcaption aria-hidden="true">image-20250103141444290</figcaption>
+</figure>
+</blockquote>
+<p>缓解维数灾难：降维。通过维数缩减，可以将原始高维空间的数据投影到一个低维子空间中。</p>
+<ul>
+<li>在低维子空间里，数据的密度通常会大幅度提高。</li>
+<li>数据的距离计算、分类、聚类等操作会变得更容易、更准确。</li>
+</ul>
+<blockquote>
+<p><strong>Q: 为什么能降维？</strong></p>
+<p>A:
+在很多情况下，尽管我们采集的数据是高维的，但这些高维数据的<strong>本质特征</strong>通常只分布在低维空间内。这种现象是因为：</p>
+<ul>
+<li><strong>冗余特征</strong>：许多特征是高度相关的，含有重复信息。</li>
+<li><strong>任务相关特征嵌入低维空间</strong>：与学习任务密切相关的特征往往位于某个低维子空间内，而不相关的特征只会引入噪声。</li>
+</ul>
+<p><strong>通俗理解</strong>：高维数据往往有很多“水分”（冗余和噪声），通过降维可以提取出核心信息，就像将大海捞针简化为池塘捞针。</p>
+<p><strong>非均匀性祝福：</strong>数据在高维空间中的分布可能看起来稀疏，但实际上，它们大多集中在一个低维流形（低维嵌入空间）上。</p>
+</blockquote>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103142013461.png"
+alt="image-20250103142013461" />
+<figcaption aria-hidden="true">image-20250103142013461</figcaption>
+</figure>
+<p><strong>线性降维法</strong></p>
+<ul>
+<li><p>对高维空间中的样本<span
+class="math inline">\(x\)</span>进行线性变换：</p>
+<p><span class="math inline">\(y = W^Tx\)</span>，其中<span
+class="math inline">\(x\in R^m\)</span>，<span
+class="math inline">\(W\in R^{m\times d}\)</span>，<span
+class="math inline">\(y\in R^d\)</span>，<span class="math inline">\(d
+&lt; m\)</span>。</p></li>
+<li><p>变换矩阵<span class="math inline">\(W =
+[w_1,w_2,\cdots,w_d]\)</span>可视为<span
+class="math inline">\(m\)</span>维空间中由<span
+class="math inline">\(d\)</span>个基向量组成的矩阵。</p></li>
+<li><p><span class="math inline">\(y = W^Tx\)</span>可视为样本<span
+class="math inline">\(x\)</span>与<span
+class="math inline">\(d\)</span>个基向量分别做内积而得到，即<span
+class="math inline">\(x\)</span>在新坐标系下的坐标。新空间中的特征是原空间中特征的线性组合，这就是线性降维法。</p></li>
+<li><p>不同降维方法的差异：对低维子空间的性质有不同的要求，即对<span
+class="math inline">\(W\)</span>施加不同的约束。</p></li>
+</ul>
+<h3 id="pca">PCA</h3>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103142118552.png"
+alt="image-20250103142118552" />
+<figcaption aria-hidden="true">image-20250103142118552</figcaption>
+</figure>
+<p>给定条件：<span class="math inline">\(n\)</span>个样本<span
+class="math inline">\(x_1,x_2,\cdots,x_n\)</span>，每个样本<span
+class="math inline">\(x_i\in R^d\)</span>。</p>
+<p><strong>目标</strong>：我们想要在投影数据中捕获最大可能的方差，即把数据从<span
+class="math inline">\(d\)</span>维投影到<span
+class="math inline">\(m\)</span>维，其中<span class="math inline">\(m
+&lt; d\)</span>。</p>
+<p>设<span class="math inline">\(w_1,w_2,\cdots,w_m\in
+R^d\)</span>是主成分，假设<span
+class="math inline">\(w\)</span>满足正交性：<span
+class="math inline">\((w_i)^Tw_j = 0\)</span>，<span
+class="math inline">\(\forall i\neq j\)</span>，且<span
+class="math inline">\((w_i)^Tw_i = 1\)</span>，<span
+class="math inline">\(i,j = 1,2,\cdots,m\)</span>。我们只需要前<span
+class="math inline">\(m\)</span>个主成分。</p>
+<table>
+<colgroup>
+<col style="width: 42%" />
+<col style="width: 57%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>成分</th>
+<th>对应公式</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>数据点<span class="math inline">\(x_i\)</span>沿<span
+class="math inline">\(w_1\)</span>的投影<span
+class="math inline">\(y_i\)</span></td>
+<td><span class="math inline">\(y_i = w_1^Tx_i\)</span></td>
+</tr>
+<tr class="even">
+<td>均值<span class="math inline">\(\overline{x}\)</span>沿<span
+class="math inline">\(w_1\)</span>的投影<span
+class="math inline">\(\overline{y}\)</span></td>
+<td><span class="math inline">\(\overline{y}=w_1^T\overline{x},\
+\overline{x}=\frac{1}{n}\sum_{i = 1}^{n}x_i\)</span></td>
+</tr>
+<tr class="odd">
+<td>投影数据（沿投影方向<span
+class="math inline">\(w_1\)</span>）的方差</td>
+<td><span class="math inline">\(\text{var}=\frac{1}{n}\sum_{i =
+1}^{n}(w_1^Tx_i - w_1^T\overline{x})^2\)</span></td>
+</tr>
+<tr class="even">
+<td>想要获得使投影数据方差最大化的方向<span
+class="math inline">\(w_1\)</span></td>
+<td><span class="math inline">\(\max\frac{1}{n}\sum_{i = 1}^{n}(w_1^Tx_i
+- w_1^T\overline{x})^2,\ w_1^Tw_1 = 1\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><span class="math display">\[
+\begin{align}
+\text{var}&amp;=\frac{1}{n}\sum_{i = 1}^{n}(w_1^Tx_i -
+w_1^T\overline{x})^2\\
+&amp;=\frac{1}{n}\sum_{i = 1}^{n}(w_1^Tx_i - w_1^T\overline{x})(w_1^Tx_i
+- w_1^T\overline{x})^T\\
+&amp;=\frac{1}{n}\sum_{i = 1}^{n}w_1^T(x_i - \overline{x})(x_i -
+\overline{x})^Tw_1\\
+&amp;=w_1^T\left(\frac{1}{n}\sum_{i = 1}^{n}(x_i - \overline{x})(x_i -
+\overline{x})^T\right)w_1\\
+&amp;=w_1^TCw_1
+\end{align}
+\]</span></p>
+<p>其中<span class="math inline">\(C=\frac{1}{n}\sum_{i = 1}^{n}(x_i -
+\overline{x})(x_i - \overline{x})^T\)</span>是数据的协方差矩阵。则有：
+<span class="math display">\[
+\max w_1^TCw_1\\
+s.t.\ w_1^Tw_1 = 1
+\]</span> 现在引入拉格朗日乘子<span
+class="math inline">\(\lambda\)</span>到这个问题中，得到如下目标函数：
+<span class="math display">\[
+\text{obj}=w_1^TCw_1-\lambda(w_1^Tw_1 - 1)\\
+\frac{\partial\text{obj}}{\partial w_1}=2Cw_1 - 2\lambda w_1 = 0\\
+Cw_1=\lambda w_1
+\]</span> 这只是一个特征值方程。因此，<span
+class="math inline">\(w_1\)</span>必须是<span
+class="math inline">\(C\)</span>的一个特征向量。</p>
+<p>我们现在知道<span class="math inline">\(w_1\)</span>必须是<span
+class="math inline">\(C\)</span>的一个特征向量，<span
+class="math inline">\(\lambda\)</span>是相应的特征值。<strong>但是，<span
+class="math inline">\(C\)</span>有多个特征向量，哪一个是<span
+class="math inline">\(w_1\)</span>呢？</strong></p>
+<p>考虑： <span class="math display">\[
+w_1^TCw_1 = w_1^T\lambda w_1=\lambda w_1^Tw_1=\lambda
+\]</span> 我们想要最大化投影数据方差<span
+class="math inline">\(w_1^TCw_1=\lambda\)</span>：因此<span
+class="math inline">\(\lambda\)</span>应该是最大的特征值，<span
+class="math inline">\(w_1\)</span>是<span
+class="math inline">\(C\)</span>的第一个特征向量（具有特征值<span
+class="math inline">\(\lambda\)</span>），这是第一个主成分（数据中方差最大的方向）。</p>
+<h4 id="算法实现">算法实现</h4>
+<table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 72%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>步骤</th>
+<th>公式</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>计算数据均值</td>
+<td><span class="math inline">\(\overline{x}=\frac{1}{n}\sum_{i =
+1}^{n}x_i\)</span></td>
+</tr>
+<tr class="even">
+<td>计算数据的协方差矩阵</td>
+<td><span class="math inline">\(C=\frac{1}{n}\sum_{i = 1}^{n}(x_i -
+\overline{x})(x_i - \overline{x})^T\)</span></td>
+</tr>
+<tr class="odd">
+<td>对矩阵<span class="math inline">\(C\)</span>进行特征值分解</td>
+<td>取最大的<span class="math inline">\(m\)</span>个特征值<span
+class="math inline">\(\lambda_1\geq\lambda_2\geq\cdots\geq\lambda_m\)</span>对应的特征向量<span
+class="math inline">\(w_1,w_2,\cdots,w_m\)</span>，组成投影矩阵<span
+class="math inline">\(W = [w_1,w_2,\cdots,w_m]\in R^{d\times
+m}\)</span></td>
+</tr>
+<tr class="even">
+<td>将每一个数据进行投影</td>
+<td><span class="math inline">\(y_i = W^Tx_i\in R^m\)</span>，<span
+class="math inline">\(i = 1,2,\cdots,n\)</span></td>
+</tr>
+</tbody>
+</table>
+<h4 id="进一步的分析">进一步的分析</h4>
+<blockquote>
+<p><strong>Q: 如何仅用一个超平面从整体上对所有样本<span
+class="math inline">\(\{x_1,x_2,\cdots,x_n\}\subseteq
+R^m\)</span>进行恰当的表示？</strong></p>
+<p>A: 通常有如下两种思路：</p>
+<ul>
+<li>可区分性：样本点在这个超平面上的投影能够尽可能地分开。（方差最大化）</li>
+<li>可重构性：样本到这个超平面的距离都足够近。（重构误差最小化）</li>
+</ul>
+</blockquote>
+<p><strong>PCA －采用最大可分性观点</strong></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103150951248.png"
+alt="image-20250103150951248" />
+<figcaption aria-hidden="true">image-20250103150951248</figcaption>
+</figure>
+<p><strong>PCA——采用重构的观点</strong></p>
+<p>由<span
+class="math inline">\(W\)</span>定义新坐标系：假定投影变换是正交变换，即新坐标系由<span
+class="math inline">\(W = [w_1,w_2,\cdots,w_d]\in R^{m\times
+d}\)</span>来表示（<span class="math inline">\(d &lt;
+m\)</span>），<span class="math inline">\(w_i\)</span>的模等于1，<span
+class="math inline">\(w_i\)</span>与<span
+class="math inline">\(w_j\)</span>两两正交。</p>
+<p>设样本点<span
+class="math inline">\(x_i\)</span>在新坐标系下的坐标为： <span
+class="math display">\[
+y_i = [y_{i1},y_{i2},\cdots,y_{id}]^T\in R^d\\
+y_{ij}=w_j^Tx_i,\quad w_j\in R^m,\quad j = 1,2,\cdots,d\\
+\iff y_i = W^Tx_i
+\]</span> 在旧坐标系下，可得<span
+class="math inline">\(x_i\)</span>的重构表示： <span
+class="math display">\[
+\hat{x}_i=\sum_{j = 1}^{d}y_{ij}w_j = Wy_i,\quad i = 1,2,\cdots,n
+\]</span> 重构误差： <span class="math display">\[
+\begin{align}
+\sum_{i = 1}^{n}\|x_i - \hat{x}_i\|^2&amp;=\sum_{i = 1}^{n}\|x_i -
+Wy_i\|^2\\
+&amp;=\sum_{i = 1}^{n}((Wy_i)^TWy_i - 2x_i^TWy_i + x_i^Tx_i)\\
+(\because W^TW = I)&amp;=\sum_{i = 1}^{n}(y_i^Ty_i - 2y_i^Ty_i +
+x_i^Tx_i)\\
+(\because y_i = W^Tx_i)&amp;=-\sum_{i =
+1}^{n}y_i^Ty_i+\text{const}=-\sum_{i =
+1}^{n}(W^Tx_i)^T(W^Tx_i)+\text{const}\\
+&amp;=-\text{tr}\left(\sum_{i =
+1}^{n}(W^Tx_i)^T(W^Tx_i)\right)+\text{const}\\
+(\because \text{tr}(AB)=\text{tr}(BA))&amp;=-\text{tr}\left(W^T\sum_{i =
+1}^{n}x_ix_i^TW\right)+\text{const}\\
+(\because tr(A)+tr(B)=tr(A+B))
+\end{align}
+\]</span> 令<span class="math inline">\(X = [x_1,x_2,\cdots,x_n]\in
+R^{m\times n}\)</span>: <span class="math display">\[
+\begin{align}
+\sum_{i = 1}^{n}\|x_i - \hat{x}_i\|^2&amp;=tr(W^T\sum_{i =
+1}^{n}x_ix_i^TW)+\text{const}\\
+&amp;=-\text{tr}\left(W^TXX^TW\right)+\text{const}
+\end{align}
+\]</span> 假定数据已经零均值化，即<span
+class="math inline">\(\overline{x}=\frac{1}{n}\sum_{i = 1}^{n}x_i =
+0\)</span> <span class="math display">\[
+XX^T=\sum_{i = 1}^{n}x_ix_i^T=\sum_{i = 1}^{n}(x_i - \overline{x})(x_i -
+\overline{x})^T=nC
+\]</span> 于是，获得主成分分析的最优化模型： <span
+class="math display">\[
+\max_{W\in R^{m\times d}}\text{tr}(W^TCW)=\sum_{i = 1}^{d}w_i^TCw_i\\
+s.t.\ W^TW = I
+\]</span></p>
+<p>讨论： - 降低至多少维：<span class="math inline">\(\frac{\sum_{i =
+1}^{d}\lambda_i}{\sum_{i = 1}^{t}\lambda_i}\geq t\)</span>（比如，<span
+class="math inline">\(t = 95\%\)</span>） -
+也可以采用交叉验证，结合最近邻分类器来选择合适的维度<span
+class="math inline">\(d\)</span>。 - 舍弃<span class="math inline">\(m -
+d\)</span>个特征值对应的特征向量导致了维数缩减。 -
+舍弃这些信息之后能使样本的采样密度增大，这正是降维的重要动机。 -
+另外，当数据受到噪声影响时，最小的特征值所对应的特征向量往往与噪声有关，将它们舍弃可在一定程度上起到去噪的效果。</p>
+<h3 id="lda">LDA</h3>
+<p>线性判别分析（Linear Discriminant
+Analysis，LDA）是一种经典的线性判别学习方法。</p>
+<p><strong>算法思想：</strong>对于两类分类问题，给定训练集，设法将样本投影到一条直线上，使得同类样本的投影点尽可能接近，不同类样本的投影点尽可能相互远离。对新样本分类时，将其投影到这条直线上，再根据投影点的位置来判断其类别。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103142504610.png"
+alt="image-20250103142504610" />
+<figcaption aria-hidden="true">image-20250103142504610</figcaption>
+</figure>
+<p>样本集<span class="math inline">\(D =
+\{(x_1,y_1),(x_2,y_2),\cdots,(x_n,y_n)\}\)</span>，<span
+class="math inline">\(y_i\in\{0,1\}\)</span>，令<span
+class="math inline">\(X_i\)</span>、<span
+class="math inline">\(\mu_i\)</span>、<span
+class="math inline">\(\Sigma_i\)</span>分别表示第<span
+class="math inline">\(i\in\{0,1\}\)</span>类的样本集合、均值向量、协方差矩阵。</p>
+<p>若将数据投影到方向<span
+class="math inline">\(w\)</span>上，则两类样本的中心在直线上的投影分别为<span
+class="math inline">\(w^T\mu_0\)</span>和<span
+class="math inline">\(w^T\mu_1\)</span>；两类样本的协方差分别为<span
+class="math inline">\(w^T\Sigma_0w\)</span>和<span
+class="math inline">\(w^T\Sigma_1w\)</span>。</p>
+<ul>
+<li><p>欲使同类样本的投影点尽可能接近，可让同类样本投影点的方差尽可能小，即<span
+class="math inline">\(w^T\Sigma_0w +
+w^T\Sigma_1w\)</span>尽可能小。</p></li>
+<li><p>欲使异类样本的投影点尽可能远离，可让类中心点之间的距离尽可能大，即<span
+class="math inline">\((w^T\mu_0 -
+w^T\mu_1)^2\)</span>尽可能大。</p></li>
+</ul>
+<p>最大化如下目标函数： <span class="math display">\[
+J=\frac{\|w^T\mu_0 - w^T\mu_1\|^2_2}{w^T\Sigma_0w + w^T\Sigma_1w}\\
+=\frac{(u_0-u_1)^Tww^T(u_0-u_1)}{w^T(\Sigma_0+\Sigma_1)w}\\
+=\frac{w^T(\mu_0 - \mu_1)(\mu_0 - \mu_1)^Tw}{w^T(\Sigma_0+\Sigma_1)w}
+\]</span> 主要因为<span
+class="math inline">\(w^T(u_0-u_1)\)</span>得到的数，所以才可以交换。分子使两个类的中心距离尽可能远；分母使两类的类内方差尽可能小。</p>
+<p>定义矩阵形式：</p>
+<table>
+<colgroup>
+<col style="width: 61%" />
+<col style="width: 38%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>类内散度矩阵</th>
+<th>类间散度矩阵</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span
+class="math inline">\(\begin{align}S_w&amp;=\Sigma_0+\Sigma_1\\&amp;=\sum_{x\in
+X_0}(x - \mu_0)(x - \mu_0)^T+\sum_{x\in X_1}(x - \mu_1)(x -
+\mu_1)^T\end{align}\)</span></td>
+<td><span class="math inline">\(S_b=(\mu_0 - \mu_1)(\mu_0 -
+\mu_1)^T\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>目标函数重写为（广义Rayleigh商）： <span class="math display">\[
+J=\frac{w^T S_b w}{w^T S_w w}
+\]</span> 注意：<span
+class="math inline">\(J\)</span>的值与向量的长度无关，只与其方向有关，不失一般性可令<span
+class="math inline">\(w\)</span>为单位长度的向量。</p>
+<p>由于目标函数值与长度无关（只与方向有关），因此可采用一种更直观的方法：令<span
+class="math inline">\(w^T S_w w = 1\)</span>： <span
+class="math display">\[
+\max w^T S_b w,\quad s.t.\quad w^T S_w w = 1
+\]</span> 根据拉格朗日乘子法，于是有： <span class="math display">\[
+S_b w=\lambda S_w w\Rightarrow S_w^{-1}S_b w=\lambda w
+\]</span> 上式表明：<span class="math inline">\(w\)</span>为是矩阵<span
+class="math inline">\(S_w^{-1}S_b\)</span>的特征向量。</p>
+<p><strong>构造性求解方法 :</strong> <span class="math display">\[
+S_b=(\mu_0 - \mu_1)(\mu_0 - \mu_1)^T\\
+S_b w=(\mu_0 - \mu_1)(\mu_0 - \mu_1)^T w=s\cdot(\mu_0 - \mu_1),\quad s =
+(\mu_0 - \mu_1)^T w\in R
+\]</span> 上式表明：<span class="math inline">\(S_b
+w\)</span>方向与<span class="math inline">\(\mu_0 -
+\mu_1\)</span>的方向相同。不妨令$ S_b w=(_0 - _1)$:</p>
+<blockquote>
+<p>我有想：为什么<span
+class="math inline">\(\lambda\)</span>可以等价于<span
+class="math inline">\(s\)</span>?</p>
+<p>但想了一下，假使<span
+class="math inline">\(\lambda&#39;=s&#39;=\lambda\cdot
+s\)</span>就可以了。</p>
+</blockquote>
+<p><span class="math display">\[
+S_b w=\lambda(\mu_0 - \mu_1)\\
+\because S_b w=\lambda S_w w\\
+w = S_w^{-1}(\mu_0 - \mu_1)
+\]</span></p>
+<p>所以最终的结果就是得到投影：<span class="math inline">\(w=
+S_w^{-1}(\mu_0 - \mu_1)\)</span></p>
+<p>投影后，可以对两类数据进行分类：<span
+class="math inline">\(z=w^Tx\)</span></p>
+<h3 id="多类lda算法设类别数为c">多类LDA算法(设类别数为c)</h3>
+<h4 id="相关矩阵定义">相关矩阵定义</h4>
+<ul>
+<li><p>全局散度矩阵： <span class="math display">\[
+S_t=\sum_{i = 1}^{n}(x_i - \mu)(x_i - \mu)^T,\quad
+\mu=\frac{1}{n}\sum_{i = 1}^{n}x_i
+\]</span></p></li>
+<li><p>类内散度矩阵： <span class="math display">\[
+S_w=\sum_{j = 1}^{c}S_{wj},\quad S_{wj}=\sum_{x\in X_j}(x - \mu_j)(x -
+\mu_j)^T,\quad \mu_j=\frac{1}{n_j}\sum_{x\in X_j}x
+\]</span></p></li>
+<li><p>类间散度矩阵： <span class="math display">\[
+S_b = S_t - S_w=\sum_{j = 1}^{c}n_j(\mu_j - \mu)(\mu_j - \mu)^T
+\]</span></p></li>
+</ul>
+<p>其中，<span class="math inline">\(n_j\)</span>为属于第<span
+class="math inline">\(j\)</span>类的样本个数。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103162453080.png"
+alt="image-20250103162453080" />
+<figcaption aria-hidden="true">image-20250103162453080</figcaption>
+</figure>
+<p>Problem 1与Problem 2的解是不同的，Problem
+2的解可以通过求解如下广义特征值问题得到<span
+class="math inline">\(S_bw=\lambda S_ww\)</span>; Problem
+1的求解较复杂【略】</p>
+<h2 id="局部线性判别分析">局部线性判别分析</h2>
+<p><strong>LDA局限性</strong></p>
+<ul>
+<li>LDA假设数据是<strong>高斯分布</strong>的，这在很多真实数据中不一定成立。</li>
+<li>LDA希望<strong>类间距离大（分类区分性高）</strong>，同时使
+<strong>类内距离小（紧凑性强）</strong>。但对于复杂的、高维数据，这种方法可能无法捕捉到数据的局部结构，导致投影结果并不能有效区分类别。</li>
+</ul>
+<p>局部线性判别分析旨在克服LDA的局限性，主要考虑数据的<strong>局部几何结构</strong>，即通过局部近邻关系，改善分类能力和特征提取效果。</p>
+<p><strong>核心思想：</strong> 修改LDA中的类内散度矩阵<span
+class="math inline">\(S_w\)</span>和类间散度矩阵<span
+class="math inline">\(S_b\)</span>，引入<strong>局部近邻约束</strong>或<strong>加权机制</strong>来更准确地描述数据的分布。
+<span class="math display">\[
+S_w=\sum_{y_i = y_j,x_j\in N(x_i),x_i\in N(x_j)}(x_i - x_j)(x_i -
+x_j)^T\\
+S_b=\sum_{y_i\neq y_j,x_j\in N(x_i),x_i\in N(x_j)}(x_i - x_j)(x_i -
+x_j)^T
+\]</span></p>
+<p><strong>局部分析技术</strong></p>
+<ul>
+<li>Neighborhood constraints（方法一,近邻判别分析）</li>
+<li>Locally weighting（方法二,局部Fisher判别分析）
+<ul>
+<li>Weighting for 1 - NN</li>
+<li>Local Fisher discriminant analysis</li>
+</ul></li>
+</ul>
+<h3 id="近邻判别分析nnda">近邻判别分析（NNDA）</h3>
+<p>近邻约束中的一个问题是近邻数<span
+class="math inline">\(k\)</span>的选择。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103163851177.png"
+alt="image-20250103163851177" />
+<figcaption aria-hidden="true">image-20250103163851177</figcaption>
+</figure>
+<p>此图展示了两类最近邻加权的示意图，分别用浅蓝色和紫色表示不同类别的数据点，<span
+class="math inline">\(x_i\)</span>和<span
+class="math inline">\(x_j\)</span>是不同类中的数据点，<span
+class="math inline">\(d_1\)</span>和<span
+class="math inline">\(d_2\)</span>是距离。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103163939437.png"
+alt="image-20250103163939437" />
+<figcaption aria-hidden="true">image-20250103163939437</figcaption>
+</figure>
+<p>展示了多类最近邻加权的示意图，分别用浅蓝色、橙色和紫色表示不同类别的数据点，<span
+class="math inline">\(x_i\)</span>和<span
+class="math inline">\(x_j\)</span>是不同类中的数据点，<span
+class="math inline">\(d_1\)</span>和<span
+class="math inline">\(d_2\)</span>是距离。</p>
+<p><strong>对相关矩阵修改：</strong> - 类内散度矩阵： <span
+class="math display">\[
+  S_w=\sum_{y_i = y_j,x_j\in N_{I - nn}(x_i),i = 1,2,\cdots,n}W_{i}(x_i
+- x_j)(x_i - x_j)^T
+  \]</span> - 类间散度矩阵： <span class="math display">\[
+  S_b=\sum_{y_i\neq y_j,x_j\in N_{I - nn}(x_i),i =
+1,2,\cdots,n}W_{i}(x_i - x_j)(x_i - x_j)^T
+  \]</span> <img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103164103744.png"
+alt="image-20250103164103744" /></p>
+<h3 id="局部fisher判别分析lfda">局部Fisher判别分析（LFDA）</h3>
+<p><strong>动机</strong>:</p>
+<ul>
+<li>LFDA不强制要求同一类中相距较远的数据对接近，这样可以更好地保留数据的局部几何结构。</li>
+<li>通过邻域加权机制，强调局部的关系而不是全局的特性。</li>
+</ul>
+<p><strong>构建仿射矩阵A</strong> <span class="math display">\[
+\begin{align}
+A&amp;=\begin{pmatrix}
+A_{11} &amp; A_{12} &amp; \cdots &amp; A_{1n}\\
+A_{21} &amp; A_{22} &amp; \cdots &amp; A_{2n}\\
+\cdots &amp; \cdots &amp; \cdots &amp; \cdots\\
+A_{n1} &amp; A_{n2} &amp; \cdots &amp; A_{nn}
+\end{pmatrix}\\
+A_{ij}&amp;=\begin{cases}
+1, &amp; \text{if } x_j \text{ is a neighbor of } x_i\\
+0, &amp; \text{otherwise}
+\end{cases}\\
+\text{or}\ A_{ij}&amp;=\begin{cases}
+\exp(-\left\|x_j - x_i\right\|^2/(2\sigma^2)), &amp; \text{if } x_j
+\text{ is a neighbor of } x_i\\
+0, &amp; \text{otherwise}
+\end{cases}
+\end{align}
+\]</span> <strong>修改相关矩阵</strong>：</p>
+<ul>
+<li><p>类内散度矩阵 <span class="math display">\[
+S_w=\frac{1}{2}\sum_{i,j}\overline{A}_{ij}^{(w)}(x_i - x_j)(x_i -
+x_j)^T\\
+\overline{A}_{ij}^{(w)}=\begin{cases}
+A_{ij}/n_c, &amp; \text{if } y_i = y_j = c\\
+0, &amp; \text{if } y_i\neq y_j
+\end{cases}
+\]</span></p></li>
+<li><p>类间散度矩阵 <span class="math display">\[
+S_b=\frac{1}{2}\sum_{i,j = 1}^{n}\overline{A}_{ij}^{(b)}(x_i - x_j)(x_i
+- x_j)^T\\
+\overline{A}_{ij}^{(b)}=\begin{cases}
+A_{ij}(1/n - 1/n_c), &amp; \text{if } y_i= y_j = c\\
+1/n, &amp; \text{if } y_i \neq y_j
+\end{cases}
+\]</span></p></li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103164525316.png"
+alt="image-20250103164525316" />
+<figcaption aria-hidden="true">image-20250103164525316</figcaption>
+</figure>
+<h2 id="特征选择">特征选择</h2>
+<p>特征变化和特征选择是处理高维数据的两大主流技术。</p>
+<p>任务：给定一个学习任务、对于给定的特征数据特征集，从中选出与任务相关(对学习任务有利)的特征子集。</p>
+<p>目的：降维、去除冗余、选择与任务相关的特征。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103191214079.png"
+alt="image-20250103191214079" />
+<figcaption aria-hidden="true">image-20250103191214079</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103194027772.png"
+alt="image-20250103194027772" />
+<figcaption aria-hidden="true">image-20250103194027772</figcaption>
+</figure>
+<h3 id="评价准则">评价准则</h3>
+<p><strong>“理想”评价准则：</strong>对分类任务，评价准则<span
+class="math inline">\(J_{ij}\)</span>反映在一组特征下，第<span
+class="math inline">\(i\)</span>类和第<span
+class="math inline">\(j\)</span>类的可分尺度。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103191600229.png"
+alt="image-20250103191600229" />
+<figcaption aria-hidden="true">image-20250103191600229</figcaption>
+</figure>
+<h4 id="基于距离的评价准则">基于距离的评价准则</h4>
+<p>记<span class="math inline">\(x_i^{(k)}\in R^d\)</span>和<span
+class="math inline">\(x_j^{(l)}\in R^d\)</span>分别为类别<span
+class="math inline">\(\omega_i\)</span>和<span
+class="math inline">\(\omega_j\)</span>的两个样本。记两者之间的距离为：<span
+class="math inline">\(d(x_i^{(k)},x_j^{(l)})\)</span>。</p>
+<p>定义所有类别上的总距离为： <span class="math display">\[
+J_d(x)=\frac{1}{2}\sum_{i = 1}^{c}\sum_{j = 1}^{c}P_iP_j\sum_{k =
+1}^{n_i}\sum_{l = 1}^{n_j}d(x_i^{(k)},x_j^{(l)})
+\]</span> 其中，<span class="math inline">\(P_i\)</span>：第<span
+class="math inline">\(i\)</span>类的先验概率；<span
+class="math inline">\(n_i\)</span>：第<span
+class="math inline">\(i\)</span>类的样本数。</p>
+<p>若采用平方欧氏距离：<span
+class="math inline">\(d(x_i^{(k)},x_j^{(l)})=(x_i^{(k)} -
+x_j^{(l)})^T(x_i^{(k)} - x_j^{(l)})\)</span>，则有： <span
+class="math display">\[
+J_d(x)=\sum_{i = 1}^{c}P_i\left[\frac{1}{n_i}\sum_{k =
+1}^{n_i}(x_i^{(k)} - m_i)^T(x_i^{(k)} - m_i)+(m - m_i)^T(m - m_i)\right]
+\]</span> 其中，<span class="math inline">\(m_i\)</span>：第<span
+class="math inline">\(i\)</span>类的中心；<span
+class="math inline">\(m\)</span>：所有数据点的中心。</p>
+<p>利用散度矩阵，可将上式整理成更简单的形式。</p>
+<p>定义类间/类内散度如下： <span class="math display">\[
+S_b=\sum_{i = 1}^{c}P_i(m_i - m)(m_i - m)^T\\
+S_w=\sum_{i = 1}^{c}P_i\frac{1}{n_i}\sum_{k = 1}^{n_i}(x_i^{(k)} -
+m_i)(x_i^{(k)} - m_i)^T\\
+J_d(x)=\text{tr}(S_b + S_w)
+\]</span></p>
+<blockquote>
+<p>特别地，上述计算可以定义在任何特征子集上！</p>
+</blockquote>
+<p>类似于线性判别准则，可定义如下的评价准则，其核心思想是使类内散度尽可能小，类间、散度尽可能大。<strong>常用的5个判据：</strong>
+<span class="math display">\[
+\begin{align}
+J_1(x)&amp;=\text{tr}(S_b + S_w)\\
+J_2(x)&amp;=\text{tr}(S_w^{-1}S_b)\\
+J_3(x)&amp;=\frac{\text{tr}(S_b)}{\text{tr}(S_w)}\\
+J_4(x)&amp;=\frac{\vert S_b\vert}{\vert S_w\vert}\\
+J_5(x)&amp;=\frac{\vert S_b + S_w\vert}{\vert S_w\vert}
+\end{align}
+\]</span></p>
+<h4
+id="基于分布的评价准则基于类条件概率密度函数">基于分布的评价准则：基于类条件概率密度函数</h4>
+<p>假设定义了基于类条件概率密度函数<span class="math inline">\(p(x\vert
+\omega_i)\)</span>和<span class="math inline">\(p(x\vert
+\omega_j)\)</span>之间的一个“距离”函数：</p>
+<ul>
+<li><p>该“距离”函数应该是非负的；</p></li>
+<li><p>该距离应反映这两个条件分布之间的重合程度；</p>
+<ul>
+<li><p>当这两个条件分布不重叠时，该距离函数取得最大值；</p></li>
+<li><p>当这两个条件分布一样时，该距离函数应该取零值。</p></li>
+</ul></li>
+</ul>
+<p>定义<span class="math inline">\(x\)</span>点处的对数似然比： <span
+class="math display">\[
+L_{ij}(x)=\ln\frac{p(x|\omega_i)}{p(x|\omega_j)}
+\]</span> KL散度：也称为相对熵(relative
+entropy)，定义为对数似然比的数学期望： <span class="math display">\[
+KL_{ij}\triangleq E[L_{ij}(x)]=\int
+p(x|\omega_i)\ln\frac{p(x|\omega_i)}{p(x|\omega_j)}dx
+\]</span> 注意，KL散度不是一个度量：<span
+class="math inline">\(KL_{ij}\neq KL_{ji}\)</span>。可将其变成一个度量：
+<span class="math display">\[
+J_{ij}=KL_{ij}+KL_{ji}=\int\left[p(x|\omega_i)-p(x|\omega_j)\right]\ln\frac{p(x|\omega_i)}{p(x|\omega_j)}dx
+\]</span></p>
+<h4
+id="基于熵的评价准则基于类后验概率分布">基于熵的评价准则：基于类后验概率分布</h4>
+<p>后验概率<span class="math inline">\(P(\omega_i\vert
+x)\)</span>反映特征<span class="math inline">\(x\)</span>刻画类别<span
+class="math inline">\(i\)</span>的有效性。</p>
+<blockquote>
+<p>两个极端例子：</p>
+<ul>
+<li>如果后验概率对于所有的类别都一样，即<span
+class="math inline">\(P(\omega_i\vert
+x)=\frac{1}{c}\)</span>，则说明该特征对类别没有任何鉴别性；</li>
+<li>如果后验概率对于类别<span class="math inline">\(i\)</span>为<span
+class="math inline">\(1\)</span>，对其他类别均为<span
+class="math inline">\(0\)</span>，即<span
+class="math inline">\(P(\omega_i\vert
+x)=1\)</span>，则说明特征非常有效。</li>
+</ul>
+</blockquote>
+<p>对于某个给定特征，样本属于各类的后验概率越平均，越不利于分类；如果越集中于某一类，则越有利于分类。因此，可利用后验概率的信息熵来度量特征对类别的可分性。</p>
+<p><strong>信息熵</strong>：可用来衡量一个随机事件发生的不确定性，不确定越大，信息熵越大。</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>香农熵</th>
+<th>平方熵</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(H(x)=-\sum_{i = 1}^{c}P(\omega_i\vert
+x)\log_2P(\omega_i\vert x)\)</span></td>
+<td><span class="math inline">\(H(x)=2\left[1-\sum_{i =
+1}^{c}(P(\omega_i\vert x))^2\right]\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>使用时要求期望：<span class="math inline">\(E[H(x)]=\int
+p(x)H(x)dx\)</span></p>
+<h2 id="最优特征选择方法">最优特征选择方法</h2>
+<h3 id="穷举法">穷举法</h3>
+<p>从给定的<span class="math inline">\(d\)</span>个特征中，挑选出<span
+class="math inline">\(m\)</span>个特征，若采用穷举法，需要遍历<span
+class="math inline">\(\frac{d!}{(d - m)!m!}\)</span>个子集。当<span
+class="math inline">\(d\)</span>很大时，<strong>该方法计算量巨大</strong>。能否有更聪明的搜索方法？</p>
+<h3 id="分支界定法">分支界定法</h3>
+<p>基本思想：将所有可能的特征组合以树的形式进行表示，采用分枝定界方法对树进行搜索，使得搜索过程尽早达到最优解，而不必搜索整个树。</p>
+<p>基本前提：特征评价准则对特征具有单调性，即特征增多时，判据值不会减少：
+<span class="math display">\[
+X_1\subseteq X_2\subseteq\cdots\subseteq X_m\Rightarrow J(X_1)\leq
+J(X_2)\leq\cdots\leq J(X_m)
+\]</span> 基于KL散度和基于信息熵的评价准则满足上述要求。</p>
+<h4 id="特征子集的树表示">特征子集的树表示</h4>
+<ul>
+<li>根节点包含全部特征；</li>
+<li>每一个节点，在父节点基础上去掉一个特征，并将去掉的特征序号写在节点的旁边；</li>
+<li>对<span class="math inline">\(d\)</span>维特征，若选择<span
+class="math inline">\(m\)</span>个特征，每一级去掉一个特征，则需要<span
+class="math inline">\(d -
+m\)</span>层达到所需特征数量，即树的深度为<span class="math inline">\(d
+- m\)</span>。(<span class="math inline">\(d = 4,m = 2\)</span>)</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103195050384.png"
+alt="image-20250103195050384" />
+<figcaption aria-hidden="true">image-20250103195050384</figcaption>
+</figure>
+<h4 id="树的生长过程树的构造">树的生长过程（树的构造）</h4>
+<ol type="1">
+<li><p>将所有特征组成根节点，根节点记为第0层；</p></li>
+<li><p>对于第1层，分别计算“去掉上一层节点单个特征后”剩余特征的评价判据值，按判据值从小到大进行排序，按从左到右的顺序生成第1层的节点；</p></li>
+<li><p>对于第2层，针对上一层最右侧的节点开始，重复第2步；</p></li>
+<li><p>依次类推，直到第<span class="math inline">\(d -
+m\)</span>层，到达叶子节点，记录对应的判据值<span
+class="math inline">\(J\)</span>，同时记录对应的特征选择集合。</p></li>
+</ol>
+<p>回溯：从第一个叶子结点开始，对树进行回溯</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103195643863.png"
+alt="image-20250103195643863" />
+<figcaption aria-hidden="true">image-20250103195643863</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103195710139.png"
+alt="image-20250103195710139" />
+<figcaption aria-hidden="true">image-20250103195710139</figcaption>
+</figure>
+<p>树的回溯的总体思路：对树搜索时进行分枝限界，从右到左、从上到下</p>
+<h2 id="特征选择的次优方法">特征选择的次优方法</h2>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103193828131.png"
+alt="image-20250103193828131" />
+<figcaption aria-hidden="true">image-20250103193828131</figcaption>
+</figure>
+<h3 id="过滤式选择方法">过滤式选择方法</h3>
+<p>基本思想：过滤式方法先对数据集进行特征选择，再训练分类器。</p>
+<p>核心任务：如何定义特征的评价准则和搜索策略</p>
+<p>算法特点：</p>
+<ul>
+<li>特征选择过程与后续学习器无关；</li>
+<li>启发式特征选择方法，无法获得最优子集；</li>
+<li>与包裹式选择方法相比，计算量降低了</li>
+</ul>
+<h4 id="单独特征选择relief方法">单独特征选择：Relief方法</h4>
+<p>假设：特征相互独立，子集性能=包含各特征性能之和。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103201737505.png"
+alt="image-20250103201737505" />
+<figcaption aria-hidden="true">image-20250103201737505</figcaption>
+</figure>
+<p><strong>二分类：</strong></p>
+<p>对于样本<span class="math inline">\(x_i\)</span>:</p>
+<ul>
+<li><strong>猜中近邻(nearest-hit)</strong>: 其同类样本中的最近邻<span
+class="math inline">\(x_{i,nh}\)</span></li>
+<li><strong>猜错近邻(nearest-miss)</strong>: 其不同类样本中的最近邻<span
+class="math inline">\(x_{i,nm}\)</span></li>
+</ul>
+<p>特征性能判据：</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103203337208.png"
+alt="image-20250103203337208" />
+<figcaption aria-hidden="true">image-20250103203337208</figcaption>
+</figure>
+<p><strong>多分类</strong></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103203412385.png"
+alt="image-20250103203412385" />
+<figcaption aria-hidden="true">image-20250103203412385</figcaption>
+</figure>
+<h3 id="包裹式特征选择方法">包裹式特征选择方法</h3>
+<table>
+<colgroup>
+<col style="width: 52%" />
+<col style="width: 47%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>过滤式特征选择方法</strong></th>
+<th>包裹式特征选择方法</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>先对数据集进行特征选择，然后再训练分类器</td>
+<td>对给定分类方法，选择最有利于提升分类性能的特征子集</td>
+</tr>
+<tr class="even">
+<td>特征选择过程与分类单独进行，特征选择评价判据间接反应分类性能</td>
+<td>特征选择过程与分类性能相结合，特征评价判据为分类器性能</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>通常采用交叉验证来评价选取的特征子集的好坏。</li>
+<li><span class="math inline">\(k\)</span>折交叉验证(<span
+class="math inline">\(k\)</span>-fold cross validation)，留一法(Leave -
+one - out)</li>
+<li>包裹式特征选择方法对分类器的基本要求：
+<ul>
+<li>分类器能够处理高维特征向量；</li>
+<li>特征维度很高、样本个数较少时，分类器依然可以取得较好的效果。</li>
+</ul></li>
+</ul>
+<p><strong>主要方法</strong></p>
+<ul>
+<li><strong>直观方法</strong>：给定特征子集，训练分类器模型，以分类器错误率为特征性能判据，进行特征选择。
+<ul>
+<li>需要大量尝试不同的特征组合，计算量大。</li>
+</ul></li>
+<li><strong>替代方法(递归策略)</strong>：首先利用所有的特征进行分类器训练，然后考查各个特征在分类器中的贡献，逐步剔除贡献小的特征。
+<ul>
+<li>递归支持向量机（R - SVM：Recursive SVM）</li>
+<li>支持向量机递归特征剔除（SVM - RFE）</li>
+<li>Adaboost</li>
+</ul></li>
+</ul>
+<h3 id="嵌入式特征选择--基于l_1范数的特征选择">嵌入式特征选择--基于<span
+class="math inline">\(L_1\)</span>范数的特征选择</h3>
+<p>基本思路：在学习 w 的时候，对 w
+进行限制，使其不仅能满足训练样本的误差要求，同时使得 w
+中非零元素尽可能少（只使用少数特征）。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103232816637.png"
+alt="image-20250103232816637" />
+<figcaption aria-hidden="true">image-20250103232816637</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103232839749.png"
+alt="image-20250103232839749" />
+<figcaption aria-hidden="true">image-20250103232839749</figcaption>
+</figure>
+<h3 id="总结">总结</h3>
+<p><strong>特征选择的一般技术路线</strong></p>
+<ol type="1">
+<li>确定特征子集</li>
+<li>评价特征子集性能</li>
+</ol>
+<p><strong>评价特征子集性能常用的可分性判据</strong></p>
+<ul>
+<li>基于类内类间距离的可分性判据</li>
+<li>基于熵的可分性判据</li>
+<li>基于SVM模型的可分性判据</li>
+</ul>
+<p><strong>确定特征选择子集的方法</strong></p>
+<ul>
+<li>基于树的方法（最优算法）：基于分枝限界技术对特征子集的树表示进行遍历，只需要查找一小部分特征组合，即可找到全局最优的特征组合</li>
+<li>遍历法（次优算法）：顺序前向法、顺序后向法、增减r法</li>
+<li>稀疏约束</li>
+</ul>
+<p><strong>根据特征选择与分类器的结合程度</strong></p>
+<ul>
+<li>过滤式特征选择方法：“选择”与“学习”独立</li>
+<li>包裹式特征选择方法：“选择”依赖“学习”</li>
+<li>嵌入式特征选择方法：“选择”与“学习”同时进行</li>
+</ul>
+</div><div class="post-end"><div class="post-prev"><a href="/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch8-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9%E4%B8%8E%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-next"><a href="/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch6-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch7-%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96%E4%B8%8E%E7%89%B9%E5%BE%81%E5%8F%98%E6%8D%A2"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch7 特征提取与特征变换</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">引言</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">特征提取</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%96%87%E6%9C%AC%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">文本特征提取</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%90%91%E9%87%8F%E7%A9%BA%E9%97%B4%E6%A8%A1%E5%9E%8Bbow-tf-idf"><span class="toc-content-number">1.2.1.1.</span> <span class="toc-content-text">向量空间模型(BOW, TF-IDF)</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E8%AF%8D%E5%90%91%E9%87%8F%E6%A8%A1%E5%9E%8Bword2vec"><span class="toc-content-number">1.2.1.2.</span> <span class="toc-content-text">词向量模型(word2vec)</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E8%A7%86%E8%A7%89%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96"><span class="toc-content-number">1.2.2.</span> <span class="toc-content-text">视觉特征提取</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%B1%80%E9%83%A8%E4%BA%8C%E5%80%BC%E6%A8%A1%E5%BC%8Flbp"><span class="toc-content-number">1.2.2.1.</span> <span class="toc-content-text">局部二值模式（LBP）</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E7%89%B9%E5%BE%81%E5%8F%98%E6%8D%A2"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">特征变换</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%BB%B4%E6%95%B0%E7%BC%A9%E5%87%8F"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">维数缩减</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#pca"><span class="toc-content-number">1.3.2.</span> <span class="toc-content-text">PCA</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0"><span class="toc-content-number">1.3.2.1.</span> <span class="toc-content-text">算法实现</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E8%BF%9B%E4%B8%80%E6%AD%A5%E7%9A%84%E5%88%86%E6%9E%90"><span class="toc-content-number">1.3.2.2.</span> <span class="toc-content-text">进一步的分析</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#lda"><span class="toc-content-number">1.3.3.</span> <span class="toc-content-text">LDA</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%A4%9A%E7%B1%BBlda%E7%AE%97%E6%B3%95%E8%AE%BE%E7%B1%BB%E5%88%AB%E6%95%B0%E4%B8%BAc"><span class="toc-content-number">1.3.4.</span> <span class="toc-content-text">多类LDA算法(设类别数为c)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%9B%B8%E5%85%B3%E7%9F%A9%E9%98%B5%E5%AE%9A%E4%B9%89"><span class="toc-content-number">1.3.4.1.</span> <span class="toc-content-text">相关矩阵定义</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%B1%80%E9%83%A8%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%88%86%E6%9E%90"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">局部线性判别分析</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E8%BF%91%E9%82%BB%E5%88%A4%E5%88%AB%E5%88%86%E6%9E%90nnda"><span class="toc-content-number">1.4.1.</span> <span class="toc-content-text">近邻判别分析（NNDA）</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%B1%80%E9%83%A8fisher%E5%88%A4%E5%88%AB%E5%88%86%E6%9E%90lfda"><span class="toc-content-number">1.4.2.</span> <span class="toc-content-text">局部Fisher判别分析（LFDA）</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9"><span class="toc-content-number">1.5.</span> <span class="toc-content-text">特征选择</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E8%AF%84%E4%BB%B7%E5%87%86%E5%88%99"><span class="toc-content-number">1.5.1.</span> <span class="toc-content-text">评价准则</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%9F%BA%E4%BA%8E%E8%B7%9D%E7%A6%BB%E7%9A%84%E8%AF%84%E4%BB%B7%E5%87%86%E5%88%99"><span class="toc-content-number">1.5.1.1.</span> <span class="toc-content-text">基于距离的评价准则</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%9F%BA%E4%BA%8E%E5%88%86%E5%B8%83%E7%9A%84%E8%AF%84%E4%BB%B7%E5%87%86%E5%88%99%E5%9F%BA%E4%BA%8E%E7%B1%BB%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.5.1.2.</span> <span class="toc-content-text">基于分布的评价准则：基于类条件概率密度函数</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%9F%BA%E4%BA%8E%E7%86%B5%E7%9A%84%E8%AF%84%E4%BB%B7%E5%87%86%E5%88%99%E5%9F%BA%E4%BA%8E%E7%B1%BB%E5%90%8E%E9%AA%8C%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83"><span class="toc-content-number">1.5.1.3.</span> <span class="toc-content-text">基于熵的评价准则：基于类后验概率分布</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%9C%80%E4%BC%98%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E6%96%B9%E6%B3%95"><span class="toc-content-number">1.6.</span> <span class="toc-content-text">最优特征选择方法</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%A9%B7%E4%B8%BE%E6%B3%95"><span class="toc-content-number">1.6.1.</span> <span class="toc-content-text">穷举法</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%88%86%E6%94%AF%E7%95%8C%E5%AE%9A%E6%B3%95"><span class="toc-content-number">1.6.2.</span> <span class="toc-content-text">分支界定法</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%89%B9%E5%BE%81%E5%AD%90%E9%9B%86%E7%9A%84%E6%A0%91%E8%A1%A8%E7%A4%BA"><span class="toc-content-number">1.6.2.1.</span> <span class="toc-content-text">特征子集的树表示</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%A0%91%E7%9A%84%E7%94%9F%E9%95%BF%E8%BF%87%E7%A8%8B%E6%A0%91%E7%9A%84%E6%9E%84%E9%80%A0"><span class="toc-content-number">1.6.2.2.</span> <span class="toc-content-text">树的生长过程（树的构造）</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E7%9A%84%E6%AC%A1%E4%BC%98%E6%96%B9%E6%B3%95"><span class="toc-content-number">1.7.</span> <span class="toc-content-text">特征选择的次优方法</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E8%BF%87%E6%BB%A4%E5%BC%8F%E9%80%89%E6%8B%A9%E6%96%B9%E6%B3%95"><span class="toc-content-number">1.7.1.</span> <span class="toc-content-text">过滤式选择方法</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%8D%95%E7%8B%AC%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9relief%E6%96%B9%E6%B3%95"><span class="toc-content-number">1.7.1.1.</span> <span class="toc-content-text">单独特征选择：Relief方法</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%8C%85%E8%A3%B9%E5%BC%8F%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E6%96%B9%E6%B3%95"><span class="toc-content-number">1.7.2.</span> <span class="toc-content-text">包裹式特征选择方法</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9--%E5%9F%BA%E4%BA%8El_1%E8%8C%83%E6%95%B0%E7%9A%84%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9"><span class="toc-content-number">1.7.3.</span> <span class="toc-content-text">嵌入式特征选择--基于\(L_1\)范数的特征选择</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-content-number">1.7.4.</span> <span class="toc-content-text">总结</span></a></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2025 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>

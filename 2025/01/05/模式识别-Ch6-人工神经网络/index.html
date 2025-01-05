@@ -1,0 +1,2260 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="CH6 人工神经网络 [TOC] 6.2 神经网络基础 人工神经网络的定义(Nielsen)：一种模仿生物神经网路的结构和功能的数学模型或计算模型。 人工神经元--处理单元的功能：  对每个输入信号进行加权处理（确定其强度）； 确定所有输入信号的叠加效果（求和）； 确定其输出（转移特性，即激励特性，sigmoid函数）。  学习的本质：对网络各连接权重作动态调整。 6.2.2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模式识别-Ch6-人工神经网络">
+<meta property="og:url" content="http://example.com/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch6-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="CH6 人工神经网络 [TOC] 6.2 神经网络基础 人工神经网络的定义(Nielsen)：一种模仿生物神经网路的结构和功能的数学模型或计算模型。 人工神经元--处理单元的功能：  对每个输入信号进行加权处理（确定其强度）； 确定所有输入信号的叠加效果（求和）； 确定其输出（转移特性，即激励特性，sigmoid函数）。  学习的本质：对网络各连接权重作动态调整。 6.2.2">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241127114846295.png">
+<meta property="article:published_time" content="2025-01-05T08:17:46.000Z">
+<meta property="article:modified_time" content="2025-01-05T08:39:46.480Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="模式识别">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241127114846295.png"><title>模式识别-Ch6-人工神经网络 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>模式识别-Ch6-人工神经网络</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2025-01-05</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2025-01-05</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">模式识别</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约1.3W字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch6-人工神经网络">CH6 人工神经网络</h1>
+<p>[TOC]</p>
+<h2 id="神经网络基础">6.2 神经网络基础</h2>
+<p>人工神经网络的定义(Nielsen)：一种模仿生物神经网路的结构和功能的数学模型或计算模型。</p>
+<p>人工神经元--处理单元的功能：</p>
+<ul>
+<li>对每个输入信号进行加权处理（确定其强度）；</li>
+<li>确定所有输入信号的叠加效果（求和）；</li>
+<li>确定其输出（转移特性，即激励特性，sigmoid函数）。</li>
+</ul>
+<p>学习的本质：<strong>对网络各连接权重作动态调整。</strong></p>
+<h2 id="激活函数">6.2.2 激活函数</h2>
+<p>作用：将可能的无限域变换到指定的有限范围内进行输出，并引入非线性（类似于生物神
+经元的非线性转移特性）</p>
+<p>常用的激活函数： 线性函数、斜坡函数、阶跃函数、符号函数、
+Sigmoid函数、双曲正切函数、ReLU</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102220400126.png"
+alt="image-20250102220400126" />
+<figcaption aria-hidden="true">image-20250102220400126</figcaption>
+</figure>
+<p>软饱和：当自变量趋向于正无穷或负无穷时，函数的导数趋近于
+0，但在有限的输入范围内，导数并不恒为 0，只是逐渐变小。这种饱和状态是
+“相对的”、“渐进的”。sigmoid函数</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102220418810.png"
+alt="image-20250102220418810" />
+<figcaption aria-hidden="true">image-20250102220418810</figcaption>
+</figure>
+<p>硬饱和：当自变量（输入值）超过一定范围后，函数的导数恒为
+0，这意味着函数在该范围内进入饱和状态，且这种饱和状态是
+“绝对的”，即导数严格为 0。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102220450516.png"
+alt="ReLU函数" />
+<figcaption aria-hidden="true">ReLU函数</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102220516700.png"
+alt="image-20250102220516700" />
+<figcaption aria-hidden="true">image-20250102220516700</figcaption>
+</figure>
+<h2 id="拓扑结构">6.2.3 拓扑结构</h2>
+<h3 id="单层网络">单层网络</h3>
+<p>输入信号: <span
+class="math display">\[x=[x_1,x_2,\ldots,x_d]^T\]</span>每个分量通过加权连接到各个结点、每个结点产生一个加权和。前馈连接+全连接</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102220532060.png"
+alt="image-20250102220532060" />
+<figcaption aria-hidden="true">image-20250102220532060</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102220543245.png"
+alt="image-20250102220543245" />
+<figcaption aria-hidden="true">image-20250102220543245</figcaption>
+</figure>
+<h3 id="多层网络">多层网络</h3>
+<p>是由单层网络进行级联构成的，即上一层的
+输出作为下一层的输入。层与层之间可以全连接、也可以部分连接的情况。</p>
+<ul>
+<li>输入层：接收输入信号的层。</li>
+<li>隐藏层：中间层，隐含层的层数可从零到若干层。</li>
+<li>输出层：产生输出信号的层。</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102220604657.png"
+alt="image-20250102220604657" />
+<figcaption aria-hidden="true">image-20250102220604657</figcaption>
+</figure>
+<p>激活函数应是非线性的，否则多层网络的表示能力并不比单层网络强。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102220616211.png"
+alt="image-20250102220616211" />
+<figcaption aria-hidden="true">image-20250102220616211</figcaption>
+</figure>
+<h3 id="反馈网络">反馈网络</h3>
+<p>结点的输出：依赖于当前的输入，也依赖于自己以前的输出。
+（有跨层连接）</p>
+<table>
+<colgroup>
+<col style="width: 54%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>前馈网络</th>
+<th>反馈网络</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>“不存储短期记忆” ：结点的输出仅仅是
+当前输入的加权和（再加激励）。</td>
+<td>类似“人类的短期记忆”：将以前的输出循环返回到输入。</td>
+</tr>
+</tbody>
+</table>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102220654285.png"
+alt="image-20250102220654285" />
+<figcaption aria-hidden="true">image-20250102220654285</figcaption>
+</figure>
+<h2 id="网络训练">6.2.4 网络训练</h2>
+<p>任务：给定 n 个观测数据<span
+class="math display">\[\{x_k\}\]</span>，训练网络的各层结点之间的连接权重<span
+class="math display">\[w_{ij}\]</span>(含偏置项)
+,相继加入训练样本，并按预定规则调整网络各权重。</p>
+<table>
+<colgroup>
+<col style="width: 52%" />
+<col style="width: 47%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Supervised</th>
+<th>Unsupervised</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>对每个训练数据,通过该网络计算之后能尽可能<strong>输出其原先给定的值</strong>。</td>
+<td>不要求有目标向量，网络通过自身的“ 经历”来学会某种功能。</td>
+</tr>
+<tr class="even">
+<td>(拟合给定的label)</td>
+<td>训练一个网络，使其产生的输出具有某种可理解的规律性。</td>
+</tr>
+<tr class="odd">
+<td>---</td>
+<td><strong>抽取样本所隐含的统计特征。</strong></td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 3%" />
+<col style="width: 24%" />
+<col style="width: 24%" />
+<col style="width: 24%" />
+<col style="width: 24%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Hebb训练方法（经验方法）</th>
+<th><span class="math inline">\(\delta\)</span>训练方法（分析方法）</th>
+<th>随机训练方法</th>
+<th>Kohonen训练方法</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>基本思路</td>
+<td>（突触修正假设）：如果两个相互联接的处理单元（结点）处于相同的激励电平（即输出值具有相同的符号），
+则突触传导增强（权重增强）。</td>
+<td>按差值（<span
+class="math inline">\(\delta\)</span>值）最小准则连续地修正各连接
+权重的强度。(差值最小：处理单元所要求的输出与当前实际
+输出间的差值，通过调节各权重值以达到最小)。</td>
+<td>采用概率和能量关系来调节权重：随机改变一个权重，计算改变后产生的最终能量，并按如下准则来确定是否接受此改变。</td>
+<td>在训练过程中结点（处理单元）参与彼此竞争，具有最大输出的结点为获胜者。</td>
+</tr>
+<tr class="even">
+<td>训练策略</td>
+<td>两结点 i 和 j 的连接权重将按它们的输 出值之积来改变：<span
+class="math inline">\(w_{ij}^{（t+1）}=w_{ij}^{(t)}+\eta y_i
+z_j\)</span>，其中<span class="math inline">\(y_i
+z_j\)</span>是结点<span class="math inline">\(i,j\)</span>的输出。</td>
+<td>梯度下降法：<span class="math inline">\(\Delta
+w_{ij}=-\eta\frac{\partial E}{\partial w_{ij}}\)</span></td>
+<td>• 若改变后，网络的能量降低，则接受这一改变。 •
+若改变后，能量没有降低，则根据一个预定的概率
+分布来保留（接受）这一改变。 •
+否则，拒绝这一改变，使权值恢复到原来的值。</td>
+<td>自组织竞争型神经网络： •
+获胜的结点具有抑制其竞争者的能力和激活其近邻结点的能力，只有获胜者和其近邻结点的权重才被允许调节。
+• 获胜者的近邻结点的范围在训练中是可变的。</td>
+</tr>
+<tr class="odd">
+<td>学习规则</td>
+<td>预先设置权饱和值，以防止输出和输出正负始终一致时出现权重无约束增长。<strong>前馈、无指导学习规则。</strong></td>
+<td>---</td>
+<td>典型的随机训练算法：模拟退火算法</td>
+<td>无监督训练方法</td>
+</tr>
+</tbody>
+</table>
+<h2 id="单层前馈神经网络单层感知机">6.3
+单层前馈神经网络(单层感知机)</h2>
+<h3 id="感知机结构">6.3.1 感知机结构</h3>
+<p>该网络由 d+1个输入结点（包含一个 bais 结点）和一 含有 c
+个结点的输出层构成，没有隐蔽层。</p>
+<ul>
+<li>input: <span
+class="math inline">\(\mathbf{x}=[1,x_1,x_2,\ldots,x_d]^T\)</span></li>
+<li>output: <span
+class="math inline">\(\mathbf{z}=[z_1,z_2,\ldots,z_c]^T\)</span></li>
+<li>weight set: <span class="math inline">\(W=\{w_{ij}\}\)</span></li>
+<li>输出层结点 <span class="math inline">\(j\)</span> : <span
+class="math inline">\(net_j=\sum^d_{i=0}w_{ij}x_i=\mathbf{w^T_j
+x}(x_0=1),\mathbf{w}_j=[w_{0j},w_{1j},\ldots,w_{dj}]^T\)</span></li>
+<li>输出结点 <span class="math inline">\(j\)</span> 输出值 <span
+class="math inline">\(z_j\)</span> : <span
+class="math inline">\(z_j=f(net_j)=f(\sum^d_{i=0}w_{ij}x_i)\)</span>,
+<span class="math inline">\(f\)</span>
+是激励(转移)函数，如符号函数、线性函数、非线性函数。</li>
+</ul>
+<h3 id="感知机训练">6.3.2 感知机训练</h3>
+<h4
+id="学习任务确定网络各个联接权重w_ij">学习任务：确定网络各个联接权重<span
+class="math inline">\(\{w_{ij}\}\)</span></h4>
+<p>分类任务：</p>
+<ul>
+<li>两类：输出层仅有一个结点(output:-1,+1)</li>
+<li>多类：<span class="math inline">\(t_j\)</span>
+可以为一个类别标签向量中的第 <span class="math inline">\(j\)</span>
+个元素。 <span class="math inline">\(t_j=1\)</span>: <span
+class="math inline">\(x_j\)</span>属于第 <span
+class="math inline">\(j\)</span> 类。</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241125221230798.png"
+alt="image-20241125221230798" />
+<figcaption aria-hidden="true">image-20241125221230798</figcaption>
+</figure>
+<h4 id="线性单元-转移函数是线性函数且处处可微">线性单元:
+转移函数是线性函数、且处处可微</h4>
+<p>训练：设输入端点加上偏置端点共有d+1个，训练样本总数为n，c
+为输出层结点个数。</p>
+<p><strong>输出值=期望值</strong>：<span
+class="math inline">\(z_j^k=t_j^k,k=1,\ldots,n\)</span>，<span
+class="math inline">\(z_j^k=w_0 x_0^k,w_1
+x_1^k,\ldots,w_{d+1,j}x_d^k,x_0^k=1\)</span></p>
+<p>线性单元训练:</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>直接加权</th>
+<th><span class="math inline">\(\delta\)</span>规则</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>对于第 <span class="math inline">\(j\)</span>个输出节点，其输出值
+$z_j^k $由输入向量 $x^k = [x_0^k, x_1^k, , x_d^k] $和权重向量计算得:
+<span class="math inline">\(z_j^k = w_{0j}x_0^k + w_{1j}x_1^k + \dots +
+w_{d+1,j}x_d^k\)</span></td>
+<td>定义误差函数为：<span class="math inline">\(E(W) = \frac{1}{2}
+\sum_{k,j} (t_j^k - z_j^k)^2 = \frac{1}{2} \sum_{k,j} \left(t_j^k -
+\sum_i w_{ij} x_i^k\right)^2\)</span></td>
+</tr>
+<tr class="even">
+<td>输出值<span class="math inline">\(z_j^k\)</span>需要满足: <span
+class="math inline">\(z_j^k = t_j^k, \quad j = 1, 2, \dots, c\)</span>
+,即需要解决<span class="math inline">\(c\)</span>个方程组，求解权重<span
+class="math inline">\(w_{ij}\)</span>。</td>
+<td>利用梯度下降法计算权重更新：<span class="math inline">\(\Delta
+w_{ij} = -\eta \frac{\partial E}{\partial w_{ij}} = \eta \sum_k
+\left(t_j^k - z_j^k\right) x_i^k\)</span></td>
+</tr>
+<tr class="odd">
+<td>适用于简单的线性回归问题。</td>
+<td>单个训练样本<span class="math inline">\(k\)</span>
+对权重的贡献为：<span class="math inline">\(\Delta w_{ij} = \eta (t_j^k
+- z_j^k) x_i^k = \eta \delta_j^k x_i^k, \quad \delta_j^k = t_j^k -
+z_j^k\)</span></td>
+</tr>
+</tbody>
+</table>
+<h4
+id="非线性单元转移函数是非线性函数且处处可微">非线性单元：转移函数是非线性函数，且处处可微。</h4>
+<table>
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>---</th>
+<th><span class="math inline">\(z_j^k=f(\text{net}_j^k),\ \text{net}_j^k
+= \sum_i w_{ij} x_i^k\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>误差函数</td>
+<td><span class="math inline">\(E(W) = \frac{1}{2} \sum_{k,j}
+\left(t_j^k - z_j^k\right)^2 = \frac{1}{2} \sum_{k,j} \left[t_j^k -
+f(\text{net}_j^k)\right]^2\)</span></td>
+</tr>
+<tr class="even">
+<td>梯度下降更新权重</td>
+<td><span class="math inline">\(\frac{\partial E}{\partial w_{ij}} =
+-\sum_k \frac{\partial E}{\partial z_j^k}\frac{\partial z_j^k}{\partial
+\text{net}_j^k} \frac{\partial \text{net}_j^k}{\partial w_{ij}}=-\sum_k
+\left[t_j^k - z_j^k\right] f&#39;(\text{net}_j^k) x_i^k\)</span></td>
+</tr>
+<tr class="odd">
+<td>单个样本 <span class="math inline">\(k\)</span>
+对权重更新的贡献</td>
+<td><span class="math inline">\(\Delta w_{ij} =-\eta\frac{\partial
+E}{\partial w_{ij}}= \eta \left[t_j^k - z_j^k\right]
+f&#39;(\text{net}_j^k) x_i^k\)</span></td>
+</tr>
+<tr class="even">
+<td>（<span class="math inline">\(\delta\)</span>规则）</td>
+<td><span class="math inline">\(\delta_j^k = \frac{-\partial E}{\partial
+\text{net}_j^k} = f&#39;(\text{net}_j^k) \left[t_j^k -
+z_j^k\right]\Rightarrow \Delta w_{ij} = \eta \delta_j^k
+x_i^k\)</span></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(t_j^k\)</span></td>
+<td>第 $k $ 个样本的目标输出</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(z_j^k\)</span></td>
+<td>第 $k $ 个样本的实际输出</td>
+</tr>
+<tr class="odd">
+<td>$f $</td>
+<td>非线性激活函数</td>
+</tr>
+<tr class="even">
+<td>$f' $</td>
+<td>激活函数的导数</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\eta\)</span></td>
+<td>学习率</td>
+</tr>
+</tbody>
+</table>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241125233648427.png"
+alt="image-20241125233648427" />
+<figcaption aria-hidden="true">image-20241125233648427</figcaption>
+</figure>
+<h5 id="例sigmoid函数">例：Sigmoid函数</h5>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102221731501.png"
+alt="image-20250102221731501" /> <span class="math display">\[
+z=f(net)=\frac{1}{1+e^{-net}}\\
+f&#39;(net)=\frac{-e^{-net}}{(1+e^{-net})^2}=\frac{1}{1+e^{-net}}(1-\frac{1}{1+e^{-net}})=z(1-z)\\
+\delta_j^k=z_j^k(1-z^k_j)[t_j^k-z^k_j]
+\]</span></p>
+<h4 id="实现算法">实现算法</h4>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102222029472.png"
+alt="image-20250102222029472" />
+<figcaption aria-hidden="true">image-20250102222029472</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102222043379.png"
+alt="image-20250102222043379" />
+<figcaption aria-hidden="true">image-20250102222043379</figcaption>
+</figure>
+<h2 id="多层感知器">6.4 多层感知器</h2>
+<h3 id="多层感知机">6.4.1 多层感知机</h3>
+<p>以三层网络为例：</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241125233747111.png"
+alt="image-20241125233747111" />
+<figcaption aria-hidden="true">image-20241125233747111</figcaption>
+</figure>
+<p><strong>目标（Hope）：最小化输出与目标之间的误差。</strong>希望网络的输出值
+<span class="math inline">\(z_j\)</span> 接近目标值 <span
+class="math inline">\(t_j\)</span>，即对于所有样本，满足：<span
+class="math inline">\(z_1≈t_1,  z_2≈t_2,  ⋯ ,  z_c≈t_c\)</span>通过优化权重，使得损失函数趋于零：<span
+class="math inline">\(J(w) = \frac{1}{2} \sum_{j=1}^c (t_j - z_j)^2
+\approx 0\)</span>.</p>
+<table>
+<colgroup>
+<col style="width: 53%" />
+<col style="width: 46%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>网络描述</th>
+<th>每个样本k经历的计算</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>对第 k 个样本，隐含层 h 结点的输入加权和</td>
+<td><span class="math inline">\(\text{net}_h^k=\sum_i
+w_{ih}x_i^k\)</span></td>
+</tr>
+<tr class="even">
+<td>经过激励，隐含层 h 结点的输出</td>
+<td><span class="math inline">\(y_h^k=f(\text{net}_h^k)\)</span></td>
+</tr>
+<tr class="odd">
+<td>输出层 j 结点的输入加权和</td>
+<td><span class="math inline">\(\text{net}_j^k=\sum_h
+w_{hj}y_h^k\)</span></td>
+</tr>
+<tr class="even">
+<td>经过激励，输出层 j 结点的输出</td>
+<td><span class="math inline">\(z_j^k=f(\text{net}_j^k)\)</span></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Q:
+最终结点的输出是否是数据依赖的？（即必须一步步地计算出前馈的结果才能得到最终输出）</strong>
+<span class="math display">\[
+Z_j^k=f(\text{net}_j^k)=f(\sum_h w_{hj}y_h^k)=f(\sum_h w_{hj}f(\sum_i
+w_{ih}x_i^k))
+\]</span> 计算：层内并行，层间串行。</p>
+<p>前向传播的本质：逐层传递和依赖，最终输出是所有前一层计算结果的非线性组合。</p>
+</blockquote>
+<h3 id="bp1985-supervised">6.4.2 BP(1985, Supervised)</h3>
+<p><strong>基本原理</strong>
+：利用输出后的误差来估计输出层的前一层的误差，再用这个误差估计更前一层的误差，如此一层一层地反传下去，从而获得所有其它各层的误差估计。</p>
+<p>误差函数：对第k个样本， <span class="math display">\[
+E(\mathbf{w})^k=\frac12 \sum_j(t_j^k-z_j^k)^2=\frac12
+\sum_j\left(t_j^k-f(\sum_h w_{hj}f(\sum_i w_{ih}x_i^k))\right)^2
+\]</span> <img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241126092134523.png"
+alt="image-20241126092134523" /></p>
+<h4 id="隐含层--输出层">隐含层--&gt;输出层</h4>
+<p>误差能量是所有的样本提供的。</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241126094813703.png"
+alt="image-20241126094813703" /> <span class="math display">\[
+\Delta w_{hj}=-\eta\frac{\partial E}{\partial
+w_{hj}}=-\eta\sum_k\frac{\partial
+E}{\partial\text{net}_j^k}\frac{\partial\text{net}_j^k}{\partial
+w_{hj}}\\
+\text{net}_j^k=\sum_h
+w_{hj}y_h^k,E(\mathbf{w})^k=J(\mathbf{w})^k=\frac12
+\sum_j(t_j^k-z_j^k)^2=\frac12 \sum_j(t_j^k-f(net_j^k))^2\\
+\Delta
+w_{hj}=-\eta\sum_k(t_j^k-z_j^k)f&#39;(\text{net}_j^k)y_{h}^k=-\eta\sum_k\delta_j^k
+y_h^k\\
+\]</span> 其中<span class="math inline">\(\delta_j^k=-\frac{\partial
+E}{\partial
+w_{hj}}=f&#39;(net_j^k)(t_j^k-z_j^k)=f&#39;(net_j^k)\Delta_j^k\)</span></p>
+<p>输出层的误差：<span
+class="math inline">\(\Delta_j^k=t_j^k-z_j^k\)</span></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241126094959847.png"
+alt="image-20241126094959847" />
+<figcaption aria-hidden="true">image-20241126094959847</figcaption>
+</figure>
+<p>第k个样本对权重<span
+class="math inline">\(w_{hj}\)</span>的贡献：<span
+class="math inline">\(\Delta w_{hj}|_{\text{sample k}}=\eta\delta_j^k
+y_h^k,
+y_h^k=f(\text{net}_h^k)\)</span>，误差在权重所联边的指向结点处计算，误差大小=该输出层节点收集到的误差*激励函数对“该节点加权和的导数”。它结合了
+<strong>前向传播的信号</strong> 和 <strong>反向传播的误差</strong>。</p>
+<p><strong>误差反传与权重更新</strong>：</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241126101610119.png"
+alt="image-20241126101610119" />
+<figcaption aria-hidden="true">image-20241126101610119</figcaption>
+</figure>
+<h4 id="输入层--隐含层">输入层--&gt;隐含层</h4>
+<p><span class="math display">\[
+E(\mathbf{w})=\sum_k
+J(\mathbf{w})=\frac12\sum_{k,j}\left(t_j^k-f\left(\sum_h w_{hj}f(\sum_i
+w_{ih}x_i^k)\right)\right)^2
+\]</span></p>
+<p>更新权重<span class="math inline">\(w_{ih}\)</span>: <span
+class="math display">\[
+\begin{align}\Delta w_{ih}=-\eta\frac{\partial
+E}{\partial(w_{ih})}&amp;=-\eta\sum_{k,j}\frac{\partial E}{\partial
+z_j^k}\frac{\partial z_j^k}{\partial w_{ih}}\\
+&amp;=-\eta\sum_{k,j}\frac{\partial
+E}{\partial{z_j^k}}\frac{\partial{z_j^k}}{\partial{\text{net}_j^k}}\frac{\partial{\text{net}_j^k}}{\partial
+w_{ih}}\\
+&amp;=-\eta\sum_{k,j}\frac{\partial
+E}{\partial{z_j^k}}\frac{\partial{z_j^k}}{\partial{\text{net}_j^k}}\frac{\partial{\text{net}_j^k}}{\partial{y_h^k}}\frac{\partial{y_h^k}}{\partial
+w_{ih}}\\
+&amp;=-\eta\sum_{k,j}\frac{\partial
+E}{\partial{z_j^k}}\frac{\partial{z_j^k}}{\partial{\text{net}_j^k}}\frac{\partial{\text{net}_j^k}}{\partial{y_h^k}}\frac{\partial{y_h^k}}{\partial{\text{net}_h^k}}\frac{\partial{\text{net}_h^k}}{\partial
+w_{ih}}
+\end{align}
+\]</span> 综上，<span class="math inline">\(\Delta
+w_{ih}=-\eta\sum_{k,j}\frac{\partial E}{\partial
+\text{net}_h^k}\frac{\partial \text{net}_h^k}{\partial
+w_{ih}}\)</span></p>
+<p>现在对上述的链式法则进行计算：</p>
+<table>
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>网络描述</th>
+<th>每个样本k经历的计算</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>对第 k 个样本，隐含层 h 结点的输入加权和</td>
+<td><span class="math inline">\(\text{net}_h^k=\sum_i
+w_{ih}x_i^k\)</span></td>
+</tr>
+<tr class="even">
+<td>经过激励，隐含层 h 结点的输出</td>
+<td><span class="math inline">\(y_h^k=f(\text{net}_h^k)\)</span></td>
+</tr>
+<tr class="odd">
+<td>输出层 j 结点的输入加权和</td>
+<td><span class="math inline">\(\text{net}_j^k=\sum_h
+w_{hj}y_h^k\)</span></td>
+</tr>
+<tr class="even">
+<td>经过激励，输出层 j 结点的输出</td>
+<td><span class="math inline">\(z_j^k=f(\text{net}_j^k)\)</span></td>
+</tr>
+<tr class="odd">
+<td>误差函数</td>
+<td><span class="math inline">\(E(\mathbf{w})^k=J(\mathbf{w})^k=\frac12
+\sum_j(t_j^k-z_j^k)^2\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><span class="math display">\[
+\begin{align}
+\Delta w_{ih}&amp;=\left(-\eta\sum_{k,j}\frac{\partial
+E}{\partial{z_j^k}}\frac{\partial{z_j^k}}{\partial{\text{net}_j^k}}\right)\frac{\partial{\text{net}_j^k}}{\partial{y_h^k}}\frac{\partial{y_h^k}}{\partial{\text{net}_h^k}}\frac{\partial{\text{net}_h^k}}{\partial
+w_{ih}}\\
+&amp;=\left(\eta\sum_{k,j}\delta_j^k\right)w_{hj}f&#39;(\text{net}_h^k)x_i^k\\
+&amp;=\eta\sum_k\left(f&#39;(\text{net}_h^k)\sum_j\delta_j^kw_{hj}\right)x_i^k\\
+&amp;=\eta\sum_k\delta_h^k x_i^k
+\end{align}
+\]</span></p>
+<blockquote>
+<p><span class="math inline">\(\text{net}_j^k=\sum_h
+w_{hj}y_h^k\)</span>：对<span
+class="math inline">\(\frac{\partial{\text{net}_j^k}}{\partial{y_h^k}}\)</span>求导，只会保留其中与h有关的项，所以没有<span
+class="math inline">\(\sum_h\)</span>了。</p>
+<p>其中，<span class="math inline">\(\delta_h^k=-\frac{\partial
+E}{\partial\text{net}_h^k}=f&#39;(\text{net}_h^k)\sum_j\delta_j^kw_{hj}=f&#39;(\text{net}_h^k)\Delta_h^k\)</span>，<span
+class="math inline">\(\Delta_h^k=\sum_j \delta_j^k w_{hj}\)</span></p>
+</blockquote>
+<p>第k个样本对权重<span
+class="math inline">\(w_{ih}\)</span>的贡献：<span
+class="math inline">\(\Delta w_{ih}|_{\text{sample k}}=\eta\delta_h^k
+x_i^k\)</span></p>
+<blockquote>
+<p>没毛病：我疑心的一个点是<span
+class="math inline">\(\sum_k\)</span>时有时无，如果只针对sample
+k来说，确实不存在<span class="math inline">\(\sum_k\)</span>,但是<span
+class="math inline">\(\Delta
+w_{ih}\)</span>是由所有的样本组成的，所以会有<span
+class="math inline">\(\sum_k\)</span>。</p>
+</blockquote>
+<h4 id="网络训练-1">网络训练</h4>
+<ul>
+<li>BP 算法通过前向传播计算输出，再通过后向传播逐层收集误差信号 <span
+class="math inline">\(\delta\)</span>，用以修正权重。</li>
+<li>权重更新的幅度由起始结点的输出和指向结点的误差信号共同决定。</li>
+</ul>
+<p><strong>权重更新</strong>：在 BP
+算法中，对任意层权重的加权修正量的一般形式为： <span
+class="math display">\[
+\Delta w_{in \to o} = \eta \sum_{\text{all samples}} \delta_o y_{in}
+\]</span> - <span class="math inline">\(w_{in \to o}\)</span>
+表示从起始结点 <span class="math inline">\(in\)</span> 到指向结点 <span
+class="math inline">\(o\)</span> 的权重。 - <span
+class="math inline">\(\eta\)</span> 是学习率。 - <span
+class="math inline">\(\delta_o\)</span> 是指向结点的误差信号。 - <span
+class="math inline">\(y_{in}\)</span> 是起始结点的输出。</p>
+<p><strong>单个样本对权重更新的贡献</strong>：对于单个训练样本，其权重更新公式为：
+<span class="math display">\[
+\Delta w_{in \to o} = \eta \cdot \delta_o \cdot y_{in} = \eta \cdot
+\left( \sum_h w_{o \to h} \left[\delta_o\right]_h \right) \cdot y_{in}
+\]</span> - <span class="math inline">\(\sum_h w_{o \to h}
+\left[\delta_o\right]_h\)</span> 表示从后层节点 <span
+class="math inline">\(h\)</span> 收集的误差信号。</p>
+<ul>
+<li><p>下标 <span class="math inline">\(in\)</span> 和 <span
+class="math inline">\(o\)</span>
+分别指“待更新权重”所连接的起始结点和指向结点。</p></li>
+<li><p><span class="math inline">\(y_{in}\)</span>
+是起始结点的实际输出。</p></li>
+<li><p><span class="math inline">\(\delta_o\)</span>
+表示指向结点的误差（由后一层收集得到）。</p></li>
+</ul>
+<blockquote>
+<p><strong>Q: loss function不仅限于均方误差 (MSE)，还可能是
+Cross-Entropy loss, Softmax loss, Hinge
+loss等等，这是否会影响我们上述得到的权重更新公式？</strong></p>
+<p><strong>A: 不同的目标函数（如 MSE、交叉熵）会改变误差信号 <span
+class="math inline">\(\frac{\partial E}{\partial s_j}\)</span>
+的计算，但它们的权重更新形式仍遵循相同的梯度传播机制。</strong></p>
+<p>如图：</p>
+<ol type="1">
+<li>节点 <span class="math inline">\(i\)</span> 输出 <span
+class="math inline">\(s_i\)</span>，传递给所有指向的下游节点 <span
+class="math inline">\(j\)</span>。</li>
+<li>每个下游节点 <span class="math inline">\(j\)</span> 收集到的梯度
+<span class="math inline">\(\frac{\partial E}{\partial s_j}\)</span>
+会通过权重 <span class="math inline">\(w_{ij}\)</span> 和激活函数导数
+<span class="math inline">\(f&#39;(\text{net}_j)\)</span> 反馈给节点
+<span class="math inline">\(i\)</span>。</li>
+</ol>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241126115907759.png"
+alt="image-20241126115907759" />
+<figcaption aria-hidden="true">image-20241126115907759</figcaption>
+</figure>
+<p>对于节点 <span class="math inline">\(i\)</span> 的输出 <span
+class="math inline">\(s_i\)</span>，其梯度 <span
+class="math inline">\(\frac{\partial E}{\partial s_i}\)</span>
+的计算公式为：<span class="math inline">\(\frac{\partial E}{\partial
+s_i} = \sum_{j \in N(i)} \frac{\partial E}{\partial s_j} \cdot
+\frac{\partial s_j}{\partial s_i}\)</span></p>
+<ul>
+<li><span class="math inline">\(N(i)\)</span> 表示所有从节点 <span
+class="math inline">\(i\)</span> 指向的下游节点集合。</li>
+<li><span class="math inline">\(\frac{\partial E}{\partial s_j}\)</span>
+是节点 <span class="math inline">\(j\)</span> 的误差信号。</li>
+<li><span class="math inline">\(\frac{\partial s_j}{\partial
+s_i}\)</span> 是节点 <span class="math inline">\(j\)</span> 对节点 <span
+class="math inline">\(i\)</span> 输出的依赖关系，通常是权重 <span
+class="math inline">\(w_{ij}\)</span>。</li>
+</ul>
+<p>权重 <span class="math inline">\(w_{ij}\)</span>
+的梯度可以通过链式法则分解为：<span class="math inline">\(\frac{\partial
+E}{\partial w_{ij}} = \frac{\partial E}{\partial s_j} \cdot
+\frac{\partial s_j}{\partial \text{net}_j} \cdot \frac{\partial
+\text{net}_j}{\partial w_{ij}}\)</span></p>
+<ul>
+<li><span class="math inline">\(\frac{\partial E}{\partial
+s_j}\)</span>：目标函数对节点 <span class="math inline">\(j\)</span>
+输出的梯度。</li>
+<li><span class="math inline">\(\frac{\partial s_j}{\partial
+\text{net}_j}\)</span>：激活函数的导数 <span
+class="math inline">\(f&#39;(\text{net}_j)\)</span>。</li>
+<li><span class="math inline">\(\frac{\partial \text{net}*j}{\partial
+w*{ij}} = s_i\)</span>：节点 <span class="math inline">\(j\)</span>
+的输入加权和对 <span class="math inline">\(w_{ij}\)</span>
+的梯度，等于节点 <span class="math inline">\(i\)</span> 的输出。</li>
+</ul>
+</blockquote>
+<h4 id="两种实现随机更新批量更新">两种实现：随机更新&amp;批量更新</h4>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102222816975.png"
+alt="image-20250102222816975" />
+<figcaption aria-hidden="true">image-20250102222816975</figcaption>
+</figure>
+<table>
+<thead>
+<tr class="header">
+<th>特性</th>
+<th>随机更新（Stochastic）</th>
+<th>批量更新（Batch）</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>更新频率</strong></td>
+<td>每个样本更新一次</td>
+<td>每轮（所有样本）更新一次</td>
+</tr>
+<tr class="even">
+<td><strong>计算开销</strong></td>
+<td>低，每次只处理一个样本</td>
+<td>高，每轮需要遍历所有样本</td>
+</tr>
+<tr class="odd">
+<td><strong>更新稳定性</strong></td>
+<td>低，容易受噪声影响</td>
+<td>高，更新更平滑</td>
+</tr>
+<tr class="even">
+<td><strong>收敛速度</strong></td>
+<td>快，适合大规模数据集</td>
+<td>慢，但适合小规模数据集</td>
+</tr>
+<tr class="odd">
+<td><strong>适用场景</strong></td>
+<td>在线学习、大规模数据</td>
+<td>小批量或全数据集训练</td>
+</tr>
+</tbody>
+</table>
+<p><strong>随机更新（Stochastic Backpropagation）</strong></p>
+<ul>
+<li><p>适合于超大规模数据集（如在线学习场景），因为每次只处理一个样本，内存开销小。</p></li>
+<li><p>收敛速度快，但权重更新可能受噪声影响，导致更新不稳定。</p></li>
+<li><p>每次随机选取一个样本（pattern），立即更新权重。</p></li>
+<li><p>更新权重的过程是样本逐步驱动的。</p></li>
+</ul>
+<p>循环：</p>
+<ul>
+<li>从数据集中随机选取一个样本 <span
+class="math inline">\(x^k\)</span>。</li>
+<li>根据选取的样本计算对应的误差信号 <span
+class="math inline">\(\delta_j^k, \delta_h^k\)</span>。</li>
+<li>更新权重： <span class="math inline">\(w_{hj} \gets w_{hj} + \eta
+\delta_j^k y_h^k\)</span> ，<span class="math inline">\(w_{ih} \gets
+w_{ih} + \eta \delta_h^k x_i^k\)</span></li>
+<li>检查停止条件<span class="math inline">\(\|\nabla J(\mathbf{w})\|
+&lt; \theta\)</span>，即目标函数梯度是否小于阈值。</li>
+<li>如果满足条件，停止；否则继续。</li>
+<li>返回最终的权重 <span
+class="math inline">\(\mathbf{w}\)</span>。</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102222844149.png"
+alt="image-20250102222844149" />
+<figcaption aria-hidden="true">image-20250102222844149</figcaption>
+</figure>
+<p><strong>批量更新（Batch Backpropagation）</strong></p>
+<ul>
+<li><p>适用于中小规模数据集，或者对更新的稳定性要求较高的场景。</p></li>
+<li><p>每次需要遍历整个数据集，内存和计算开销较大，但更新更加平滑，受单个样本的噪声影响较小。</p></li>
+<li><p>在所有样本都完成一次前向传播和误差计算后，再一次性更新权重。</p></li>
+<li><p>权重更新更加稳定。</p></li>
+</ul>
+<ol type="1">
+<li><p>循环：</p>
+<ul>
+<li><p>每轮训练（epoch）开始时，将权重增量初始化为零： <span
+class="math inline">\(\Delta w_{hj} = 0, \quad \Delta w_{ih} =
+0\)</span></p></li>
+<li><p>遍历所有样本</p>
+<ul>
+<li>对每个样本<span class="math inline">\(x^k\)</span>计算误差信号 <span
+class="math inline">\(\delta_j^k, \delta_h^k\)</span>。</li>
+</ul></li>
+</ul></li>
+</ol>
+<ul>
+<li><p>累积权重更新量：$w_{hj} w_{hj} + <em>j^k y_h^k <span
+class="math inline">\(，\)</span>w</em>{ih} w_{ih} + _h^k
+x_i^k$</p></li>
+<li><p>所有样本处理完后，一次性更新权重： <span
+class="math inline">\(w_{hj} \gets w_{hj} + \Delta w_{hj}, \quad w_{ih}
+\gets w_{ih} + \Delta w_{ih}\)</span></p></li>
+<li><p>检查停止条件 <span class="math inline">\(\|\nabla J(\mathbf{w})\|
+&lt; \theta\)</span>，如果满足条件，停止；否则进入下一轮训练。</p></li>
+</ul>
+<ol start="2" type="1">
+<li>返回最终的权重 <span
+class="math inline">\(\mathbf{w}\)</span>。</li>
+</ol>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102222852949.png"
+alt="image-20250102222852949" />
+<figcaption aria-hidden="true">image-20250102222852949</figcaption>
+</figure>
+<h2 id="bp算法讨论">6.5 BP算法讨论</h2>
+<h3 id="准则函数">6.5.1 准则函数</h3>
+<blockquote>
+<p>分类问题：</p>
+<ul>
+<li>对于模式分类问题，假定其类别数为 c，通常输出层的结点个数为 c 。</li>
+<li>对于训练样本 x，如果它属于第 i 类，则其目标值可以定义为一个 c
+维向量，该向量只有第 i 个元素为1，其余元素的值均为 0
+(或-1)。这些值分别按序分配给 c 个 输出结点。(one-hot)</li>
+<li><strong>one-hot vectors</strong>: A onehot vector is a vector which
+is 0 in most dimensions, and 1 in a single dimension</li>
+</ul>
+</blockquote>
+<p>准则函数定义：通常是在优化问题中用来衡量某种“优劣”或“质量”的函数。它的作用是帮助我们判断某个解是否是我们想要的最优解。简而言之，<strong>准则函数就是用来评价一个解的好坏的“评分标准”。</strong></p>
+<p>常用的准则函数：MSE，Cross-Entropy，Minkowski</p>
+<p><img src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241127114846295.png" alt="image-20241127114846295" style="zoom: 67%;" /></p>
+<p><strong>激励(转移)函数的特性：非线性、连续可导、单调</strong>(最好)。</p>
+<blockquote>
+<p>激励函数最好是单调的。否则，误差函数会包含更多的局部极小值点，从而增加训练难度。常用的函数是：<code>tanh</code>,<code>sigmoid</code>,<code>ReLU</code>等。</p>
+</blockquote>
+<h3 id="隐含层数和结点数">6.5.3 隐含层数和结点数</h3>
+<p>(Heche-Nielsen)证明：当各个结点具有不同的阈值时，具有一个隐含层的网络可以表示任意函数。具有较强的理论指导意义。</p>
+<blockquote>
+<p>感觉此处不是很重要，主要是说在激励函数中采取类似Sigmoid函数+隐含层结点较多=可以拟合任意的函数。</p>
+</blockquote>
+<p>结点选择：</p>
+<ul>
+<li>多：判决界面仅包含训练样本点而失去推广能力(过拟合)。</li>
+<li>少：网络难以建立复杂的判别界面(欠拟合)。</li>
+</ul>
+<p>所以对隐含层的结点设置一般较大：等到网络训练之后，再考察有没有减少结点数的可能。</p>
+<ul>
+<li>压缩神经网络</li>
+<li>稀疏连接的神经网络</li>
+<li>dropout技术</li>
+</ul>
+<h3 id="初始权重与正则项">6.5.5 初始权重与正则项</h3>
+<p>在批处理权重更新算法中，初始权重的更新值<span
+class="math inline">\(\Delta w_{ij}\neq
+0\)</span>，<strong>否则不会产生学习</strong>。</p>
+<p><strong>初始方法选择</strong>:</p>
+<ol type="1">
+<li>随机初始化：从均匀分布or高斯分布红随机选择初始值。</li>
+</ol>
+<p><span class="math display">\[
+w_{ij}\sim U(-w_0,w_0)\\
+w_{ij}\sim N(\mu=0,\sigma=w_0)
+\]</span></p>
+<ol start="2" type="1">
+<li>预训练初始化</li>
+</ol>
+<table>
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 12%" />
+<col style="width: 20%" />
+<col style="width: 55%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>初始化方法</th>
+<th>激活函数</th>
+<th>分布类型</th>
+<th>公式</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Xavier 初始化</td>
+<td>Sigmoid, Tanh</td>
+<td>均匀分布</td>
+<td><span class="math inline">\(w_{ij} \sim
+\mathcal{U}\left(-\frac{1}{\sqrt{n}}, \frac{1}{\sqrt{n}}\right)\)</span>
+或 <span
+class="math inline">\(w_{ij}\sim\mathcal{U}\left(-\frac{\sqrt{6}}{\sqrt{n+m}},
+\frac{\sqrt{6}}{\sqrt{n+m}}\right)\)</span></td>
+</tr>
+<tr class="even">
+<td>He 初始化</td>
+<td>ReLU</td>
+<td>正态分布</td>
+<td><span class="math inline">\(w_{ij} \sim \mathcal{N}(0,
+\sqrt{\frac{2}{n}})\)</span></td>
+</tr>
+<tr class="odd">
+<td>预训练初始化</td>
+<td>任意</td>
+<td>通过预训练得到权重分布</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p><strong>目标函数正则化</strong>：</p>
+<ul>
+<li><p>防止出现overfitting.</p></li>
+<li><p>增加目标函数的约束，防止权重变得过大，从而提高模型的泛化能力。</p></li>
+</ul>
+<p>在原目标函数 <span class="math inline">\(E(w)\)</span>
+的基础上加入一个正则化项： <span class="math display">\[
+E_{\text{new}}(w) = E(w) + \frac{\varepsilon}{2\eta} w^T w
+\]</span>
+正则化项的作用是让权重值尽可能小，但不为零，这样可以避免过拟合。优化时，我们对
+$E_{}(w) $进行梯度下降： <span class="math display">\[
+\begin{align}
+w_{ij}&amp; = w_{ij} - \eta \frac{\partial E_{\text{new}}(w)}{\partial
+w_{ij}}\Leftarrow
+\frac{\partial E_{\text{new}}(w)}{\partial w_{ij}} = \frac{\partial
+E(w)}{\partial w_{ij}} + \frac{\varepsilon}{\eta} w_{ij}\\
+&amp;= w_{ij} - \eta \left(\frac{\partial E(w)}{\partial w_{ij}} +
+\frac{\varepsilon}{\eta} w_{ij}\right)\\
+&amp;= w_{ij}(1 - \varepsilon) - \eta \frac{\partial E(w)}{\partial
+w_{ij}}
+\end{align}
+\]</span></p>
+<h3 id="学习率和改进梯度下降">6.5.7 学习率和改进梯度下降</h3>
+<p>学习率：过小会收敛慢、过大会不稳定。</p>
+<h4 id="学习率调整策略">学习率调整策略</h4>
+<p>在实际训练中，如何调整学习率是一个关键问题。可以通过以下策略判断学习率的优劣。</p>
+<ul>
+<li>检查误差是否下降：如果目标函数值 <span
+class="math inline">\(J(w)\)</span>
+没有下降，说明学习率过大，需要减小<span
+class="math inline">\(\eta\)</span>。</li>
+<li>观察下降趋势：如果连续几次迭代都降低了误差，说明当前学习率可能较保守，可以适当增加
+<span class="math inline">\(\eta\)</span>。</li>
+</ul>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102225607645.png"
+alt="image-20250102225607645" /></th>
+<th><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102225627781.png"
+alt="image-20250102225627781" /></th>
+<th><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102225651121.png"
+alt="image-20250102225651121" /></th>
+<th><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102225711799.png"
+alt="image-20250102225711799" /></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>步长过小，优化路径慢慢向最优点靠近。</td>
+<td>步长合适，优化路径快速而平稳地到达最优点。</td>
+<td>步长较大，路径在最优点附近震荡。</td>
+<td>步长过大，路径直接发散。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="改进梯度下降">改进梯度下降</h4>
+<h5 id="sgd附加冲量项-gradient-descent-with-momentum">SGD+(附加冲量项,
+gradient descent with momentum)</h5>
+<ul>
+<li>冲量项会记录前几步的梯度信息，使当前更新方向不仅依赖于当前梯度，还受历史梯度的影响。</li>
+<li>可以帮助优化在平坦区域加速收敛，同时在陡峭区域减少震荡。</li>
+</ul>
+<p>权重更新公式为： <span class="math display">\[
+m_t = \beta m_{t-1} + (1-\beta) g_t,\quad g_t = \frac{\partial
+E(w)}{\partial w}\vert_{w=w_t}\\
+w_{t+1} = w_t - \eta m_t
+\]</span> <span
+class="math inline">\(m_t\)</span>：一阶动量变量，由当前梯度和过去梯度的累积贡献共同决定。<span
+class="math inline">\(\beta\)</span>：冲量系数，通常取值为
+0.9。<strong>迭代序列更平滑、通过调整<span
+class="math inline">\(\beta\)</span>尽快逃离饱和区。</strong></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102231634441.png"
+alt="image-20250102231634441" />
+<figcaption aria-hidden="true">image-20250102231634441</figcaption>
+</figure>
+<h5 id="adaptive-moment-optimization-adam">Adaptive Moment Optimization
+(Adam)</h5>
+<p><code>Adam（Adaptive Moment Estimation）</code>是梯度下降的一种改进算法，结合了：</p>
+<ul>
+<li>Momentum（冲量项），用于加速收敛。</li>
+<li>RMSProp（自适应学习率），为每个参数动态调整学习率。</li>
+</ul>
+<p><span class="math display">\[
+m_t = \beta_1 m_{t-1} + (1-\beta_1) g_t\\
+v_t = \beta_2 v_{t-1} + (1-\beta_2) g_t^2\\
+w_{t+1} = w_t - \eta \frac{m_t}{\sqrt{v_t} + \epsilon}
+\]</span></p>
+<p>其中<span
+class="math inline">\(m_t\)</span>是<strong>一阶动量</strong>（冲量项），<span
+class="math inline">\(v_t\)</span>是<strong>二阶动量</strong>（梯度平方的累积）。</p>
+<p><span
+class="math inline">\(\beta_1,\beta_2\)</span>分别是一阶动量的衰减率，通常为
+0.9；二阶动量的衰减率，通常为 0.999。</p>
+<p><span
+class="math inline">\(\epsilon\)</span>是防止除零的小常数，通常取 <span
+class="math inline">\(10^{-8}\)</span>。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102232106281.png"
+alt="image-20250102232106281" />
+<figcaption aria-hidden="true">image-20250102232106281</figcaption>
+</figure>
+<h3 id="存在问题">6.5.10 存在问题</h3>
+<p>尽管BP训练算法应用得很广泛，但其训练过程存在不确定性:</p>
+<table>
+<thead>
+<tr class="header">
+<th>完全难以训练</th>
+<th>训练时间过长</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>网络的麻痹现象</td>
+<td>尤其对复杂问题需要很长时间训练</td>
+</tr>
+<tr class="even">
+<td>梯度消失</td>
+<td>可能选取了不恰当的训练速<span
+class="math inline">\(\eta\)</span></td>
+</tr>
+<tr class="odd">
+<td>局部最小和鞍点</td>
+<td>---</td>
+</tr>
+</tbody>
+</table>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102232432470.png"
+alt="image-20250102232432470" />
+<figcaption aria-hidden="true">image-20250102232432470</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102233034591.png"
+alt="image-20250102233034591" />
+<figcaption aria-hidden="true">image-20250102233034591</figcaption>
+</figure>
+<h2 id="径向基函数网络">6.6 径向基函数网络</h2>
+<p><code>径向基函数网络(Radial Basis Function networks, RBF networks)</code></p>
+<ol type="1">
+<li>三层NN，使用径向基函数<span
+class="math inline">\(\phi_h(x)\)</span>作为隐含层计算单元。</li>
+<li>对模式分类或函数近似任务，径向基函数是一个较好的网络模型</li>
+<li>与多层神经网络相似，RBF可以对任意连续的非线性函数进行近似，可以处理系统内的难以解析的规律性</li>
+<li>收敛速度比通常的多层神经网络更快</li>
+</ol>
+<h4 id="网络结构">网络结构</h4>
+<p>使用径向基函数的线性组合表示每类的判别函数： <span
+class="math display">\[
+z_j=\sum_{h = 1}^{H}w_{jh}\phi_h(x),\quad j = 1,2,\cdots,c
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\phi_h(x)\)</span>:为径向基函数，如<span
+class="math inline">\(\phi_h(x)=\exp\left(-\frac{\|x -
+m_h\|^2}{2\sigma^2}\right)\)</span>；<span
+class="math inline">\(x\)</span>到<span
+class="math inline">\(m_h\)</span>之间距离的单调减函数，表示<span
+class="math inline">\(x\)</span>与<span
+class="math inline">\(m_h\)</span>的相似度。</li>
+<li><span class="math inline">\(m_h\)</span>：径向基函数的中心。</li>
+<li>RBF网络可看作一种<strong>广义线性判别函数</strong>，也与核方法有密切关系。</li>
+</ul>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102234320706.png"
+alt="image-20250102234320706" /><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102234338705.png"
+alt="image-20250102234338705" /></p>
+<h3 id="学习过程">学习过程</h3>
+<p>通常采用两步方法训练：</p>
+<ol type="1">
+<li>确定径向基函数的个数、中心
+<ul>
+<li>小规模数据：用全部样本</li>
+<li>大规模数据：采样、聚类</li>
+</ul></li>
+<li>确定隐层到输出层的<strong>权重、高斯核窗宽</strong>
+<ul>
+<li>BP等算法根据预测结果与真实标签的误差，调整权重值，使误差最小化。</li>
+</ul></li>
+</ol>
+<p><strong>端到端方法</strong>可以优化整个网络：使用BP算法学习径向基函数中心、窗宽、隐层到输出层的权重。</p>
+<blockquote>
+<p><strong>Q: 高斯核窗宽?</strong></p>
+<p>A:
+高斯核窗宽（即径向基函数的带宽）控制了隐藏层每个神经元的“感受野”大小。可以通过
+BP 算法来学习，使其适应数据分布的特点。</p>
+<ul>
+<li>窗宽小：每个神经元的感受范围较小，更注重局部特征。</li>
+<li>窗宽大：感受范围较大，更注重全局特征。</li>
+</ul>
+<p><strong>Q: 端到端？</strong></p>
+<p>传统的 RBF 网络设计通常需要手动选择：</p>
+<ul>
+<li>隐藏层中心的位置（常通过聚类算法如 K-Means）。</li>
+<li>核函数的窗宽。</li>
+</ul>
+<p>端到端方法通过BP算法一步优化：隐含层中心位置、窗宽大小、隐含层到输出层的权重。</p>
+</blockquote>
+<p><strong>网络结构简化与泛化</strong></p>
+<ul>
+<li>对于大规模数据，隐含层的结点个数会很大。采用聚类技术对数据进行聚类，将聚类中心作为径向基函数的中心。这样简化了网络规模，提高计算效率。</li>
+<li>经过聚类处理，还会防止overfitting，增强网络的泛化能力，提高精度。</li>
+<li>输出层结点也可以采用非线性激活函数。</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102234437061.png"
+alt="image-20250102234437061" />
+<figcaption aria-hidden="true">image-20250102234437061</figcaption>
+</figure>
+<h2 id="反馈神经网络">6.7 反馈神经网络</h2>
+<blockquote>
+<p><strong>前馈网络与反馈网络的对比</strong>：</p>
+<table>
+<thead>
+<tr class="header">
+<th>特点</th>
+<th>前馈网络</th>
+<th>反馈网络</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>信息流向</td>
+<td>单向（输入到输出）</td>
+<td>允许反馈回路</td>
+</tr>
+<tr class="even">
+<td>计算过程</td>
+<td>静态，逐层处理</td>
+<td>动态，状态不断调整</td>
+</tr>
+<tr class="odd">
+<td>稳定性</td>
+<td>不涉及吸引子</td>
+<td>最终收敛到稳定状态（吸引子）</td>
+</tr>
+<tr class="even">
+<td>代表模型</td>
+<td>多层感知机、CNN</td>
+<td>Hopfield 网络、Boltzmann 机</td>
+</tr>
+<tr class="odd">
+<td>应用场景</td>
+<td>分类、回归等</td>
+<td>联想记忆、生成模型、优化问题</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p><strong>反馈网络</strong>是一种信息流动具有反馈回路的神经网络。网络的输出可以作为输入的一部分进行处理，从而动态调整网络的状态。</p>
+<p>反馈网络会在运行中不断更新神经元的状态，最终趋于某种稳定状态（即吸引子）。</p>
+<p>典型反馈神经网络：<code>Hopfield 网络</code>、<code>Boltzmann 机</code>、<code>受限 Boltzmann 机（RBM）</code></p>
+<h3 id="hopfield网络--联想记忆网络">6.7.1
+Hopfield网络--联想记忆网络</h3>
+<p><code>单层、全连接的反馈网络</code></p>
+<p><strong>目的</strong>：从残缺或噪声数据中还原完整数据。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103000106535.png"
+alt="Hopfield网络是对称的、无自环的" />
+<figcaption
+aria-hidden="true">Hopfield网络是对称的、无自环的</figcaption>
+</figure>
+<h4 id="相关定义">相关定义</h4>
+<p>设网络有<span
+class="math inline">\(d\)</span>个神经元，对于离散型Hopfield网络，各结点一般选取相同的激活函数，如符号函数，即：
+<span class="math display">\[
+f_1(x)=f_2(x)=\cdots = f_d(x)=\text{sgn}(x)
+\]</span></p>
+<table>
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 34%" />
+<col style="width: 15%" />
+<col style="width: 38%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>相关定义</th>
+<th>对应公式</th>
+<th>维度空间</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>网络的输入</td>
+<td><span class="math inline">\(x=(x_1,x_2,\cdots,x_d)\)</span></td>
+<td><span class="math inline">\(x\in\{-1,+1\}^d\)</span></td>
+<td><span class="math inline">\(x\)</span>具有<span
+class="math inline">\(d\)</span>个分量，每个分量可能为<span
+class="math inline">\(-1\)</span>或<span
+class="math inline">\(+1\)</span>。</td>
+</tr>
+<tr class="even">
+<td>网络的输出</td>
+<td><span class="math inline">\(y=(y_1,y_2,\cdots,y_d)\)</span></td>
+<td><span class="math inline">\(y\in\{-1,+1\}^d\)</span></td>
+<td>---</td>
+</tr>
+<tr class="odd">
+<td>网络在时刻<span class="math inline">\(t\)</span>的状态</td>
+<td><span
+class="math inline">\(v(t)=(v_1(t),v_2(t),\cdots,v_d(t))\)</span></td>
+<td><span class="math inline">\(v(t)\in\{-1,+1\}^d\)</span></td>
+<td><span class="math inline">\(t\)</span>为离散时间变量。</td>
+</tr>
+<tr class="even">
+<td>连接权重<span class="math inline">\(w_{ij}\)</span></td>
+<td><span class="math inline">\(w_{ij}=w_{ji}, w_{ii}=0\)</span>
+(Hopfield网络是对称、无环的)</td>
+<td><span class="math inline">\(i,j\in\{1,2,\cdots,d\}\)</span></td>
+<td>网络所有<span
+class="math inline">\(d\)</span>个结点之间的连接权重用矩阵<span
+class="math inline">\(W=\{w_{ij}\}\in R^{d\times
+d}\)</span>来表示。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="网络运行方式">网络运行方式</h4>
+<p>信息在网络中循环往复传递。 <span class="math display">\[
+\begin{cases}
+v_j(0)=x_j &amp; x_j是输入信号x的第j个分量\\
+v_j(t + 1)=\text{sgn}\left(\sum_{i = 1}^{d}w_{ij}v_i(t)\right)&amp;\iff
+v(t + 1)=\text{sgn}(Wv(t))
+\end{cases}
+\]</span> 若在某个时刻<span
+class="math inline">\(t\)</span>，从此之后网络状态不再改变，即：<span
+class="math inline">\(v(t + 1)=v(t)\)</span>，则输出<span
+class="math inline">\(y = v(t)\)</span>。 <span class="math display">\[
+v=\text{sgn}(Wv)
+\]</span> Hopfield网络的运行过程为状态的演化过程，即从初始状态<span
+class="math inline">\(v_0\)</span>按能量减小的方向进行演化，直到达到稳定状态。其能量函数是：
+<span class="math display">\[
+E(v)=-\frac{1}{2}\sum_{i,j = 1}^{d}w_{ij}v_iv_j=-\frac{1}{2}v^TWv
+\]</span> 将残缺数据<span class="math inline">\(v_0 =
+x\)</span>输入网络，网络通过最小化能量函数<span
+class="math inline">\(E(v)\)</span>恢复完整数据。</p>
+<h4 id="hopfield网络的学习">Hopfield网络的学习</h4>
+<ul>
+<li><strong>参数估计（记忆阶段）</strong>：将完整数据存储进网络。</li>
+<li>若网络训练的目的是存储<span
+class="math inline">\(K\)</span>个完整数据<span
+class="math inline">\(\{x^1,x^2,\cdots,x^K\}\)</span>，其中<span
+class="math inline">\(x^k\in\{- 1,1\}^d\)</span>，通常要求<span
+class="math inline">\(K &lt; 0.14d\)</span>。</li>
+<li><strong>外积法（Hebbian learning rule）</strong>： <span
+class="math display">\[
+w_{ij}=\begin{cases}
+\sum_{k = 1}^{K}x_i^kx_j^k, &amp; i\neq j\\
+0, &amp; i = j
+\end{cases}
+\]</span> 可简记为：<span class="math inline">\(W=\sum_{k =
+1}^{K}x^k(x^k)^T - KI\)</span>，其中<span class="math inline">\(I\in
+R^{d\times d}\)</span>是单位矩阵。</li>
+</ul>
+<h3 id="玻尔兹曼机">6.7.2 玻尔兹曼机</h3>
+<p><code>(Boltzman Machine, BM)</code>是一种随机的Hopfield网络，是具有隐单元的反馈互联网络。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103000541648.png"
+alt="image-20250103000541648" />
+<figcaption aria-hidden="true">image-20250103000541648</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103001903524.png"
+alt="image-20250103001903524" />
+<figcaption aria-hidden="true">image-20250103001903524</figcaption>
+</figure>
+<h2 id="深度学习">6.9 深度学习</h2>
+<p><strong>深层神经网络有效性的原因</strong>：</p>
+<ol type="1">
+<li><strong>浅层与多层网络的疑问</strong>
+<ul>
+<li>浅层神经网络可以近似任意函数，为何还需要多层网络？</li>
+</ul></li>
+<li><strong>深层网络的优势</strong>
+<ul>
+<li>在深层网络结构中，特别是卷积神经网络中，高层可以综合应用低层信息。</li>
+<li>低层关注“局部”，高层关注“全局”，更具有语义化信息。</li>
+<li>为自适应地学习非线性处理过程提供了一种可能的简洁、普适的结构模型。</li>
+<li>特征提取与分类器可以一起学习。</li>
+</ul></li>
+</ol>
+<h3 id="深度概率模型">6.9.2 深度概率模型</h3>
+<h4 id="hopfield网络">Hopfield网络</h4>
+<p><code>单层全互联、对称权值的反馈网络</code></p>
+<p>神经元状态: <span class="math inline">\(v_j\in \{-1,+1\}\)</span></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103090647345.png"
+alt="image-20250103090647345" />
+<figcaption aria-hidden="true">image-20250103090647345</figcaption>
+</figure>
+<h4 id="玻尔兹曼机-boltzmann-machine">玻尔兹曼机 (Boltzmann
+Machine)</h4>
+<p><code>随机Hopfield网络，具有隐单元的反馈互联网络</code></p>
+<p><strong>缺点：网络结构复杂、训练代价大、局部极小</strong></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103090809480.png"
+alt="image-20250103090809480" />
+<figcaption aria-hidden="true">image-20250103090809480</figcaption>
+</figure>
+<h4 id="受限玻尔兹曼机-restricted-boltzmann-machinerbm">受限玻尔兹曼机
+(Restricted Boltzmann Machine，RBM)</h4>
+<p><code>BM的简化：层间相连、层内结点不相连、信息可双向流动</code></p>
+<p>RBM中的条件独立性：</p>
+<ul>
+<li>隐变量状态已知：各观测变量相互独立</li>
+<li>隐变量状态未知：各隐变量相互独立</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103091041982.png"
+alt="image-20250103091041982" />
+<figcaption aria-hidden="true">image-20250103091041982</figcaption>
+</figure>
+<h5 id="网络基本结构双层结构">网络基本结构：<code>双层结构</code></h5>
+<p>层之间通过权重<span
+class="math inline">\(w_{ij}\)</span>完全连接，但层内没有连接。</p>
+<ul>
+<li>可见层<span
+class="math inline">\(\{v_i\}\)</span>：包含我们可以观测到的数据(比如图像像素、特征向量等)。</li>
+<li>隐含层<span
+class="math inline">\(\{h_j\}\)</span>：用于捕捉数据的潜在特征。</li>
+</ul>
+<h5 id="能量函数">能量函数</h5>
+<p>RBM 的核心是能量函数<span class="math inline">\(E(v, h;
+\theta)\)</span>，它定义了某种状态<span class="math inline">\((v,
+h)\)</span>的“能量值”： <span class="math display">\[
+E(v, h; \theta) = -\sum_{ij} w_{ij} v_i h_j - \sum_i b_i v_i - \sum_j
+a_j h_j
+\]</span> 其中第一项是可见层和隐藏层之间的交互关系，权重由 <span
+class="math inline">\(w_{ij}\)</span> 决定；可见层bias:<span
+class="math inline">\(b_i\)</span>；隐含层bias:<span
+class="math inline">\(a_j\)</span>.</p>
+<p><strong>状态$(v, h) $的能量越低，表示该状态的概率越高。</strong></p>
+<h5 id="概率模型">概率模型</h5>
+<p>RBM 是基于玻尔兹曼分布的概率模型，联合概率分布 <span
+class="math inline">\(p(v, h)\)</span> 定义为： <span
+class="math display">\[
+\begin{align}
+p(v, h) &amp;= \frac{1}{\mathrm{z}(\theta)} \exp(-E(v, h; \theta))\\
+&amp;=\frac{1}{Z(\theta)} \prod_{ij}e^{w_{ij}v_i
+h_j}\prod_{i}e^{b_iv_i}\prod_{j}e^{a_j h_j}\\
+\mathrm{z}(\theta)&amp;=\sum_{v,h}\exp(-E(v,h;\theta))
+\end{align}
+\]</span> <span
+class="math inline">\(z(\theta)\)</span>：归一化常数，用来确保所有概率的总和为
+1。</p>
+<p>RBM
+的重要特点是可见层和隐藏层之间的条件概率可以<strong>单独计算</strong>：
+<span class="math display">\[
+p(v,h)=\frac{\exp(-E(v,h))}{\sum_{v,h}\exp(-E(v,h))}\\
+p(v)=\frac{\sum_h \exp(-E(v,h))}{\sum_{v,h}\exp(-E(v,h))},\quad
+p(h)=\frac{\sum_v \exp(-E(v,h))}{\sum_{v,h}\exp(-E(v,h))}\\
+p(v|h)=\frac{\exp(-E(v,h))}{\sum_{v}\exp(-E(v,h))},\quad
+p(h|v)=\frac{\exp(-E(v,h))}{\sum_{h}\exp(-E(v,h))}
+\]</span>
+网络训练的目标是最大化似然函数：对于给定的N个样本，对RBM进行训练，
+以概率最大化生成（观察到）这些样本。 <span class="math display">\[
+\max \sum_{i=1}^N \log p(v^i)\\
+p(v) = \sum_h p(v, h)=\frac{\sum_h
+\exp(-E(v,h))}{\sum_{v,h}\exp(-E(v,h))}\\
+\log
+p_{\theta}(v)=\log\left(\prod_i\exp(b_iv_i)\prod_j\left(1+\exp(a_j+\sum_iw_{ij}v_i)\right)\right)-\log
+\mathrm z(\theta)
+\]</span></p>
+<h4 id="深度信念网络-deep-belief-networkdbn">深度信念网络 (Deep Belief
+Network，DBN)</h4>
+<p>训练：</p>
+<ul>
+<li>利用多个RBM进行贪心训练</li>
+<li>分类上：多加一个前向网络、采用有标签数据进行fine-tuning</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103094456935.png"
+alt="image-20250103094456935" />
+<figcaption aria-hidden="true">image-20250103094456935</figcaption>
+</figure>
+<h3 id="cnn">6.9.3 CNN</h3>
+<p><code>局部连接</code>，<code>权值共享</code>，<code>多层感知机(MLP)</code></p>
+<ul>
+<li>MLP:
+对平移、比例缩放、倾斜、或者其他形式的变形具有一定的不变性。</li>
+<li>CNN：网络结构类似生物神经网络。由于权值数量的减少、网络模型的复杂度更低。</li>
+</ul>
+<blockquote>
+<p>CNN中的卷积实际是图像处理中的相关操作：<span
+class="math inline">\((f\star h)(x,y)\)</span></p>
+<p>感受野(receptive field)：卷积核的大小</p>
+</blockquote>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103095341416.png"
+alt="image-20250103095341416" />
+<figcaption aria-hidden="true">image-20250103095341416</figcaption>
+</figure>
+<p>解决上述问题的方法：</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>局部连接</th>
+<th>权值共享</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>理论依据：视觉系统局部感受野、图像空间相关性</td>
+<td>保证了CNN提取的特征具有<strong>平移不变性</strong></td>
+</tr>
+<tr class="even">
+<td>每个神经元其实没有必要对全局图像进行感知，只需要对局部进行感知（局部感受野）；在更高层将局部的信息综合起来获得全局信息</td>
+<td>从图像任何一个局部区域内连接到同一类型的隐含结点，其权重保持不变</td>
+</tr>
+</tbody>
+</table>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103101523649.png"
+alt="image-20250103101523649" />
+<figcaption aria-hidden="true">image-20250103101523649</figcaption>
+</figure>
+<h4 id="网络训练-2">网络训练</h4>
+<p>采用BP算法：选择样本x(Batch)，信息从输入层经过逐级变换、传送到输出层；然后计算该样本的实际输出与理想输出t(label)之间的差；按极小化误差bp调整权重。</p>
+<blockquote>
+<p>Q: 权值共享机制下，对权值的梯度如何计算？</p>
+<p>A:
+在卷积神经网络（CNN）中，权值共享意味着同一个卷积核（权值）在整个输入特征图上滑动时会重复使用。因此，权值共享下，梯度的计算需要汇总所有卷积核应用到不同位置时的梯度贡献。</p>
+<p>Q:
+卷积神经网络中有一个pooling操作，因为这一点需要对现有BP算法做一些修改，如何改?</p>
+<p>A: 在卷积神经网络中，<strong>Pooling 操作</strong>（通常是 Max
+Pooling 或 Average
+Pooling）会降低特征图的尺寸，同时保留主要特征。这种操作会对反向传播过程提出特殊要求，因为
+pooling 本身不涉及权值，而是选择性传递或汇总输入数据。</p>
+<ul>
+<li>Max Pooling
+的反向传播非常稀疏，梯度只会流向被选中的最大值位置。</li>
+<li>Average Pooling
+的反向传播更加平滑，每个输入值都会接收到等量的梯度。</li>
+</ul>
+<table>
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 46%" />
+<col style="width: 46%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>反向传播</th>
+<th>Max Pooling</th>
+<th>Average Pooling</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>---</td>
+<td>损失梯度只会流向池化窗口中选出的最大值的位置，其他位置的梯度为
+0。</td>
+<td>损失梯度会均匀分配到池化窗口的所有输入值。</td>
+</tr>
+<tr class="even">
+<td>---</td>
+<td>池化窗口中被选为最大值的输入位置 $x_{ij} <span
+class="math inline">\(会接收完整的梯度:\)</span> = $</td>
+<td>每个输入值 <span class="math inline">\(x_{ij}\)</span>
+接收到的梯度为：</td>
+</tr>
+<tr class="odd">
+<td>---</td>
+<td>对于其他非最大值的位置:<span class="math inline">\(\frac{\partial
+L}{\partial x_{ij}} = 0\)</span></td>
+<td><span class="math inline">\(\frac{\partial L}{\partial x_{ij}} =
+\frac{1}{K \times K} \cdot \frac{\partial L}{\partial
+y_{mn}}\)</span></td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p><strong>总结</strong>:</p>
+<ol type="1">
+<li>我们之所以决定使用卷积后的特征是因为图像具有一种“静态性”的属性，这也就意味着在一个图像区域有用的特征极有可能在另一个区域同样适用。</li>
+<li>局部感受野、权值共享以及时间或空间下采样这三种结构化思想结合起来获得了某种程度的位移、尺度、形变不变性</li>
+</ol>
+<h3 id="自编码器autoencoder--无监督">6.9.4
+自编码器(Autoencoder)--<code>无监督</code></h3>
+<p>训练目标：输出=输入、用于特征提取。<code>表示学习方法</code></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103111553056.png"
+alt="image-20250103111553056" />
+<figcaption aria-hidden="true">image-20250103111553056</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103111650201.png"
+alt="image-20250103111650201" />
+<figcaption aria-hidden="true">image-20250103111650201</figcaption>
+</figure>
+<p>自编码器网络通常有多个隐藏层（多层编码器和解码器），直接对整个深度网络进行端到端训练可能会遇到困难，比如梯度消失、局部最优等问题。</p>
+<p>训练中，进行<strong>逐层预训练</strong>。</p>
+<ul>
+<li>将网络分成多个层，逐层单独训练，每次只优化一个编码器-解码器模块，使这一层能够很好地表示输入数据。</li>
+<li>训练完当前层后，将其固定为“静态”，然后把输出作为下一层的输入，继续训练下一层。</li>
+<li>最后，将所有层联合起来进行微调（全局调优）。</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103111756384.png"
+alt="第二次训练以第一层输出作为输入、第三次训练以第二层输出作为输入" />
+<figcaption
+aria-hidden="true">第二次训练以第一层输出作为输入、第三次训练以第二层输出作为输入</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103112214836.png"
+alt="image-20250103112214836" />
+<figcaption aria-hidden="true">image-20250103112214836</figcaption>
+</figure>
+<p>扩展：VAE-变分自编码器-ddpm的基础/求解变分下界</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103112329532.png"
+alt="image-20250103112329532" />
+<figcaption aria-hidden="true">image-20250103112329532</figcaption>
+</figure>
+<h3 id="rnn">6.9.5 RNN</h3>
+<p>RNN：<strong>至少包含一个反馈连接的神经网络结构</strong>。网络输出可以沿loop(环)流动，适合处理时序数据。</p>
+<table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 76%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>经典RNN</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Hopfield 网络</td>
+<td>全连接</td>
+</tr>
+<tr class="even">
+<td>Elman 网络</td>
+<td>包含输入层、隐含层和输出层，但隐含层和输入层之间存在一个反馈连接，这种连接通常称为recurrent
+连接， 即回归连接。这种回归连接使得Elman
+网络具有检测和产生时变模式的能力。</td>
+</tr>
+<tr class="odd">
+<td>对角自反馈神经网络</td>
+<td>隐含层的神经元具有反馈连接，但隐含层神经元之间并不连接。</td>
+</tr>
+</tbody>
+</table>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103112814886.png"
+alt="image-20250103112814886" /> <span class="math display">\[
+net_t=b+Wh_{t-1}Ux_t\\
+h_t=f(net_t)\\
+p_t=c+Wh_t
+\]</span> RNN 的隐藏状态 <span class="math inline">\(h_t\)</span>
+是一个动态的“记忆单元”，能够捕捉当前输入<span
+class="math inline">\(x_t\)</span> 的信息，同时总结之前所有输入 <span
+class="math inline">\(x_1, x_2, \ldots, x_{t-1}\)</span>的信息。</p>
+<table>
+<colgroup>
+<col style="width: 36%" />
+<col style="width: 46%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>RNN</th>
+<th>Hopfield</th>
+<th>MLP</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(h_t=f(b+Wh_{t-1}+Ux_t)\)</span></td>
+<td><span
+class="math inline">\(h_t=f(b+Wh_{t-1}),h_0=x,W=W^T\)</span></td>
+<td><span class="math inline">\(h=f(b+Ux)\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(o_t=c+Vh_t\)</span></td>
+<td><span class="math inline">\(o=h_T\)</span></td>
+<td><span class="math inline">\(o=c+Vh\)</span></td>
+</tr>
+</tbody>
+</table>
+<h4 id="网络训练-3">网络训练</h4>
+<p>RNN的基本结构：</p>
+<ul>
+<li><p><span class="math inline">\(h_t = f(b + W h_{t-1} + U
+x_t)\)</span> 其中：</p>
+<ul>
+<li><span class="math inline">\(h_t\)</span>
+是当前时间步的隐藏状态，用于总结前面时间步的输入。</li>
+<li><span class="math inline">\(W\)</span> 是隐藏状态的权重矩阵。</li>
+<li><span class="math inline">\(U\)</span> 是输入<span
+class="math inline">\(x_t\)</span>的权重矩阵。</li>
+<li><span class="math inline">\(b\)</span> 是偏置向量。</li>
+<li><span class="math inline">\(f(\cdot)\)</span> 是激活函数。</li>
+</ul></li>
+<li><p>输出：<span class="math inline">\(o_t = c + V h_t\)</span></p>
+<ul>
+<li><span class="math inline">\(o_t\)</span>
+是输出层值，通过隐藏状态<span
+class="math inline">\(h_t\)</span>与权重<span
+class="math inline">\(V\)</span>和偏置<span
+class="math inline">\(c\)</span>计算得出。</li>
+</ul></li>
+<li><p>用 softmax 函数计算输出的类别概率分布： <span
+class="math display">\[
+\hat{y_t} = \text{softmax}(o_t)
+\]</span> 这表示当前时间步<span
+class="math inline">\(t\)</span>的样本属于某个类别的概率。</p></li>
+</ul>
+<p>对于序列标注问题，目标是最小化整个序列的总损失： <span
+class="math display">\[
+L(x, y) = \sum_{t} L_t(x, y) = -\sum_t \log \hat{y_t}[y_t]
+\]</span> 其中：</p>
+<ul>
+<li><span class="math inline">\(L_t(x, y)\)</span> 是时间步<span
+class="math inline">\(t\)</span>的交叉熵损失。</li>
+<li><span class="math inline">\(\hat{y_t}[y_t]\)</span> 是输出预测的类别
+<span class="math inline">\(y_t\)</span> 的概率。</li>
+<li>损失按时间累加，即将每个时间步的误差都考虑进去。</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103114313031.png"
+alt="image-20250103114313031" />
+<figcaption aria-hidden="true">image-20250103114313031</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103114344707.png"
+alt="image-20250103114344707" />
+<figcaption aria-hidden="true">image-20250103114344707</figcaption>
+</figure>
+<p>时间步<span class="math inline">\(t\)</span>的隐藏状态<span
+class="math inline">\(h_t\)</span>依赖前一时间步的隐藏状态<span
+class="math inline">\(h_{t-1}\)</span>和当前输入<span
+class="math inline">\(x_t\)</span> ；输出<span
+class="math inline">\(o_t\)</span>用于计算当前时间步的预测概率<span
+class="math inline">\(\hat{y_t}\)</span>；每一时间步都会计算对应的损失
+<span class="math inline">\(L_t\)</span>。</p>
+<p><strong>时间反向传播算法（BPTT）</strong>：</p>
+<p><strong>核心思想：</strong>在展开后的时间维度中，损失函数对所有参数（如
+<span class="math inline">\(U, V, W, b,
+c\)</span>）的梯度需要从每个时间步累计。这就类似于标准反向传播算法，但要沿着时间维度反向传播。</p>
+<p><strong>具体步骤</strong>：</p>
+<ol type="1">
+<li>前向传播：按时间步依次计算所有的神经元输出值（<span
+class="math inline">\(x_t, h_t, o_t, \hat{y_t}\)</span>）。</li>
+<li>反向传播：按时间反向计算每个神经元的误差项（即损失函数 <span
+class="math inline">\(L\)</span>
+对每个神经元输出的偏导数）。通过链式法则，将损失对网络参数（如 <span
+class="math inline">\(U, V, W, b, c\)</span>）的梯度累积下来。</li>
+<li>更新权重：使用梯度下降法或其他优化方法更新参数。</li>
+</ol>
+<blockquote>
+<p>例：一步时间延迟</p>
+<ul>
+<li>节点包含：输入 <span class="math inline">\(x_t\)</span>，隐藏状态
+<span class="math inline">\(h_t\)</span>，输出 <span
+class="math inline">\(o_t\)</span>，以及损失 <span
+class="math inline">\(L_t\)</span>。</li>
+<li>参数：<span class="math inline">\(U, V, W, b, c\)</span></li>
+<li>核心任务：计算目标函数 <span class="math inline">\(L\)</span>
+对这些参数的梯度：<span class="math inline">\(\nabla_U L, \nabla_V L,
+\nabla_W L, \nabla_b L, \nabla_c L\)</span>。</li>
+</ul>
+</blockquote>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103114636188.png"
+alt="image-20250103114636188" />
+<figcaption aria-hidden="true">image-20250103114636188</figcaption>
+</figure>
+<h3 id="lstm">6.9.6 LSTM</h3>
+<blockquote>
+<p>RNN缺点：RNN更新方式使<span
+class="math inline">\(h_t\)</span>随时间<span
+class="math inline">\(t\)</span>发生较大改变<span
+class="math inline">\(\Rightarrow\)</span>历史信息快速遗忘。训练时，梯度容易消失or爆炸：
+<span class="math display">\[
+\text{recall} \quad \frac{\partial E}{\partial
+\text{net}_l}=f&#39;(\text{net}_l)\odot W_{l,l + 1}\frac{\partial
+E}{\partial \text{net}_{l + 1}}
+\]</span> 圈乘<span
+class="math inline">\(\odot\)</span>是哈达玛积/按元素相乘。</p>
+</blockquote>
+<p>LSTM的核心思想：
+通过精细控制“历史信息（记忆）”的操作，缓解了RNN的遗忘问题和训练问题。</p>
+<h4 id="网络结构-1">网络结构</h4>
+<ul>
+<li>LSTM网络将隐含层的细胞单元（隐含单元）设计为所谓的LSTM细胞单元。<br />
+</li>
+<li>每一个LSTM细胞含有与传统的RNN细胞相同的输入和输出，但它额外包含一个控制信息流动的“门结点系统”。</li>
+<li>门系统包含三个部分，除了对LSTM细胞的输入、输出进行加权控制之外，还对记忆（遗忘）进行加权控制。</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103115140889.png"
+alt="image-20250103115140889" />
+<figcaption aria-hidden="true">image-20250103115140889</figcaption>
+</figure>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>输入门</th>
+<th>遗忘门</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>提供一个是否接收当前输入信息的权重(0~1)。</td>
+<td>提供一个是否遗忘当前记忆的权重(0~1)。</td>
+</tr>
+<tr class="even">
+<td>其值取决于当前输入信号和前一时刻隐含层的输出。</td>
+<td>其值取决于当前输入信号和前一时刻隐含层的输出。</td>
+</tr>
+<tr class="odd">
+<td><span
+class="math inline">\(\mathbf{in}_t=sigmoid(b_{in}+U_{in}x_t+W_{in}h_{t-1})\)</span></td>
+<td><span
+class="math inline">\(f_t=sigmoid(b_f+U_fx_t+W_fh_{t-1})\)</span></td>
+</tr>
+<tr class="even">
+<td><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103115540114.png"
+alt="image-20250103115540114" /></td>
+<td><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103115548866.png"
+alt="image-20250103115548866" /></td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>产生新记忆</th>
+<th>输出门</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>LSTM 细胞产生的新记忆，由输入与遗忘两部分组成。</td>
+<td>对当前输出提供一个 0~1之间的权重（对输出的认可程度）。</td>
+</tr>
+<tr class="even">
+<td>候选新记忆:<span class="math inline">\(c_t=\tanh(b + Ux_t + Wh_{t -
+1})\)</span></td>
+<td>其值取决于当前输入信号和前一时刻隐含层的输出。</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(s_t = f_t \otimes s_{t - 1}+in_t \otimes
+c_t\)</span></td>
+<td><span class="math inline">\(o_t=\text{sigmoid}(b_o + U_ox_t +
+W_oh_{t - 1})\)</span></td>
+</tr>
+<tr class="even">
+<td><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103115757335.png"
+alt="image-20250103115757335" /></td>
+<td><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103115803524.png"
+alt="image-20250103115803524" /></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Q: <span
+class="math inline">\(\otimes,\odot\)</span>?</strong></p>
+<p>A: 基本一致，ppt上都是标注：逐元素相乘（element-wise
+multiplication）</p>
+<ul>
+<li>如果你看到 <span class="math inline">\(\odot\)</span>，几乎总是指
+逐元素相乘。</li>
+<li>如果你看到 <span class="math inline">\(\otimes\)</span>
+<ul>
+<li>如果涉及张量运算，可能是张量积（Kronecker Product）。</li>
+<li>如果在深度学习文档中，有时也可能被滥用为逐元素相乘的符号，但更常见的逐元素相乘是用
+<strong><span class="math inline">\(\odot\)</span></strong>
+标记的。</li>
+</ul></li>
+</ul>
+</blockquote>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103120602891.png"
+alt="image-20250103120602891" />
+<figcaption aria-hidden="true">image-20250103120602891</figcaption>
+</figure>
+<p><span
+class="math inline">\(h_t\)</span>更新--隐含层结点的输出由激励后的内部状态（此时称为记忆）与
+输出门权重共同决定: <span class="math display">\[
+h_t=o_t\otimes tanh(s_t)
+\]</span> 这部分内容讲的是
+<strong>LSTM网络（长短时记忆网络）训练中的挑战和缓解策略</strong>，重点在于分析梯度消失和梯度爆炸的问题，以及可能采取的应对方法。</p>
+<h3 id="section"></h3>
+<h4 id="网络训练的目标">网络训练的目标</h4>
+<ul>
+<li>参数估计：目标是估计 LSTM 网络中的各种矩阵和向量参数。
+<ul>
+<li>输入门、输出门、遗忘门、候选记忆单元相关的权重矩阵和偏置项： <span
+class="math inline">\((U_{in}, W_{in}, b_{in}),\ (U_{o}, W_{o}, b_{o}),\
+(U_{f}, W_{f}, b_{f})\)</span></li>
+<li>其他网络层相关的参数： <span class="math inline">\((U, W, b),\ (V,
+c)\)</span></li>
+</ul></li>
+<li>基于两点实现：
+<ol type="1">
+<li>基于信息流动的方式，采用 <strong>反向传播算法（Backpropagation
+Through Time, BPTT）</strong>。</li>
+<li>计算目标函数，求每个时间步 <span class="math inline">\(t\)</span>
+对这些参数的偏导数。</li>
+</ol></li>
+</ul>
+<h4 id="lstm的优势与局限">LSTM的优势与局限</h4>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>优势</th>
+<th>局限</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>相比传统 RNN，LSTM 缓解了梯度消失/爆炸的问题。通过引入
+<strong>遗忘门（forget gate）</strong> 和 <strong>记忆单元（memory
+cell）</strong>，它能更好地捕捉长距离依赖关系。</td>
+<td><strong>部分缓解</strong>
+了梯度消失/爆炸问题，而非完全消除。梯度问题依然存在于复杂序列任务或较长时间跨度的信息流动中。</td>
+</tr>
+</tbody>
+</table>
+<p>为进一步缓解梯度消失/爆炸，ppt中提到以下技术：</p>
+<ol type="1">
+<li><strong>充分利用二阶梯度信息</strong>：二阶梯度包含更全面的信息，但计算成本高，因此通常不被鼓励。</li>
+<li><strong>更好的初始化</strong>：选择更优的初始参数，可以减少训练初期梯度的异常情况。</li>
+<li><strong>动量机制</strong>：在参数更新中引入动量，避免仅依赖当前梯度，有助于加速收敛。</li>
+<li><strong>对梯度模或元素作裁剪（Gradient
+Clipping）</strong>：如果梯度过大或过小，通过裁剪限制其幅度，避免梯度爆炸或消失。</li>
+<li><strong>正则化</strong>：对目标函数加入正则化项，限制权重的幅度，从而防止过拟合，并改善梯度问题。</li>
+<li><strong>奖励信息流动</strong>：通过设计合适的目标函数，鼓励梯度在更长时间跨度内保留。</li>
+</ol>
+<h3 id="transformer">6.9.7 Transformer</h3>
+<blockquote>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103131818853.png"
+alt="image-20250103131818853" />
+<figcaption aria-hidden="true">image-20250103131818853</figcaption>
+</figure>
+</blockquote>
+<h4 id="注意力机制的基本原理">注意力机制的基本原理</h4>
+<p>对于输入序列<span
+class="math inline">\(\{x_1,x_2,\cdots,x_n\}\)</span>，计算<span
+class="math inline">\(x_t\)</span>的特征表示：</p>
+<table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 45%" />
+<col style="width: 28%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">\(x_t\)</span>与<span
+class="math inline">\(x_i\)</span>的相似度</th>
+<th>注意力系数</th>
+<th>加权和</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(s_{ti}=x_t^Tx_i\)</span>，<span
+class="math inline">\(i = 1,\cdots,n\)</span></td>
+<td><span class="math inline">\(\alpha_{ti}=\frac{\exp(s_{ti})}{\sum_{j
+= 1}^{n}\exp(s_{tj})}\)</span></td>
+<td><span class="math inline">\(x_t&#39;=\sum_{i =
+1}^{n}\alpha_{ti}x_i\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>注意力系数反应数据相关性的强弱，按注意力系数对所有数据求和（凸组合），实现了全局感受野，是Transformer的核心。</p>
+<h4 id="单头自注意力single---head-self---attention">单头自注意力（single
+- head self - attention）</h4>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103133438686.png"
+alt="image-20250103133438686" />
+<figcaption aria-hidden="true">image-20250103133438686</figcaption>
+</figure>
+<p>实际中，引入三个线性变换<span
+class="math inline">\(W^Q\)</span>，<span
+class="math inline">\(W^K\)</span>，<span
+class="math inline">\(W^V\)</span>：</p>
+<table>
+<thead>
+<tr class="header">
+<th>Query</th>
+<th>Keys</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\{W^Qx_t\}\)</span></td>
+<td><span class="math inline">\(\{W^Kx_i\}\)</span></td>
+<td><span class="math inline">\(\{W^Vx_i\}\)</span></td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 46%" />
+<col style="width: 32%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">\(x_t\)</span>与<span
+class="math inline">\(x_i\)</span>的相似度</th>
+<th>注意力系数</th>
+<th>加权和</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(s_{ti}=(W^Qx_t)^T(W^Kx_i)\)</span></td>
+<td><span class="math inline">\(\alpha_{ti}=\frac{\exp(s_{ti})}{\sum_{j
+= 1}^{n}\exp(s_{tj})}\)</span></td>
+<td><span class="math inline">\(x_t&#39;=\sum_{i =
+1}^{n}\alpha_{ti}(W^Vx_i)\)</span></td>
+</tr>
+</tbody>
+</table>
+<h4 id="多头自注意力multi---head-self---attention">多头自注意力（multi -
+head self - attention）</h4>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103133416670.png"
+alt="image-20250103133416670" />
+<figcaption aria-hidden="true">image-20250103133416670</figcaption>
+</figure>
+<p>为进一步提升模型能力，引入多组注意力参数<span
+class="math inline">\(\{W_h^Q,W_h^K,W_h^V\}\)</span>，<span
+class="math inline">\(h = 1,\cdots,H\)</span>：</p>
+<table>
+<colgroup>
+<col style="width: 37%" />
+<col style="width: 30%" />
+<col style="width: 32%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>注意力系数</th>
+<th>加权和</th>
+<th>多头特征融合</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span
+class="math inline">\(\alpha_{ti}^h=\frac{\exp((W_h^Qx_t)^T(W_h^Kx_i))}{\sum_{j
+= 1}^{n}\exp((W_h^Qx_t)^T(W_h^Kx_j))}\)</span></td>
+<td><span class="math inline">\(x_{th}=\sum_{i =
+1}^{n}\alpha_{ti}^h(W_h^Vx_i)\)</span></td>
+<td><span
+class="math inline">\(x_t&#39;=W^O\text{Concat}(x_{t1},x_{t2},\cdots,x_{tH})\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><code>Concat()</code>：对向量/矩阵的拼接操作，增加提取特征的多样性，增强表示学习能力。</p>
+<p><strong>多头自注意力的矩阵表示</strong></p>
+<p>对于输入序列<span
+class="math inline">\(\{x_1,x_2,\cdots,x_n\}\)</span>，计算所有数据点的特征表示，记<span
+class="math inline">\(X = [x_1,x_2,\cdots,x_n]\in R^{d\times
+n}\)</span>：</p>
+<table>
+<colgroup>
+<col style="width: 42%" />
+<col style="width: 28%" />
+<col style="width: 28%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>注意力系数</th>
+<th>加权和</th>
+<th>多头融合</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span
+class="math inline">\(\Lambda^h=\text{softmax}(((W^Q_hX)^T(W^K_hX)))\in
+R^{n\times n}\)</span></td>
+<td><span class="math inline">\(X^h=(W^V_hX)\Lambda^h\)</span>，<span
+class="math inline">\(h = 1,\cdots,H\)</span></td>
+<td><span
+class="math inline">\(X&#39;=W^O\text{Concat}(X^1,X^2,\cdots,X^H)\)</span></td>
+</tr>
+</tbody>
+</table>
+<h4 id="自注意力模块两个子模块">自注意力模块：两个子模块</h4>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103134210527.png"
+alt="image-20250103134210527" />
+<figcaption aria-hidden="true">image-20250103134210527</figcaption>
+</figure>
+<table>
+<colgroup>
+<col style="width: 45%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>注意力子模块</th>
+<th>逐时刻数据特征变换</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span
+class="math inline">\(X&#39;=\text{MultiHeadAttention}(X)\)</span></td>
+<td><span
+class="math inline">\(X&#39;&#39;&#39;=W_2\text{ReLU}(W_1X&#39;&#39; +
+b_1)+b_2\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(X&#39;&#39;=\text{LayerNorm}(X +
+X&#39;)\)</span></td>
+<td><span
+class="math inline">\(X&#39;&#39;&#39;&#39;=\text{LayerNorm}(X&#39;&#39;
++ X&#39;&#39;&#39;)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>输入序列与输出序列的长度相同，将多个自注意力模块串联起来，构成Transformer
+encoder。</p>
+<h4 id="交叉注意力cross---attention">交叉注意力（cross -
+attention）</h4>
+<blockquote>
+<p>很多任务中，存在输入序列与输出序列不等长（如机器翻译）甚至不同模态（如图像描述）的问题，可采用基于encoder
+- decoder结构的模型处理此类问题：</p>
+<ul>
+<li>encoder负责对源数据提取特征；</li>
+<li>decoder负责输出目标数据。</li>
+</ul>
+<p>如何让decoder有效利用encoder的输出？</p>
+<ul>
+<li>交叉注意力（cross - attention）</li>
+</ul>
+</blockquote>
+<p>假设编码器的输出为<span class="math inline">\(Z =
+[z_1,z_2,\cdots,z_n]\in R^{d_1\times n}\)</span>、解码器第<span
+class="math inline">\(t\)</span>时刻输入为<span
+class="math inline">\(y_t\in R^{d_2}\)</span></p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 46%" />
+<col style="width: 32%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>相似度</th>
+<th>注意力系数</th>
+<th>加权和</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(s_{ti}=(W^Qy_t)^T(W^Kz_i)\)</span></td>
+<td><span class="math inline">\(\alpha_{ti}=\frac{\exp(s_{ti})}{\sum_{j
+= 1}^{n}\exp(s_{tj})}\)</span></td>
+<td><span class="math inline">\(y_t&#39;=\sum_{i =
+1}^{n}\alpha_{ti}(W^Vz_i)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>通过注意力访问全部编码器输出数据，可类似使用多头注意力。</p>
+<p><strong>交叉注意力模块：三个子模块</strong></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103134150944.png"
+alt="image-20250103134150944" />
+<figcaption aria-hidden="true">image-20250103134150944</figcaption>
+</figure>
+<blockquote>
+<p><strong>Q:
+Transformer和Attention机制本质上是顺序无关的，如何表示位置？</strong></p>
+<p>Transformer本质上是顺序无关的模型，而自然语言处理（NLP）中的输入序列是有顺序的（比如句子中单词的前后顺序）。</p>
+<p>通过<strong>位置编码（Positional Encoding）和词表示（Word
+Representation）</strong>，Transformer得以弥补这一缺陷。</p>
+<ul>
+<li>位置编码：为了解决顺序无关的问题，Transformer引入了显式的位置编码，将序列中每个token的<strong>位置信息</strong>以数学方式编码进模型的输入。
+<ul>
+<li>偶数：<span
+class="math inline">\(PE(pos,2i)=\sin(pos/10000^{2i/d_{\text{model}}})\)</span></li>
+<li>奇数：<span class="math inline">\(PE(pos,2i +
+1)=\cos(pos/10000^{2i/d_{\text{model}}})\)</span></li>
+</ul></li>
+<li>如何表示字/词/token？Transformer模型的输入是分词后的token序列（字/词），这些token以<strong>固定大小的向量表示</strong>，称为
+<strong>词嵌入（Word Embedding）</strong>。
+<ul>
+<li>分布式词表示（distributed word representation）。</li>
+</ul></li>
+</ul>
+</blockquote>
+<h3 id="图神经网络">6.9.8 图神经网络</h3>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103134805795.png"
+alt="image-20250103134805795" />
+<figcaption aria-hidden="true">image-20250103134805795</figcaption>
+</figure>
+<p>基本思想：
+以“边”为基础进行近邻节点间的信息传递、节点利用从近邻收到的信息更新自己的表示。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103134954628.png"
+alt="image-20250103134954628" />
+<figcaption aria-hidden="true">image-20250103134954628</figcaption>
+</figure>
+<p>如果将节点看作像素，图上的消息传递操作和卷积操作非常相似：局部连接、权值共享。<strong>因此，图神经网络也被称为图卷积网络(Graph
+Convolution Networks, GCN)</strong></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103135113786.png"
+alt="image-20250103135113786" />
+<figcaption aria-hidden="true">image-20250103135113786</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103135041734.png"
+alt="image-20250103135041734" />
+<figcaption aria-hidden="true">image-20250103135041734</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103135030850.png"
+alt="image-20250103135030850" />
+<figcaption aria-hidden="true">image-20250103135030850</figcaption>
+</figure>
+</div><div class="post-end"><div class="post-prev"><a href="/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch7-%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96%E4%B8%8E%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-next"><a href="/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch5-%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch6-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-content-number">1.</span> <span class="toc-content-text">CH6 人工神经网络</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">6.2 神经网络基础</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">6.2.2 激活函数</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">6.2.3 拓扑结构</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%8D%95%E5%B1%82%E7%BD%91%E7%BB%9C"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">单层网络</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%A4%9A%E5%B1%82%E7%BD%91%E7%BB%9C"><span class="toc-content-number">1.3.2.</span> <span class="toc-content-text">多层网络</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%8F%8D%E9%A6%88%E7%BD%91%E7%BB%9C"><span class="toc-content-number">1.3.3.</span> <span class="toc-content-text">反馈网络</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E7%BD%91%E7%BB%9C%E8%AE%AD%E7%BB%83"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">6.2.4 网络训练</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%8D%95%E5%B1%82%E5%89%8D%E9%A6%88%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8D%95%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA"><span class="toc-content-number">1.5.</span> <span class="toc-content-text">6.3
+单层前馈神经网络(单层感知机)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%84%9F%E7%9F%A5%E6%9C%BA%E7%BB%93%E6%9E%84"><span class="toc-content-number">1.5.1.</span> <span class="toc-content-text">6.3.1 感知机结构</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%84%9F%E7%9F%A5%E6%9C%BA%E8%AE%AD%E7%BB%83"><span class="toc-content-number">1.5.2.</span> <span class="toc-content-text">6.3.2 感知机训练</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%AD%A6%E4%B9%A0%E4%BB%BB%E5%8A%A1%E7%A1%AE%E5%AE%9A%E7%BD%91%E7%BB%9C%E5%90%84%E4%B8%AA%E8%81%94%E6%8E%A5%E6%9D%83%E9%87%8Dw_ij"><span class="toc-content-number">1.5.2.1.</span> <span class="toc-content-text">学习任务：确定网络各个联接权重\(\{w_{ij}\}\)</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%BA%BF%E6%80%A7%E5%8D%95%E5%85%83-%E8%BD%AC%E7%A7%BB%E5%87%BD%E6%95%B0%E6%98%AF%E7%BA%BF%E6%80%A7%E5%87%BD%E6%95%B0%E4%B8%94%E5%A4%84%E5%A4%84%E5%8F%AF%E5%BE%AE"><span class="toc-content-number">1.5.2.2.</span> <span class="toc-content-text">线性单元:
+转移函数是线性函数、且处处可微</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%8D%95%E5%85%83%E8%BD%AC%E7%A7%BB%E5%87%BD%E6%95%B0%E6%98%AF%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%87%BD%E6%95%B0%E4%B8%94%E5%A4%84%E5%A4%84%E5%8F%AF%E5%BE%AE"><span class="toc-content-number">1.5.2.3.</span> <span class="toc-content-text">非线性单元：转移函数是非线性函数，且处处可微。</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E4%BE%8Bsigmoid%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.5.2.3.1.</span> <span class="toc-content-text">例：Sigmoid函数</span></a></li></ol></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%AE%9E%E7%8E%B0%E7%AE%97%E6%B3%95"><span class="toc-content-number">1.5.2.4.</span> <span class="toc-content-text">实现算法</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E5%99%A8"><span class="toc-content-number">1.6.</span> <span class="toc-content-text">6.4 多层感知器</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA"><span class="toc-content-number">1.6.1.</span> <span class="toc-content-text">6.4.1 多层感知机</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#bp1985-supervised"><span class="toc-content-number">1.6.2.</span> <span class="toc-content-text">6.4.2 BP(1985, Supervised)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E9%9A%90%E5%90%AB%E5%B1%82--%E8%BE%93%E5%87%BA%E5%B1%82"><span class="toc-content-number">1.6.2.1.</span> <span class="toc-content-text">隐含层--&gt;输出层</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E8%BE%93%E5%85%A5%E5%B1%82--%E9%9A%90%E5%90%AB%E5%B1%82"><span class="toc-content-number">1.6.2.2.</span> <span class="toc-content-text">输入层--&gt;隐含层</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%BD%91%E7%BB%9C%E8%AE%AD%E7%BB%83-1"><span class="toc-content-number">1.6.2.3.</span> <span class="toc-content-text">网络训练</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%B8%A4%E7%A7%8D%E5%AE%9E%E7%8E%B0%E9%9A%8F%E6%9C%BA%E6%9B%B4%E6%96%B0%E6%89%B9%E9%87%8F%E6%9B%B4%E6%96%B0"><span class="toc-content-number">1.6.2.4.</span> <span class="toc-content-text">两种实现：随机更新&amp;批量更新</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#bp%E7%AE%97%E6%B3%95%E8%AE%A8%E8%AE%BA"><span class="toc-content-number">1.7.</span> <span class="toc-content-text">6.5 BP算法讨论</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%87%86%E5%88%99%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.7.1.</span> <span class="toc-content-text">6.5.1 准则函数</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E9%9A%90%E5%90%AB%E5%B1%82%E6%95%B0%E5%92%8C%E7%BB%93%E7%82%B9%E6%95%B0"><span class="toc-content-number">1.7.2.</span> <span class="toc-content-text">6.5.3 隐含层数和结点数</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%88%9D%E5%A7%8B%E6%9D%83%E9%87%8D%E4%B8%8E%E6%AD%A3%E5%88%99%E9%A1%B9"><span class="toc-content-number">1.7.3.</span> <span class="toc-content-text">6.5.5 初始权重与正则项</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E5%92%8C%E6%94%B9%E8%BF%9B%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D"><span class="toc-content-number">1.7.4.</span> <span class="toc-content-text">6.5.7 学习率和改进梯度下降</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%AD%A6%E4%B9%A0%E7%8E%87%E8%B0%83%E6%95%B4%E7%AD%96%E7%95%A5"><span class="toc-content-number">1.7.4.1.</span> <span class="toc-content-text">学习率调整策略</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%94%B9%E8%BF%9B%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D"><span class="toc-content-number">1.7.4.2.</span> <span class="toc-content-text">改进梯度下降</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#sgd%E9%99%84%E5%8A%A0%E5%86%B2%E9%87%8F%E9%A1%B9-gradient-descent-with-momentum"><span class="toc-content-number">1.7.4.2.1.</span> <span class="toc-content-text">SGD+(附加冲量项,
+gradient descent with momentum)</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#adaptive-moment-optimization-adam"><span class="toc-content-number">1.7.4.2.2.</span> <span class="toc-content-text">Adaptive Moment Optimization
+(Adam)</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%AD%98%E5%9C%A8%E9%97%AE%E9%A2%98"><span class="toc-content-number">1.7.5.</span> <span class="toc-content-text">6.5.10 存在问题</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%BE%84%E5%90%91%E5%9F%BA%E5%87%BD%E6%95%B0%E7%BD%91%E7%BB%9C"><span class="toc-content-number">1.8.</span> <span class="toc-content-text">6.6 径向基函数网络</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84"><span class="toc-content-number">1.8.0.1.</span> <span class="toc-content-text">网络结构</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%AD%A6%E4%B9%A0%E8%BF%87%E7%A8%8B"><span class="toc-content-number">1.8.1.</span> <span class="toc-content-text">学习过程</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%8F%8D%E9%A6%88%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-content-number">1.9.</span> <span class="toc-content-text">6.7 反馈神经网络</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#hopfield%E7%BD%91%E7%BB%9C--%E8%81%94%E6%83%B3%E8%AE%B0%E5%BF%86%E7%BD%91%E7%BB%9C"><span class="toc-content-number">1.9.1.</span> <span class="toc-content-text">6.7.1
+Hopfield网络--联想记忆网络</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%9B%B8%E5%85%B3%E5%AE%9A%E4%B9%89"><span class="toc-content-number">1.9.1.1.</span> <span class="toc-content-text">相关定义</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%BD%91%E7%BB%9C%E8%BF%90%E8%A1%8C%E6%96%B9%E5%BC%8F"><span class="toc-content-number">1.9.1.2.</span> <span class="toc-content-text">网络运行方式</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#hopfield%E7%BD%91%E7%BB%9C%E7%9A%84%E5%AD%A6%E4%B9%A0"><span class="toc-content-number">1.9.1.3.</span> <span class="toc-content-text">Hopfield网络的学习</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%8E%BB%E5%B0%94%E5%85%B9%E6%9B%BC%E6%9C%BA"><span class="toc-content-number">1.9.2.</span> <span class="toc-content-text">6.7.2 玻尔兹曼机</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0"><span class="toc-content-number">1.10.</span> <span class="toc-content-text">6.9 深度学习</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%B7%B1%E5%BA%A6%E6%A6%82%E7%8E%87%E6%A8%A1%E5%9E%8B"><span class="toc-content-number">1.10.1.</span> <span class="toc-content-text">6.9.2 深度概率模型</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#hopfield%E7%BD%91%E7%BB%9C"><span class="toc-content-number">1.10.1.1.</span> <span class="toc-content-text">Hopfield网络</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%8E%BB%E5%B0%94%E5%85%B9%E6%9B%BC%E6%9C%BA-boltzmann-machine"><span class="toc-content-number">1.10.1.2.</span> <span class="toc-content-text">玻尔兹曼机 (Boltzmann
+Machine)</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%8F%97%E9%99%90%E7%8E%BB%E5%B0%94%E5%85%B9%E6%9B%BC%E6%9C%BA-restricted-boltzmann-machinerbm"><span class="toc-content-number">1.10.1.3.</span> <span class="toc-content-text">受限玻尔兹曼机
+(Restricted Boltzmann Machine，RBM)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%E5%8F%8C%E5%B1%82%E7%BB%93%E6%9E%84"><span class="toc-content-number">1.10.1.3.1.</span> <span class="toc-content-text">网络基本结构：双层结构</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E8%83%BD%E9%87%8F%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.10.1.3.2.</span> <span class="toc-content-text">能量函数</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E6%A6%82%E7%8E%87%E6%A8%A1%E5%9E%8B"><span class="toc-content-number">1.10.1.3.3.</span> <span class="toc-content-text">概率模型</span></a></li></ol></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%B7%B1%E5%BA%A6%E4%BF%A1%E5%BF%B5%E7%BD%91%E7%BB%9C-deep-belief-networkdbn"><span class="toc-content-number">1.10.1.4.</span> <span class="toc-content-text">深度信念网络 (Deep Belief
+Network，DBN)</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#cnn"><span class="toc-content-number">1.10.2.</span> <span class="toc-content-text">6.9.3 CNN</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%BD%91%E7%BB%9C%E8%AE%AD%E7%BB%83-2"><span class="toc-content-number">1.10.2.1.</span> <span class="toc-content-text">网络训练</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8autoencoder--%E6%97%A0%E7%9B%91%E7%9D%A3"><span class="toc-content-number">1.10.3.</span> <span class="toc-content-text">6.9.4
+自编码器(Autoencoder)--无监督</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#rnn"><span class="toc-content-number">1.10.4.</span> <span class="toc-content-text">6.9.5 RNN</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%BD%91%E7%BB%9C%E8%AE%AD%E7%BB%83-3"><span class="toc-content-number">1.10.4.1.</span> <span class="toc-content-text">网络训练</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#lstm"><span class="toc-content-number">1.10.5.</span> <span class="toc-content-text">6.9.6 LSTM</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84-1"><span class="toc-content-number">1.10.5.1.</span> <span class="toc-content-text">网络结构</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#section"><span class="toc-content-number">1.10.6.</span> <span class="toc-content-text"></span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%BD%91%E7%BB%9C%E8%AE%AD%E7%BB%83%E7%9A%84%E7%9B%AE%E6%A0%87"><span class="toc-content-number">1.10.6.1.</span> <span class="toc-content-text">网络训练的目标</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#lstm%E7%9A%84%E4%BC%98%E5%8A%BF%E4%B8%8E%E5%B1%80%E9%99%90"><span class="toc-content-number">1.10.6.2.</span> <span class="toc-content-text">LSTM的优势与局限</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#transformer"><span class="toc-content-number">1.10.7.</span> <span class="toc-content-text">6.9.7 Transformer</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="toc-content-number">1.10.7.1.</span> <span class="toc-content-text">注意力机制的基本原理</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%8D%95%E5%A4%B4%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9Bsingle---head-self---attention"><span class="toc-content-number">1.10.7.2.</span> <span class="toc-content-text">单头自注意力（single
+- head self - attention）</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%A4%9A%E5%A4%B4%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9Bmulti---head-self---attention"><span class="toc-content-number">1.10.7.3.</span> <span class="toc-content-text">多头自注意力（multi -
+head self - attention）</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%A8%A1%E5%9D%97%E4%B8%A4%E4%B8%AA%E5%AD%90%E6%A8%A1%E5%9D%97"><span class="toc-content-number">1.10.7.4.</span> <span class="toc-content-text">自注意力模块：两个子模块</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BA%A4%E5%8F%89%E6%B3%A8%E6%84%8F%E5%8A%9Bcross---attention"><span class="toc-content-number">1.10.7.5.</span> <span class="toc-content-text">交叉注意力（cross -
+attention）</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-content-number">1.10.8.</span> <span class="toc-content-text">6.9.8 图神经网络</span></a></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2025 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>

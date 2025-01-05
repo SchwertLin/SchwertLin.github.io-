@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="今天有三节课，但是没事，可以翘。 今天有算法分析作业。 [TOC] record一下：  动态规划 为什么使用递归求斐波纳契数列很慢？复杂度是$2^n$（大概），多个重叠子问题，重复计算。使用空间换时间，避免重复计算。 我算fib(5) -&gt; fib(3) + fib(4) -&gt; fib(1)+fib(2)  +  fib(2)+fib(3)  Basic idea 保存子问题的结果，">
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="今天有三节课，但是没事，可以翘。 今天有算法分析作业。 [TOC] record一下：  动态规划  为什么使用递归求斐波纳契数列很慢？ 复杂度是\(2^n\)（大概），多个重叠子问题，重复计算。使用空间换时间，避免重复计算。 我算fib(5) -&gt; fib(3) + fib(4) -&gt; fib(1)+fib(2) + fib(2)+fib(3)  Basic">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2023.3.14">
 <meta property="og:url" content="http://example.com/2023/03/14/2023-3-14/index.html">
 <meta property="og:site_name" content="Schwertlilien">
-<meta property="og:description" content="今天有三节课，但是没事，可以翘。 今天有算法分析作业。 [TOC] record一下：  动态规划 为什么使用递归求斐波纳契数列很慢？复杂度是$2^n$（大概），多个重叠子问题，重复计算。使用空间换时间，避免重复计算。 我算fib(5) -&gt; fib(3) + fib(4) -&gt; fib(1)+fib(2)  +  fib(2)+fib(3)  Basic idea 保存子问题的结果，">
+<meta property="og:description" content="今天有三节课，但是没事，可以翘。 今天有算法分析作业。 [TOC] record一下：  动态规划  为什么使用递归求斐波纳契数列很慢？ 复杂度是\(2^n\)（大概），多个重叠子问题，重复计算。使用空间换时间，避免重复计算。 我算fib(5) -&gt; fib(3) + fib(4) -&gt; fib(1)+fib(2) + fib(2)+fib(3)  Basic">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s1.ax1x.com/2023/03/14/ppl1y6O.png">
 <meta property="og:image" content="https://s1.ax1x.com/2023/03/14/ppllIL4.png">
@@ -32,33 +32,57 @@
 <p>今天有算法分析作业。</p>
 <p>[TOC]</p>
 <p>record一下：</p>
-<p><img src="https://s1.ax1x.com/2023/03/14/ppl1y6O.png"></p>
-<h3 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h3><blockquote>
-<h1 id="为什么使用递归求斐波纳契数列很慢？"><a href="#为什么使用递归求斐波纳契数列很慢？" class="headerlink" title="为什么使用递归求斐波纳契数列很慢？"></a>为什么使用递归求斐波纳契数列很慢？</h1><p>复杂度是$2^n$（大概），多个重叠子问题，重复计算。<strong>使用空间换时间，避免重复计算。</strong></p>
-<p>我算fib(5) -&gt; fib(3) + fib(4) -&gt; fib(1)+fib(2)  +  fib(2)+fib(3)</p>
+<p><img src="https://s1.ax1x.com/2023/03/14/ppl1y6O.png" /></p>
+<h3 id="动态规划">动态规划</h3>
+<blockquote>
+<h1
+id="为什么使用递归求斐波纳契数列很慢">为什么使用递归求斐波纳契数列很慢？</h1>
+<p>复杂度是<span
+class="math inline">\(2^n\)</span>（大概），多个重叠子问题，重复计算。<strong>使用空间换时间，避免重复计算。</strong></p>
+<p>我算fib(5) -&gt; fib(3) + fib(4) -&gt; fib(1)+fib(2) +
+fib(2)+fib(3)</p>
 </blockquote>
-<h4 id="Basic-idea"><a href="#Basic-idea" class="headerlink" title="Basic idea"></a>Basic idea</h4><ul>
+<h4 id="basic-idea">Basic idea</h4>
+<ul>
 <li>保存子问题的结果，避免重复计算。</li>
 <li>用额外的数据保存（备忘录memo）</li>
 <li>空间换时间</li>
 <li>大问题可以由子问题推出（状态转移）<em>我个人感觉很像分治</em></li>
 </ul>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> memo[<span class="number">10005</span>];</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">fib</span><span class="params">(<span class="type">int</span> n)</span></span>&#123;<span class="comment">//[递归+备忘]</span></span><br><span class="line">    <span class="keyword">if</span>(memo[n]!=<span class="number">0</span>)<span class="keyword">return</span> memo[n];</span><br><span class="line">    <span class="keyword">if</span>(n==<span class="number">1</span>||n==<span class="number">2</span>)<span class="keyword">return</span> memo[n]=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> memo[n]=<span class="built_in">fib</span>(n<span class="number">-1</span>)+<span class="built_in">fib</span>(n<span class="number">-2</span>);</span><br><span class="line">&#125;<span class="comment">//时间复杂度O(n)</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="P1216"><a href="#P1216" class="headerlink" title="P1216"></a>P1216</h5><p><img src="https://s1.ax1x.com/2023/03/14/ppllIL4.png"></p>
-<p><strong>递归：</strong>$d(r,j)$表示第r行，第j个数（r,j从1开始）</p>
-<p><code>maxSum(r,j)</code>:表示从(r,j)位置到底表最优路线和。<br>$$<br>maxSum(r,j)&#x3D;\begin{cases}<br>d(r,j)&amp;r&#x3D;n\<br>Max(maxSum(r+1,j),maxSum(r+1,j+1))+d(r,j)&amp;r\ne n\<br>\end{cases}<br>$$</p>
+<h5 id="p1216">P1216</h5>
+<p><img src="https://s1.ax1x.com/2023/03/14/ppllIL4.png" /></p>
+<p><strong>递归：</strong><span
+class="math inline">\(d(r,j)\)</span>表示第r行，第j个数（r,j从1开始）</p>
+<p><code>maxSum(r,j)</code>:表示从(r,j)位置到底表最优路线和。 <span
+class="math display">\[
+maxSum(r,j)=\begin{cases}
+d(r,j)&amp;r=n\\
+Max(maxSum(r+1,j),maxSum(r+1,j+1))+d(r,j)&amp;r\ne n\\
+\end{cases}
+\]</span></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> MAXN=<span class="number">1005</span>;</span><br><span class="line"><span class="type">int</span> d[MAXN][MAXN];</span><br><span class="line"><span class="type">int</span> n;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">maxSum</span><span class="params">(<span class="type">int</span> r,<span class="type">int</span> j)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(r==n)<span class="keyword">return</span> d[r][j];</span><br><span class="line">    <span class="type">int</span> x=<span class="built_in">maxSum</span>(r<span class="number">+1</span>,j);</span><br><span class="line">    <span class="type">int</span> y=<span class="built_in">maxSum</span>(r<span class="number">+1</span>,j<span class="number">+1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">max</span>(x,y)+d[r][j];</span><br><span class="line">&#125;<span class="comment">//也可以把求过的点存下来</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=i;j++)&#123;cin&gt;&gt;d[r][j];&#125;</span><br><span class="line">    &#125;<span class="comment">//感觉可以优化的地方有很多，这里使用的二维数组，可以压缩成一维的。</span></span><br><span class="line">    cout&lt;&lt;<span class="built_in">maxSum</span>(<span class="number">1</span>,<span class="number">1</span>)&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>使用MEMO：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> memo[MAXN][MAXN];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">maxSum</span><span class="params">(<span class="type">int</span> r,<span class="type">int</span> j)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(memo[r][j]!=<span class="number">-1</span>)<span class="keyword">return</span> memo[r][j];</span><br><span class="line">    <span class="keyword">if</span>(r==n)<span class="keyword">return</span> memo[r][j]=d[r][j];</span><br><span class="line">    <span class="type">int</span> x=<span class="built_in">maxSum</span>(r<span class="number">+1</span>,j);</span><br><span class="line">    <span class="type">int</span> y=<span class="built_in">maxSum</span>(r<span class="number">+1</span>,j<span class="number">+1</span>);</span><br><span class="line">    <span class="keyword">return</span> memo[r][j]=<span class="built_in">max</span>(x,y)+d[r][j];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="built_in">memset</span>(memo,<span class="number">-1</span>,<span class="built_in">sizeof</span>(memo));</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=i;j++)&#123;cin&gt;&gt;d[i][j];&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;<span class="built_in">maxSum</span>(<span class="number">1</span>,<span class="number">1</span>)&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>上面的这种方法是自顶向下的：在main函数内是<code>maxSum(1,1)</code>从第一行第一个元素开始。</p>
 <p>我们也可以选择从下往上填MEMO。</p>
 <p>递推+填表</p>
-<table>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 23%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>7</th>
 <th></th>
 <th></th>
@@ -72,7 +96,8 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr class="odd">
 <td>3</td>
 <td>8</td>
 <td></td>
@@ -85,7 +110,7 @@
 <td></td>
 <td></td>
 </tr>
-<tr>
+<tr class="even">
 <td>8</td>
 <td>1</td>
 <td>0</td>
@@ -98,20 +123,20 @@
 <td></td>
 <td></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>2</td>
 <td>7</td>
 <td>4</td>
 <td>4</td>
 <td></td>
 <td>|</td>
-<td>7&#x3D;max(4,5)+2</td>
+<td>7=max(4,5)+2</td>
 <td>12</td>
 <td>10</td>
 <td>10</td>
 <td></td>
 </tr>
-<tr>
+<tr class="even">
 <td>4</td>
 <td>5</td>
 <td>2</td>
@@ -124,44 +149,29 @@
 <td>6</td>
 <td>5</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> memo[MAXN][MAXN];</span><br><span class="line"><span class="type">int</span> d[MAXN][MAXN];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;<span class="comment">//输出数组</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=i;j++)&#123;cin&gt;&gt;d[i][j];&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;memo[n][i]=d[n][i];&#125;<span class="comment">//把最后第n层给预备好。</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=n<span class="number">-1</span>;i;i--)&#123;<span class="comment">//自底向上，从倒数第二层开始。</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=i;j++)&#123;<span class="comment">//确保在memo这里不会越界。</span></span><br><span class="line">            memo[i][j]=<span class="built_in">max</span>(memo[i<span class="number">+1</span>][j],memo[i<span class="number">+1</span>][j<span class="number">+1</span>])+d[i][j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;memo[<span class="number">1</span>][<span class="number">1</span>]&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>可以看到，上面会使用到二维数组。但是我们实际上只填了一半，比较浪费。可以优化成一维数组。先可以把memo的二维数组变成一维（一行n）。</p>
 <blockquote>
-<h1 id="basic-idea"><a href="#basic-idea" class="headerlink" title="basic idea:"></a>basic idea:</h1><p>主要是求完memo[r][j]后memo[r+1][j]就不再使用，因此可以用memo[r][j]覆盖memo[r+1][j]。</p>
+<h1 id="basic-idea-1">basic idea:</h1>
+<p>主要是求完memo[r][j]后memo[r+1][j]就不再使用，因此可以用memo[r][j]覆盖memo[r+1][j]。</p>
 </blockquote>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> memo[MAXN];<span class="comment">//压缩成一维。</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=i;j++)&#123;cin&gt;&gt;d[i][j];&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;memo[i]=d[n][i];&#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=n<span class="number">-1</span>;i;i--)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=i;j&lt;=i;j++)&#123;</span><br><span class="line">            memo[j]=<span class="built_in">max</span>(memo[j],memo[j<span class="number">+1</span>])+d[i][j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;memo[<span class="number">1</span>]&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h3 id="P2-训练计划"><a href="#P2-训练计划" class="headerlink" title="P2 训练计划"></a>P2 训练计划</h3><p>这题乍看是个DP，但是实际上应该是计算图以及最短路。（感觉并查集就好了）</p>
-<img src="https://s1.ax1x.com/2023/03/14/pplY2FJ.png" style="zoom:33%;" />
-
+<h3 id="p2-训练计划">P2 训练计划</h3>
+<p>这题乍看是个DP，但是实际上应该是计算图以及最短路。（感觉并查集就好了）</p>
+<p><img src="https://s1.ax1x.com/2023/03/14/pplY2FJ.png" style="zoom:33%;" /></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//input</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">input</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> course[<span class="number">105</span>][<span class="number">2</span>];<span class="comment">//[1]:father,[2]:day</span></span><br><span class="line">    <span class="type">int</span> n,m;<span class="comment">//距离大赛开幕的天数和训练科目的数量</span></span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=m;i++)&#123;<span class="comment">//填充并查集</span></span><br><span class="line">        cin&gt;&gt;course[i][<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">if</span>(!course[i][<span class="number">0</span>])course[i][<span class="number">0</span>]=i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=m;i++)&#123;<span class="comment">//填充value</span></span><br><span class="line">        cin&gt;&gt;course[i][<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>计算每科的最早开始时间；计算完之后计算maxTime&gt;n时，就不往后计算了。否则就要逆推得到每科的最晚开始时间。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">find</span><span class="params">(<span class="type">int</span> i)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(earliest_time[i]!=<span class="number">-1</span>)<span class="keyword">return</span> earliest_time[i];</span><br><span class="line">    <span class="keyword">if</span>(course[i][<span class="number">0</span>]==i)<span class="keyword">return</span> earliest_time[i]=<span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> father=course[i][<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">return</span> earliest_time[i]=<span class="built_in">find</span>(a)+course[a][<span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">iuput</span>();</span><br><span class="line">    <span class="comment">//计算最早开始时间--</span></span><br><span class="line">    <span class="comment">//大概的想法是if(father[a]==a)那么a科不存在依赖，最早开始时间是一天。</span></span><br><span class="line">    <span class="comment">//然后对于有依赖关系的，通过find找，但是在递归的过程中可以+路径，最后return 总路径</span></span><br><span class="line">    <span class="type">int</span> earliest_time[m];</span><br><span class="line">    <span class="built_in">memset</span>(earliest_time,<span class="number">-1</span>,<span class="built_in">sizeof</span>(earliest_time));</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=m;i++)&#123;</span><br><span class="line">        cout&lt;&lt;<span class="built_in">find</span>(i)&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>测试是否会超过给的时间：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//test over the given time</span></span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=m;i++)&#123;</span><br><span class="line">    <span class="keyword">if</span>(earliest_time[i]+course[i][<span class="number">1</span>]&gt;n)<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//latest_time</span></span><br><span class="line"><span class="type">int</span> latest_time[<span class="number">105</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">find_late</span><span class="params">(<span class="type">int</span> i)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(latest_time[i]!=<span class="number">-1</span>)<span class="keyword">return</span> latest_time[i];</span><br><span class="line">    <span class="keyword">if</span>(course[i][<span class="number">0</span>]==i)<span class="keyword">return</span> latest_time[i]=(n<span class="number">+1</span>-course[i][<span class="number">1</span>]);</span><br><span class="line">    <span class="type">int</span> fa=course[i][<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">return</span> latest_time[i]=<span class="built_in">find_late</span>(fa)-course[i][<span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h3 id="算法分析作业"><a href="#算法分析作业" class="headerlink" title="算法分析作业"></a>算法分析作业</h3><p>每个子问题的规模都一样，且相对于父问题都是成比例缩小。<br>$$<br>T(n)&#x3D;aT(\frac n 2)+f(n)<br>$$</p>
-</div><div class="post-end"><div class="post-prev"><a href="/2023/03/15/2023-3-15/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-next"><a href="/2023/03/13/2023-3-13/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="toc-content-number">1.</span> <span class="toc-content-text">动态规划</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E9%80%92%E5%BD%92%E6%B1%82%E6%96%90%E6%B3%A2%E7%BA%B3%E5%A5%91%E6%95%B0%E5%88%97%E5%BE%88%E6%85%A2%EF%BC%9F"><span class="toc-content-number"></span> <span class="toc-content-text">为什么使用递归求斐波纳契数列很慢？</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#Basic-idea"><span class="toc-content-number">0.1.</span> <span class="toc-content-text">Basic idea</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#P1216"><span class="toc-content-number">0.1.1.</span> <span class="toc-content-text">P1216</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#basic-idea"><span class="toc-content-number"></span> <span class="toc-content-text">basic idea:</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#P2-%E8%AE%AD%E7%BB%83%E8%AE%A1%E5%88%92"><span class="toc-content-number">1.</span> <span class="toc-content-text">P2 训练计划</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E4%BD%9C%E4%B8%9A"><span class="toc-content-number">2.</span> <span class="toc-content-text">算法分析作业</span></a></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+<h3 id="算法分析作业">算法分析作业</h3>
+<p>每个子问题的规模都一样，且相对于父问题都是成比例缩小。 <span
+class="math display">\[
+T(n)=aT(\frac n 2)+f(n)
+\]</span></p>
+</div><div class="post-end"><div class="post-prev"><a href="/2023/03/15/2023-3-15/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-next"><a href="/2023/03/13/2023-3-13/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="toc-content-number">1.</span> <span class="toc-content-text">动态规划</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8%E9%80%92%E5%BD%92%E6%B1%82%E6%96%90%E6%B3%A2%E7%BA%B3%E5%A5%91%E6%95%B0%E5%88%97%E5%BE%88%E6%85%A2"><span class="toc-content-number"></span> <span class="toc-content-text">为什么使用递归求斐波纳契数列很慢？</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#basic-idea"><span class="toc-content-number">0.1.</span> <span class="toc-content-text">Basic idea</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#p1216"><span class="toc-content-number">0.1.1.</span> <span class="toc-content-text">P1216</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#basic-idea-1"><span class="toc-content-number"></span> <span class="toc-content-text">basic idea:</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#p2-%E8%AE%AD%E7%BB%83%E8%AE%A1%E5%88%92"><span class="toc-content-number">1.</span> <span class="toc-content-text">P2 训练计划</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90%E4%BD%9C%E4%B8%9A"><span class="toc-content-number">2.</span> <span class="toc-content-text">算法分析作业</span></a></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
   tex2jax: {
     inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
     displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
@@ -175,7 +185,7 @@ MathJax.Hub.Queue(function() {
     all[i].SourceElement().parentNode.className += ' has-jax';
   }
 });
-</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2025 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
 <script>const GLOBAL_CONFIG = {
   comment: { theme: 'preferred_color_scheme'}
 }

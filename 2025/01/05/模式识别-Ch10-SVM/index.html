@@ -1,0 +1,433 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch10 SVM   image-20250104221220034  [TOC] 1-nn vc 维： vc维是理论的，实际上难以计算。 Hard-Margin SVM 间隔(Margin)：分类超平面到最近支持向量之间的距离。 支持向量(Support Vec)：那些对分类边界的 位置 和 形状 起到关键作用的样本点。支持向量是离分类超平面最近的点。边界完全由支持向量决">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模式识别-Ch10-SVM">
+<meta property="og:url" content="http://example.com/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch10-SVM/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch10 SVM   image-20250104221220034  [TOC] 1-nn vc 维： vc维是理论的，实际上难以计算。 Hard-Margin SVM 间隔(Margin)：分类超平面到最近支持向量之间的距离。 支持向量(Support Vec)：那些对分类边界的 位置 和 形状 起到关键作用的样本点。支持向量是离分类超平面最近的点。边界完全由支持向量决">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-05T08:18:39.000Z">
+<meta property="article:modified_time" content="2025-01-05T08:22:29.855Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="模式识别">
+<meta name="twitter:card" content="summary"><title>模式识别-Ch10-SVM - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>模式识别-Ch10-SVM</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2025-01-05</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2025-01-05</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">模式识别</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约2.9K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch10-svm">Ch10 SVM</h1>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104221220034.png"
+alt="image-20250104221220034" />
+<figcaption aria-hidden="true">image-20250104221220034</figcaption>
+</figure>
+<p>[TOC]</p>
+<p>1-nn vc 维：</p>
+<p>vc维是理论的，实际上难以计算。</p>
+<h2 id="hard-margin-svm">Hard-Margin SVM</h2>
+<p>间隔(Margin)：分类超平面到最近支持向量之间的距离。</p>
+<p>支持向量(Support Vec)：那些对分类边界的 <strong>位置</strong> 和
+<strong>形状</strong>
+起到关键作用的样本点。支持向量是离分类超平面最近的点。边界完全由支持向量决定。</p>
+<h3 id="估计margin">估计Margin</h3>
+<p>两类情形的决策面方程：<span
+class="math inline">\(g(x)=w^Tx+b=0\)</span></p>
+<p>对于任意样本<span
+class="math inline">\(x\)</span>，将其向决策面投影：<span
+class="math inline">\(x=x_p+r\frac{w}{\|w\|}\)</span>,w是法向量。</p>
+<p>代入决策函数： <span class="math display">\[
+\begin{align}
+g(x)&amp;=w^T\left(x_p+r\frac{w}{\|w\|}\right)+b\\
+&amp;=r\|w\|\\
+r&amp;=\frac{g(x)}{\|w\|}
+\end{align}
+\]</span> 法向量和决策面上向量<span
+class="math inline">\(x_p\)</span>做内积=0；且w是单位法向量，后一项二者平行。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105000705095.png"
+alt="image-20250105000705095" />
+<figcaption aria-hidden="true">image-20250105000705095</figcaption>
+</figure>
+<p>决策面到原点的距离：<span class="math inline">\(\frac
+b{\|w\|}\)</span>(b也与法向量平行)</p>
+<p>计算点x到决策面的距离, margin距离决策面的距离是最近的(min): <span
+class="math display">\[
+d(x)=\frac{|w^Tx+b|}{\sqrt{\|w\|^2_2}}=\frac{|w^Tx+b|}{\sqrt{\sum^d_{i=1}w_i^2}}\\
+margin=\arg\min_{x\in D}\{d(x)\}=\arg\min_{x\in
+D}\frac{|w^Tx+b|}{\sqrt{\sum^d_{i=1}w_i^2}}
+\]</span> <img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105090053922.png"
+alt="将优化问题转化为博弈论问题" /></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105090636500.png"
+alt="image-20250105090636500" />
+<figcaption aria-hidden="true">image-20250105090636500</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105090625201.png"
+alt="image-20250105090625201" />
+<figcaption aria-hidden="true">image-20250105090625201</figcaption>
+</figure>
+<p>原来的形式是： <span class="math display">\[
+\arg \max_{w,b} \min_{x_i \in D} \frac{|b + x_i \cdot w|}{\|w\|}
+\]</span> 这表示在所有可能的超平面参数 <span class="math inline">\(w,
+b\)</span>
+中，我们希望<strong>最大化</strong>支持向量距离超平面的最小间隔。<strong>但我们现在规定最小间隔=1</strong>，这消除了“min”的计算。优化目标从“最大化间隔”变为“最小化”
+w 的长度（即 <span class="math inline">\(\|w\|^2\)</span>）：</p>
+<p>该形式可以转化成: <span class="math display">\[
+\arg \min_{w,b} \frac{1}{2} \|w\|^2 \\ \text{s.t. } y_i (w \cdot x_i +
+b) \geq 1, \forall x_i \in D\\
+\]</span></p>
+<h3 id="margin与超平面的关系">Margin与超平面的关系</h3>
+<p>Margin:
+两类数据之间的决策边界的宽度（即支持向量与超平面之间的距离的两倍）。</p>
+<p>SVM目标: 找到使 Margin 最大的超平面（即“最大间隔分类器”）。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105092128440.png"
+alt="image-20250105092128440" />
+<figcaption aria-hidden="true">image-20250105092128440</figcaption>
+</figure>
+<ul>
+<li><span class="math inline">\(w·x + b = 0\)</span>
+是分类决策边界。</li>
+<li><span class="math inline">\(w·x + b = +1\)</span>和<span
+class="math inline">\(w·x + b =
+-1\)</span>是两条平行于决策边界的支持向量平面。</li>
+<li>决策边界是中间线，支持向量位于两个平行平面上。</li>
+</ul>
+<p><strong>Q</strong>：图中提出了问题“如何用 w和b来计算 Margin 宽度
+M？。</p>
+<p>A: 给定两个平行超平面（公式如 <span class="math inline">\(ax + by +
+c_1 = 0\)</span>` 和 <span class="math inline">\(ax + by + c_2 =
+0\)</span>），两平面之间的距离计算公式是：<span class="math inline">\(d
+= \frac{|c2 - c1|}{\sqrt{a^2 + b^2}}\)</span></p>
+<p>类比到支持向量机中：</p>
+<ul>
+<li>对应的 <span class="math inline">\(a, b\)</span> 是超平面法向量
+<span class="math inline">\(w\)</span>。</li>
+<li>两平面<span class="math inline">\(w·x + b = +1\)</span>和<span
+class="math inline">\(w·x + b = -1\)</span>的距离：<span
+class="math inline">\(M = \frac{2}{\|w\|}\)</span></li>
+</ul>
+<h3 id="线性可分支持向量机求解">线性可分支持向量机求解</h3>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105092525123.png" /></p>
+<h4 id="通过二次规划求解">通过二次规划求解</h4>
+<blockquote>
+<p>求解线性可分支持向量机 (SVM) 的最优解通常可以通过
+<strong>二次规划（Quadratic Programming）</strong> 方法完成，而这可以用
+<strong>拉格朗日乘子法</strong> 实现。</p>
+</blockquote>
+<p>线性可分SVM的目标函数是二次凸函数、约束条件是线性的，因此可以使用二次规划求解SVM。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105092828548.png"
+alt="image-20250105092828548" />
+<figcaption aria-hidden="true">image-20250105092828548</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105093416278.png"
+alt="二次规划和拉格朗日乘子法、以及SMO之间的关系" />
+<figcaption
+aria-hidden="true">二次规划和拉格朗日乘子法、以及SMO之间的关系</figcaption>
+</figure>
+<h4 id="拉格朗日乘子法求解--不记">拉格朗日乘子法求解--不记</h4>
+<blockquote>
+<p>写上来只是为了逻辑的连贯性。</p>
+</blockquote>
+<p>对于问题： <span class="math display">\[
+\arg \min_{w,b} \frac{1}{2} \|w\|^2 \\ \text{s.t. } y_i (w \cdot x_i +
+b) \geq 1, \forall x_i \in D\\
+\]</span>
+该形式符合凸优化理论，可以使用拉格朗日乘子法解决问题（Lagrangian Dual
+Problem） <span class="math display">\[
+\mathcal{L}=\frac 1 2||w||^2-\sum\alpha_i[y_i*(w\cdot x_i+b)-1]
+\]</span> <span class="math inline">\(\alpha_i\)</span>: Lagrange
+Multiplier</p>
+<p>对<span class="math inline">\(\mathcal{L}\)</span>求解偏导： <span
+class="math display">\[
+\frac{\partial \mathcal{L}}{\partial w}=w-\sum\alpha_iy_ix_i=0\\
+w=\sum\alpha_iy_ix_i\\\\
+\frac{\partial \mathcal{L}}{\partial b}=\sum\alpha_iy_i=0
+\]</span></p>
+<ul>
+<li><span class="math inline">\(w\)</span> : is a weighted sum of the
+input vectors (<span class="math inline">\(x_i\)</span> )</li>
+<li>很多情况下<span class="math inline">\(\alpha_i=0\)</span>: because
+this point doesn’t contribute to the margin</li>
+</ul>
+<p>再把<span
+class="math inline">\(w=\sum\alpha_iy_ix_i\)</span>代进<span
+class="math inline">\(\mathcal{L}\)</span>中，使得<span
+class="math inline">\(\mathcal{L}\)</span>中没有<span
+class="math inline">\(w\)</span>，只有<span
+class="math inline">\(\alpha_i\)</span>一个参数。 <span
+class="math display">\[
+\begin{align}
+\mathcal{L}=&amp;\frac 1 2w^Tw-\sum\alpha_i[y_i*(w\cdot x_i+b)-1]\\
+=&amp;\frac 1 2
+(\sum\alpha_iy_ix_i)(\sum\alpha_jy_jx_j)-\sum\alpha_i[y_i\sum\alpha_jy_jx_j\cdot
+x_i]+b\sum\alpha_iy_i+\sum\alpha_i\end{align}
+\]</span> 因为：<span class="math inline">\(\frac{\partial
+\mathcal{L}}{\partial b}=\sum\alpha_iy_i=0\)</span> <span
+class="math display">\[
+\begin{align}
+\mathcal{L}=&amp;\frac 1 2
+(\sum\alpha_iy_ix_i)(\sum\alpha_jy_jx_j)-\sum\alpha_i[y_i\sum\alpha_jy_jx_j\cdot
+x_i]+\sum\alpha_i\\
+=&amp;\sum\alpha_i-\frac 1 2 (\sum\alpha_iy_ix_i)(\sum\alpha_jy_jx_j)\\
+=&amp;\sum\alpha_i-\frac 1 2 \sum_i\sum_j\alpha_i\alpha_jy_iy_jx_ix_j
+\end{align}
+\]</span></p>
+<h2 id="soft-margin-svm">Soft-Margin SVM</h2>
+<p><strong>不具有线性可分性的情况下：</strong>SVM 原始模型（线性可分
+SVM）假设数据是完全线性可分的。但在实际数据中，通常会有一些噪声点（如图中的白点和黑点的异常位置），导致数据集不可线性完全分离。这就需要对原始目标函数进行修改，以适应有噪声的数据。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105094223047.png"
+alt="image-20250105094223047" />
+<figcaption aria-hidden="true">image-20250105094223047</figcaption>
+</figure>
+<p>软间隔 SVM 的优化问题如下：第一项体现了模型的
+<strong>表达能力</strong>（间隔最大化，偏向于低方差）；第二项体现了模型的
+<strong>经验风险</strong>（分类错误惩罚，偏向于低偏差）。 <span
+class="math display">\[
+&amp;\min \frac 1 2 ||w||^2+C\sum^m_i\xi_i\\
+s.t.&amp;\ y_i*(w\cdot x+b)\ge 1-\xi_i\\
+&amp;\xi_i\ge0\\
+&amp;i=1,2,\dots,n
+\]</span> <span class="math inline">\(\xi_i\)</span>：表示第 <span
+class="math inline">\(i\)</span> 个样本的松弛变量（slack
+variable），用于量化样本允许的分类错误或间隔违规程度。C：是一个权衡参数，用于平衡
+<strong>间隔最大化</strong> 和 <strong>分类错误惩罚</strong>
+之间的权重。对于参数<span class="math inline">\(C\)</span>:</p>
+<ul>
+<li>Low C:
+对分类错误更宽松，更倾向于允许一些错误以换取更大的间隔。(欠拟合)</li>
+<li>High C: 更严格地惩罚分类错误，强制模型尽量避免分类错误，即
+<strong>错误的代价很高</strong>。(易导致过拟合)</li>
+</ul>
+<blockquote>
+<p>合页损失(Hinge Loss): 一种常用的损失函数。Hinge
+Loss用于衡量样本的分类错误和分类边界的间隔。其在soft-margin中的定义如下：
+<span class="math display">\[
+\min \frac 1 2||w||^2+C\sum^m_i\max(0,1-y_i*(w\cdot x+b))
+\]</span> <span class="math inline">\(y_i\)</span>:
+表示样本的真实标签（通常为-1或1）</p>
+<p><span class="math inline">\(w\cdot x+b\)</span>:
+表示样本的预测分类（即决策函数输出的值）。</p>
+<p>Hinge
+Loss的目标是使正确分类的样本的损失为0，并增大错误分类样本的损失。在软间隔分类中，Hinge
+Loss通常与正则化项结合使用，以平衡分类错误和模型复杂度。通过最小化Hinge
+Loss和正则化项，可以得到一个具有较小间隔违规和较小模型复杂度的分类模型，从而在训练集上和测试集上获得良好的性能。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105095425639.png"
+alt="image-20250105095425639" />
+<figcaption aria-hidden="true">image-20250105095425639</figcaption>
+</figure>
+</blockquote>
+<h2 id="对偶问题dual">对偶问题(Dual)</h2>
+<p><strong>什么是对偶问题？</strong>
+在约束优化问题中，可以通过<strong>拉格朗日对偶性</strong>将原始问题（主问题）转换为对偶问题，目的是使问题的求解更简单或更高效。</p>
+<p><strong>为什么使用对偶问题？</strong></p>
+<ul>
+<li>对偶问题往往比原始问题更易求解，尤其是在 SVM
+的情况下，使用对偶问题可以更自然地引入核函数，扩展到非线性分类问题。</li>
+<li>对偶问题的解与原始问题的解是等价的（强对偶性），因此我们可以通过求解对偶问题间接得到原问题的解。</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105095522590.png"
+alt="拉格朗日乘子法α" />
+<figcaption aria-hidden="true">拉格朗日乘子法α</figcaption>
+</figure>
+<h3 id="对偶问题求解">对偶问题求解</h3>
+<h4 id="min_wb-lwbalpha"><span class="math inline">\(min_{w,b}
+L(w,b,\alpha)\)</span></h4>
+<p><span class="math display">\[
+\nabla_w L(w,b,\alpha)=w-\sum^n_{i=1}\alpha_iy_ix_i=0\Rightarrow
+w=\sum^n_{i=1}\alpha_iy_ix_i=0\\
+\nabla_b L(w,b,\alpha)=\sum^n_{i=1}\alpha_iy_i=0
+\]</span></p>
+<p>将得到的偏导代入<span class="math inline">\(min_{w,b}
+L(w,b,\alpha)\)</span>中： <span class="math display">\[
+\begin{align}
+\min_{w,b} L(w,b,\alpha)&amp;=\frac 1
+2(\sum^n_{i=1}\alpha_iy_ix_i)^T(\sum^n_{j=1}\alpha_jy_jx_j)-\sum^n_{i=1}\alpha_i
+y_i((\sum^n_{j=1}a_jy_jx_j)^Tx_i)+\sum^n_i\alpha_i\\
+&amp;=-\frac 1 2 \sum^n_{i=1}\sum^n_{j=1}\alpha_i\alpha_jy_iy_j(x_i\cdot
+x_j)+\sum^n_{i=1}\alpha_i
+\end{align}
+\]</span></p>
+<h3 id="求min_wb-lwbalpha对alpha的极大">求<span
+class="math inline">\(\min_{w,b} L(w,b,\alpha)\)</span>对<span
+class="math inline">\(\alpha\)</span>的极大</h3>
+<p><span class="math display">\[
+\max_{\alpha} \min_{w,b} L(w,b,\alpha)=&amp;\max_{\alpha} -\frac 1 2
+\sum^n_{i=1}\sum^n_{j=1}\alpha_i\alpha_jy_iy_j(x_i\cdot
+x_j)+\sum^n_{i=1}\alpha_i\\
+\iff &amp;\min_{\alpha}\frac 1 2
+\sum^n_{i=1}\sum^n_{j=1}\alpha_i\alpha_jy_iy_j(x_i\cdot
+x_j)+\sum^n_{i=1}\alpha_i\\
+s.t. &amp;\sum^n_{i=1}\alpha_iy_i=0\\
+&amp;a_i\ge 0,i=1,2,\dots,n
+\]</span></p>
+<p>对偶问题本质上是一个 <strong>凸二次规划问题（convex quadratic
+programming,
+QP）</strong>，其目标函数是凸的。在凸优化问题中，<strong>最大化凸函数等价于最小化其负值</strong>。</p>
+<p>最终对偶问题被转化为一个标准的二次规划问题，既可以通过数学工具（如拉格朗日法）手动求解，也可以利用已有的优化算法（如SMO算法）求解。对于凸优化问题，<strong>全局最优解总是可以找到</strong>。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105102415787.png"
+alt="image-20250105102415787" />
+<figcaption aria-hidden="true">image-20250105102415787</figcaption>
+</figure>
+<h4 id="对偶问题的kkt条件">对偶问题的KKT条件</h4>
+<p><span class="math display">\[
+\begin{align}
+&amp;\alpha_i^*\ge 0\\
+&amp;y_i(w^{*T}x_i+b^*)-1\ge 0 \\
+&amp;a_i^*(y_i(w^{*T}x_i+b^*)-1)=0
+\end{align}
+\]</span></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105102710479.png"
+alt="image-20250105102710479" />
+<figcaption aria-hidden="true">image-20250105102710479</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105102847238.png"
+alt="image-20250105102847238" />
+<figcaption aria-hidden="true">image-20250105102847238</figcaption>
+</figure>
+<h2 id="总结">总结</h2>
+<ul>
+<li>Margin
+是指两类数据之间的决策边界的宽度（即支持向量与超平面之间的距离的两倍<span
+class="math inline">\(\frac 2 {\|w\|}\)</span>）。</li>
+<li>SVM 的目标是找到使 Margin 最大的超平面（即“最大间隔分类器”）。</li>
+<li>支持向量是距离分类超平面最近的点，它们决定了 Margin 的大小。</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105102930611.png"
+alt="image-20250105102930611" />
+<figcaption aria-hidden="true">image-20250105102930611</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105103009011.png"
+alt="image-20250105103009011" />
+<figcaption aria-hidden="true">image-20250105103009011</figcaption>
+</figure>
+<h3 id="svm-的步骤">SVM 的步骤</h3>
+<ol type="1">
+<li><strong>准备数据矩阵</strong>：收集训练数据集 <span
+class="math inline">\({(x_i, y_i)}\)</span>，其中 <span
+class="math inline">\(x_i\)</span> 是特征向量，<span
+class="math inline">\(y_i\)</span> 是对应的标签。</li>
+<li><strong>选择核函数</strong>：核函数用于将低维数据映射到高维空间，例如线性核、高斯核等。</li>
+<li><strong>选择误差参数 C</strong>：C
+是一个超参数，用于控制分类的软边界（软间隔）的惩罚。</li>
+<li><strong>训练系统</strong>：利用二次规划（QP）算法求解 <span
+class="math inline">\(\alpha_i\)</span> 和 <span
+class="math inline">\(b\)</span>。</li>
+<li><strong>分类新数据</strong>：训练完成后，使用支持向量和对应的 <span
+class="math inline">\(\alpha_i\)</span> 值对新数据进行分类。</li>
+</ol>
+<h3 id="弱点">弱点</h3>
+<ol type="1">
+<li>训练（测试）速度慢：原因：需要解决约束的二次规划问题（QP），尤其在大数据集上计算复杂度较高。</li>
+<li>本质上是一个二分类器：默认情况下只能处理二分类问题，需要扩展才能解决多分类任务（如一对一、一对多策略）。</li>
+<li>对噪声非常敏感：数据集中少量的异常点（outliers）可能显著影响分类边界。</li>
+<li>核函数选择的困难：
+<ul>
+<li>没有统一的理论指导如何选择最优核函数，这在实际应用中是一大挑战。</li>
+<li>一旦选择核函数后，超参数 C 是唯一的可调节参数。</li>
+</ul></li>
+</ol>
+<h3 id="优点">优点</h3>
+<ol type="1">
+<li>训练相对容易：不需要像神经网络（NN）那样处理局部最小值问题，SVM
+的解是全局唯一的。</li>
+<li>不受维度灾难的影响：通过核技巧，SVM
+能够在高维空间中运行，但仍然只需要计算点积，从而避免了维度灾难问题。</li>
+<li>不易过拟合：最大间隔约束使得模型对数据的泛化能力较强。</li>
+<li>几何解释简单：通过构造最大间隔超平面，几何意义清晰直观，不需要复杂的网络结构。</li>
+</ol>
+</div><div class="post-end"><div class="post-prev"><a href="/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch11-%E5%86%B3%E7%AD%96%E6%A0%91/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-next"><a href="/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch9-%E6%95%B0%E6%8D%AE%E8%81%9A%E7%B1%BB/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch10-svm"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch10 SVM</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#hard-margin-svm"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">Hard-Margin SVM</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%BC%B0%E8%AE%A1margin"><span class="toc-content-number">1.1.1.</span> <span class="toc-content-text">估计Margin</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#margin%E4%B8%8E%E8%B6%85%E5%B9%B3%E9%9D%A2%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-content-number">1.1.2.</span> <span class="toc-content-text">Margin与超平面的关系</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%BA%BF%E6%80%A7%E5%8F%AF%E5%88%86%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA%E6%B1%82%E8%A7%A3"><span class="toc-content-number">1.1.3.</span> <span class="toc-content-text">线性可分支持向量机求解</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E9%80%9A%E8%BF%87%E4%BA%8C%E6%AC%A1%E8%A7%84%E5%88%92%E6%B1%82%E8%A7%A3"><span class="toc-content-number">1.1.3.1.</span> <span class="toc-content-text">通过二次规划求解</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E4%B9%98%E5%AD%90%E6%B3%95%E6%B1%82%E8%A7%A3--%E4%B8%8D%E8%AE%B0"><span class="toc-content-number">1.1.3.2.</span> <span class="toc-content-text">拉格朗日乘子法求解--不记</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#soft-margin-svm"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">Soft-Margin SVM</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98dual"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">对偶问题(Dual)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98%E6%B1%82%E8%A7%A3"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">对偶问题求解</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#min_wb-lwbalpha"><span class="toc-content-number">1.3.1.1.</span> <span class="toc-content-text">\(min_{w,b}
+L(w,b,\alpha)\)</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%B1%82min_wb-lwbalpha%E5%AF%B9alpha%E7%9A%84%E6%9E%81%E5%A4%A7"><span class="toc-content-number">1.3.2.</span> <span class="toc-content-text">求\(\min_{w,b} L(w,b,\alpha)\)对\(\alpha\)的极大</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98%E7%9A%84kkt%E6%9D%A1%E4%BB%B6"><span class="toc-content-number">1.3.2.1.</span> <span class="toc-content-text">对偶问题的KKT条件</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">总结</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#svm-%E7%9A%84%E6%AD%A5%E9%AA%A4"><span class="toc-content-number">1.4.1.</span> <span class="toc-content-text">SVM 的步骤</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%BC%B1%E7%82%B9"><span class="toc-content-number">1.4.2.</span> <span class="toc-content-text">弱点</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-content-number">1.4.3.</span> <span class="toc-content-text">优点</span></a></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2025 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>

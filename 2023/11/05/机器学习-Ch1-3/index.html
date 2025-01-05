@@ -1,0 +1,564 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="主要内容：ML概述、KNN、Naive Bayes、Regression、SVM Contents [TOC] Ch1 Overview of ML 对ML的分类： 监督学习(Supervised learning) 其基本思想是给定数据集中的样本是带有&quot;正确答案&quot;的,学习这些数据之后,再来新样本时,可以做出预测. 常见的问题有垃圾邮件分类。 无监督学习(Unsupervised">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习-Ch1-3">
+<meta property="og:url" content="http://example.com/2023/11/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-Ch1-3/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="主要内容：ML概述、KNN、Naive Bayes、Regression、SVM Contents [TOC] Ch1 Overview of ML 对ML的分类： 监督学习(Supervised learning) 其基本思想是给定数据集中的样本是带有&quot;正确答案&quot;的,学习这些数据之后,再来新样本时,可以做出预测. 常见的问题有垃圾邮件分类。 无监督学习(Unsupervised">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-05T08:09:24.000Z">
+<meta property="article:modified_time" content="2025-01-05T08:15:33.158Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary"><title>机器学习-Ch1-3 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>机器学习-Ch1-3</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2023-11-05</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2025-01-05</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约3.4K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><p>主要内容：<code>ML概述</code>、<code>KNN</code>、<code>Naive Bayes</code>、<code>Regression</code>、<code>SVM</code></p>
+<h2 id="contents">Contents</h2>
+<p>[TOC]</p>
+<h2 id="ch1-overview-of-ml">Ch1 Overview of ML</h2>
+<p>对ML的分类：</p>
+<p>监督学习(Supervised learning)
+其基本思想是给定数据集中的样本是带有"正确答案"的,学习这些数据之后,再来新样本时,可以做出预测.
+常见的问题有垃圾邮件分类。</p>
+<p>无监督学习(Unsupervised learning)
+给定数据集没有标签。常用算法：聚类。常见问题：新闻分类、细分市场。</p>
+<p><strong>Application:</strong></p>
+<ul>
+<li>Supervised learning:
+<ul>
+<li>Linear Classifier</li>
+<li>Support Vector Machines (hard SVM, soft SVM)</li>
+<li>Kernel Methods</li>
+<li>Deep Learning</li>
+</ul></li>
+<li>Unsupervised learning:
+<ul>
+<li>Linear Discriminant Analysis(LDA)</li>
+<li>Principle Component Analysis (PCA)</li>
+<li>Generative Models(e.g. GMM, K-means)</li>
+</ul></li>
+</ul>
+<h3 id="supervised-learning">Supervised learning</h3>
+<p>一些参数以及符号：</p>
+<p>Model <span class="math inline">\(f\)</span>， Loss Function <span
+class="math inline">\(\mathcal{L}\)</span>，模型中的参数<span
+class="math inline">\(\theta\)</span>，输入输出<span
+class="math inline">\((x_i,y_i)\)</span></p>
+<p>The objective of the supervised learning is to <strong>find the
+parameters</strong> that minimises the average loss: <span
+class="math display">\[
+\min_{\theta}\frac 1 n \sum_{i=1}^n \mathcal{L}(f(x_i;\theta),y_i)
+\]</span></p>
+<h3 id="unsupervised-learning">Unsupervised learning</h3>
+<p>Learning patterns when no specific target output values are
+supplied.(实际上就是没有label)</p>
+<p><strong>Examples</strong>:</p>
+<ul>
+<li>Clustering: group data into groups</li>
+<li>Building probabilistic model to explain data</li>
+<li>Anomaly detection</li>
+</ul>
+<p>Types of machine learning: shallow vs. deep
+（传统机器学习VS深度学习）</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Traditional machine learning</th>
+<th>Deep learning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Important step: feature design</td>
+<td>Allows raw input</td>
+</tr>
+<tr class="even">
+<td>Usually work with “feature vectors”</td>
+<td>End-to-end learning</td>
+</tr>
+<tr class="odd">
+<td>Mapping function is simple, with relatively small number of
+parameters</td>
+<td>Complex models, with millions of parameters</td>
+</tr>
+<tr class="even">
+<td>Works well if the input can be captured by vectors, small to medium
+number of samples</td>
+<td>Works well if the “right feature” is unknown or the input is complex
+and a large number of samples are available</td>
+</tr>
+</tbody>
+</table>
+<p>进行ML的流程：</p>
+<ol type="1">
+<li>Problem formulation – What is the input? What is the expected
+outcome?(输入输出？)</li>
+<li>Data collection
+<ol type="1">
+<li>Collect data</li>
+<li>Annotation（给data以label）</li>
+</ol></li>
+<li>Design machine learning algorithm
+<ol type="1">
+<li>Choose the machine learning model</li>
+<li>Choose the objective function</li>
+</ol></li>
+<li>Training machine learning model: Learn the decision system from
+training data</li>
+<li>Applying machine learning model</li>
+</ol>
+<h2 id="ch2-classification">Ch2 Classification</h2>
+<p>classification与regression的对比：</p>
+<table>
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 59%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Classification</th>
+<th>Regression</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>predict labels</td>
+<td>predict values</td>
+</tr>
+<tr class="even">
+<td>categorical, often no order</td>
+<td>deal with ordered values</td>
+</tr>
+<tr class="odd">
+<td>all differences are equal</td>
+<td>some differences are bigger than others</td>
+</tr>
+</tbody>
+</table>
+<p>classifier的一种划分：</p>
+<ul>
+<li>binary 二分类</li>
+<li>multi-class 多分类</li>
+<li>multi-label 多标签</li>
+</ul>
+<p>classifier的划分以及应用：</p>
+<ul>
+<li><p>instance-based(KNN): classifiers use observation directly(no
+underlying model)</p>
+<blockquote>
+<p>K-Nearest neighbours just checks what the class of nearby training
+data are</p>
+</blockquote></li>
+<li><p>generative(Naive Bayes): build a generative statistic model</p>
+<blockquote>
+<p>Naïve Bayes attempts to model the underlying probability
+distributions of data</p>
+</blockquote></li>
+<li><p>discriminative(Decision Tree): directly estimate a decision
+rule/boundary</p>
+<blockquote>
+<p>Decision trees are concerned with establishing the boundaries between
+classes</p>
+</blockquote></li>
+</ul>
+<p>欧式距离 Euclidean Distance: <span
+class="math inline">\(d(a,b)=\sqrt{\sum(a_i-b_i)^2}\)</span></p>
+<p>马氏距离(估计不考)Mahalanobis Distance: <span
+class="math inline">\(d(a,b)=\sqrt{(a-b)^TM(a-b)}\)</span></p>
+<h3 id="knn">KNN</h3>
+<p>Test Error的计算：假设classifier是<span
+class="math inline">\(h\)</span>，那么对于<span
+class="math inline">\(x_i\)</span>我们的预测结果是<span
+class="math inline">\(h(x_i)\)</span>。如果预测结果与实际的结果<span
+class="math inline">\(y_i\)</span>之间不同，那么error<span
+class="math inline">\(\epsilon_{te}=\epsilon_{te}+1\)</span>.</p>
+<p>当<span class="math inline">\(k\)</span>值变化的时候，训练误差(<span
+class="math inline">\(\epsilon_{tr}\)</span>)和测试误差(<span
+class="math inline">\(\epsilon_{te}\)</span>)又会如何变化？有如下三种情况。</p>
+<blockquote>
+<p><span class="math inline">\(k\)</span>值代表的是取周围的<span
+class="math inline">\(k\)</span>个邻居。</p>
+</blockquote>
+<ol type="1">
+<li>当<span class="math inline">\(k\)</span>值较小(例如<span
+class="math inline">\(k=1\)</span>)时，模型的复杂度较高。每个测试样本只考虑其最近的一个邻居，这可能导致模型对噪声和局部变化非常敏感。在这种情况下，训练误差<span
+class="math inline">\(\epsilon_{tr}\)</span>很低，因为模型会完美地匹配训练样本，但测试误差<span
+class="math inline">\(\epsilon_{te}\)</span>较高，因为模型在未见过的样本上可能无法泛化。</li>
+<li>当<span class="math inline">\(k\)</span>值较大时(例如<span
+class="math inline">\(k=10\)</span>)，模型的复杂度较低。考虑更多的邻居可以平滑决策边界并减少噪声的影响。在这种情况下，训练误差<span
+class="math inline">\(\epsilon_{tr}\)</span>可能会增加，因为模型会更多地考虑其他类别的样本，测试误差<span
+class="math inline">\(\epsilon_{te}\)</span>可能会减少，因为模型在未见过的样本上更具泛化能力。</li>
+<li>当<span class="math inline">\(k\)</span>值等于样本数量时(例如<span
+class="math inline">\(k=n\)</span>，其中<span
+class="math inline">\(n\)</span>是样本数量)，相当于使用全部训练数据作为邻居。在这种情况下，模型的复杂度较低，因为它会考虑所有训练样本的投票。训练误差<span
+class="math inline">\(\epsilon_{tr}\)</span>可能会增加，因为模型更加保守。测试误差<span
+class="math inline">\(\epsilon_{te}\)</span>可能会减少，因为模型使用了更多的信息。</li>
+</ol>
+<p>KNN is a type of lazy learning(实际上并没有train的过程)</p>
+<blockquote>
+<ul>
+<li>Lazy: learning only occurs when you see the test example</li>
+<li>Eager: learn a model prior to seeing the test example</li>
+</ul>
+</blockquote>
+<p>KNN的好处与坏处（评价）：</p>
+<table>
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 64%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Advantages</th>
+<th>Disadvantages</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Easy to understand</td>
+<td>Hard to find a good distance measure</td>
+</tr>
+<tr class="even">
+<td>Very flexible decision boundaries</td>
+<td>Irrelevant features and noise reduce performance significantly</td>
+</tr>
+<tr class="odd">
+<td>No learning required</td>
+<td>Cannot handle more than a few dozen attributes (Curse of
+Dimensionality)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Computationally expensive</td>
+</tr>
+</tbody>
+</table>
+<h4 id="overfitting与underfitting">overfitting与underfitting</h4>
+<table>
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 44%" />
+<col style="width: 44%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>overfitting</th>
+<th>underfitting</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>特征</td>
+<td>Model could fit any data(trainset上结果很好), also fit the
+noise(testset上的结果很烂)</td>
+<td>Model is too inflexible to match the data, too few learnable
+parameters, wrong learnable
+parameters(在trainset和testset上表现都很烂，根本没训练好)</td>
+</tr>
+<tr class="even">
+<td>解决方法solution</td>
+<td>Less complex model, More data, Regularisation (soft reduction in
+parameters)</td>
+<td>Better data/pre-processing, More complex model, Less
+regularisation</td>
+</tr>
+</tbody>
+</table>
+<h4 id="validation-set">Validation set</h4>
+<p>在机器学习中，我们通常将数据集划分为训练集（Training
+Set）、验证集和测试集（Test Set）。验证集（Validation
+Set）是用于模型选择和超参数调优的一个独立数据集。</p>
+<p>训练集: 用于模型的参数估计和训练过程</p>
+<p>测试集:用于评估最终模型的性能</p>
+<p>验证集:用于选择不同模型和调整超参数的过程</p>
+<p><strong>Cross validation</strong>: 其中的Leave-one-out
+cross-validation。将数据集分为多个子集，拿一个作为validation。</p>
+<h3 id="naive-bayes">Naive Bayes</h3>
+<p>一些背景知识：</p>
+<p>Bayes的limitations：需要有data，无data不工作（基于数据的统计，生成概率）。</p>
+<p>Bayes公式：<span
+class="math inline">\(P(y|x)=\frac{P(y)P(x|y)}{P(x)}\)</span>，<span
+class="math inline">\(P(y|x)\)</span>:
+表述的是在x事件发生的背景下y事件发生的概率。</p>
+<p>极大似然估计：<span
+class="math inline">\(y_{ML}=\mathop{\arg\max}\limits_{y\in
+Y}[P(X|y)]\)</span></p>
+<p>Naive Bayes：将Bayes
+Theorem应用于有着先验概率或者可能性的数据集中。</p>
+<p>Naive的来由：数据属性之间的相关性，我们假设是独立的（assume
+independence）。</p>
+<p>Multinomial Naïve Bayes： <span class="math display">\[
+P(A\&amp;B)=P(A)\times P(B)\\
+P(Y|A\&amp;B)=\frac{P(Y)*P(A|Y)*P(B|Y)}{P(X)}
+\]</span> 将极大似然估计(Maximum likelihood)应用在Naive Bayes中：<span
+class="math inline">\(\max_\lambda\prod P(x_i|y;\lambda)\)</span></p>
+<p>而这样不好计算，于是变成对数函数：<span
+class="math inline">\(\max_\lambda\sum_i
+log(P(x_i|y;\lambda))\)</span></p>
+<blockquote>
+<p><span class="math inline">\(P(x_i|y;\lambda)\)</span>: 其中<span
+class="math inline">\(\lambda\)</span> 代表其中的参数。</p>
+</blockquote>
+<h4 id="application">Application</h4>
+<p>Bag of words(词袋)</p>
+<ul>
+<li>X：words</li>
+<li>Y：是否是垃圾邮件(spam)--二分类问题</li>
+</ul>
+<p>举例：“the most interesting film this summer”</p>
+<p><span
+class="math inline">\(P(doc|c)=P(the|c)P(most|c)P(interesting|c)P(film|c)P(in|c)P(the|c)P(summer|c)\)</span></p>
+<p><strong>数学原理</strong>：<span class="math inline">\(\hat
+c\)</span>是我们想要得到的最终结果，也就是是否是垃圾邮件的判定。以下公式的推导是基于朴素贝叶斯假设，通过计算每个类别c的后验概率<span
+class="math inline">\(P(c|d)\)</span>来选择最有可能的类别，实现对文档进行分类。
+<span class="math display">\[
+P(d|c)&amp;=\prod_{i\in positions}P(w_i|c)\\
+\hat c&amp;=\mathop{\arg\max}\limits_{c}P(c|d)\\
+&amp;=\mathop{\arg\max}\limits_{c}P(d|c)P(c)\\
+&amp;=\mathop{\arg\max}\limits_{c}\prod_{i\in positions}P(w_i|c)P(c)
+\]</span></p>
+<blockquote>
+<ul>
+<li>P(d|c)：这表示在给定类别c的条件下，文档d出现的概率。它是通过假设文档中的每个词（<span
+class="math inline">\(w_i\)</span>）在给定类别c的条件下是独立的，并且通过对这些条件概率的乘积来计算的。具体而言，这个公式使用了一个位置集合（positions），表示文档中被考虑的词的位置，然后计算每个位置上词<span
+class="math inline">\(w_i\)</span>在给定类别c的条件下的概率<span
+class="math inline">\(P(w_i|c)\)</span>，并将它们相乘得到<span
+class="math inline">\(P(d|c)\)</span>。</li>
+<li><span class="math inline">\(\hat
+c\)</span>：这表示通过贝叶斯决策规则（Bayes' decision
+rule）选择的最有可能的类别。在这个公式中，我们通过计算每个类别c的后验概率<span
+class="math inline">\(P(c|d)\)</span>来选择最有可能的类别。根据贝叶斯定理，<span
+class="math inline">\(P(c|d)\)</span>可以通过<span
+class="math inline">\(P(d|c)P(c)\)</span>计算得到。</li>
+<li><span
+class="math inline">\(P(c)\)</span>：这表示类别c在整个数据集中出现的概率，也称为类别的先验概率。它可以通过计算在训练数据中类别c的频率来估计。</li>
+</ul>
+</blockquote>
+<p>接下来要如何计算呢？还是一样的，<span
+class="math inline">\(\prod\)</span>不好处理，我们转换为log+<span
+class="math inline">\(\sum\)</span>。 <span class="math display">\[
+\prod_{i\in positions}P(w_i|c)P(c)&amp;=\sum_{i\in
+positions}log(P(w_i|c))+log(P(c))\\
+&amp;=\sum_{k\in|V|}n_klog(P(w_i|c))+log(P(c))
+\]</span> <span class="math inline">\(n_k\)</span> : The number of
+occurrences of the k th word in the vocabulary. It can be zero or
+non-zero. 词汇表中<span class="math inline">\(w_i\)</span>的计数，<span
+class="math inline">\(w_i\)</span>代表文档document中其中的某个word。</p>
+<p><span class="math inline">\(|V|\)</span>: The list of vocabulary,
+词汇表的大小</p>
+<h3 id="decision-tree">Decision Tree</h3>
+<p>一个决策的过程，我们需要确定：</p>
+<ul>
+<li>Which variable to test</li>
+<li>What to test it against</li>
+<li>What function to apply to a variable prior to a test</li>
+</ul>
+<p>决策树模拟了一个树形结构，其中每个内部节点表示对一个特征的测试，每个分支代表测试的结果，每个叶节点代表一个类别或回归值。它的构建过程从根节点开始，选择最佳的特征进行测试。选择的依据可以是信息增益（Information
+Gain：<span
+class="math inline">\(Entropy=\sum-p_ilog(p_i)\)</span>）、基尼系数（Gini
+Impurity）或其他度量。通过测试特征将数据集划分为不同的子集，然后递归地在每个子集上重复这个过程，直到达到停止条件，如达到最大深度、节点包含的样本数小于某个阈值或节点中的样本属于同一个类别。</p>
+<ul>
+<li>分类问题中：决策树的叶节点表示一个类别，通过在树上从根节点到叶节点的路径，决策树可以对新的样本进行分类。</li>
+<li>回归问题中：叶节点表示一个预测值，通过在树上从根节点到叶节点的路径，决策树可以对新的样本进行回归预测。</li>
+</ul>
+<h2 id="ch3-regression">Ch3 Regression</h2>
+<p>对regression与classification的区分：</p>
+<p>classification中Y是离散变量，regression中Y是连续变量。</p>
+<p><strong>Application</strong></p>
+<ul>
+<li>房价预测</li>
+<li>图像处理(Image processing)</li>
+<li>人数统计(Crowd counting)</li>
+<li>生成声音(Generate sounding)</li>
+</ul>
+<h3 id="linear-regression">Linear Regression</h3>
+<p>线性回归：给定一些样本点，找出一条可以拟合的曲线。 <span
+class="math display">\[
+y=&amp;f(x)\\
+y=&amp;w^Tx=\sum^D_{k=1}w_kx_k\\
+err=&amp;(f(x)-\hat y)^2\\
+\mathcal{L}=&amp;\sum^N_{i=1}(f(x_i)-\hat y_i)^2\\
+=&amp;\sum^N_{i=1}(w^Tx_i-\hat y_i)^2\\
+=&amp;||w^TX-\hat y||^2
+\]</span> 计算<span class="math inline">\(\min
+\mathcal{L}\)</span>求其对w的导数=0,<span
+class="math inline">\(w^*=\mathop{\arg\min}\limits_{w}\mathcal{L}\)</span>：
+<span class="math display">\[
+\frac{\partial\mathcal{L}}{\partial w}&amp;=0\\
+\frac{\partial{||w^T X-\hat y||^2}}{\partial w}&amp;=0\\
+w&amp;=(XX^T)^{-1}X\hat y^T
+\]</span> 上述的<span class="math inline">\(\hat
+y\)</span>代表最终的结果是一个值scalar，但如果最终的结果是一个向量，则写成<span
+class="math inline">\(\hat Y\)</span>。 <span class="math display">\[
+w=(XX^T)^{-1}X\hat Y^T
+\]</span></p>
+<p>不能用Regression去Classification的理由：</p>
+<ul>
+<li><p>Limitation:</p>
+<p>– Put unnecessary requirements to the predicted output</p>
+<p>– May increase the fitting difficulty and lead to bad training
+result</p></li>
+<li><p>But why is it commonly used in practice?</p>
+<p>– Close-form solution, less storage for low</p>
+<p>-dimensional data</p>
+<p>– Quick update for incremental learning, distributed
+learning</p></li>
+</ul>
+<h3 id="regularized-regression">Regularized Regression</h3>
+<p>即添加了正则化惩罚项regularization的Linear Regression。</p>
+<p>regularization的用途？</p>
+<ul>
+<li>避免过拟合 avoid overfitting</li>
+<li>Enforce certain property of solution</li>
+</ul>
+<p>其形式：<span class="math inline">\(\mathcal{L}=||w^TX-\hat
+y||^2+\Omega(w)\)</span>, <span
+class="math inline">\(\Omega(w)\)</span>为正则化惩罚项。</p>
+<blockquote>
+<p>对p-范式的介绍(p-Norm)： <span class="math display">\[
+||x||_p=(\sum^d_{j=1}|x^j|^p)^{\frac 1 p}
+\]</span> 当p=1的时候：Lasso Regression</p>
+<p>当p=2的时候：Ridge Regression</p>
+</blockquote>
+<h4 id="ridge-regression">Ridge Regression</h4>
+<p>其Loss function的形式是： <span class="math display">\[
+\mathcal{L}=||w^TX-\hat y||^2_2+\lambda||w||^2_2
+\]</span> 对其求解： <span class="math display">\[
+w=(XX^T+\lambda I)^{-1}X\hat y^T
+\]</span> 如果<span
+class="math inline">\(XX^T\)</span>不是可逆的，可能就不能写成<span
+class="math inline">\((XX^T)^{-1}\)</span>，这意味着此处有多种方法去处理（而不是求逆）。如果加上一个正则化，那么它总是可逆的。It
+essentially provides a criterion for choosing the optimal solution among
+multiple equivalent solutions of the first-term。</p>
+<h4 id="lasso-regression">Lasso Regression</h4>
+<p>其Loss Function的形式是： <span class="math display">\[
+\mathcal{L}=||w^TX-\hat y||^2_2+\lambda||w||_1
+\]</span></p>
+<ul>
+<li>L1 norm encourages sparse solution. This could be useful for
+understanding the impact of various factors, e.g. perform feature
+selection.</li>
+<li>Sometimes it can lead to an improved performance since it can
+<strong>suppressing noisy factors</strong>. 其原因是：计算出来<span
+class="math inline">\(2XX^Tw=2X\hat
+y^T-\lambda\)</span>。使得某些特征的<span
+class="math inline">\(w\)</span>可以取0。</li>
+<li>Unfortunately, it does not have a close-form solution.</li>
+</ul>
+<h3 id="support-vector-regression">Support Vector Regression</h3>
+<p>Key idea: if the fitting error is already small enough, do not make
+it smaller.</p>
+<p>SVR通过在二维空间中找到一个最优超平面来实现对回归过程的建模。由于这个最优超平面仅考虑到了在训练集周围边缘的点，使得模型对数据点的过拟合现象进行有效地避免。同时，根据再投影误差作为惩罚项的复杂度控制参数可以很好地调节回归模型的灵活性。</p>
+<p>硬间隔（Hard-margin）: <span class="math display">\[
+&amp;\min \frac 1 2 ||w||^2\\
+s.t. &amp;y_i-wx_i-b\le\epsilon\\
+&amp;w_ix_i+b-y_i\le\epsilon
+\]</span> 软间隔（Soft-margin）： <span class="math display">\[
+\min \frac 1 2 ||w||^2+C\sum^m_{i=1}(\xi_i+\xi_i^*)\\
+s.t.\begin{cases}
+&amp;y_i-wx_i-b\le\epsilon+\xi_i\\
+&amp;wx_i+b-y_i\le\epsilon+\xi_i^*\\
+&amp;\xi_i,\xi_i^*\ge0,i=1,\dots,m
+\end{cases}
+\]</span> SVR: <span class="math display">\[
+\min_{w,b}\frac 1 2 ||w||^2+\sum_{i}\max(1-y_i(w^Tx_i+b),0)
+\]</span> <span
+class="math inline">\(\max(1-y_i(w^Tx_i+b),0)\)</span>表示在<span
+class="math inline">\(1-y_i(w^Tx_i+b)\)</span>与0之间取大的那个。</p>
+<p>如果<span
+class="math inline">\((w^Tx_i+b)\)</span>是binary的：那么假设对于positive
+class是正数，对于negative class 是负数。当decision
+value不够大（或者是不够小）的时候，我们就会“激活”这个惩罚项。</p>
+<h4 id="dual-form-of-svr">Dual form of SVR</h4>
+<p>原始问题： <span class="math display">\[
+\min \frac 1 2 ||w||^2+C\sum^m_{i=1}(\xi_i+\xi_i^*)\\
+s.t.\begin{cases}
+&amp;y_i-wx_i-b\le\epsilon+\xi_i\\
+&amp;wx_i+b-y_i\le\epsilon+\xi_i^*\\
+&amp;\xi_i,\xi_i^*\ge0,i=1,\dots,m
+\end{cases}
+\]</span> 对偶问题（dual problem）： <span class="math display">\[
+\max=
+\begin{cases}
+\frac 1 2
+\sum^{m}_{i,j=1}(\alpha_i-\alpha_i^*)(\alpha_j-\alpha_j^*)\langle
+x_i,x_j \rangle\\
+-\epsilon
+\sum^m_{i=1}(\alpha_i+\alpha_i^*)+\sum^m_{i=1}y_i(\alpha_i-\alpha_i^*)
+\end{cases}\\
+s.t. \sum^m_{i=1}(\alpha_i-\alpha_i^*)=0;0\le \alpha_i,\alpha_i^*\le C
+\]</span></p>
+</div><div class="post-end"><div class="post-prev"><a href="/2023/11/05/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-Ch4-6/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-next"><a href="/2023/05/11/conversation-search-paper-1/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#contents"><span class="toc-content-number">1.</span> <span class="toc-content-text">Contents</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ch1-overview-of-ml"><span class="toc-content-number">2.</span> <span class="toc-content-text">Ch1 Overview of ML</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#supervised-learning"><span class="toc-content-number">2.1.</span> <span class="toc-content-text">Supervised learning</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#unsupervised-learning"><span class="toc-content-number">2.2.</span> <span class="toc-content-text">Unsupervised learning</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ch2-classification"><span class="toc-content-number">3.</span> <span class="toc-content-text">Ch2 Classification</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#knn"><span class="toc-content-number">3.1.</span> <span class="toc-content-text">KNN</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#overfitting%E4%B8%8Eunderfitting"><span class="toc-content-number">3.1.1.</span> <span class="toc-content-text">overfitting与underfitting</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#validation-set"><span class="toc-content-number">3.1.2.</span> <span class="toc-content-text">Validation set</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#naive-bayes"><span class="toc-content-number">3.2.</span> <span class="toc-content-text">Naive Bayes</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#application"><span class="toc-content-number">3.2.1.</span> <span class="toc-content-text">Application</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#decision-tree"><span class="toc-content-number">3.3.</span> <span class="toc-content-text">Decision Tree</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ch3-regression"><span class="toc-content-number">4.</span> <span class="toc-content-text">Ch3 Regression</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#linear-regression"><span class="toc-content-number">4.1.</span> <span class="toc-content-text">Linear Regression</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#regularized-regression"><span class="toc-content-number">4.2.</span> <span class="toc-content-text">Regularized Regression</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#ridge-regression"><span class="toc-content-number">4.2.1.</span> <span class="toc-content-text">Ridge Regression</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#lasso-regression"><span class="toc-content-number">4.2.2.</span> <span class="toc-content-text">Lasso Regression</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#support-vector-regression"><span class="toc-content-number">4.3.</span> <span class="toc-content-text">Support Vector Regression</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#dual-form-of-svr"><span class="toc-content-number">4.3.1.</span> <span class="toc-content-text">Dual form of SVR</span></a></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2025 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>

@@ -1,0 +1,604 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch11 决策树 [TOC]   image-20250105164525088  决策树的基本概念 基本技术路线:属性选择、树构建、剪枝   什么样的属性是好的？ 怎么建立这棵树？ 怎么剪枝？   决策树 非线性 定义：分类决策树是一种描述对样本进行分类的树形结构。决策树由节点和有向边组成。  内部结点：对于数据的一个特征&#x2F;属性。 叶子结点：对应数据的一个类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模式识别-Ch11-决策树">
+<meta property="og:url" content="http://example.com/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch11-%E5%86%B3%E7%AD%96%E6%A0%91/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch11 决策树 [TOC]   image-20250105164525088  决策树的基本概念 基本技术路线:属性选择、树构建、剪枝   什么样的属性是好的？ 怎么建立这棵树？ 怎么剪枝？   决策树 非线性 定义：分类决策树是一种描述对样本进行分类的树形结构。决策树由节点和有向边组成。  内部结点：对于数据的一个特征&#x2F;属性。 叶子结点：对应数据的一个类">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-05T08:18:49.000Z">
+<meta property="article:modified_time" content="2025-01-05T08:45:33.133Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="模式识别">
+<meta name="twitter:card" content="summary"><title>模式识别-Ch11-决策树 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>模式识别-Ch11-决策树</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2025-01-05</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2025-01-05</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">模式识别</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约3.4K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch11-决策树">Ch11 决策树</h1>
+<p>[TOC]</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105164525088.png"
+alt="image-20250105164525088" />
+<figcaption aria-hidden="true">image-20250105164525088</figcaption>
+</figure>
+<h2 id="决策树的基本概念">决策树的基本概念</h2>
+<p><code>基本技术路线</code>:<code>属性选择</code>、<code>树构建</code>、<code>剪枝</code></p>
+<blockquote>
+<ol type="1">
+<li>什么样的属性是好的？</li>
+<li>怎么建立这棵树？</li>
+<li>怎么剪枝？</li>
+</ol>
+</blockquote>
+<h3 id="决策树-非线性">决策树 <code>非线性</code></h3>
+<p>定义：分类决策树是一种描述对样本进行分类的树形结构。决策树由节点和有向边组成。</p>
+<ul>
+<li>内部结点：对于数据的一个特征/属性。</li>
+<li>叶子结点：对应数据的一个类别。</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105105401667.png"
+alt="image-20250105105401667" />
+<figcaption aria-hidden="true">image-20250105105401667</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105105428863.png"
+alt="image-20250105105428863" />
+<figcaption aria-hidden="true">image-20250105105428863</figcaption>
+</figure>
+<blockquote>
+<p>此时有很多的规则能够决定二分类、就不再是线性的分类器。</p>
+</blockquote>
+<p><strong>决策树规则</strong>代表实例属性值约束的合取（交集）的析取（并集）式。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105105953556.png"
+alt="从树根到树叶的每一条路径对应一组属性测试的合取，树本身对应这些合取的析取" />
+<figcaption
+aria-hidden="true">从树根到树叶的每一条路径对应一组属性测试的合取，树本身对应这些合取的析取</figcaption>
+</figure>
+<p><strong>Q: 属性是连续的怎么办？</strong>将连续转化为离散的。</p>
+<p>假如是二叉树，就要把属性分成两个子集，并起来=全集。</p>
+<p>所以连续属性：(1)子集=区间。(2)按分布分配区间</p>
+<h4 id="例连续属性">例：连续属性</h4>
+<p>决策树将特征空间划分为 <strong>轴平行的（hyper-）矩形</strong>
+区域（如图中的绿色边界）。每个矩形区域（或超立方体）对应于一个类别标签（例如，0
+或 1），或者是概率分布。</p>
+<p>决策树的每一条 <strong>从根到叶的路径</strong>
+对应于特征空间中的一个区域 R。</p>
+<ul>
+<li>这些区域由条件划分（如 <span class="math inline">\(x_2 &lt;
+3\)</span>、<span class="math inline">\(x_1 &lt; 4\)</span>）定义。</li>
+<li>树的叶子节点定义了最终的分类结果。</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105110547016.png"
+alt="image-20250105110547016" />
+<figcaption aria-hidden="true">image-20250105110547016</figcaption>
+</figure>
+<p>图中：</p>
+<ul>
+<li>左侧是二维特征空间的划分，绿色边界将数据划分为不同区域。</li>
+<li>右侧是对应的决策树，展示了如何通过属性测试（如<span
+class="math inline">\(x_2 &lt; 3\)</span>）逐步划分空间。</li>
+</ul>
+<p><strong>决策树的复杂性与数据几何的关系</strong>：</p>
+<p>决策树的复杂性与数据在特征空间中的分布密切相关：</p>
+<ol type="1">
+<li>数据越复杂（例如分布具有很多不规则边界），树的复杂性越高。</li>
+<li>简单的数据分布（例如，线性分布）会导致简单的决策树。</li>
+</ol>
+<h3 id="构建决策树">构建决策树</h3>
+<p><strong>一般技术路线：</strong></p>
+<ol type="1">
+<li>决策树生成：遍历所有可能的特征属性、对树进行分支。</li>
+<li>决策树剪枝：适当剪除一些不必要的分支，减少过拟合，获得更好的推广能力。</li>
+</ol>
+<h4 id="决策树学习">决策树学习</h4>
+<p><code>ID3</code>、<code>C4.5</code>、<code>CART</code>区分点、优缺点</p>
+<blockquote>
+<p>这三种算法构建树、剪枝的过程一样；只是选择属性的规则不同。</p>
+</blockquote>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105111204180.png"
+alt="image-20250105111204180" />
+<figcaption aria-hidden="true">image-20250105111204180</figcaption>
+</figure>
+<h4 id="决策树构建的技术路线">决策树构建的技术路线</h4>
+<ol type="1">
+<li>构建根结点，将所有训练数据都放在根结点。</li>
+<li>选择一个“最优”特征，按照它的离散取值，将上一个节点中数据分割成不同子集。</li>
+<li>对于分割的子集，如果能够基本正确分类（即：子集中大部分数据都属于同一类），那么构建叶结点。</li>
+<li>对于不能构建叶结点的子集，继续2 -
+3步，直到所有子集都能构建叶结点。</li>
+</ol>
+<p><strong>核心任务</strong>：如何选择“最优”特征，对数据集进行划分？</p>
+<h2
+id="信息论相关基础--选择属性的依据">信息论相关基础--选择属性的依据</h2>
+<p><strong>熵(Entropy)</strong>: 表示随机变量不确定性的度量。</p>
+<p>设<span
+class="math inline">\(X\)</span>是一个取有限个值的离散随机变量，其概率分布和熵的定义为：
+<span class="math display">\[
+P(X=x_i)=p_i,\quad i=1,2,\dots,n\\
+H(x)=\sum_{x\in X}p)i\log p_i
+\]</span> <img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105111600321.png"
+alt="image-20250105111600321" /></p>
+<p><strong>条件熵：</strong>设有随机变量<span
+class="math inline">\(X,Y\)</span>，其联合概率分布为： <span
+class="math display">\[
+P(X=x_i,Y=y_j)=p_{ij},\quad i=1,2,\dots,n;\ j=1,2,\dots,m
+\]</span> 条件熵<span
+class="math inline">\(H(Y|X)\)</span>表示在已知随机变量<span
+class="math inline">\(X\)</span>的条件下随机变量<span
+class="math inline">\(Y\)</span>的不确定性。 <span
+class="math display">\[
+Ent(D)=H(Y|X)=\sum^n_{i=1}P(X=x_i)H(Y|X=x_i)=\sum^n_{i=1}p_iH(Y|X=x_i)
+\]</span> <strong>信息增益(互信息)</strong>: 一个属性<span
+class="math inline">\(A\)</span>的不确定性。在某特征信息X已知的时候，是类Y信息的不确定性减少的程度。
+<span class="math display">\[
+Gain(D)=g(D,A)=H(D)-H(D|A)
+\]</span></p>
+<blockquote>
+<p>决策树学习中：信息增益=训练数据集中类与特征的互信息。</p>
+<p><strong>基于信息增益的特征选择：</strong>对训练数据集(或子集)<span
+class="math inline">\(D\)</span>，计算其每个特征的信息增益、选择信息增益最大的特征。</p>
+</blockquote>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105112836564.png"
+alt="image-20250105112836564" />
+<figcaption aria-hidden="true">image-20250105112836564</figcaption>
+</figure>
+<p><strong>信息增益率/增益比</strong></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105114209397.png"
+alt="image-20250105114209397" />
+<figcaption aria-hidden="true">image-20250105114209397</figcaption>
+</figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105114218238.png"
+alt="image-20250105114218238" /> <span class="math display">\[
+\text{Gain\_ratio}(D,a)=\frac{Gain(D,a)}{Ent(D|a)}\\
+Ent(D|a)=\sum^V_{j=1}\frac{|D^i|}{|D|}Ent(D^i)
+\]</span></p>
+<p><strong>基尼值/基尼指数</strong><code>CART</code></p>
+<ol type="1">
+<li><p><strong>基尼值（Gini）</strong></p>
+<ul>
+<li>假定样本集合<span class="math inline">\(D\)</span>中第<span
+class="math inline">\(k\)</span>类样本所占比例为<span
+class="math inline">\(p_k\)</span>，<span class="math inline">\(k =
+1,2,\cdots,C\)</span>，则样本集合<span
+class="math inline">\(D\)</span>的基尼值定义为： <span
+class="math display">\[
+Gini(D)=\sum_{i = 1}^{C}\sum_{j\neq i}p_ip_j = 1-\sum_{i = 1}^{C}p_i^2
+\]</span> 基尼值越小，纯度越高。</li>
+</ul></li>
+<li><p><strong>基尼指数（Gini Index）</strong></p>
+<ul>
+<li>属性<span class="math inline">\(a\)</span>的基尼指数：利用属性<span
+class="math inline">\(a\)</span>对样本集合<span
+class="math inline">\(D\)</span>划分后的<strong>加权基尼值之和</strong>。
+<span class="math display">\[
+Gini\_index(D,a)=\sum_{i = 1}^{v}\frac{\vert D^i\vert}{\vert
+D\vert}Gini(D^i)
+\]</span></li>
+</ul></li>
+</ol>
+<h2 id="决策树生成">决策树生成</h2>
+<p><strong>决策树划分的目的</strong>：每一个分支结点包含的样本尽可能属于同一类别，即分支结点的“纯度”尽可能高。</p>
+<p><strong>评价子集“纯度”的方法</strong>：给定一个特征对数据集合进行划分，如何评价划分后子集的“纯度”？</p>
+<table>
+<thead>
+<tr class="header">
+<th>评价方法</th>
+<th>对应的算法</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>信息熵</td>
+<td>ID3</td>
+</tr>
+<tr class="even">
+<td>增益率</td>
+<td>C4.5</td>
+</tr>
+<tr class="odd">
+<td>基尼指数</td>
+<td>CART分类</td>
+</tr>
+<tr class="even">
+<td>平方误差最小(MSE)</td>
+<td>CART回归</td>
+</tr>
+</tbody>
+</table>
+<h3 id="决策树生成算法">决策树生成算法</h3>
+<h4 id="id3">ID3</h4>
+<p>利用分割前后的熵来计算信息增益，作为判别能力的度量。</p>
+<blockquote>
+<p>类似于<code>极大似然法</code>进行概率模型的选择。</p>
+<p>偏好选择取值数量最多的属性。</p>
+</blockquote>
+<p><strong>核心</strong>：在决策树的各个结点上应用信息增益准则来选择特征，递归地构建决策树。</p>
+<p><strong>简述方法：</strong>从根结点开始，对结点计算所有可能的特征的信息增益，选择信息增益最大的特征作为结点的特征，由该特征的不同取值建立子结点；再对子结点递归地调用以上方法，构建决策树；直到所有特征的信息增益均很小或没有特征可以选择为止。最后得到一个决策树。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105135720151.png"
+alt="ID3" />
+<figcaption aria-hidden="true">ID3</figcaption>
+</figure>
+<h4 id="c4.5">C4.5</h4>
+<p>来自于ID3，稍微改进。</p>
+<ul>
+<li>选择增益率 而不是 信息增益</li>
+<li>可以在树构造的过程剪枝</li>
+<li>能够对连续属性的离散化处理</li>
+<li>能够对不完整数据进行处理</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105135808883.png"
+alt="C4.5" />
+<figcaption aria-hidden="true">C4.5</figcaption>
+</figure>
+<h2 id="决策树剪枝的基本原则">决策树剪枝的基本原则</h2>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105142520563.png"
+alt="image-20250105142520563" />
+<figcaption aria-hidden="true">image-20250105142520563</figcaption>
+</figure>
+<blockquote>
+<p>如何避免overfitting?</p>
+<ul>
+<li>去除不相关的特征：对分类没有帮助</li>
+<li>增加训练样本</li>
+</ul>
+</blockquote>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105142835857.png"
+alt="image-20250105142835857" />
+<figcaption aria-hidden="true">image-20250105142835857</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105143112889.png"
+alt="image-20250105143112889" />
+<figcaption aria-hidden="true">image-20250105143112889</figcaption>
+</figure>
+<h3 id="预剪枝">预剪枝</h3>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105143133552.png"
+alt="image-20250105143133552" />
+<figcaption aria-hidden="true">image-20250105143133552</figcaption>
+</figure>
+<h4 id="例预剪枝">例：预剪枝</h4>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105144059864.png"
+alt="image-20250105144059864" />
+<figcaption aria-hidden="true">image-20250105144059864</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105144155735.png"
+alt="image-20250105144155735" />
+<figcaption aria-hidden="true">image-20250105144155735</figcaption>
+</figure>
+<p>最终的结果是：</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105144251207.png"
+alt="image-20250105144251207" />
+<figcaption aria-hidden="true">image-20250105144251207</figcaption>
+</figure>
+<h3 id="后剪枝">后剪枝</h3>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105144405909.png"
+alt="image-20250105144405909" />
+<figcaption aria-hidden="true">image-20250105144405909</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105144422472.png"
+alt="image-20250105144422472" />
+<figcaption aria-hidden="true">image-20250105144422472</figcaption>
+</figure>
+<p>最终剪枝结果：</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105144503397.png"
+alt="image-20250105144503397" />
+<figcaption aria-hidden="true">image-20250105144503397</figcaption>
+</figure>
+<h4 id="缺失值处理">缺失值处理</h4>
+<p>对于不完整样本（某些属性值缺失的样本），存在以下两个问题：</p>
+<ol type="1">
+<li>属性值缺失的情况下，如何进行划分属性选择？</li>
+<li>给定划分属性，若样本在该属性上的值缺失，如何对样本进行划分？</li>
+</ol>
+<p><strong>处理方法</strong></p>
+<p>为每个样本分配一个权重（通常考虑样本具有相同的权重）。</p>
+<ul>
+<li>A1：使用所有包含给定属性值的样本集合计算属性的信息增益/增益率/基尼指数。</li>
+<li>A2：划分至该属性的所有子结点，并根据子结点所占父结点比例调整权值。</li>
+</ul>
+<p><strong>相关公式</strong></p>
+<p>记<span class="math inline">\(\widetilde{D}\)</span>为样本集合<span
+class="math inline">\(D\)</span>中属性<span
+class="math inline">\(a\)</span>上没有缺失值的样本子集；<span
+class="math inline">\(\widetilde{D}^{i}\)</span>表示<span
+class="math inline">\(\widetilde{D}\)</span>在属性<span
+class="math inline">\(a\)</span>上取值为<span
+class="math inline">\(a^{i}\)</span>的样本子集。 <span
+class="math display">\[
+Gain(D,a)=\rho\times Gain(\widetilde{D},a)\\
+\rho=\frac{\sum_{x_{i}\in\widetilde{D}}w_{i}}{\sum_{x_{i}\in D}w_{i}}
+\]</span> <span
+class="math inline">\(\rho\)</span>表示无缺失值样本所占的比例；这里<span
+class="math inline">\(w_{i}\)</span>表示样本<span
+class="math inline">\(x_{i}\)</span>的权重。</p>
+<h4 id="连续值处理">连续值处理</h4>
+<blockquote>
+<p>离散特征：只能取固定个数的值，可依具体取值进行结点划分。</p>
+<p>连续特征：无限取值，不能根据具体特征取值对结点进行划分。</p>
+</blockquote>
+<p><strong>连续特征离散化</strong>：通过设置一定的取值区间，将连续取值转化成离散的区间取值。常用的离散策略是二划分。对于连续特征<span
+class="math inline">\(x\)</span>，其离散函数可表示为： <span
+class="math display">\[
+f(x)=\begin{cases}0, &amp; x &gt; t\\1, &amp; x\leq t\end{cases}
+\]</span> 给定样本集<span
+class="math inline">\(D\)</span>和连续属性<span
+class="math inline">\(a\)</span>，假定<span
+class="math inline">\(a\)</span>在<span
+class="math inline">\(D\)</span>上出现了<span
+class="math inline">\(n\)</span>个不同的取值，将这些值从小到大进行排序，记为<span
+class="math inline">\(\{a^{1},a^{2},\cdots,a^{n}\}\)</span>。</p>
+<p>基于划分点<span class="math inline">\(t\)</span>，可将<span
+class="math inline">\(D\)</span>分为<span
+class="math inline">\(D_{t}^{+}\)</span>和<span
+class="math inline">\(D_{t}^{-}\)</span>两个子集，其中<span
+class="math inline">\(D_{t}^{+}\)</span>包含那些在属性<span
+class="math inline">\(a\)</span>上取值大于<span
+class="math inline">\(t\)</span>的样本，而<span
+class="math inline">\(D_{t}^{-}\)</span>包含那些在属性<span
+class="math inline">\(a\)</span>上取值不大于<span
+class="math inline">\(t\)</span>的样本。</p>
+<p>划分点<span class="math inline">\(t\)</span>的计算公式为： <span
+class="math display">\[
+T_{i}=\frac{a^{i}+a^{i + 1}}{2},\quad1\leq i\leq n - 1
+\]</span></p>
+<p><strong>信息熵与信息增益的计算</strong></p>
+<ul>
+<li><p>根据连续属性<span class="math inline">\(a\)</span>和阈值<span
+class="math inline">\(t\)</span>，对<span
+class="math inline">\(D\)</span>进行划分，整个集合的信息熵变为： <span
+class="math display">\[
+Ent(D|a,t)=\frac{\vert D_{t}^{+}\vert}{\vert
+D\vert}Ent(D_{t}^{+})+\frac{\vert D_{t}^{-}\vert}{\vert
+D\vert}Ent(D_{t}^{-})
+\]</span></p></li>
+<li><p>根据连续属性<span class="math inline">\(a\)</span>和阈值<span
+class="math inline">\(t\)</span>，对<span
+class="math inline">\(D\)</span>进行划分所获得的信息增益： <span
+class="math display">\[
+Gain(D,a,t)=Ent(D)-Ent(D|a,t)
+\]</span></p></li>
+<li><p>在特征选择的同时，确定合适的阈值<span
+class="math inline">\(t\)</span>（使得信息增益最大）： <span
+class="math display">\[
+\max_{t\in\{T_{1},T_{2},\cdots,T_{n - 1}\}}Gain(D,a,t)
+\]</span></p></li>
+</ul>
+<h2 id="cart决策树">CART决策树</h2>
+<p><code>有监督学习</code>、<code>基尼系数</code>、<code>回归问题</code></p>
+<ul>
+<li>CART同样由特征选择、树的生成及剪枝组成，既可以用于分类也可以用于回归，以下将用于分类与回归的树统称为决策树
+。</li>
+<li>CART是二叉树，内部结点特征的取值为“是”和“否”，左分支是取值为“是”的分支，右分支是取值为“否”的分支
+。</li>
+<li>该决策树等价于递归地二分每个特征，将输入空间（即特征空间）划分为有限个单元，并在这些单元上确定预测的概率分布，即在输入给定的条件下输出的条件概率分布。</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105145847395.png"
+alt="image-20250105145847395" />
+<figcaption aria-hidden="true">image-20250105145847395</figcaption>
+</figure>
+<h3 id="算法实现">算法实现</h3>
+<h4 id="分类树">分类树</h4>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105150206919.png"
+alt="image-20250105150206919" />
+<figcaption aria-hidden="true">image-20250105150206919</figcaption>
+</figure>
+<h4 id="回归树">回归树</h4>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105150133523.png"
+alt="image-20250105150133523" />
+<figcaption aria-hidden="true">image-20250105150133523</figcaption>
+</figure>
+<p><strong>构建回归树：</strong>递归地选择最优的特征属性和其划分值，将当前数据空间划分为两部分，直到满足停止条件。</p>
+<ul>
+<li><p>离散特征：划分属性0/1(是/不是)--西瓜色泽青绿=0/1</p></li>
+<li><p>连续特征：与划分值s的大小关系 <span class="math display">\[
+D^-(j,s)=\{x|x^j\le s\},D^+(j,s)=\{x|x^j&gt; s\}
+\]</span></p></li>
+<li><p>停止条件：</p>
+<ol type="1">
+<li>结点中样本个数小于预定阈值</li>
+<li>没有可用特征</li>
+<li>决策误差小于预定阈值</li>
+</ol></li>
+</ul>
+<p><strong>特征选择：</strong>使用平方误差最小(MSE)准则，遍历所有特征j和可能的划分值s，选择是的<strong>预测平方误差最小</strong>的组合，同时记录对应的<strong>均值</strong>，作为决策函数相应区域的取值。
+<span class="math display">\[
+\arg\min_{j,s}\left[\sum_{x_i\in D^+(j,s)}(y_i-m^+)^2+\sum_{x_i\in
+D^-(j,s)}(y_i-m^-)^2\right]
+\]</span></p>
+<h2 id="决策树推广-随机森林">决策树推广-随机森林</h2>
+<p><strong>随机森林</strong>：通过随机方法构建多个决策树，利用决策树分类结果进行投票，得到随机森林的分类结果。随机森林泛化能力更强。</p>
+<blockquote>
+<p><strong>两个随机：</strong>在生成决策树之前，先采用两个随机方法确定可用的训练数据和特征属性。</p>
+<ul>
+<li>训练数据随机：随机采样一部分训练数据。</li>
+<li>使用特征随机：随机选择一部分特征属性。</li>
+</ul>
+</blockquote>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105141230879.png"
+alt="image-20250105141230879" />
+<figcaption aria-hidden="true">image-20250105141230879</figcaption>
+</figure>
+<h3 id="算法实现-1">算法实现</h3>
+<p>该算法用<strong>随机</strong>的方式建立起多棵决策树，然后由这些决策树组成一个森林，其中<strong>每棵决策树之间没有关联</strong>，当有一个新的样本输入时，就让每棵树独立的做出判断，按照<strong>多数原则</strong>决定该样本的分类结果。</p>
+<p>基本任务：</p>
+<ol type="1">
+<li>构建随机森林</li>
+<li>使用随机森林预测</li>
+</ol>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105141418240.png"
+alt="image-20250105141418240" />
+<figcaption aria-hidden="true">image-20250105141418240</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105141534424.png"
+alt="image-20250105141534424" />
+<figcaption aria-hidden="true">image-20250105141534424</figcaption>
+</figure>
+<p>在建立好了随机森林之后，我们对于来的新的样本要进行预测。</p>
+<p>基本步骤(分类)：</p>
+<ol type="1">
+<li>向建立好的随机森林中输入一个新样本</li>
+<li>随机森林中的每棵树都能够独立地做出判断</li>
+<li>投票，将得到票数最多地分类结果作为该样本地最终类别</li>
+</ol>
+<p><strong>分类：投票取票数最多；回归：取均值。</strong></p>
+<h2 id="总结">总结</h2>
+<ul>
+<li>决策树的构建是一种<strong>递归过程</strong>。</li>
+<li>每次选择的属性需要满足某种优化准则（例如最大化信息增益，最小化基尼指数等）。</li>
+<li>决策树的结果是一个树状结构，其中每个内部节点是一个测试条件，每个叶子节点是一个类别标签。</li>
+</ul>
+<h4 id="决策树优缺点">决策树优缺点</h4>
+<p>离散数据的情况下适合使用决策树。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105111015478.png"
+alt="image-20250105111015478" />
+<figcaption aria-hidden="true">image-20250105111015478</figcaption>
+</figure>
+<h4 id="id3-vs-c4.5">ID3 vs C4.5</h4>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105140627011.png"
+alt="image-20250105140627011" />
+<figcaption aria-hidden="true">image-20250105140627011</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105140742983.png"
+alt="image-20250105140742983" />
+<figcaption aria-hidden="true">image-20250105140742983</figcaption>
+</figure>
+<h4 id="随机森林的影响因素和优点">随机森林的影响因素和优点</h4>
+<p><strong>影响因素：</strong></p>
+<ol type="1">
+<li>森林中单颗树的分类强度：分类强度↑，分类性能↑</li>
+<li>森林中树之间的相关度：相关度↑，分类性能↓</li>
+</ol>
+<p><strong>优点</strong>：</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105142028366.png"
+alt="image-20250105142028366" />
+<figcaption aria-hidden="true">image-20250105142028366</figcaption>
+</figure>
+<p>决策树原理、规则、优缺点、哪个指标对应哪个算法</p>
+<p>RF的基本技术路线、</p>
+<p>C4.5的构建过程：离散/连续、剪枝原则</p>
+</div><div class="post-end"><div class="post-prev"></div><div class="post-next"><a href="/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch10-SVM/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch11-%E5%86%B3%E7%AD%96%E6%A0%91"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch11 决策树</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">决策树的基本概念</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91-%E9%9D%9E%E7%BA%BF%E6%80%A7"><span class="toc-content-number">1.1.1.</span> <span class="toc-content-text">决策树 非线性</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B%E8%BF%9E%E7%BB%AD%E5%B1%9E%E6%80%A7"><span class="toc-content-number">1.1.1.1.</span> <span class="toc-content-text">例：连续属性</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%9E%84%E5%BB%BA%E5%86%B3%E7%AD%96%E6%A0%91"><span class="toc-content-number">1.1.2.</span> <span class="toc-content-text">构建决策树</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E5%AD%A6%E4%B9%A0"><span class="toc-content-number">1.1.2.1.</span> <span class="toc-content-text">决策树学习</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E6%9E%84%E5%BB%BA%E7%9A%84%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF"><span class="toc-content-number">1.1.2.2.</span> <span class="toc-content-text">决策树构建的技术路线</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E4%BF%A1%E6%81%AF%E8%AE%BA%E7%9B%B8%E5%85%B3%E5%9F%BA%E7%A1%80--%E9%80%89%E6%8B%A9%E5%B1%9E%E6%80%A7%E7%9A%84%E4%BE%9D%E6%8D%AE"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">信息论相关基础--选择属性的依据</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E7%94%9F%E6%88%90"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">决策树生成</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E7%94%9F%E6%88%90%E7%AE%97%E6%B3%95"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">决策树生成算法</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#id3"><span class="toc-content-number">1.3.1.1.</span> <span class="toc-content-text">ID3</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#c4.5"><span class="toc-content-number">1.3.1.2.</span> <span class="toc-content-text">C4.5</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E5%89%AA%E6%9E%9D%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E5%88%99"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">决策树剪枝的基本原则</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E9%A2%84%E5%89%AA%E6%9E%9D"><span class="toc-content-number">1.4.1.</span> <span class="toc-content-text">预剪枝</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B%E9%A2%84%E5%89%AA%E6%9E%9D"><span class="toc-content-number">1.4.1.1.</span> <span class="toc-content-text">例：预剪枝</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%90%8E%E5%89%AA%E6%9E%9D"><span class="toc-content-number">1.4.2.</span> <span class="toc-content-text">后剪枝</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%BC%BA%E5%A4%B1%E5%80%BC%E5%A4%84%E7%90%86"><span class="toc-content-number">1.4.2.1.</span> <span class="toc-content-text">缺失值处理</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E8%BF%9E%E7%BB%AD%E5%80%BC%E5%A4%84%E7%90%86"><span class="toc-content-number">1.4.2.2.</span> <span class="toc-content-text">连续值处理</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#cart%E5%86%B3%E7%AD%96%E6%A0%91"><span class="toc-content-number">1.5.</span> <span class="toc-content-text">CART决策树</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0"><span class="toc-content-number">1.5.1.</span> <span class="toc-content-text">算法实现</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%88%86%E7%B1%BB%E6%A0%91"><span class="toc-content-number">1.5.1.1.</span> <span class="toc-content-text">分类树</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%9B%9E%E5%BD%92%E6%A0%91"><span class="toc-content-number">1.5.1.2.</span> <span class="toc-content-text">回归树</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E6%8E%A8%E5%B9%BF-%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97"><span class="toc-content-number">1.6.</span> <span class="toc-content-text">决策树推广-随机森林</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0-1"><span class="toc-content-number">1.6.1.</span> <span class="toc-content-text">算法实现</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-content-number">1.7.</span> <span class="toc-content-text">总结</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-content-number">1.7.0.1.</span> <span class="toc-content-text">决策树优缺点</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#id3-vs-c4.5"><span class="toc-content-number">1.7.0.2.</span> <span class="toc-content-text">ID3 vs C4.5</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97%E7%9A%84%E5%BD%B1%E5%93%8D%E5%9B%A0%E7%B4%A0%E5%92%8C%E4%BC%98%E7%82%B9"><span class="toc-content-number">1.7.0.3.</span> <span class="toc-content-text">随机森林的影响因素和优点</span></a></li></ol></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2025 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>

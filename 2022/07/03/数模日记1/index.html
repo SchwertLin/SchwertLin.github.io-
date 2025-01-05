@@ -1,20 +1,17 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="差分方程和虫口模型[TOC] Fibonacci数列$a_0&#x3D;0,a_1&#x3D;1,a_{n}&#x3D;a_{n-1}+a_{n-2}$ 兔子问题假设一开始有一万只兔子，兔子有两个月的成熟期，每一个月一对兔子可以生一对兔子，且&#x3D;&#x3D;假设出生的兔子都存活&#x3D;&#x3D;，兔子的寿命为6个月。那么求解一年后有多少只兔子？    月份 1 2 3 4 5 6 7">
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="差分方程和虫口模型 [TOC] Fibonacci数列 \(a_0&#x3D;0,a_1&#x3D;1,a_{n}&#x3D;a_{n-1}+a_{n-2}\) 兔子问题 假设一开始有一万只兔子，兔子有两个月的成熟期，每一个月一对兔子可以生一对兔子，且&#x3D;&#x3D;假设出生的兔子都存活&#x3D;&#x3D;，兔子的寿命为6个月。那么求解一年后有多少只兔子？                   月份 1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数模日记1">
 <meta property="og:url" content="http://example.com/2022/07/03/%E6%95%B0%E6%A8%A1%E6%97%A5%E8%AE%B01/index.html">
 <meta property="og:site_name" content="Schwertlilien">
-<meta property="og:description" content="差分方程和虫口模型[TOC] Fibonacci数列$a_0&#x3D;0,a_1&#x3D;1,a_{n}&#x3D;a_{n-1}+a_{n-2}$ 兔子问题假设一开始有一万只兔子，兔子有两个月的成熟期，每一个月一对兔子可以生一对兔子，且&#x3D;&#x3D;假设出生的兔子都存活&#x3D;&#x3D;，兔子的寿命为6个月。那么求解一年后有多少只兔子？    月份 1 2 3 4 5 6 7">
+<meta property="og:description" content="差分方程和虫口模型 [TOC] Fibonacci数列 \(a_0&#x3D;0,a_1&#x3D;1,a_{n}&#x3D;a_{n-1}+a_{n-2}\) 兔子问题 假设一开始有一万只兔子，兔子有两个月的成熟期，每一个月一对兔子可以生一对兔子，且&#x3D;&#x3D;假设出生的兔子都存活&#x3D;&#x3D;，兔子的寿命为6个月。那么求解一年后有多少只兔子？                   月份 1">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s3.bmp.ovh/imgs/2022/06/27/0ea762d342346733.png">
-<meta property="og:image" content="https://s3.bmp.ovh/imgs/2022/06/27/091e6336ff9f08b3.png">
 <meta property="og:image" content="https://s3.bmp.ovh/imgs/2022/06/27/e56ed6889a7b1383.png">
-<meta property="og:image" content="https://s3.bmp.ovh/imgs/2022/06/28/60dbb4b74c9cd76e.png">
 <meta property="article:published_time" content="2022-07-03T10:09:12.000Z">
 <meta property="article:modified_time" content="2022-07-03T10:13:33.434Z">
 <meta property="article:author" content="Schwertlilien">
 <meta property="article:tag" content="数学模型">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s3.bmp.ovh/imgs/2022/06/27/0ea762d342346733.png"><title>数模日记1 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<meta name="twitter:image" content="https://s3.bmp.ovh/imgs/2022/06/27/e56ed6889a7b1383.png"><title>数模日记1 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
 <link rel="stylesheet" href="/css/style.css" id="dm-light">
 
 
@@ -29,12 +26,31 @@
 <div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>数模日记1</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2022-07-03</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2022-07-03</time></div>
 
 <div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B/">数学模型</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
-<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约0.7K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="差分方程和虫口模型"><a href="#差分方程和虫口模型" class="headerlink" title="差分方程和虫口模型"></a>差分方程和虫口模型</h1><p>[TOC]</p>
-<h2 id="Fibonacci数列"><a href="#Fibonacci数列" class="headerlink" title="Fibonacci数列"></a>Fibonacci数列</h2><p>$a_0&#x3D;0,a_1&#x3D;1,a_{n}&#x3D;a_{n-1}+a_{n-2}$</p>
-<h3 id="兔子问题"><a href="#兔子问题" class="headerlink" title="兔子问题"></a>兔子问题</h3><p>假设一开始有一万只兔子，兔子有两个月的成熟期，每一个月一对兔子可以生一对兔子，且&#x3D;&#x3D;假设出生的兔子都存活&#x3D;&#x3D;，兔子的寿命为6个月。那么求解一年后有多少只兔子？</p>
-<table>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约0.7K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="差分方程和虫口模型">差分方程和虫口模型</h1>
+<p>[TOC]</p>
+<h2 id="fibonacci数列">Fibonacci数列</h2>
+<p><span
+class="math inline">\(a_0=0,a_1=1,a_{n}=a_{n-1}+a_{n-2}\)</span></p>
+<h3 id="兔子问题">兔子问题</h3>
+<p>假设一开始有一万只兔子，兔子有两个月的成熟期，每一个月一对兔子可以生一对兔子，且==假设出生的兔子都存活==，兔子的寿命为6个月。那么求解一年后有多少只兔子？</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>月份</th>
 <th>1</th>
 <th>2</th>
@@ -50,7 +66,8 @@
 <th>12</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr class="odd">
 <td><strong>1</strong></td>
 <td>1</td>
 <td>1</td>
@@ -65,7 +82,7 @@
 <td>0</td>
 <td>0</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>2</strong></td>
 <td></td>
 <td>0</td>
@@ -80,7 +97,7 @@
 <td>0</td>
 <td>0</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>3</strong></td>
 <td></td>
 <td></td>
@@ -95,7 +112,7 @@
 <td>0</td>
 <td>0</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>4</strong></td>
 <td></td>
 <td></td>
@@ -110,7 +127,7 @@
 <td>0</td>
 <td>0</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>5</strong></td>
 <td></td>
 <td></td>
@@ -125,7 +142,7 @@
 <td>0</td>
 <td>0</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>6</strong></td>
 <td></td>
 <td></td>
@@ -140,7 +157,7 @@
 <td>3</td>
 <td>0</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>7</strong></td>
 <td></td>
 <td></td>
@@ -155,7 +172,7 @@
 <td>4</td>
 <td>4</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>8</strong></td>
 <td></td>
 <td></td>
@@ -170,7 +187,7 @@
 <td>7</td>
 <td>7</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>9</strong></td>
 <td></td>
 <td></td>
@@ -185,7 +202,7 @@
 <td>11</td>
 <td>11</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>10</strong></td>
 <td></td>
 <td></td>
@@ -200,7 +217,7 @@
 <td>18</td>
 <td>18</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>11</strong></td>
 <td></td>
 <td></td>
@@ -215,7 +232,7 @@
 <td>29</td>
 <td>29</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>12</strong></td>
 <td></td>
 <td></td>
@@ -230,7 +247,7 @@
 <td></td>
 <td>47</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>总数</strong></td>
 <td>1</td>
 <td>1</td>
@@ -245,7 +262,7 @@
 <td>77</td>
 <td>124</td>
 </tr>
-<tr>
+<tr class="even">
 <td><strong>原总数</strong></td>
 <td>1</td>
 <td>1</td>
@@ -260,7 +277,7 @@
 <td>89</td>
 <td>144</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>每月死去的兔子</strong></td>
 <td>0</td>
 <td>0</td>
@@ -275,46 +292,80 @@
 <td>12</td>
 <td>20</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>行是每个月新出生的兔子数、列是在该月还存活的兔子数。</p>
-<h2 id="差分方程"><a href="#差分方程" class="headerlink" title="差分方程"></a>差分方程</h2><p>$$<br>\Delta f(x)&#x3D;f(x+1)-f(x)<br>$$</p>
+<h2 id="差分方程">差分方程</h2>
+<p><span class="math display">\[
+\Delta f(x)=f(x+1)-f(x)
+\]</span></p>
 <ul>
-<li>$\Delta f(x)$是$f(x)$的差分。$\Delta$称为差分算子。</li>
-<li>$E\ f(x)&#x3D;f(x+1)$称为$f(x)$在x的位移，$E$为位移算子。</li>
-<li>$I\ f(x)&#x3D;f(x)$，$I$称为恒等算子。</li>
+<li><span class="math inline">\(\Delta f(x)\)</span>是<span
+class="math inline">\(f(x)\)</span>的差分。<span
+class="math inline">\(\Delta\)</span>称为差分算子。</li>
+<li><span class="math inline">\(E\ f(x)=f(x+1)\)</span>称为<span
+class="math inline">\(f(x)\)</span>在x的位移，<span
+class="math inline">\(E\)</span>为位移算子。</li>
+<li><span class="math inline">\(I\ f(x)=f(x)\)</span>，<span
+class="math inline">\(I\)</span>称为恒等算子。</li>
 </ul>
 <p>求解差分方程不现实，因此引入对差分方程的定性分析，如找到解的性质等。</p>
-<h3 id="平衡解及其稳定性"><a href="#平衡解及其稳定性" class="headerlink" title="平衡解及其稳定性"></a>平衡解及其稳定性</h3><p><strong>平衡解</strong>：若有$x^*$，使得$x^*&#x3D;f(x^*)$，则称$x^*$为方程$x(t+1)&#x3D;f(x(t))$的平衡解。</p>
+<h3 id="平衡解及其稳定性">平衡解及其稳定性</h3>
+<p><strong>平衡解</strong>：若有<span
+class="math inline">\(x^*\)</span>，使得<span
+class="math inline">\(x^*=f(x^*)\)</span>，则称<span
+class="math inline">\(x^*\)</span>为方程<span
+class="math inline">\(x(t+1)=f(x(t))\)</span>的平衡解。</p>
 <blockquote>
 <p>就是虽然不知道后面的方程是什么，但是解释一下平衡解的意思：</p>
-<p>​	指$x^{<em>}$在 f 的作用（or 映射）下还是保持原$x^</em>$点不发生变动。</p>
+<p>​ 指<span class="math inline">\(x^{*}\)</span>在 f 的作用（or
+映射）下还是保持原<span
+class="math inline">\(x^*\)</span>点不发生变动。</p>
 </blockquote>
-<p><strong>最终平衡解</strong>：存在如下的$x^*$，<br>$$<br>x_r&#x3D;x^<em>\<br>x_{r-1}\ne x^</em><br>$$</p>
+<p><strong>最终平衡解</strong>：存在如下的<span
+class="math inline">\(x^*\)</span>， <span class="math display">\[
+x_r=x^*\\
+x_{r-1}\ne x^*
+\]</span></p>
 <blockquote>
-<p>此处的最终平衡解指的是：所有的$x_n$都可以通过迭代得到$x^*$。</p>
+<p>此处的最终平衡解指的是：所有的<span
+class="math inline">\(x_n\)</span>都可以通过迭代得到<span
+class="math inline">\(x^*\)</span>。</p>
 </blockquote>
-<p><strong>周期解</strong>：存在正整数T，使得$x(t+T)&#x3D;x(t)$。</p>
+<p><strong>周期解</strong>：存在正整数T，使得<span
+class="math inline">\(x(t+T)=x(t)\)</span>。</p>
 <blockquote>
 <p>不是迭代一次，而是迭代了T次。</p>
 </blockquote>
 <p><strong>平衡解的稳定性</strong>：</p>
-<p><img src="https://s3.bmp.ovh/imgs/2022/06/27/0ea762d342346733.png"></p>
-<p>当$x^*$附近的解都在$x^*$的附近，则是稳定的；否则不稳定。</p>
+<p><img
+src="https://s3.bmp.ovh/imgs/2022/06/27/0ea762d342346733.png" /></p>
+<p>当<span class="math inline">\(x^*\)</span>附近的解都在<span
+class="math inline">\(x^*\)</span>的附近，则是稳定的；否则不稳定。</p>
 <p><strong>一些概念</strong>：</p>
-<p><img src="https://s3.bmp.ovh/imgs/2022/06/27/091e6336ff9f08b3.png"></p>
+<p><img
+src="https://s3.bmp.ovh/imgs/2022/06/27/091e6336ff9f08b3.png" /></p>
 <p>一个栗子：</p>
-<img src="https://s3.bmp.ovh/imgs/2022/06/27/e56ed6889a7b1383.png" style="zoom:40%;" />
-
-
-
+<p><img src="https://s3.bmp.ovh/imgs/2022/06/27/e56ed6889a7b1383.png" style="zoom:40%;" /></p>
 <p><strong>如何不通过相图法来得到这个点是否吸引？</strong></p>
-<p>设$f(x)$有三阶连续导数，$x^{*}$是平衡点。</p>
-<p>当$|f’(x^*)|\lt 1$：$x^{*}$ 渐近稳定。</p>
-<p>当$|f’(x^*)|\gt 1$：$x^{*}$ 不稳定。</p>
+<p>设<span class="math inline">\(f(x)\)</span>有三阶连续导数，<span
+class="math inline">\(x^{*}\)</span>是平衡点。</p>
+<p>当<span class="math inline">\(|f&#39;(x^*)|\lt 1\)</span>：<span
+class="math inline">\(x^{*}\)</span> 渐近稳定。</p>
+<p>当<span class="math inline">\(|f&#39;(x^*)|\gt 1\)</span>：<span
+class="math inline">\(x^{*}\)</span> 不稳定。</p>
 <p><strong>周期解</strong>：</p>
-<p>$f(x)$的 $n$ 周期点 $x^*$ 是指 $f^n(x)&#x3D;x$ 的解，满足 $f^n(x)&#x3D;x$ 的最小正整数 $n$ 称为 $x$ 的真周期。</p>
-<h2 id="虫口模型与倍周期分支"><a href="#虫口模型与倍周期分支" class="headerlink" title="虫口模型与倍周期分支"></a>虫口模型与倍周期分支</h2><p><img src="https://s3.bmp.ovh/imgs/2022/06/28/60dbb4b74c9cd76e.png"></p>
-</div><div class="post-end"><div class="post-prev"><a href="/2022/07/03/%E6%95%B0%E6%A8%A1%E6%97%A5%E8%AE%B02/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-next"><a href="/2022/06/17/review/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#%E5%B7%AE%E5%88%86%E6%96%B9%E7%A8%8B%E5%92%8C%E8%99%AB%E5%8F%A3%E6%A8%A1%E5%9E%8B"><span class="toc-content-number">1.</span> <span class="toc-content-text">差分方程和虫口模型</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#Fibonacci%E6%95%B0%E5%88%97"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">Fibonacci数列</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%85%94%E5%AD%90%E9%97%AE%E9%A2%98"><span class="toc-content-number">1.1.1.</span> <span class="toc-content-text">兔子问题</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%B7%AE%E5%88%86%E6%96%B9%E7%A8%8B"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">差分方程</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%B9%B3%E8%A1%A1%E8%A7%A3%E5%8F%8A%E5%85%B6%E7%A8%B3%E5%AE%9A%E6%80%A7"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">平衡解及其稳定性</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E8%99%AB%E5%8F%A3%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%80%8D%E5%91%A8%E6%9C%9F%E5%88%86%E6%94%AF"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">虫口模型与倍周期分支</span></a></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+<p><span class="math inline">\(f(x)\)</span>的 <span
+class="math inline">\(n\)</span> 周期点 <span
+class="math inline">\(x^*\)</span> 是指 <span
+class="math inline">\(f^n(x)=x\)</span> 的解，满足 <span
+class="math inline">\(f^n(x)=x\)</span> 的最小正整数 <span
+class="math inline">\(n\)</span> 称为 <span
+class="math inline">\(x\)</span> 的真周期。</p>
+<h2 id="虫口模型与倍周期分支">虫口模型与倍周期分支</h2>
+<p><img
+src="https://s3.bmp.ovh/imgs/2022/06/28/60dbb4b74c9cd76e.png" /></p>
+</div><div class="post-end"><div class="post-prev"><a href="/2022/07/03/%E6%95%B0%E6%A8%A1%E6%97%A5%E8%AE%B02/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-next"><a href="/2022/06/17/review/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#%E5%B7%AE%E5%88%86%E6%96%B9%E7%A8%8B%E5%92%8C%E8%99%AB%E5%8F%A3%E6%A8%A1%E5%9E%8B"><span class="toc-content-number">1.</span> <span class="toc-content-text">差分方程和虫口模型</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#fibonacci%E6%95%B0%E5%88%97"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">Fibonacci数列</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%85%94%E5%AD%90%E9%97%AE%E9%A2%98"><span class="toc-content-number">1.1.1.</span> <span class="toc-content-text">兔子问题</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%B7%AE%E5%88%86%E6%96%B9%E7%A8%8B"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">差分方程</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%B9%B3%E8%A1%A1%E8%A7%A3%E5%8F%8A%E5%85%B6%E7%A8%B3%E5%AE%9A%E6%80%A7"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">平衡解及其稳定性</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E8%99%AB%E5%8F%A3%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%80%8D%E5%91%A8%E6%9C%9F%E5%88%86%E6%94%AF"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">虫口模型与倍周期分支</span></a></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
   tex2jax: {
     inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
     displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
@@ -328,7 +379,7 @@ MathJax.Hub.Queue(function() {
     all[i].SourceElement().parentNode.className += ' has-jax';
   }
 });
-</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2024 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2025 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
 <script>const GLOBAL_CONFIG = {
   comment: { theme: 'preferred_color_scheme'}
 }

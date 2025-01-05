@@ -1,0 +1,272 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch8 模型选择与集成学习   image-20250103171019185  [TOC]   image-20250103171158591  模型选择原则 Occam剃刀原理 (Occam’sRazor)：(简单有效)若无必要、勿增实体 没有免费的午餐定理 (NoFreeLunch,NFL): 对“寻找代价函数极值”的算法，在平均到所有可能的代价函数上时，其表现都">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模式识别-Ch8-模型选择与集成学习">
+<meta property="og:url" content="http://example.com/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch8-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9%E4%B8%8E%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch8 模型选择与集成学习   image-20250103171019185  [TOC]   image-20250103171158591  模型选择原则 Occam剃刀原理 (Occam’sRazor)：(简单有效)若无必要、勿增实体 没有免费的午餐定理 (NoFreeLunch,NFL): 对“寻找代价函数极值”的算法，在平均到所有可能的代价函数上时，其表现都">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-05T08:18:20.000Z">
+<meta property="article:modified_time" content="2025-01-05T08:21:58.826Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="模式识别">
+<meta name="twitter:card" content="summary"><title>模式识别-Ch8-模型选择与集成学习 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>模式识别-Ch8-模型选择与集成学习</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2025-01-05</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2025-01-05</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">模式识别</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约1.5K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch8-模型选择与集成学习">Ch8 模型选择与集成学习</h1>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103171019185.png"
+alt="image-20250103171019185" />
+<figcaption aria-hidden="true">image-20250103171019185</figcaption>
+</figure>
+<p>[TOC]</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250103171158591.png"
+alt="image-20250103171158591" />
+<figcaption aria-hidden="true">image-20250103171158591</figcaption>
+</figure>
+<h2 id="模型选择原则">模型选择原则</h2>
+<p>Occam剃刀原理
+(Occam’sRazor)：<strong>(简单有效)</strong>若无必要、勿增实体</p>
+<p>没有免费的午餐定理 (NoFreeLunch,NFL):
+对“寻找代价函数极值”的算法，在平均到所有可能的代价函数上时，其表现都恰好相同。</p>
+<blockquote>
+<p>对于整个函数集(类)而言，不存在万能的最佳算法。所有算法在整个函数集的平均表现度量是一样的。</p>
+<p>特别地，如果算法A在一些代价函数上优于算法B，那么存在一些其它函数，使B优于A。</p>
+</blockquote>
+<h3 id="样本划分交叉验证">样本划分：交叉验证</h3>
+<p>交叉验证是目前最常用的一种模型选择和评估方法 (特别是
+对模型的参数进行选择）。</p>
+<blockquote>
+<p><strong>分k个、进行k次。</strong></p>
+</blockquote>
+<p><strong>交叉验证</strong>：将样本平分为k个子集，用k-1个子集进行训练，余下的部分用于验证、并计算验证误差。重复这一过程k次，得到k次结果的平均。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104165015101.png"
+alt="利用验证集调整超参数和模型结构" />
+<figcaption
+aria-hidden="true">利用验证集调整超参数和模型结构</figcaption>
+</figure>
+<p><strong>基于交叉验证的模型参数选择：</strong></p>
+<ol type="1">
+<li>给出参数的候选集合</li>
+<li>对每个参数，将训练集使用k-折交叉验证</li>
+<li>根据验证误差，选择统计性能最优的参数作为模型参数</li>
+</ol>
+<h2 id="adaboostadaptive-boosting">Adaboost(Adaptive boosting)</h2>
+<p><code>统计学习方法</code>，<code>提高给定算法准确度</code>，<code>三个臭皮匠顶个诸葛亮</code></p>
+<p>分类问题：改变训练样本的权重、学习多个分类器、将这些分类器组合。</p>
+<h3 id="强可学习vs弱可学习">强可学习vs弱可学习</h3>
+<p>强学习：一个概念/类，若存在一个多项式的学习算法能够学习它，且正确率很高。</p>
+<p>弱学习：弱存在一个多项式的学习算法能够学习它，但学习正确率仅比随机猜测略好。</p>
+<blockquote>
+<p><strong>强可学习与弱可学习是否等价</strong>？</p>
+<p>如果等价，则可以将弱可学习通过“提升”变成强可学习，这
+样可以避免直接寻找强可学习算法。</p>
+</blockquote>
+<h3 id="方法">方法</h3>
+<p>核心思想：给定训练集、寻找比较粗糙的分类规则(弱分类器)，然后组合弱分类器=强分类器。</p>
+<p>测量：改变训练数据的概率（权重）分布，针对不同
+的训练数据的分布，调用弱学习算法来学习一系列分 类器。</p>
+<h4 id="两个基本问题">两个基本问题</h4>
+<p>Q1：在每轮训练中，如何改变训练数据的权值or分布？</p>
+<p>A1：<strong>提高被前一轮弱分类器分错的样本的权重，降低被正确分类的样本的权重。</strong>于是，错分的样本将在下一轮弱分类器中得到更多关注，分类问题被一系列弱分类器“分而治之”。</p>
+<p>Q2：如何将一系列的弱分类器组合成一个强分类器？</p>
+<p>A2：采用加权投票的方法。具体地，<strong>按照弱分类器的分类错误率对其加权</strong>，错误率较小的弱分类器获得较大的权重，使其在表决中起更大作用。</p>
+<h3 id="adaboost算法">Adaboost算法</h3>
+<p>给定一个两类分类训练数据集： <span class="math display">\[
+T=\{(x_1,y_1),(x_2,y_2),\dots,(x_n,y_n)\}
+\]</span> 其中每个样本都由实例和label组成。<span
+class="math inline">\(x_i\in\mathbb{R}^d,y_i\in\{-1,+1\}\)</span>。记<span
+class="math inline">\(X\)</span>为样本空间，<span
+class="math inline">\(Y\)</span>为标记集合。</p>
+<p><strong>输入弱学习算法：</strong></p>
+<ol type="1">
+<li><p>初始化数据的权值分布：<span
+class="math inline">\(D_1=\{w_{11},w_{12},\dots,w_{1n}\},\ w_{1i}=\frac
+1 n,\ i=1,2,\dots,n\)</span></p></li>
+<li><p><span
+class="math inline">\(m=1,2,\dots,M\)</span>(共有M个弱分类器)</p>
+<ol type="1">
+<li><p>使用具有权值分布<span
+class="math inline">\(D_m\)</span>的训练数据，学习弱分类器：<span
+class="math inline">\(G_m(x)=X\rightarrow\{-1,+1\}\)</span></p></li>
+<li><p>计算<span
+class="math inline">\(G_m(x)\)</span>在训练数据集上的加权分类错误率：
+<span class="math display">\[
+e_m=P(G_m(x_i)\neq y_i)=\sum^n_{i=1}w_{mi}I(G_m(x_i)\neq y_i)
+\]</span></p></li>
+<li><p>计算<span class="math inline">\(G_m(x)\)</span>的贡献系数：<span
+class="math inline">\(\alpha_m=\frac 12
+\ln\frac{1-e_m}{e_m},\quad(e_m\le 0.5,a_m\ge 0)\)</span></p></li>
+<li><p>更新训练数据集的权值分布：<span
+class="math inline">\(D_{m+1}=\{w_{m+1,1},w_{m+1,2},\dots,w_{m+1,n}\}\)</span></p></li>
+</ol></li>
+<li><p>构建弱分类器的线性组合： <span class="math display">\[
+f(x)=\sum^M_{m=1}\alpha_mG_m(x)
+\]</span> 对于二分类问题，最终的分类器： <span class="math display">\[
+G(x)=\text{sign}(f(x))=\text{sign}\left(\sum^M_{m=1}\alpha_mG_m(x)\right)
+\]</span></p></li>
+</ol>
+<h4 id="算法说明">算法说明</h4>
+<ol type="1">
+<li><p>初始权重相等都是<span class="math inline">\(\frac 1
+n\)</span></p></li>
+<li><p>反复学习多个弱分类器：</p>
+<ul>
+<li><p>计算加权分类错误率:<span
+class="math inline">\(G_m(x)\)</span>在加权训练数据集上的分类错误率是被其错分样本的权值之和。
+<span class="math display">\[
+e_m=P(G_m(x_i)\neq y_i)=\sum^n_{G_m(x_i)\neq y_i}w_{mi}
+\]</span> 其中<span
+class="math inline">\(w_{mi}\)</span>是第m轮第i个实例的权值，且<span
+class="math inline">\(\sum^n_{i=1} w_{mi}=1\)</span></p></li>
+<li><p>计算贡献系数<span class="math inline">\(\alpha_m\)</span>: <span
+class="math inline">\(\alpha_m\)</span>是<span
+class="math inline">\(e_m\)</span>的单调递减函数，分类错误率越小的弱分类器在最终分类器中的作用越大。</p></li>
+<li><p>更新权重系数，具体计算：若正确分类，则减少权重；否则，则增加权重(错分类样本权重扩大<span
+class="math inline">\(\exp(2\alpha_m)=(1-e_m)/e_m\)</span>倍)。 <span
+class="math display">\[
+\begin{align}
+w_{m + 1,i}&amp;=\frac{w_{m,i}}{Z_m}\times\begin{cases} \exp(-\alpha_m),
+&amp; \text{if } G_m(x_i)=y_i\\ \exp(\alpha_m), &amp; \text{if }
+G_m(x_i)\neq y_i \end{cases}\\
+&amp;=\frac{w_{m,i}}{Z_m}\times\exp(-\alpha_my_iG_m(x_i))
+\end{align}
+\]</span> <span
+class="math inline">\(Z_m\)</span>是归一化因子，它使<span
+class="math inline">\(D_{m + 1}\)</span>成为一个概率分布： <span
+class="math display">\[
+Z_m=\sum_{i = 1}^{n}w_{m,i}\exp(-\alpha_my_iG_m(x_i))
+\]</span> <img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104175003793.png"
+alt="image-20250104175003793" /></p></li>
+</ul></li>
+<li><p><strong>线性组合</strong><span
+class="math inline">\(f(x)\)</span>实现对M个弱分类器的加权表决。系数<span
+class="math inline">\(\alpha_m\)</span>表示弱分类器<span
+class="math inline">\(G_m(x)\)</span>的重要性。<strong>PS：所有<span
+class="math inline">\(\alpha_m\)</span>之和$ $</strong></p>
+<p><span class="math inline">\(f(x)\)</span>的符号决定实例/样本<span
+class="math inline">\(x\)</span>的类别、绝对值表示分类的置信度。</p></li>
+</ol>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104173501327.png"
+alt="image-20250104173501327" />
+<figcaption aria-hidden="true">image-20250104173501327</figcaption>
+</figure>
+<h3 id="例">例</h3>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104175229295.png"
+alt="image-20250104175229295" />
+<figcaption aria-hidden="true">image-20250104175229295</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104175618636.png"
+alt="image-20250104175618636" />
+<figcaption aria-hidden="true">image-20250104175618636</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104175632244.png"
+alt="image-20250104175632244" />
+<figcaption aria-hidden="true">image-20250104175632244</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104175651077.png"
+alt="image-20250104175651077" />
+<figcaption aria-hidden="true">image-20250104175651077</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104175704666.png"
+alt="image-20250104175704666" />
+<figcaption aria-hidden="true">image-20250104175704666</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104175714341.png"
+alt="image-20250104175714341" />
+<figcaption aria-hidden="true">image-20250104175714341</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104175726922.png"
+alt="image-20250104175726922" />
+<figcaption aria-hidden="true">image-20250104175726922</figcaption>
+</figure>
+</div><div class="post-end"><div class="post-prev"><a href="/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch9-%E6%95%B0%E6%8D%AE%E8%81%9A%E7%B1%BB/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-next"><a href="/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch7-%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96%E4%B8%8E%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch8-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9%E4%B8%8E%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch8 模型选择与集成学习</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9%E5%8E%9F%E5%88%99"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">模型选择原则</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%A0%B7%E6%9C%AC%E5%88%92%E5%88%86%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81"><span class="toc-content-number">1.1.1.</span> <span class="toc-content-text">样本划分：交叉验证</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#adaboostadaptive-boosting"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">Adaboost(Adaptive boosting)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%BC%BA%E5%8F%AF%E5%AD%A6%E4%B9%A0vs%E5%BC%B1%E5%8F%AF%E5%AD%A6%E4%B9%A0"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">强可学习vs弱可学习</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%96%B9%E6%B3%95"><span class="toc-content-number">1.2.2.</span> <span class="toc-content-text">方法</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%B8%A4%E4%B8%AA%E5%9F%BA%E6%9C%AC%E9%97%AE%E9%A2%98"><span class="toc-content-number">1.2.2.1.</span> <span class="toc-content-text">两个基本问题</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#adaboost%E7%AE%97%E6%B3%95"><span class="toc-content-number">1.2.3.</span> <span class="toc-content-text">Adaboost算法</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%AE%97%E6%B3%95%E8%AF%B4%E6%98%8E"><span class="toc-content-number">1.2.3.1.</span> <span class="toc-content-text">算法说明</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%BE%8B"><span class="toc-content-number">1.2.4.</span> <span class="toc-content-text">例</span></a></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2025 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>

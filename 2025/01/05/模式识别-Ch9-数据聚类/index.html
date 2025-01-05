@@ -1,0 +1,711 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch9 数据聚类   image-20250104175844194  [TOC]   image-20250104224319359  距离与相似性度量   image-20250104224325802  设\(x,y\in R^d\)        距离度量 对应公式     Minkowski距离 \(d(x,y)&#x3D;\left(\">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模式识别-Ch9-数据聚类">
+<meta property="og:url" content="http://example.com/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch9-%E6%95%B0%E6%8D%AE%E8%81%9A%E7%B1%BB/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch9 数据聚类   image-20250104175844194  [TOC]   image-20250104224319359  距离与相似性度量   image-20250104224325802  设\(x,y\in R^d\)        距离度量 对应公式     Minkowski距离 \(d(x,y)&#x3D;\left(\">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-05T08:18:31.000Z">
+<meta property="article:modified_time" content="2025-01-05T08:22:18.510Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="模式识别">
+<meta name="twitter:card" content="summary"><title>模式识别-Ch9-数据聚类 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>模式识别-Ch9-数据聚类</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2025-01-05</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2025-01-05</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">模式识别</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约4.2K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch9-数据聚类">Ch9 数据聚类</h1>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104175844194.png"
+alt="image-20250104175844194" />
+<figcaption aria-hidden="true">image-20250104175844194</figcaption>
+</figure>
+<p>[TOC]</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104224319359.png"
+alt="image-20250104224319359" />
+<figcaption aria-hidden="true">image-20250104224319359</figcaption>
+</figure>
+<h2 id="距离与相似性度量">距离与相似性度量</h2>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104224325802.png"
+alt="image-20250104224325802" />
+<figcaption aria-hidden="true">image-20250104224325802</figcaption>
+</figure>
+<p>设<span class="math inline">\(x,y\in R^d\)</span></p>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 70%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>距离度量</th>
+<th>对应公式</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Minkowski距离</td>
+<td><span class="math inline">\(d(x,y)=\left(\sum_{i = 1}^{d}\vert x_i -
+y_i\vert^q\right)^{\frac{1}{q}}\)</span></td>
+</tr>
+<tr class="even">
+<td>曼哈顿距离(城市距离)</td>
+<td><span class="math inline">\(q=1:\ d(x,y)=\sum_{i = 1}^{d}\vert x_i -
+y_i\vert\)</span></td>
+</tr>
+<tr class="odd">
+<td>欧式距离</td>
+<td><span class="math inline">\(q=2:\ d(x,y)=\sqrt{\sum_{i = 1}^{d}\vert
+x_i - y_i\vert^2}\)</span></td>
+</tr>
+<tr class="even">
+<td>切比雪夫距离</td>
+<td><span class="math inline">\(q=\infty:\ d(x,y)=\max_{1\leq i\leq
+d}\vert x_i - y_i\vert\)</span></td>
+</tr>
+<tr class="odd">
+<td>Mahalanobis距离(马氏距离)</td>
+<td><span class="math inline">\(d(x,y)=\sqrt{(x - y)^T M(x - y)},M\ge
+0\)</span></td>
+</tr>
+</tbody>
+</table>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104175941279.png"
+alt="image-20250104175941279" />
+<figcaption aria-hidden="true">image-20250104175941279</figcaption>
+</figure>
+<h2 id="k-means">K-means</h2>
+<p><code>无监督学习</code></p>
+<h3 id="k-means算法步骤">K-means算法步骤</h3>
+<blockquote>
+<p>算法复杂度：<strong>每次迭代的计算复杂度</strong>：</p>
+<ol type="1">
+<li>为每个点分配到最近的中心点：需要计算所有点到每个中心的距离，复杂度为<span
+class="math inline">\(O(KN)\)</span>。</li>
+<li>更新每个簇的中心：对每个簇内的点计算均值，复杂度为<span
+class="math inline">\(O(N)\)</span>。</li>
+</ol>
+</blockquote>
+<ol type="1">
+<li><p><strong>输入</strong>：N 个样本： <span
+class="math inline">\(\{x_1, x_2, \ldots, x_N\}\)</span>，每个样本 <span
+class="math inline">\(x_n \in \mathbb{R}^D\)</span> 是 <span
+class="math inline">\(D\)</span>维的。K：划分的簇数。</p></li>
+<li><p><strong>初始化</strong>：初始化 K 个簇的中心：<span
+class="math inline">\(\mu_1, \mu_2, \ldots, \mu_K\)</span>，每个 <span
+class="math inline">\(\mu_k \in \mathbb{R}^D\)</span>。</p>
+<ul>
+<li>通常这些中心是随机初始化的，但有更好的初始化方法，例如<strong>K-means++</strong>（可以提高算法收敛速度和稳定性）。</li>
+</ul></li>
+<li><p><strong>迭代步骤</strong>：</p>
+<ul>
+<li><p>(Re-)分配样本：对每个样本 <span
+class="math inline">\(x_n\)</span>，找到最近的簇中心： <span
+class="math display">\[
+C_k = \{n : k = \arg\min_k \|x_n - \mu_k\|^2\}
+\]</span> <span class="math inline">\(\|x_n -
+\mu_k\|^2\)</span>表示欧几里得距离的平方。每个样本 <span
+class="math inline">\(x_n\)</span> 会被分配到距离最近的簇 <span
+class="math inline">\(C_k\)</span>。</p></li>
+<li><p>更新簇中心：对每个簇 <span
+class="math inline">\(C_k\)</span>，重新计算其中心为： <span
+class="math display">\[
+\mu_k = \text{mean}(C_k) = \frac{1}{|C_k|} \sum_{n \in C_k} x_n
+\]</span> |C_k| $是第 k 个簇中样本的个数。</p></li>
+<li><p>重复：重复上述两步（分配和更新），直到算法收敛。即：当簇的中心或“损失”（通常指平方误差的总和）不再显著变化时，算法停止。</p></li>
+</ul></li>
+</ol>
+<h3 id="损失函数">损失函数</h3>
+<ul>
+<li><p>K个簇的中心：<span
+class="math inline">\(\mu_1,\dots,\mu_K\)</span></p></li>
+<li><p><span class="math inline">\(z_{nk} \in {0, 1}\)</span>：若数据点
+<span class="math inline">\(x_n\)</span> 属于簇 <span
+class="math inline">\(k\)</span>，则 <span class="math inline">\(z_{nk}
+= 1\)</span>；否则 <span class="math inline">\(z_{nk} =
+0\)</span>。</p></li>
+<li><p>one-hot encoding: <span
+class="math inline">\(z_n=[z_{n1},z_{n2},\dots,z_{nK}]\)</span>是<span
+class="math inline">\(x_n\)</span>数据点属于哪个簇的独热编码.</p></li>
+</ul>
+<p>单个点 <span class="math inline">\(x_n\)</span>
+的损失是与其最近的簇中心 <span class="math inline">\(\mu_k\)</span>
+的平方欧氏距离： <span class="math display">\[
+\ell(\mu, x_n, z_n) = \sum_{k=1}^K z_{nk} \| x_n - \mu_k \|^2
+\]</span> 全部样本点的损失是单点损失的累加： <span
+class="math display">\[
+L(\mu, X, Z) = \sum_{n=1}^N \sum_{k=1}^K z_{nk} \| x_n - \mu_k
+\|^2\\L(\mu, X, Z) = \| X - Z \mu \|^2
+\]</span> 其中，<span class="math inline">\(Z\)</span> 是 <span
+class="math inline">\(N \times K\)</span> 的分配矩阵，<span
+class="math inline">\(Z_{nk}\)</span> 表示数据点 <span
+class="math inline">\(x_n\)</span> 属于第 <span
+class="math inline">\(k\)</span> 个簇。</p>
+<p><strong>优化目标</strong>：最小化上式，即最小化簇内的点到簇中心的平方距离之和。</p>
+<blockquote>
+<ul>
+<li><p>这是一个 <strong>非凸目标函数</strong>（non-convex objective
+function），意味着可能有多个局部最优解。也是NP-hard问题。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104222743271.png"
+alt="image-20250104222743271" />
+<figcaption aria-hidden="true">image-20250104222743271</figcaption>
+</figure></li>
+<li><p>K-means 的求解是一个
+<strong>启发式方法</strong>，不能保证找到全局最优解。</p></li>
+<li><p>优化过程：分步交替优化 (alternating optimization)：</p>
+<ol type="1">
+<li>固定簇中心 <span class="math inline">\(\mu\)</span>，优化点的簇分配
+<span
+class="math inline">\(Z\)</span>（将每个点分配到最近的簇中心）。</li>
+<li>固定簇分配 <span class="math inline">\(Z\)</span>，优化簇中心 <span
+class="math inline">\(\mu\)</span>（重新计算每个簇的均值）。</li>
+</ol></li>
+</ul>
+</blockquote>
+<h4 id="k-means-的收敛性">K-means 的收敛性</h4>
+<blockquote>
+<p><strong>收敛性</strong>：</p>
+<ul>
+<li>K-means在有限次迭代后必然收敛（目标函数值不再变化）。</li>
+<li>但收敛的速度与初始化的好坏有关。</li>
+</ul>
+</blockquote>
+<p>收敛过程：</p>
+<ul>
+<li>更新点的分配 <span class="math inline">\(Z\)</span>：
+<ul>
+<li>将 <span class="math inline">\(x_n\)</span> 重新分配到最近的簇中心：
+<span class="math inline">\(z_{nk} = 1 \quad \text{if } k = \arg \min_k
+\|x_n - \mu_k\|^2\)</span></li>
+<li>这一步会使得目标函数 <span class="math inline">\(L\)</span>
+不增加，即： <span class="math inline">\(L(\mu^{(t-1)}, X, Z^{(t)}) \leq
+L(\mu^{(t-1)}, X, Z^{(t-1)})\)</span></li>
+</ul></li>
+<li>更新簇中心 <span class="math inline">\(\mu\)</span>：
+<ul>
+<li>重新计算每个簇的中心：<span class="math inline">\(\mu_k =
+\frac{1}{|C_k|} \sum_{x_n \in C_k} x_n\)</span></li>
+<li>这一步也会使目标函数 <span class="math inline">\(L\)</span>
+不增加：<span class="math inline">\(L(\mu^{(t)}, X, Z^{(t)}) \leq
+L(\mu^{(t-1)}, X, Z^{(t)})\)</span></li>
+</ul></li>
+<li>整体收敛性：因为目标函数 <span class="math inline">\(L\)</span>
+在每次迭代中单调减少，而 <span class="math inline">\(L\)</span> 有下界
+(即大于或等于 0)，所以 K-means
+最终会收敛到一个<strong>局部最优解</strong>。</li>
+</ul>
+<h3 id="局限性">局限性</h3>
+<ul>
+<li><strong>硬分配问题</strong>：K-means是硬分配，每个点要么完全属于一个簇，要么完全不属于，这样可能忽略了实际中的模糊性。而软分配（如高斯混合模型GMM）可以用概率分配点到簇中。
+<ul>
+<li>示例：点<span
+class="math inline">\(x_n\)</span>可能属于3个簇的概率分别是0.7、0.2、0.1。</li>
+</ul></li>
+<li><strong>类大小不均的问题</strong>：K-means只在类大小差不多时表现良好。对于大小非常不均的簇，可能会造成问题。</li>
+<li><strong>形状限制问题</strong>：K-means只适用于圆形或凸状的簇，对于非凸簇形状的分割表现不好。
+<ul>
+<li>解决方法：Kernel K-means或者Spectral
+Clustering可以解决非凸形状问题。</li>
+</ul></li>
+</ul>
+<h4 id="k值选择">K值选择</h4>
+<blockquote>
+<p><strong>K-means是启发式算法</strong>，初始化的中心点对最终结果有很大影响。</p>
+</blockquote>
+<p><strong>问题</strong>：如果初始点选择得不好，可能会陷入局部最优，如某些点会错误地分配到不合适的簇中。</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>使用K-means++等初始化方法（对初始点进行优化）。</li>
+<li>引入基于方差的split/merge操作。</li>
+</ul>
+<p>or</p>
+<p><strong>方法1：交叉验证</strong>：通过交叉验证选择最优的K值。</p>
+<ul>
+<li>问题：如何定义优化目标？常用的是簇内误差和簇间距离。</li>
+</ul>
+<p><strong>方法2：专家判断</strong>：让领域专家观察聚类结果，判断是否合适。</p>
+<ul>
+<li>问题：如何展示结果？高维空间中的数据点可能难以可视化。</li>
+</ul>
+<p><strong>方法3：肘部法则（The “knee” solution）</strong>：</p>
+<ul>
+<li>绘制不同K值对应的目标函数值（如SSE），选择拐点位置的K值。</li>
+<li>拐点反映的是增加K值后收益的递减。</li>
+</ul>
+<h3 id="总结">总结</h3>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104224246834.png"
+alt="image-20250104224246834" />
+<figcaption aria-hidden="true">image-20250104224246834</figcaption>
+</figure>
+<h4 id="算法步骤"><strong>算法步骤</strong></h4>
+<p>K-means是一种无监督聚类算法，用于将数据划分为K个簇。其步骤如下：</p>
+<ol type="1">
+<li><strong>初始化</strong>：随机选择K个点作为初始簇中心（可以用K-means++优化初始化）。</li>
+<li>迭代过程：
+<ul>
+<li><strong>分配点到最近的簇</strong>：将每个数据点分配到距离最近的簇中心（基于欧几里得距离）。</li>
+<li><strong>更新簇中心</strong>：重新计算每个簇内所有点的均值，作为新的簇中心。</li>
+</ul></li>
+<li><strong>停止条件</strong>：当簇中心不再改变或目标函数收敛时，停止迭代。</li>
+</ol>
+<h4 id="损失函数-1">损失函数</h4>
+<p>K-means的目标是最小化簇内平方误差（SSE），其损失函数为： <span
+class="math display">\[
+L(\mu, X, Z) = \sum_{n=1}^{N} \sum_{k=1}^{K} z_{nk} \|x_n - \mu_k\|^2
+\]</span> 其中，<span class="math inline">\(z_{nk}=1\)</span>表示第<span
+class="math inline">\(n\)</span>个点属于第<span
+class="math inline">\(k\)</span>个簇。</p>
+<h4 id="影响k-means算法的因素">影响K-means算法的因素</h4>
+<p><strong>1.
+初始中心点</strong>：初始中心点选择对K-means收敛到全局最优还是局部最优有很大影响。</p>
+<ul>
+<li><strong>优化方法</strong>：使用K-means++，通过分布式选择初始点来提高性能。</li>
+</ul>
+<p><strong>2. K值的选择</strong>：K值直接决定了聚类的数量。</p>
+<ul>
+<li>选择方法：
+<ul>
+<li>肘部法则（The elbow method）：通过观察SSE随K变化的拐点来确定。</li>
+<li>交叉验证（Cross-validation）：根据验证误差选择最优K值。</li>
+<li>专家判断：结合领域知识手动选择K值。</li>
+</ul></li>
+</ul>
+<p><strong>3.
+数据分布</strong>：数据点的密度、形状、类间距离都会影响K-means效果。</p>
+<ul>
+<li><strong>适用场景</strong>：K-means在类大小相等、分布均匀、簇为凸形时效果最好。</li>
+<li><strong>问题场景</strong>：当簇的形状为非凸时（如月牙形分布），K-means表现较差。</li>
+</ul>
+<p><strong>4.
+距离度量</strong>：K-means默认使用欧几里得距离，如果数据特征不同或含噪声，需要归一化处理。</p>
+<h4 id="优缺点分析">优缺点分析</h4>
+<p><strong>优点</strong>：K-means假设数据点是紧凑、均匀分布的簇。K-means倾向于处理形状规则的簇，对紧凑性要求高。</p>
+<p><strong>Compactness（紧凑性）</strong>：目标是优化数据点与簇中心之间的紧凑性。</p>
+<p><strong>收敛性保证</strong>：算法必然在有限次迭代后收敛（虽然可能收敛到局部最优）。</p>
+<p><strong>缺点</strong></p>
+<ol type="1">
+<li><strong>需要指定K值</strong>：K值需要事先给定，难以确定最佳K值。</li>
+<li><strong>对初始中心敏感</strong>：不同的初始中心可能导致不同的聚类结果，可能陷入局部最优。</li>
+<li><strong>对簇形状限制</strong>：只能处理凸形簇，无法处理非凸簇或复杂形状的簇。</li>
+<li><strong>对噪声和异常值敏感</strong>：噪声点可能会显著拉偏簇中心。</li>
+<li><strong>难以处理类大小不均的问题</strong>：在类大小差异较大的情况下，较小的类可能被忽略。</li>
+</ol>
+<h4 id="改进方向">改进方向</h4>
+<ol type="1">
+<li>优化初始中心：使用K-means++或其他启发式方法选择初始点。</li>
+<li>扩展为非凸形状：使用Kernel K-means或Spectral Clustering。</li>
+<li>处理噪声数据：引入模糊聚类（如Fuzzy C-means）来实现软分配。</li>
+<li>自动选择K值：使用肘部法则、轮廓系数等自动选择合适的K值。</li>
+</ol>
+<h2 id="分级聚类hierarchical-clustering">分级聚类(Hierarchical
+Clustering)</h2>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241211191113639.png"
+alt="image-20241211191113639" /> <strong>分级聚类思想</strong>：对于
+n个样本，极端的情况下，最多可以将数据分成n类;最少可以只分成一类，即全部样本都归为一类。</p>
+<ul>
+<li><strong>凝聚的层次聚类(自底向上)</strong>：将每个样本作为一个簇，然后根据给定的规则逐渐合并一些样本，形成更大的簇，直到所有的样本都被分到一个合适的簇中。</li>
+<li><strong>分裂的层次聚类(自顶向下)</strong>：将所有的样本置于一个簇中，然后根据给定的规则逐渐细分样本，得到越来越小的簇，直到某个终止条件得到满足</li>
+</ul>
+<blockquote>
+<p>这个很像昨天(2024.12.10)上多元统计分析介绍的:</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241211191328540.png"
+alt="image-20241211191328540" />好巧，都是在讲聚类分析:D)</p>
+</blockquote>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104224648720.png"
+alt="树枝的长度反映两个节点之间的距离" />
+<figcaption
+aria-hidden="true">树枝的长度反映两个节点之间的距离</figcaption>
+</figure>
+<p><strong>分级聚类的两个核心问题：</strong></p>
+<ol type="1">
+<li>度量<strong>样本之间</strong>的距离(相似性)</li>
+<li>度量<strong>两个簇之间</strong>的距离(相似性)</li>
+</ol>
+<p><strong>度量样本之间的距离(相似性)？</strong></p>
+<ol type="1">
+<li>距离：欧式距离、马氏距离、曼哈顿距离、匹配距离...</li>
+<li>相似性：相关系数、高斯相似性函数、余弦相似度、距离倒数...</li>
+</ol>
+<h3 id="簇与簇之间的距离">簇与簇之间的距离：</h3>
+<table>
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 88%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>距离类型</th>
+<th>公式</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>最小距离</td>
+<td><span class="math inline">\(d_{\text{min}}(D_i, D_j)=\min_{x\in D_i,
+x&#39;\in D_j}\|x - x&#39;\|\)</span><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241211192040948.png"
+alt="image-20241211192040948" /></td>
+</tr>
+<tr class="even">
+<td>最大距离</td>
+<td><span class="math inline">\(d_{\text{max}}(D_i, D_j)=\max_{x\in D_i,
+x&#39;\in D_j}\|x - x&#39;\|\)</span><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241211192010551.png"
+alt="image-20241211192010551" /></td>
+</tr>
+<tr class="odd">
+<td>平均距离</td>
+<td><span class="math inline">\(d_{\text{avg}}(D_i,
+D_j)=\frac{1}{\|D_i\|\|D_j\|}\sum_{x\in D_i}\sum_{x&#39;\in D_j}\|x -
+x&#39;\|\)</span></td>
+</tr>
+<tr class="even">
+<td>中心距离</td>
+<td><span class="math inline">\(d_{\text{mean}}(D_i, D_j)=\|m_i -
+m_j\|\)</span></td>
+</tr>
+</tbody>
+</table>
+<h4 id="例最小距离准则">例：最小距离准则</h4>
+<p>有如下6个样本：</p>
+<table>
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 34%" />
+<col style="width: 32%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">\(x_1=(0,3, 1,2, 0)\)</span></th>
+<th><span class="math inline">\(x_2=(1,3, 0, 1, 0)\)</span></th>
+<th>$x_3=(3,3,0,0,1) $</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong><span
+class="math inline">\(x_4=(1,1,0,2,0)\)</span></strong></td>
+<td><strong><span class="math inline">\(x_5=(3,2,1,2,
+1)\)</span></strong></td>
+<td><strong><span
+class="math inline">\(x_6=(4,1,1,1,0)\)</span></strong></td>
+</tr>
+</tbody>
+</table>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104230413501.png"
+alt="image-20250104230413501" />
+<figcaption aria-hidden="true">image-20250104230413501</figcaption>
+</figure>
+<h4 id="分级聚类好处">分级聚类好处</h4>
+<ol type="1">
+<li>根据观察聚类树，选择合适的类别数。(而不是事先指定)</li>
+</ol>
+<p><img
+src="C:/Users/%E6%9E%97%E9%A2%90/AppData/Roaming/Typora/typora-user-images/image-20241211193530328.png"
+alt="image-20241211193530328" />根据这个树：最后一次合并的时候得到的距离，相较于之前进行聚类的距离来说，比较大，暗示可能是两类。</p>
+<ol start="2" type="1">
+<li>发现野点</li>
+</ol>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/img/image-20241211193711922.png"
+alt="image-20241211193711922" />
+<figcaption aria-hidden="true">image-20241211193711922</figcaption>
+</figure>
+<table>
+<colgroup>
+<col style="width: 34%" />
+<col style="width: 65%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Summary</th>
+<th>详细说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1. <strong>无需事先指定簇的数量</strong></td>
+<td>用户可以在生成的层次树形结构（树状图，dendrogram）上根据实际需求来决定截断点，从而得到期望的簇数。</td>
+</tr>
+<tr class="even">
+<td>2. <strong>层次结构直观匹配人类直觉</strong></td>
+<td>层次聚类会逐步将样本聚合（或拆分），最终构建出一个层次分明的树形结构。</td>
+</tr>
+<tr class="odd">
+<td>3. <strong>扩展性较差，时间复杂度高</strong></td>
+<td>层次聚类一般有至少 O(n²) 的时间复杂度（n 为数据点个数）。</td>
+</tr>
+<tr class="even">
+<td>4. <strong>存在局部最优问题</strong></td>
+<td>本质上是一种<strong>启发式搜索过程</strong>，从局部合并（或分裂）开始，不能保证找到全局最优的聚类结构。它可能在局部最优的决策上停滞，从而影响最终结果的质量。</td>
+</tr>
+<tr class="odd">
+<td>5. <strong>结果解释具有主观性</strong></td>
+<td>虽然层次聚类能给出一个清晰的树状层次结构，但怎样选择合适的层次截断点来定义簇的数量和分布往往依赖经验、领域知识或特定的评价指标。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="谱聚类spectral-clustering">谱聚类(Spectral Clustering)</h2>
+<p><code>基本原理</code>、<code>影响因素</code>、<code>步骤</code></p>
+<p><strong>谱学习方法</strong>：广义上讲，任何在学习过程中应用到<strong>矩阵特征值分解</strong>的方法均叫谱学习方法，比如主成分分析(PCA)、线性判别分析(LDA)、流形学习中的谱嵌入方法、谱聚类等等。</p>
+<p><strong>谱聚类</strong>：谱聚类算法建立在图论的谱图理论基础之上，其本质是<strong>将聚类问题转化为一个图上的关于顶点划分的最优问题</strong>。谱聚类算法建立在点对相似性基础之上，理论上能对任意分布形状的样本空间进行聚类。</p>
+<h3 id="图论基本概念">图论基本概念</h3>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104230724557.png"
+alt="image-20250104230724557" />
+<figcaption aria-hidden="true">image-20250104230724557</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104230743605.png"
+alt="无向有权图的度矩阵" />
+<figcaption aria-hidden="true">无向有权图的度矩阵</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104230836878.png"
+alt="image-20250104230836878" />
+<figcaption aria-hidden="true">image-20250104230836878</figcaption>
+</figure>
+<p>对于这个显然对称(W对称-D对角)的拉普拉斯矩阵有两种归一化方式：</p>
+<blockquote>
+<p>如果在任务中需要对称性或者特征分解，选择对称归一化；如果需要建模随机游走或信息传播过程，则使用非对称归一化。</p>
+</blockquote>
+<ul>
+<li>对称归一化（Symmetric Normalized Laplacian）：</li>
+</ul>
+<p><span class="math display">\[
+L_{\text{sym}} = D^{-1/2} L D^{-1/2} = I - D^{-1/2} W D^{-1/2}
+\]</span></p>
+<ul>
+<li>非对称归一化（Random Walk Normalized Laplacian）：</li>
+</ul>
+<p><span class="math display">\[
+L_{\text{rw}} = D^{-1} L = I - D^{-1} W
+\]</span></p>
+<table>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 34%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>特性</th>
+<th>对称归一化（Symmetric）</th>
+<th>非对称归一化（Random Walk）</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>归一化方式</strong></td>
+<td><span class="math inline">\(D^{-1/2}\)</span></td>
+<td><span class="math inline">\(D^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>矩阵特性</strong></td>
+<td>对称</td>
+<td>非对称</td>
+</tr>
+<tr class="odd">
+<td><strong>适用场景</strong></td>
+<td>谱聚类、图神经网络</td>
+<td>随机游走、转移概率建模</td>
+</tr>
+<tr class="even">
+<td><strong>特性平衡</strong></td>
+<td>平衡了节点间的影响</td>
+<td>偏重节点的方向性和流动性</td>
+</tr>
+<tr class="odd">
+<td><strong>数学操作复杂度</strong></td>
+<td>更易处理，特征值分解简单</td>
+<td>更复杂，适合概率模型</td>
+</tr>
+</tbody>
+</table>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104232013328.png"
+alt="image-20250104232013328" />
+<figcaption aria-hidden="true">image-20250104232013328</figcaption>
+</figure>
+<h4 id="图分割graph-partitioning">图分割(Graph partitioning)</h4>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104232040629.png"
+alt="image-20250104232040629" />
+<figcaption aria-hidden="true">image-20250104232040629</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104232110443.png"
+alt="image-20250104232110443" />
+<figcaption aria-hidden="true">image-20250104232110443</figcaption>
+</figure>
+<p><strong>Mincut Problem：</strong>即如何将图分割成 K 个子集 <span
+class="math inline">\(A_1, A_2, \dots,
+A_K\)</span>，以最小化切分边的总权值。这里的目标是优化图的分割，使得子集之间的连接尽可能少，从而减少交互的“成本”。
+<span class="math display">\[
+cut(A_1,A_2,\dots,A_k)=\sum^K_{i=1}W(A_i,\bar A_i)\\
+W(A_i,\bar A_i) = \sum_{p\in A_i,q\in\bar A_i}w_{pq}
+\]</span> 其中，<span class="math inline">\(W(A_i, \bar{A_i})\)</span>
+是第 iii 个子集 AiA_iAi 和其补集 <span
+class="math inline">\(\bar{A_i}\)</span> 之间的权值和。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104232203296.png"
+alt="image-20250104232203296" />
+<figcaption aria-hidden="true">image-20250104232203296</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104232211936.png"
+alt="image-20250104232211936" />
+<figcaption aria-hidden="true">image-20250104232211936</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104232222439.png"
+alt="image-20250104232222439" />
+<figcaption aria-hidden="true">image-20250104232222439</figcaption>
+</figure>
+<h3 id="谱聚类">谱聚类</h3>
+<p>核心思想：</p>
+<ul>
+<li>使用<strong>相似性图（Similarity
+Graph）</strong>来表示数据点之间的关系。</li>
+<li>构造<strong>图的拉普拉斯矩阵（Laplacian
+Matrix）</strong>，对其进行特征值分解，提取重要的特征向量作为新的数据表示。</li>
+<li>将这些特征向量视为降维后的特征空间，再在特征空间中应用传统的聚类算法（如K-means）。</li>
+</ul>
+<h4 id="主要算法">主要算法</h4>
+<blockquote>
+<p>主要步骤：</p>
+<ol type="1">
+<li>构建相似性图W、计算度矩阵(根据W)</li>
+<li>计算拉普拉斯矩阵：有不同的方法 归一化/未归一化</li>
+<li>计算前k个特征值对应的特征向量</li>
+<li>K-means聚类：将矩阵 U 的行看作新的数据点，将其视为在
+k维空间的嵌入表示。</li>
+</ol>
+</blockquote>
+<p><strong>1. 未归一化的谱聚类算法（Unnormalized Spectral
+Clustering）：</strong></p>
+<ul>
+<li>构造相似性图并计算未归一化的拉普拉斯矩阵 L。</li>
+<li>提取拉普拉斯矩阵的前 k 个最小特征值对应的特征向量，组成矩阵 U。</li>
+<li>每个数据点对应矩阵 U 的一行，在这个新特征空间中使用 K-means
+聚类。</li>
+</ul>
+<p><strong>2. 归一化的谱聚类算法（Normalized Spectral Clustering）
+[Shi2000]:</strong></p>
+<ul>
+<li>基于随机游走拉普拉斯矩阵 <span
+class="math inline">\(L_{rw}\)</span>。</li>
+<li>步骤类似，但拉普拉斯矩阵需要归一化以调整权重分布。</li>
+</ul>
+<p><strong>3. 改进的归一化谱聚类算法 [Ng2002]:</strong></p>
+<ul>
+<li>使用对称归一化拉普拉斯矩阵 <span
+class="math inline">\(L_{sym}\)</span>。</li>
+<li>特点是对特征向量进一步归一化（行归一化到单位范数），使得特征空间更平衡。</li>
+</ul>
+<h4 id="优缺点">优缺点</h4>
+<p>谱聚类的目标是基于数据点的连通性（图论中的相似性图）进行聚类。</p>
+<p>优点：</p>
+<p>谱聚类的<strong>连接性</strong>很好。谱聚类对环形或其他非凸形状簇的聚类效果更好，而K-means在这种情况下效果较差。</p>
+<p>谱聚类能够更好地处理非凸形状的簇，因为它基于图的连通性，而不是欧几里得距离。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250104232534858.png"
+alt="image-20250104232534858" />
+<figcaption aria-hidden="true">image-20250104232534858</figcaption>
+</figure>
+</div><div class="post-end"><div class="post-prev"><a href="/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch10-SVM/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-next"><a href="/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch8-%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9%E4%B8%8E%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch9-%E6%95%B0%E6%8D%AE%E8%81%9A%E7%B1%BB"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch9 数据聚类</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E8%B7%9D%E7%A6%BB%E4%B8%8E%E7%9B%B8%E4%BC%BC%E6%80%A7%E5%BA%A6%E9%87%8F"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">距离与相似性度量</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#k-means"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">K-means</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#k-means%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">K-means算法步骤</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.2.2.</span> <span class="toc-content-text">损失函数</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#k-means-%E7%9A%84%E6%94%B6%E6%95%9B%E6%80%A7"><span class="toc-content-number">1.2.2.1.</span> <span class="toc-content-text">K-means 的收敛性</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%B1%80%E9%99%90%E6%80%A7"><span class="toc-content-number">1.2.3.</span> <span class="toc-content-text">局限性</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#k%E5%80%BC%E9%80%89%E6%8B%A9"><span class="toc-content-number">1.2.3.1.</span> <span class="toc-content-text">K值选择</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-content-number">1.2.4.</span> <span class="toc-content-text">总结</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4"><span class="toc-content-number">1.2.4.1.</span> <span class="toc-content-text">算法步骤</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0-1"><span class="toc-content-number">1.2.4.2.</span> <span class="toc-content-text">损失函数</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%BD%B1%E5%93%8Dk-means%E7%AE%97%E6%B3%95%E7%9A%84%E5%9B%A0%E7%B4%A0"><span class="toc-content-number">1.2.4.3.</span> <span class="toc-content-text">影响K-means算法的因素</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9%E5%88%86%E6%9E%90"><span class="toc-content-number">1.2.4.4.</span> <span class="toc-content-text">优缺点分析</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%94%B9%E8%BF%9B%E6%96%B9%E5%90%91"><span class="toc-content-number">1.2.4.5.</span> <span class="toc-content-text">改进方向</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%88%86%E7%BA%A7%E8%81%9A%E7%B1%BBhierarchical-clustering"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">分级聚类(Hierarchical
+Clustering)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%B0%87%E4%B8%8E%E7%B0%87%E4%B9%8B%E9%97%B4%E7%9A%84%E8%B7%9D%E7%A6%BB"><span class="toc-content-number">1.3.1.</span> <span class="toc-content-text">簇与簇之间的距离：</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B%E6%9C%80%E5%B0%8F%E8%B7%9D%E7%A6%BB%E5%87%86%E5%88%99"><span class="toc-content-number">1.3.1.1.</span> <span class="toc-content-text">例：最小距离准则</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%88%86%E7%BA%A7%E8%81%9A%E7%B1%BB%E5%A5%BD%E5%A4%84"><span class="toc-content-number">1.3.1.2.</span> <span class="toc-content-text">分级聚类好处</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E8%B0%B1%E8%81%9A%E7%B1%BBspectral-clustering"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">谱聚类(Spectral Clustering)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%9B%BE%E8%AE%BA%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-content-number">1.4.1.</span> <span class="toc-content-text">图论基本概念</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%9B%BE%E5%88%86%E5%89%B2graph-partitioning"><span class="toc-content-number">1.4.1.1.</span> <span class="toc-content-text">图分割(Graph partitioning)</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E8%B0%B1%E8%81%9A%E7%B1%BB"><span class="toc-content-number">1.4.2.</span> <span class="toc-content-text">谱聚类</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%B8%BB%E8%A6%81%E7%AE%97%E6%B3%95"><span class="toc-content-number">1.4.2.1.</span> <span class="toc-content-text">主要算法</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-content-number">1.4.2.2.</span> <span class="toc-content-text">优缺点</span></a></li></ol></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2025 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>

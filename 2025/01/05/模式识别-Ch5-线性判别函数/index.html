@@ -1,0 +1,835 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="Ch5 线性判别函数 [TOC]   image-20250102114956707  引言：生成模型 vs判别模型   image-20250102101237758   生成模型 vs 判别模型 在分类问题中，生成模型和判别模型是两种不同的建模方法：        生成模型 判别模型     直接建模类条件概率或联合分布 直接建模后验概率">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模式识别-Ch5-线性判别函数">
+<meta property="og:url" content="http://example.com/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch5-%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="Ch5 线性判别函数 [TOC]   image-20250102114956707  引言：生成模型 vs判别模型   image-20250102101237758   生成模型 vs 判别模型 在分类问题中，生成模型和判别模型是两种不同的建模方法：        生成模型 判别模型     直接建模类条件概率或联合分布 直接建模后验概率">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-05T08:17:29.000Z">
+<meta property="article:modified_time" content="2025-01-05T08:21:08.377Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="模式识别">
+<meta name="twitter:card" content="summary"><title>模式识别-Ch5-线性判别函数 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>模式识别-Ch5-线性判别函数</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2025-01-05</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2025-01-05</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">模式识别</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约5.0K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch5-线性判别函数">Ch5 线性判别函数</h1>
+<p>[TOC]</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102114956707.png"
+alt="image-20250102114956707" />
+<figcaption aria-hidden="true">image-20250102114956707</figcaption>
+</figure>
+<h2 id="引言生成模型-vs判别模型">引言：生成模型 vs判别模型</h2>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102101237758.png"
+alt="image-20250102101237758" />
+<figcaption aria-hidden="true">image-20250102101237758</figcaption>
+</figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102101254295.png" /></p>
+<h3 id="生成模型-vs-判别模型">生成模型 vs 判别模型</h3>
+<p>在分类问题中，生成模型和判别模型是两种不同的建模方法：</p>
+<table>
+<colgroup>
+<col style="width: 58%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>生成模型</th>
+<th>判别模型</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>直接建模类条件概率或联合分布</td>
+<td>直接建模后验概率 <span class="math inline">\(p(y\vert x)\)</span>
+或决策边界</td>
+</tr>
+<tr class="even">
+<td>通过贝叶斯公式计算后验概率 <span class="math inline">\(p(y\vert x) =
+\frac{p(x,\vert y)p(y)}{p(x)}\)</span></td>
+<td>不需要假设数据的分布形式，直接关注分类任务</td>
+</tr>
+<tr class="odd">
+<td>示例：朴素贝叶斯、隐马尔可夫模型（HMM）</td>
+<td>示例：支持向量机、线性判别分析、神经网络</td>
+</tr>
+<tr class="even">
+<td>适用于需要生成数据的场景（例如语音识别、自然语言处理）</td>
+<td>适合直接分类任务，通常分类性能较好</td>
+</tr>
+</tbody>
+</table>
+<h3 id="判别模型分类">判别模型分类</h3>
+<p>判别模型根据复杂性和数据分布特点，可以分为以下几类：</p>
+<table>
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 26%" />
+<col style="width: 23%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>线性判别函数</th>
+<th>广义线性判别函数</th>
+<th>非线性模型</th>
+<th>非参数模型</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>假设数据是<strong>线性可分</strong>的，构造一个超平面来划分不同类别。</td>
+<td>将数据映射到高维空间，使<strong>非线性问题变成线性问题</strong>。</td>
+<td>不依赖数据的线性假设，适合处理复杂分布的数据。</td>
+<td>不假设数据的分布形式。</td>
+</tr>
+<tr class="even">
+<td>简单、高效，适合高维空间。</td>
+<td>使用核函数（kernel function）来处理非线性分布。</td>
+<td>学习能力强，但计算复杂度较高。</td>
+<td>分类直接依赖于训练样本，适合小样本场景。</td>
+</tr>
+<tr class="odd">
+<td>感知器、支持向量机、Fisher线性判别函数</td>
+<td>核学习机</td>
+<td>神经网络、决策树</td>
+<td>K近邻分类、高斯过程</td>
+</tr>
+</tbody>
+</table>
+<p>假设有n个d维空间中的样本，每个样本的类别标签已知，且一共有c个不同的类别。</p>
+<ul>
+<li>学习问题：假定判别函数的<strong>形式已知</strong>，采用样本来<strong>估计判别函数的参数</strong>。</li>
+<li>推理、预测问题：对于给定的新样本<span
+class="math inline">\(x\in\mathbb{R}^d\)</span>，用判别函数判定<span
+class="math inline">\(x\)</span>属于<span
+class="math inline">\(\omega_1,\omega_2,\dots,\omega_c\)</span>中的哪个类别。</li>
+</ul>
+<table>
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 61%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>c&gt;2(one-vs-all)</th>
+<th>c=2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>判别函数</td>
+<td>每个类别对于判别函数<span
+class="math inline">\(g_i(x),i=1,2,\dots,c\)</span>, <span
+class="math inline">\(g_i(x)\)</span>用于区分第 <span
+class="math inline">\(\omega_i\)</span> 类和其他<span
+class="math inline">\(c-1\)</span>个类，其数值表示 <span
+class="math inline">\(x\)</span> 属于第 <span
+class="math inline">\(\omega_i\)</span> 类的概率、置信度、打分等.</td>
+<td><span class="math inline">\(g(x)=g_1(x)-g_2(x)\)</span></td>
+</tr>
+<tr class="even">
+<td>决策准则</td>
+<td><span class="math inline">\(g_i(x)&gt;g_j(x),\forall j\neq
+i\)</span>: <span class="math inline">\(x\)</span>被分为<span
+class="math inline">\(\omega_i\)</span>类</td>
+<td><span class="math inline">\(g(x)&gt;0\)</span>: 分为第一类<span
+class="math inline">\(\omega_1\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="线性判别函数与决策面">线性判别函数与决策面</h2>
+<h3 id="线性判别函数">线性判别函数</h3>
+<p>线性判别函数定义为： <span class="math display">\[
+g(x) = \sum_{i=1}^d w_i x_i + w_0 = w^T x + w_0
+\]</span></p>
+<ul>
+<li><span
+class="math inline">\(w\)</span>：权重向量，决定分类超平面的方向。</li>
+<li><span
+class="math inline">\(w_0\)</span>：偏移量（阈值），决定超平面的位置。</li>
+</ul>
+<h4 id="两类情况下的决策">两类情况下的决策</h4>
+<p>决策依据判别函数 <span class="math inline">\(g(x)\)</span> 的符号：
+<span class="math display">\[
+\begin{cases}  x \in \omega_1, &amp; \text{if } g(x) &gt; 0 \\ x \in
+\omega_2, &amp; \text{if } g(x) &lt; 0 \\ \text{uncertain}, &amp;
+\text{if } g(x) = 0 \end{cases}
+\]</span> 两类问题中的决策面:</p>
+<ul>
+<li><p><span class="math inline">\(H\)</span>：<span
+class="math inline">\(g(x)=0\)</span>，用于将特征空间分为两类区域：</p></li>
+<li><p><span class="math inline">\(R_1\)</span>：<span
+class="math inline">\(g(x) &gt; 0\)</span></p></li>
+<li><p><span class="math inline">\(R_2\)</span>：<span
+class="math inline">\(g(x) &lt; 0\)</span></p></li>
+</ul>
+<p>超平面<span class="math inline">\(H\)</span>的法向量为 <span
+class="math inline">\(w\)</span>，垂直于决策面。</p>
+<ul>
+<li><p>对于位于 <span class="math inline">\(H\)</span>
+内的任意向量，其法向量满足： <span class="math inline">\(w^T (x_1 - x_2)
+= g(x_1) - g(x_2) = 0\)</span></p></li>
+<li><p>对于任意样本/向量<span
+class="math inline">\(x\)</span>，将其向决策面内投影，并写成两个向量之和：
+<span class="math display">\[
+x=x_p+r\frac{w}{\|w\|}
+\]</span> <span class="math inline">\(x_p\)</span>是<span
+class="math inline">\(x\)</span>在超平面<span
+class="math inline">\(H\)</span>上的投影，<span
+class="math inline">\(r\)</span>是点<span
+class="math inline">\(x\)</span>到超平面<span
+class="math inline">\(H\)</span>的代数距离。若<span
+class="math inline">\(x\in R_1,r&gt;0\)</span>.</p></li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102104849534.png"
+alt="image-20250102104849534" />
+<figcaption aria-hidden="true">image-20250102104849534</figcaption>
+</figure>
+<h4 id="多类问题下决策">多类问题下决策</h4>
+<p>在多类分类问题中，通常使用多个二分类器来解决问题。常见策略有：</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>一对多（One-vs-All）</th>
+<th>一对一（One-vs-One）</th>
+<th>多对多</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>每个类别与其余类别分别构造一个二分类器，共需构造 c 个二分类器。</td>
+<td>每两个类别配对构造一个二分类器，共需构造 <span
+class="math inline">\(\frac{c(c-1)}{2}\)</span> 个二分类器。</td>
+<td>---</td>
+</tr>
+<tr class="even">
+<td>预测时：若只有一个分类器的预测为正，其对应类别即为预测结果；若多个分类器的预测为正，则需要比较判别函数值。</td>
+<td>预测时, 对测试样本使用投票法，预测得票最多的类别。</td>
+<td>使用纠错编码（Error Correcting Output Codes,
+ECOC），实现层次化分类。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="多类情形-线性机器">多类情形-线性机器</h3>
+<p>因为不使用判别函数的函数值、仅仅使用决策面进行分类，one-vs-all-vs-one都有可能存在不确定区域。</p>
+<ul>
+<li><p>考虑one - vs - all情形，构建<span
+class="math inline">\(c\)</span>个两类线性分类器： <span
+class="math display">\[
+g_i(x)=W_i^T x + w_{i0},\quad i = 1,2,\cdots,c
+\]</span></p></li>
+<li><p>对样本<span
+class="math inline">\(x\)</span>，可以采用如下决策规则（最大判别函数决策）：</p>
+<ul>
+<li><p>对<span class="math inline">\(\forall j\neq i\)</span>，如果<span
+class="math inline">\(g_i(x)&gt;g_j(x)\)</span>，<span
+class="math inline">\(x\)</span>则被分为<span
+class="math inline">\(\omega_i\)</span>类；否则不决策</p></li>
+<li><p><span class="math display">\[
+g_i(x)=\max_{j = 1,2,\cdots,c}g_j(x)\Rightarrow x\in\omega_i
+\]</span></p></li>
+<li><p>线性机器将样本空间分为<span
+class="math inline">\(c\)</span>个可以决策的区域<span
+class="math inline">\(R_1,\cdots,R_c\)</span>。</p></li>
+</ul></li>
+</ul>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102110841313.png" /></p>
+<h4 id="线性决策面优缺点">线性决策面优缺点</h4>
+<ul>
+<li>所有的决策区域都是凸的——便于分析</li>
+<li>所有的决策区域都是单连通的——便于分析</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102113006590.png"
+alt="红色和蓝色的样本分布有弯曲的边界或凹区域，而线性决策面（如红色虚线）无法准确划分。" />
+<figcaption
+aria-hidden="true">红色和蓝色的样本分布有弯曲的边界或凹区域，而线性决策面（如红色虚线）无法准确划分。</figcaption>
+</figure>
+<ul>
+<li>凸决策区域：限制分类器的灵活性和精度</li>
+<li>单连通区域：不利于复杂分布数据的分类（比如：分离的多模式分布）</li>
+</ul>
+<h2 id="广义线性判别函数">广义线性判别函数</h2>
+<p>将原来的数据点
+x通过一种适当的<strong>非线性映射</strong>将其映射为新的数据点 y,
+从而在新的特征空间内应用线性判别函数方法。</p>
+<h4 id="例二次判别函数">例：二次判别函数</h4>
+<p>二次判别函数形式： <span class="math display">\[
+g(x)=w_0+\sum_{i = 1}^{d}w_i x_i+\sum_{i = 1}^{d}\sum_{j =
+1}^{d}w_{ij}x_i x_j
+\]</span> 其中共有<span class="math inline">\(\hat d =\frac{(d + 1)(d +
+2)}{2}\)</span>个系数待估计（<span
+class="math inline">\(w_{ij}=w_{ji}\)</span>），且<span
+class="math inline">\(g(x) =
+0\)</span>为决策面，它是一个二次超曲面。</p>
+<p>定义如下非线性变换<span class="math inline">\(y(x)\)</span>，把<span
+class="math inline">\(x\)</span>从<span
+class="math inline">\(d\)</span>维变到<span class="math inline">\(\hat
+d\)</span>维： <span class="math display">\[
+y_1(x)=1\\y_2(x)=x_1\\ y_3(x)=x_2\\\dots\\y_{d + 1}(x)=x_d\\y_{d +
+2}(x)=x_1^2\\y_{d + 3}(x)=x_1 x_2\\\dots\\y_{\frac{(d + 1)(d +
+2)}{2}}(x)=x_d^2
+\]</span> 则有： <span class="math display">\[
+\begin{align}g(x)&amp;=w_0+\sum_{i = 1}^{d}w_i
+x_i+\sum^d_{i=1}\sum^d_{j=1}w_{ij}x_ix_j\\
+&amp;=\sum^{\hat d}_{i=1}a_iy_i(x)
+\end{align}
+\]</span> <span class="math inline">\(y_i(x)\)</span>是变换函数、令<span
+class="math inline">\(a = [a_1,a_2,\cdots,a_{\hat{d}}]^T\)</span>，<span
+class="math inline">\(y =
+[y_1,y_2,\cdots,y_{\hat{d}}]^T\)</span>，可简写为： <span
+class="math display">\[
+g(x)=a^T y(x)
+\]</span> 其中：</p>
+<ul>
+<li><span class="math inline">\(a\)</span>为广义权重向量，<span
+class="math inline">\(y\)</span>是经由<span
+class="math inline">\(x\)</span>所变成的新数据点。</li>
+<li>广义判别函数<span class="math inline">\(g(x)\)</span>对<span
+class="math inline">\(x\)</span>而言是非线性的，对<span
+class="math inline">\(y\)</span>是线性的。</li>
+<li><span class="math inline">\(g(x)\)</span>对<span
+class="math inline">\(y\)</span>是齐次的，意味着决策面通过新空间的坐标原点。且任意点<span
+class="math inline">\(y\)</span>到决策面的代数距离为<span
+class="math inline">\(\frac{a^T y}{\| a\|}\)</span>。</li>
+<li>当新空间的维数足够高时，<span
+class="math inline">\(g(x)\)</span>可以逼近任意判别函数。</li>
+<li>但是，新空间的维数远远高于原始空间的维数<span
+class="math inline">\(d\)</span>时，会造成维数灾难问题。</li>
+</ul>
+<h4 id="例1-1-d判别函数">例1: 1-D判别函数</h4>
+<p>设有一维样本空间<span
+class="math inline">\(X\)</span>，我们期望如果<span
+class="math inline">\(x &lt; - 1\)</span>或者<span
+class="math inline">\(x &gt; 0.5\)</span>，则<span
+class="math inline">\(x\)</span>属于<span
+class="math inline">\(\omega_1\)</span>类；如果<span
+class="math inline">\(-1 &lt; x &lt; 0.5\)</span>，则属于<span
+class="math inline">\(\omega_2\)</span>类，请设计一个判别函数<span
+class="math inline">\(g(x)\)</span>。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102114320018.png"
+alt="image-20250102114320018" />
+<figcaption aria-hidden="true">image-20250102114320018</figcaption>
+</figure>
+<p>判别函数： <span class="math display">\[
+\begin{align}
+g(x)&amp;=(x - 0.5)(x + 1)\\
+&amp;=-0.5+0.5x+x^2 \\
+&amp;=a_1+a_2x+a_3x^2
+\end{align}
+\]</span> 决策规则： <span class="math display">\[
+g(x)&gt;0,x\in\omega_1\\g(x)&lt;0,x\in\omega_2
+\]</span> 映射关系： <span class="math display">\[
+y=\begin{pmatrix}1\\x\\x^2\end{pmatrix}:=\begin{pmatrix}y_1\\y_2\\y_3\end{pmatrix}
+\]</span> <img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102114608191.png" /></p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102114631444.png" /></p>
+<h2 id="感知准则函数">感知准则函数</h2>
+<h3 id="概念">概念</h3>
+<blockquote>
+<p><strong>线性可分性</strong>：来自两个类别的n个样本<span
+class="math inline">\(y_1,y_2,\dots,y_n\)</span>(齐次增广表示)。存在一个权向量<span
+class="math inline">\(a\)</span>，对所有<span class="math inline">\(y\in
+\omega_1\)</span>，均有<span
+class="math inline">\(a^Ty&gt;0\)</span>;对所有<span
+class="math inline">\(y\in \omega_2\)</span>，均有<span
+class="math inline">\(a^Ty&lt;0\)</span>。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102132023139.png"
+alt="齐次增广表示" />
+<figcaption aria-hidden="true">齐次增广表示</figcaption>
+</figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102132307364.png" /></p>
+</blockquote>
+<h4 id="齐次增广-规范化增广">齐次增广-&gt;规范化增广</h4>
+<p><strong>样本规范化</strong>：如果样本集是线性可分的，那么将属于<span
+class="math inline">\(\omega_2\)</span>的所有样本由<span
+class="math inline">\(y\)</span>变成<span
+class="math inline">\(-y\)</span>，对所有<span
+class="math inline">\(n\)</span>样本，将得到<span
+class="math inline">\(a^Ty&gt;0\)</span>。这样训练中就不需要考虑<strong>原来的样本类别</strong>。</p>
+<p><strong>规范化增广样本</strong>：1.将所有样本写成齐次增广形式；2.属于<span
+class="math inline">\(\omega_2\)</span>的所有样本由<span
+class="math inline">\(y\)</span>变成<span
+class="math inline">\(-y\)</span></p>
+<h4 id="解向量与解区">解向量与解区</h4>
+<p><strong>解向量</strong>：<strong>线性可分的情况下</strong>，满足<span
+class="math inline">\(a^Ty_i&gt;0,i=1,2,\dots,n\)</span>的权向量<span
+class="math inline">\(a\)</span>.</p>
+<blockquote>
+<p>解向量 <span class="math inline">\(a\)</span>
+是我们需要找到的“分类方向”，它保证所有样本点都在它的正确一侧。</p>
+</blockquote>
+<p><strong>解区：</strong>权向量<span
+class="math inline">\(a\)</span>属于权空间中的一点，每个样本<span
+class="math inline">\(y_i\)</span>对<span
+class="math inline">\(a\)</span>的位置均起到限制作用(<span
+class="math inline">\(a^Ty_i&gt;0\)</span>)</p>
+<ul>
+<li>任何一个样本点<span
+class="math inline">\(y_i\)</span>均可以确定一个超平面<span
+class="math inline">\(H_i:a^Ty_i=0\)</span>(<span
+class="math inline">\(y_i\)</span>是法向量，所有与<span
+class="math inline">\(y_i\)</span>垂直的属于<span
+class="math inline">\(H_i\)</span>，且<span
+class="math inline">\(y_i\)</span>决定了超平面的方向。)</li>
+<li>如果解向量存在，那必在每个超平面的正侧(<span
+class="math inline">\(a^Ty_i&gt;0\)</span>); <span
+class="math inline">\(n\)</span>个样本将产生<span
+class="math inline">\(n\)</span>个超平面。每个超平面将空间一分为二。解向量存在于所有超平面正面的交集区域，此区域内的任意向量都是解向量。</li>
+</ul>
+<p><strong>限制解区：</strong>解向量存在的话，通常不唯一。根据经验<em>越靠近区域中间的解向量，越能对新的样本正确分类</em>，所以引入附加条件来限制解空间。</p>
+<ul>
+<li><p>way1: 寻找单位长度的解向量<span
+class="math inline">\(a\)</span>，最大化样本到分界面的最小距离。</p></li>
+<li><p>way2: <span class="math inline">\(\forall i\)</span>,
+寻找满足<span class="math inline">\(a^Ty_i\ge
+b&gt;0\)</span>的最小长度的解向量<span class="math inline">\(a\)</span>,
+b:margin.</p>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102135628066.png" /></p></li>
+</ul>
+<h3 id="感知准则函数-1">感知准则函数</h3>
+<p>现在考虑构造解线性不等式<span
+class="math inline">\(a^Ty_i&gt;0\)</span>的准则函数问题。令<span
+class="math inline">\(J(a;y_1,\dots,y_n)\)</span>维被<span
+class="math inline">\(a\)</span>错分的样本数。但这个函数是分段常数函数，对梯度搜索不友好。因此考虑感知器准则函数：
+<span class="math display">\[
+J_p(a)=\sum_{y\in \mathcal{Y}}(-a^Ty)
+\]</span> <span
+class="math inline">\(\mathcal{Y}\)</span>是错分样本集合。</p>
+<blockquote>
+<p>当<span class="math inline">\(y_i\)</span>被错分：<span
+class="math inline">\(a^Ty_i&lt;0\Rightarrow
+-a^Ty_i&gt;0\)</span>，使<span class="math inline">\(J_p(a)\ge
+0\)</span>.</p>
+<p>在可分情况下，当且仅当<span
+class="math inline">\(\mathcal{Y}\)</span>是空集时<span
+class="math inline">\(J_p(a)\)</span>将=0，此时不存在错分样本。</p>
+</blockquote>
+<p>目标：<span class="math inline">\(\min_a J_p(a)\)</span></p>
+<p>梯度下降更新：<span
+class="math inline">\(a_{k+1}\)</span>是当前迭代的结果，<span
+class="math inline">\(a_k\)</span>是前一次迭代的结果，<span
+class="math inline">\(\mathcal{Y}_k\)</span>是被<span
+class="math inline">\(a_k\)</span> 错分的样本集合 ，<span
+class="math inline">\(\eta_k\)</span>为步长因子（更新动力因子，学习率）。
+<span class="math display">\[
+\frac{\partial J_p(a)}{\partial a}=-\sum_{y\in\mathcal{Y}}y\\
+a_{k+1}=a_k-\eta_k\frac{\partial J_p(a)}{\partial
+a}\vert_{a=a_k}=a_k+\eta_k\sum_{y\in \mathcal{Y}_k}y
+\]</span> <img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102141656449.png"
+alt="可变增量：步长eta可变" /></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102142257637.png"
+alt="单样本修正方法" />
+<figcaption aria-hidden="true">单样本修正方法</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102142325803.png"
+alt="image-20250102142325803" />
+<figcaption aria-hidden="true">image-20250102142325803</figcaption>
+</figure>
+<h4 id="算法收敛性">算法收敛性</h4>
+<p><strong>以固定增量单样本修正方法为例来说明算法的收敛性</strong>：</p>
+<p>对于权向量 <span
+class="math inline">\(a_k\)</span>，如果错分某样本，则将得到一次修正。由于在分错样本时
+<span
+class="math inline">\(a_k\)</span>才得到修正，不妨假定只考虑由错分样本组成的序列。即每次都只需利用一个分错样本来更正权向量。</p>
+<p>记错分样本序列为 <span class="math inline">\(y_1,y_2,\dots, y_k,
+\dots\)</span>。考虑此情形的算法收敛性问题。</p>
+<p><strong>收敛性定理：</strong>在样本线性可分的情形下，固定增量单样本权向量修正方法收敛，并可得到一个可行解。</p>
+<p><strong>证明思路</strong>：设<span
+class="math inline">\(a\)</span>是一个解向量，只需证明<span
+class="math inline">\(\|a_{k+1}-a\|&lt;\|a_k-a\|-C\)</span>即可。</p>
+<ul>
+<li>算法每次迭代都会使权向量到解向量的距离减少1个常数C</li>
+<li>假设<span
+class="math inline">\(dst=\|a_1-a\|\)</span>,则dst在经过C次迭代后(计算了足够长的步数)，算法收敛。</li>
+</ul>
+<blockquote>
+<p>感觉证明不考，因此略。</p>
+</blockquote>
+<h2 id="松驰方法">松驰方法</h2>
+<h3 id="学习准则">学习准则</h3>
+<p>在感知函数准则中，目标函数中采用了<span
+class="math inline">\(−a^Ty\)</span>
+的形式。实际上有很多其它准则也可以用于感知函数的学习。</p>
+<table>
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 37%" />
+<col style="width: 37%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>线性准则</th>
+<th>平方准则</th>
+<th>松驰准则</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span
+class="math inline">\(J_p(a)=\sum_{y\in\mathcal{Y}}(-a^Ty)\)</span></td>
+<td><span
+class="math inline">\(J_q(a)=\sum_{y\in\mathcal{Y}}(a^Ty)^2\)</span></td>
+<td><span class="math inline">\(J_r(a)=\frac 1
+2\sum_{y\in\mathcal{Y}}(a^Ty-b)^2/\|y\|^2\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\mathcal{Y}\)</span>为错分样本集合</td>
+<td><span class="math inline">\(\mathcal{Y}\)</span>为错分样本集合</td>
+<td><span class="math inline">\(\mathcal{Y}\)</span>是<span
+class="math inline">\(a^Ty\le b\)</span>的样本集合</td>
+</tr>
+<tr class="odd">
+<td>分段线性，梯度不连续</td>
+<td>梯度连续，但<strong>目标函数过于平滑</strong>，收敛速度很慢。此外，目标和拿书过于受到最长样本的影响。</td>
+<td>避免了线性准则和平方准则的缺点。<span
+class="math inline">\(J_r(a)=0\)</span>时，对所有<span
+class="math inline">\(y,a^Ty&gt;b\)</span>,意味着<span
+class="math inline">\(\mathcal{Y}\)</span>是空集。</td>
+</tr>
+</tbody>
+</table>
+<p>松弛准则的梯度下降： <span class="math display">\[
+\frac{\partial J_r(a)}{\partial
+a}=\sum_{y\in\mathcal{Y}}\frac{a^Ty-b}{\|y\|^2}y\\
+a_{k+1}=a_k-\eta_k\sum_{y\in\mathcal{Y}}\frac{a^Ty-b}{\|y\|^2}y
+\]</span> <img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102144756991.png"
+alt="image-20250102144756991" /></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102152156572.png"
+alt="image-20250102152156572" />
+<figcaption aria-hidden="true">image-20250102152156572</figcaption>
+</figure>
+<p>收敛性证明略。</p>
+<h2 id="最小平方误差mse准则函数">最小平方误差（MSE）准则函数</h2>
+<blockquote>
+<p>前面考虑的准则函数都是只考虑被错分的样本。现在考虑一种<strong>包含所有样本</strong>的准则函数。</p>
+</blockquote>
+<p><strong>动机：</strong>对两类分问题，感知准则函数是寻找一个解向量
+a，对所有样本 <span class="math inline">\(y_i\)</span>，满足 <span
+class="math inline">\(a^Ty_i&gt;0,
+i=1,2,…n\)</span>。或者说，求解一个不等式组，使满足 <span
+class="math inline">\(a^Ty_i
+&gt;0\)</span>的数目最大，从而错分样本最少。 <span
+class="math display">\[
+a^Ty_i=b_i&gt;0
+\]</span></p>
+<p>其中，<span
+class="math inline">\(b_i\)</span>是任意给定的正常数，通常取<span
+class="math inline">\(b_i = 1\)</span>，或者<span
+class="math inline">\(b_i=\frac{n_i}{n}\)</span>。其中，<span
+class="math inline">\(n_i\)</span>（<span class="math inline">\(i =
+1\)</span>或<span class="math inline">\(2\)</span>）为属于第<span
+class="math inline">\(i\)</span>类样本的总数，且<span
+class="math inline">\(n_1 + n_2 = n\)</span>。</p>
+<h3 id="线性判别函数的参数估计">线性判别函数的参数估计</h3>
+<p>可得一个线性方程组：<span class="math inline">\(Ya = b\)</span> <span
+class="math display">\[
+\begin{bmatrix}
+y_{10} &amp; y_{11} &amp; \cdots &amp; y_{1d}\\
+y_{20} &amp; y_{21} &amp; \cdots &amp; y_{2d}\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+y_{n0} &amp; y_{n1} &amp; \cdots &amp; y_{nd}
+\end{bmatrix}
+\begin{bmatrix}
+a_0\\
+a_1\\
+\vdots\\
+a_d
+\end{bmatrix}
+=
+\begin{bmatrix}
+b_1\\
+b_2\\
+\vdots\\
+b_n
+\end{bmatrix}
+\]</span></p>
+<ul>
+<li>如果<span class="math inline">\(Y\)</span>可逆，则<span
+class="math inline">\(a = Y^{-1}b\)</span>。</li>
+<li>但通常情形下，<span class="math inline">\(n\gg d +
+1\)</span>，因此，考虑定义一个误差向量：<span class="math inline">\(e =
+Ya - b\)</span>，并使误差向量最小。</li>
+</ul>
+<h4 id="平方误差准则函数">平方误差准则函数</h4>
+<p><span class="math display">\[
+J_s(a)=\|e\|^2=\|Ya - b\|^2=\sum_{i = 1}^{n}(a^T Y_i - b_i)^2
+\]</span></p>
+<p>对其求导： <span class="math display">\[
+\frac{\partial J_s(a)}{\partial a}=\sum_{i = 1}^{n}2(a^T Y_i - b_i)Y_i =
+2Y^T(Ya - b)=0\\
+Y^T Ya = Y^T b\Rightarrow a=(Y^T Y)^{-1}Y^T b = Y^\dagger b
+\]</span></p>
+<p>其中，<span class="math inline">\(Y^+\)</span>为<span
+class="math inline">\(Y\)</span>的伪逆。</p>
+<p>实际计算（正则化技术）：$Y<sup>(Y</sup>T Y+I)<sup>{-1}Y</sup>T ()
+$</p>
+<h4 id="梯度下降法">梯度下降法</h4>
+<p>计算伪逆需要矩阵的逆，计算复杂度高。如果原始样本的维数很高，比如<span
+class="math inline">\(d&gt;5000\)</span>，将十分耗时。</p>
+<ul>
+<li><p><strong>批处理梯度下降</strong>： <span class="math display">\[
+a_{k + 1}=a_k+\eta_k Y^T(b - Ya_k)
+\]</span> 梯度下降法得到的<span class="math inline">\(a_{k +
+1}\)</span>将收敛于一个解，该解满足方程： <span class="math display">\[
+Y^T(b - Ya)=0
+\]</span></p></li>
+<li><p><strong>单样本梯度下降</strong>：此方法需要的计算存储量会更小（此时考虑单个样本对误差的贡献）
+<span class="math display">\[
+a_{k + 1}=a_k+\eta_k(b_k-(a_k)^T y^k)y^k
+\]</span> <img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102172016553.png"
+alt="单样本对应更新算法" /></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102172049499.png"
+alt="image-20250102172049499" />
+<figcaption aria-hidden="true">image-20250102172049499</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102172110709.png"
+alt="MSE不收敛" />
+<figcaption aria-hidden="true">MSE不收敛</figcaption>
+</figure></li>
+</ul>
+<h2 id="ho-kashyap方法">Ho-Kashyap方法</h2>
+<blockquote>
+<p>感知器和松弛法对线性可分样本集可找到分离向量，但对于不可分的情况就不收敛了。</p>
+<p>MSE算法不管样本是否可分都能得到一个权向量，但并不能保证在可分的情况下这个向量一定是分类向量。</p>
+<p>若margin <span
+class="math inline">\(b\)</span>是任意选择的，MSE只是<span
+class="math inline">\(\min
+\|Ya-b\|^2\)</span>,所得到的最优解并不需要位于可分超平面上。若训练样本刚好是线性可分的，那么存在<span
+class="math inline">\(\hat a,\hat b\)</span>满足： <span
+class="math display">\[
+Y\hat a=\hat b&gt;0
+\]</span> 当我们设置<span class="math inline">\(b=\hat
+b\)</span>，利用MSE，就能找到一个分类向量。<strong>但是我们没法预知<span
+class="math inline">\(\hat b\)</span></strong>。</p>
+</blockquote>
+<p>对MSE准则函数更新为： <span class="math display">\[
+J_s(a,b)=\|Ya-b\|^2
+\]</span></p>
+<blockquote>
+<p>ps：直接优化<span
+class="math inline">\(J_s(a,b)\)</span>将导致平凡解，所以需要给<span
+class="math inline">\(b\)</span>添加约束条件：<span
+class="math inline">\(b&gt;0\)</span>.</p>
+<p>此时<span class="math inline">\(b\)</span>可以解释为margin.</p>
+</blockquote>
+<h3 id="梯度下降">梯度下降</h3>
+<p><span class="math display">\[
+\frac{\partial J_s(a,b)}{\partial a}=2Y^T(Ya-b),\quad \frac{\partial
+J_s(a,b)}{\partial b}=-2(Ya-b)\\
+b_{k+1}=b_k-\eta_k\frac{\partial J_s(a,b)}{\partial b}
+\]</span></p>
+<p>约束条件：<span class="math inline">\(a=Y^\dagger b\)</span>, <span
+class="math inline">\(b&gt;0\)</span></p>
+<p>因为<span class="math inline">\(b_k\ge0\)</span>,要使<span
+class="math inline">\(b_{k+1}\ge0\)</span>,可以要求<span
+class="math inline">\(\frac{\partial J_s(a,b)}{\partial b}\le
+0\)</span>: <span class="math display">\[
+b_{k+1}=b_k-\eta_k\frac12\left(\frac{\partial J_s(a,b)}{\partial
+b}-\vert \frac{\partial J_s(a,b)}{\partial b}\vert \right)
+\]</span> 更新<span class="math inline">\(a,b\)</span>: <span
+class="math display">\[
+a_{k+1}=Y^{\dagger}b_k\\
+b_1&gt;0,\quad b_{k+1}=b_k+2\eta_ke^{\dagger}_k\\
+e^{\dagger}_k=\frac 12 \left((Ya_k-b_k)+\vert
+Ya_k-b_k\vert\right)\Leftarrow\frac{\partial J_s(a,b)}{\partial
+b}=-2(Ya-b)
+\]</span></p>
+<ul>
+<li>为了防止<span class="math inline">\(b\)</span>收敛于<span
+class="math inline">\(0\)</span>，可以让<span
+class="math inline">\(b\)</span>从一个非负向量（<span
+class="math inline">\(b_1&gt;0\)</span>）开始进行更新。</li>
+<li>由于要求<span class="math inline">\(\frac{\partial
+J_s(a,b)}{\partial b}\)</span>等于<span
+class="math inline">\(0\)</span>，在开始迭代时可令<span
+class="math inline">\(\frac{\partial J_s(a,b)}{\partial
+b}\)</span>的元素为正的分量等于零，从而加快收敛速度。</li>
+</ul>
+<h3 id="伪算法">伪算法</h3>
+<ul>
+<li>由于权向量序列<span
+class="math inline">\(\{a_k\}\)</span>完全取决于<span
+class="math inline">\(\{b_k\}\)</span>，因此本质上讲Ho -
+Kashyap算法是一个<strong>生成margin序列</strong><span
+class="math inline">\(\{b_k\}\)</span>的方法。</li>
+<li>由于初始<span
+class="math inline">\(b_1&gt;0\)</span>，且更新因子<span
+class="math inline">\(\eta&gt;0\)</span>，因此<span
+class="math inline">\(b_k\)</span>总是大于<span
+class="math inline">\(0\)</span>。</li>
+<li>对于更新因子<span
+class="math inline">\(0&lt;\eta\leq1\)</span>，如果问题线性可分，则总能找到元素全为正的<span
+class="math inline">\(b\)</span>。</li>
+<li>如果<span class="math inline">\(e_k = Ya_k - b_k\)</span>全为<span
+class="math inline">\(0\)</span>，此时，<span
+class="math inline">\(b_k\)</span>将不再更新，因此获得一个解。如果<span
+class="math inline">\(e_k\)</span>有一部分元素小于<span
+class="math inline">\(0\)</span>，则可以证明该问题不是线性可分的。(证明略)
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102174349299.png"
+alt="image-20250102174349299" /></li>
+</ul>
+<h2 id="多类线性判别函数">多类线性判别函数</h2>
+<p>决策规则: <span class="math inline">\(\forall j\neq i,g_i(x)\ge
+g_j(x)\)</span>, <span class="math inline">\(x\)</span>被分为<span
+class="math inline">\(\omega_i\)</span>类。</p>
+<p><span class="math inline">\(x\)</span>被分为<span
+class="math inline">\(\omega_i\)</span>类的线性判别函数： <span
+class="math display">\[
+\forall j\neq i,a_i^Tx+b_i\ge a_j^Tx+b_j
+\]</span></p>
+<h3 id="方法一mse多类扩展">方法一：MSE多类扩展</h3>
+<p>可以直接采用<span
+class="math inline">\(c\)</span>个两类分类器的组合，且这种组合具有与两类分类问题类似的代数描述形式。</p>
+<p>线性变换(注，此处不采用规范化增广表示)： <span
+class="math display">\[
+z = W^T x + b,\quad W\in R^{d\times c},\quad b\in R^c
+\]</span> 决策准则：<span class="math inline">\(\text{if}\quad j = \arg
+\max(W^T x + b),\quad \text{then}\quad x\in\omega_j\)</span></p>
+<h4 id="回归值的构造one---hot编码">回归值的构造：one - hot编码</h4>
+<p><span class="math display">\[
+x\in\omega_j\Rightarrow z\in R^c,\quad z_{ij}=\begin{cases}1, &amp;
+\text{if}\quad i = j\\0, &amp; \text{otherwise}\end{cases}
+\]</span></p>
+<p>若<span class="math inline">\(x\)</span>属于<span
+class="math inline">\(\omega_j\)</span>类，则<span
+class="math inline">\(x\)</span>的类别编码<span
+class="math inline">\(z\)</span>为一个<span
+class="math inline">\(c\)</span>维向量，其中第<span
+class="math inline">\(j\)</span>个元素为<span
+class="math inline">\(1\)</span>，其余为<span
+class="math inline">\(0\)</span>。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250102174922676.png"
+alt="one-hot coding" />
+<figcaption aria-hidden="true">one-hot coding</figcaption>
+</figure>
+<h4 id="目标函数">目标函数</h4>
+<p><span class="math display">\[
+\min_{W,b}\sum_{i = 1}^{n}\|W^T x_i + b - z_i\|_2^2
+\]</span></p>
+<p>令： <span class="math display">\[
+W = \begin{bmatrix}W^T\\b\end{bmatrix}\in R^{(d + 1)\times c},\
+\hat{x}=\begin{bmatrix}x\\1\end{bmatrix}\in R^{d + 1},\
+\hat{X}=(\hat{x}_1,\hat{x}_2,\cdots,\hat{x}_n)\in R^{(d + 1)\times n}
+\]</span> 则有： <span class="math display">\[
+\sum_{i = 1}^{n}\|W^T x_i + b - z_i\|_2^2=\|\hat{W}^T\hat{X}-Z\|_F^2
+\]</span> <span
+class="math inline">\(\|\cdot\|_F\)</span>为Frobenius范数。进而有：
+<span class="math display">\[
+\min_{W}\|\hat{W}^T\hat{X}-Z\|_F^2\\
+\hat{W}=(\hat{X}\hat{X}^T)^{-1}\hat{X}Z^T\in R^{(d + 1)\times c}\\
+\]</span>
+实际中：可能会遇到矩阵奇异或数值不稳定的问题。为此，我们引入正则化项（类似岭回归）
+<span class="math display">\[
+\hat{W}=(\hat{X}\hat{X}^T+\lambda I)^{-1}\hat{X}Z^T\in R^{(d + 1)\times
+c}
+\]</span> <span class="math inline">\(\lambda\)</span>:
+正则化参数，通常取一个小正数。防止过拟合以及增强数值计算的稳定性。</p>
+</div><div class="post-end"><div class="post-prev"><a href="/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch6-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" title="上一篇文章"><i class="fa-solid fa-chevron-left fa-lg"></i></a></div><div class="post-next"><a href="/2025/01/05/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-Ch4-%E9%9D%9E%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#ch5-%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.</span> <span class="toc-content-text">Ch5 线性判别函数</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%BC%95%E8%A8%80%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B-vs%E5%88%A4%E5%88%AB%E6%A8%A1%E5%9E%8B"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">引言：生成模型 vs判别模型</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B-vs-%E5%88%A4%E5%88%AB%E6%A8%A1%E5%9E%8B"><span class="toc-content-number">1.1.1.</span> <span class="toc-content-text">生成模型 vs 判别模型</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%88%A4%E5%88%AB%E6%A8%A1%E5%9E%8B%E5%88%86%E7%B1%BB"><span class="toc-content-number">1.1.2.</span> <span class="toc-content-text">判别模型分类</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0%E4%B8%8E%E5%86%B3%E7%AD%96%E9%9D%A2"><span class="toc-content-number">1.2.</span> <span class="toc-content-text">线性判别函数与决策面</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.2.1.</span> <span class="toc-content-text">线性判别函数</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%B8%A4%E7%B1%BB%E6%83%85%E5%86%B5%E4%B8%8B%E7%9A%84%E5%86%B3%E7%AD%96"><span class="toc-content-number">1.2.1.1.</span> <span class="toc-content-text">两类情况下的决策</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%A4%9A%E7%B1%BB%E9%97%AE%E9%A2%98%E4%B8%8B%E5%86%B3%E7%AD%96"><span class="toc-content-number">1.2.1.2.</span> <span class="toc-content-text">多类问题下决策</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%A4%9A%E7%B1%BB%E6%83%85%E5%BD%A2-%E7%BA%BF%E6%80%A7%E6%9C%BA%E5%99%A8"><span class="toc-content-number">1.2.2.</span> <span class="toc-content-text">多类情形-线性机器</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%BA%BF%E6%80%A7%E5%86%B3%E7%AD%96%E9%9D%A2%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-content-number">1.2.2.1.</span> <span class="toc-content-text">线性决策面优缺点</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.3.</span> <span class="toc-content-text">广义线性判别函数</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B%E4%BA%8C%E6%AC%A1%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.3.0.1.</span> <span class="toc-content-text">例：二次判别函数</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B1-1-d%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.3.0.2.</span> <span class="toc-content-text">例1: 1-D判别函数</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%84%9F%E7%9F%A5%E5%87%86%E5%88%99%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.4.</span> <span class="toc-content-text">感知准则函数</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-content-number">1.4.1.</span> <span class="toc-content-text">概念</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E9%BD%90%E6%AC%A1%E5%A2%9E%E5%B9%BF-%E8%A7%84%E8%8C%83%E5%8C%96%E5%A2%9E%E5%B9%BF"><span class="toc-content-number">1.4.1.1.</span> <span class="toc-content-text">齐次增广-&gt;规范化增广</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E8%A7%A3%E5%90%91%E9%87%8F%E4%B8%8E%E8%A7%A3%E5%8C%BA"><span class="toc-content-number">1.4.1.2.</span> <span class="toc-content-text">解向量与解区</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%84%9F%E7%9F%A5%E5%87%86%E5%88%99%E5%87%BD%E6%95%B0-1"><span class="toc-content-number">1.4.2.</span> <span class="toc-content-text">感知准则函数</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%AE%97%E6%B3%95%E6%94%B6%E6%95%9B%E6%80%A7"><span class="toc-content-number">1.4.2.1.</span> <span class="toc-content-text">算法收敛性</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%9D%BE%E9%A9%B0%E6%96%B9%E6%B3%95"><span class="toc-content-number">1.5.</span> <span class="toc-content-text">松驰方法</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%AD%A6%E4%B9%A0%E5%87%86%E5%88%99"><span class="toc-content-number">1.5.1.</span> <span class="toc-content-text">学习准则</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%9C%80%E5%B0%8F%E5%B9%B3%E6%96%B9%E8%AF%AF%E5%B7%AEmse%E5%87%86%E5%88%99%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.6.</span> <span class="toc-content-text">最小平方误差（MSE）准则函数</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="toc-content-number">1.6.1.</span> <span class="toc-content-text">线性判别函数的参数估计</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%B9%B3%E6%96%B9%E8%AF%AF%E5%B7%AE%E5%87%86%E5%88%99%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.6.1.1.</span> <span class="toc-content-text">平方误差准则函数</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95"><span class="toc-content-number">1.6.1.2.</span> <span class="toc-content-text">梯度下降法</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ho-kashyap%E6%96%B9%E6%B3%95"><span class="toc-content-number">1.7.</span> <span class="toc-content-text">Ho-Kashyap方法</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D"><span class="toc-content-number">1.7.1.</span> <span class="toc-content-text">梯度下降</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%BC%AA%E7%AE%97%E6%B3%95"><span class="toc-content-number">1.7.2.</span> <span class="toc-content-text">伪算法</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%A4%9A%E7%B1%BB%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.8.</span> <span class="toc-content-text">多类线性判别函数</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80mse%E5%A4%9A%E7%B1%BB%E6%89%A9%E5%B1%95"><span class="toc-content-number">1.8.1.</span> <span class="toc-content-text">方法一：MSE多类扩展</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%9B%9E%E5%BD%92%E5%80%BC%E7%9A%84%E6%9E%84%E9%80%A0one---hot%E7%BC%96%E7%A0%81"><span class="toc-content-number">1.8.1.1.</span> <span class="toc-content-text">回归值的构造：one - hot编码</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%9B%AE%E6%A0%87%E5%87%BD%E6%95%B0"><span class="toc-content-number">1.8.1.2.</span> <span class="toc-content-text">目标函数</span></a></li></ol></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2025 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>
