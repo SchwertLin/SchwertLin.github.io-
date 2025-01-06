@@ -6,10 +6,9 @@
 <meta property="og:description" content="Ch3 参数估计-最大似然和贝叶斯参数估计 [TOC] 基本概念 贝叶斯分类器: 已知类先验概率\(P(w_j)\)和类条件概率密度\(p(\mathbf{x}\vert w_j)\)，按某决策规则确定判别函数和决策面。  但类先验概率和类条件概率密度在实际中往往是未知的。 因此，我们要换一种处理问题的方式：“从样本出发来设计分类器”。根据设计方法，可以将分类器分为两类：  估">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-01-05T08:17:04.000Z">
-<meta property="article:modified_time" content="2025-01-06T06:28:04.272Z">
+<meta property="article:modified_time" content="2025-01-06T06:33:56.869Z">
 <meta property="article:author" content="Schwertlilien">
-<meta property="article:tag" content="笔记">
-<meta property="article:tag" content="模式识别">
+<meta property="article:tag" content="-模式识别 -笔记">
 <meta name="twitter:card" content="summary"><title>模式识别-Ch3-参数估计 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
 <link rel="stylesheet" href="/css/style.css" id="dm-light">
 
@@ -24,7 +23,7 @@
 <!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
 <div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>模式识别-Ch3-参数估计</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2025-01-05</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2025-01-06</time></div>
 
-<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">模式识别</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB-%E7%AC%94%E8%AE%B0/">-模式识别 -笔记</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
 <div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约1.5W字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch3-参数估计-最大似然和贝叶斯参数估计">Ch3
 参数估计-最大似然和贝叶斯参数估计</h1>
 <p>[TOC]</p>
@@ -309,19 +308,28 @@ p(\mathbf{x}_i|\mu,\Sigma)}{\partial\mu}=\sum_{i =
 1}^{n}\mathbf{x}_i
 \]</span></p>
 <h4 id="估计sigma">估计<span class="math inline">\(\Sigma\)</span></h4>
-<p>$$ p(_i|,)=--(<em>i - )<sup>T</sup>{-1}(<em>i - ),i = 1,2,,n\
-=</em>{i = 1}^{n}\ =</em>{i = 1}^{n}(--)\</p>
-<p>=-<sup>{-1}+</sup>{-1}_{i = 1}^{n}(_i - )(_i - )<sup>T</sup>{-1}=0 \
-<span class="math display">\[\begin{align}
-\Sigma^{-1}\left(\sum_{i = 1}^{n}(\mathbf{x}_i - \mu)(\mathbf{x}_i -
-\mu)^T\Sigma^{-1}-n\right)&amp;=0\\
-\sum_{i = 1}^{n}(\mathbf{x}_i - \mu)(\mathbf{x}_i -
-\mu)^T\Sigma^{-1}&amp;=n\\
-\sum_{i = 1}^{n}(\mathbf{x}_i - \mu)(\mathbf{x}_i -
-\mu)^T&amp;=n\Sigma\\
-\frac{1}{n}\sum_{i = 1}^{n}(\mathbf{x}_i - \mu)(\mathbf{x}_i -
-\mu)^T&amp;=\hat{\Sigma}
-\end{align}\]</span> $$</p>
+<p><span class="math display">\[
+\ln
+p(\mathbf{x}_i|\mu,\Sigma)=-\frac{1}{2}\ln[(2\pi)^d|\Sigma|]-\frac{1}{2}(\mathbf{x}_i-\mu)^T\Sigma^{-1}(\mathbf{x}_i-\mu),\text{
+for }i = 1,2,\cdots,n\\
+\frac{\partial H(\mu,\Sigma)}{\partial\Sigma}=\sum_{i =
+1}^{n}\frac{\partial\ln p(\mathbf{x}_i|\mu,\Sigma)}{\partial\Sigma}\\
+=\sum_{i =
+1}^{n}\left(-\frac{n}{2}\frac{1}{|\Sigma|}\frac{\partial|\Sigma|}{\partial\Sigma}-\frac{1}{2}\frac{\partial(\mathbf{x}_i-\mu)^T\Sigma^{-1}(\mathbf{x}_i-\mu)}{\partial\Sigma}\right)\\
+=-\frac{n}{2}\Sigma^{-1}+\frac{1}{2}\Sigma^{-1}\sum_{i =
+1}^{n}(\mathbf{x}_i-\mu)(\mathbf{x}_i-\mu)^T\Sigma^{-1}=0
+\]</span></p>
+<p><span class="math display">\[
+\begin{align}
+\Sigma^{-1}\left(\sum_{i =
+1}^{n}(\mathbf{x}_i-\mu)(\mathbf{x}_i-\mu)^T\Sigma^{-1}-n\right)&amp;=0\\
+\sum_{i =
+1}^{n}(\mathbf{x}_i-\mu)(\mathbf{x}_i-\mu)^T\Sigma^{-1}&amp;=n\\
+\sum_{i = 1}^{n}(\mathbf{x}_i-\mu)(\mathbf{x}_i-\mu)^T&amp;=n\Sigma\\
+\frac{1}{n}\sum_{i =
+1}^{n}(\mathbf{x}_i-\mu)(\mathbf{x}_i-\mu)^T&amp;=\hat{\Sigma}
+\end{align}
+\]</span></p>
 <p><span
 class="math inline">\(\mu,\Sigma\)</span>均未知的情况下，可以使用极大似然估计得到<span
 class="math inline">\(\mu,\Sigma\)</span>的估计量： <span
@@ -437,8 +445,7 @@ p(\theta\vert D)\\\Leftrightarrow&amp;\hat{\theta}=\arg\max p(D\vert
 \theta)+\ln p(\theta)\end{align}\)</span></td>
 <td><span class="math inline">\(p(x\vert
 \mu,\Sigma)=\frac{1}{(2\pi)^{d/2}\vert \Sigma\vert
-^{1/2}}\exp\left(-\frac{1}{2}(x - \mu)^T\Sigma^{-1}(x -
-\mu)\right)\)</span></td>
+^{1/2}}\exp\left(-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)\right)\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -658,8 +665,8 @@ class="math inline">\(p(\mathbf{x})\)</span>吗？</p>
 <p>根据贝叶斯学习的性质，当数据量<span class="math inline">\(n \to
 \infty\)</span>时，后验分布<span class="math inline">\(p(\theta\vert
 D)\)</span>会集中在最大似然估计值附近，即：<span
-class="math inline">\(p(\theta\vert D) \to \delta(\theta -
-\theta_{\text{MLE}})\)</span>这意味着后验分布的方差会逐渐缩小，预测分布
+class="math inline">\(p(\theta\vert D) \to
+\delta(\theta-\theta_{\text{MLE}})\)</span>这意味着后验分布的方差会逐渐缩小，预测分布
 p(∣D)p(D) 也会趋近于真实分布。</p>
 </blockquote></li>
 </ol>
@@ -799,7 +806,7 @@ class="math inline">\(\theta\)</span>空间中的一个点，而贝叶斯方法�
 id="特征维数问题分类错误率与特征的关系">特征维数问题:分类错误率与特征的关系</h2>
 <p><strong>模式分类与特征的关系</strong></p>
 <ul>
-<li>贝叶斯决策(0 - 1损失)：<span
+<li>贝叶斯决策(0-1损失)：<span
 class="math inline">\(w^{*}=\arg\max_{j}p(w_{j}\vert
 \mathbf{x})\)</span></li>
 <li>特征空间给定时，贝叶斯分类错误率就确定了，即分类性能的理论上限就确定了（与分类器、学习算法无关）</li>
@@ -896,8 +903,7 @@ class="math inline">\(c\)</span>个已知类别，测试时易造成outlier与�
 <li>因此，在<span
 class="math inline">\(c\)</span>类样本上训练分类器时，要使特征表达具有区分更多类别的能力
 <ul>
-<li>比如，训练神经网络时加入数据重构损失(类似auto -
-encoder)作为正则项，生成一些假想类样本(通过组合已知类别样本)</li>
+<li>比如，训练神经网络时加入数据重构损失(类似auto-encoder)作为正则项，生成一些假想类样本(通过组合已知类别样本)</li>
 </ul></li>
 </ul>
 <h2 id="期望最大化-expectation-maximization-em">期望最大化
@@ -939,11 +945,11 @@ class="math inline">\(C\)</span>的取值。
 <li>如果<span
 class="math inline">\(C\)</span>为正面，那么掷10次硬币<span
 class="math inline">\(A\)</span>，其联合概率为<span
-class="math inline">\(0.3^{2}×(1 - 0.3)^{8}=0.0052\)</span>。</li>
+class="math inline">\(0.3^{2}×(1-0.3)^{8}=0.0052\)</span>。</li>
 <li>如果<span
 class="math inline">\(C\)</span>为反面，那么掷10次硬币<span
 class="math inline">\(B\)</span>，其联合概率为<span
-class="math inline">\(0.61^{3}×(1 - 0.61)^{7}=0.0003\)</span>。<br />
+class="math inline">\(0.61^{3}×(1-0.61)^{7}=0.0003\)</span>。<br />
 </li>
 <li>所以猜测<span class="math inline">\(C\)</span>的取值为正面。</li>
 </ul></li>
@@ -959,13 +965,12 @@ class="math inline">\(C\)</span>的取值。
 <li>如果<span
 class="math inline">\(C\)</span>为正面，那么掷10次硬币<span
 class="math inline">\(A\)</span>，其联合概率为<span
-class="math inline">\(0.25^{6}×(1 -
-0.25)^{4}=7.7248×10^{-5}\)</span>。<br />
+class="math inline">\(0.25^{6}×(1-0.25)^{4}=7.7248×10^{-5}\)</span>。<br />
 </li>
 <li>如果<span
 class="math inline">\(C\)</span>为反面，那么掷10次硬币<span
 class="math inline">\(B\)</span>，其联合概率为<span
-class="math inline">\(0.61^{6}×(1 - 0.61)^{4}=0.0012\)</span>。<br />
+class="math inline">\(0.61^{6}×(1-0.61)^{4}=0.0012\)</span>。<br />
 </li>
 <li>所以猜测<span class="math inline">\(C\)</span>的取值为反面。</li>
 </ul></li>
@@ -981,12 +986,11 @@ class="math inline">\(C\)</span>的取值。
 <li>如果<span
 class="math inline">\(C\)</span>为正面，那么掷10次硬币<span
 class="math inline">\(A\)</span>，其联合概率为<span
-class="math inline">\(0.25^{3}×(1 - 0.25)^{7}=0.0021\)</span>。</li>
+class="math inline">\(0.25^{3}×(1-0.25)^{7}=0.0021\)</span>。</li>
 <li>如果<span
 class="math inline">\(C\)</span>为反面，那么掷10次硬币<span
 class="math inline">\(B\)</span>，其联合概率为<span
-class="math inline">\(0.6^{3}×(1 -
-0.6)^{7}=3.5389×10^{-4}\)</span>。<br />
+class="math inline">\(0.6^{3}×(1-0.6)^{7}=3.5389×10^{-4}\)</span>。<br />
 </li>
 <li>所以猜测<span class="math inline">\(C\)</span>的取值为正面。</li>
 </ul></li>
@@ -999,14 +1003,13 @@ class="math inline">\(C\)</span>的取值。
 <li>如果<span
 class="math inline">\(C\)</span>为正面，那么掷10次硬币<span
 class="math inline">\(A\)</span>，其联合概率为<span
-class="math inline">\((8/30)^{8}×(1 -
-8/30)^{2}=1.3752×10^{-5}\)</span>。<br />
+class="math inline">\((8/30)^{8}×(1-8/30)^{2}=1.3752×10^{-5}\)</span>。<br />
 </li>
 <li>如果<span
 class="math inline">\(C\)</span>为反面，那么掷10次硬币<span
 class="math inline">\(B\)</span>，其联合概率为<span
-class="math inline">\(0.6^{8}×(1 - 0.6)^{2}=0.0027\)</span>。 -
-所以猜测<span class="math inline">\(C\)</span>的取值为反面。</li>
+class="math inline">\(0.6^{8}×(1-0.6)^{2}=0.0027\)</span>。
+-所以猜测<span class="math inline">\(C\)</span>的取值为反面。</li>
 </ul></li>
 <li>第十一步：<span class="math inline">\(p_{A}=0.267,\ p_{B}=14/20 =
 0.7\)</span></li>
@@ -1263,16 +1266,16 @@ X,\theta^{old})\ln(p(X,Z\vert \theta))\)</span></p>
 class="math inline">\(\theta^{old}\)</span></strong></li>
 <li><strong>执行以下操作</strong>
 <ol type="1">
-<li><strong>E - step</strong>：计算<span class="math inline">\(p(Z\vert
+<li><strong>E-step</strong>：计算<span class="math inline">\(p(Z\vert
 X,\theta^{old})\)</span>。</li>
-<li><strong>M - step</strong>：更新参数：<span
+<li><strong>M-step</strong>：更新参数：<span
 class="math inline">\(\theta^{new}=\arg\max_{\theta}Q(\theta,\theta^{old})\)</span>。</li>
 <li><strong>如果收敛条件不满足</strong>：<span
 class="math inline">\(\theta^{old}\leftarrow\theta^{new}\)</span></li>
 </ol></li>
 <li><strong>结束</strong></li>
 </ol></li>
-<li><p><strong>E步（E - Step）</strong>：固定当前估计的参数<span
+<li><p><strong>E步（E-Step）</strong>：固定当前估计的参数<span
 class="math inline">\(\{\pi_k,\mu_k,\Sigma_k\}\)</span>，对每个样本求<span
 class="math inline">\(P(z_i\vert \mathbf
 x_i,\theta^{old})\)</span>，<span class="math inline">\(i =
@@ -1284,7 +1287,7 @@ P(z_i\vert \mathbf x_i,\theta^{old})=\frac{p(\mathbf x_i,Z_i\vert
 \mu_{Z_i},\Sigma_{Z_i})}{\sum_{k = 1}^{K}\pi_k\mathcal{N}(\mathbf
 x_i\vert \mu_k,\Sigma_k)}
 \]</span></p></li>
-<li><p><strong>M步（M - Step）</strong>：固定<span
+<li><p><strong>M步（M-Step）</strong>：固定<span
 class="math inline">\(\{P(z_i\vert \mathbf
 x_i,\theta^{old})\}\)</span>，通过<span class="math inline">\(\max
 Q(\theta,\theta^{old})\)</span>更新参数<span
@@ -1342,9 +1345,9 @@ x_i, \theta^{old})}\)</span></td>
 <td>成分协方差矩阵<span
 class="math inline">\(\hat{\Sigma}_k\)</span></td>
 <td><span class="math inline">\(\hat{\Sigma}_k = \frac{\sum_{i = 1}^{n}
-P(z_i = k \vert x_i, \theta^{old}) (x_i - \hat{\mu}_k)(x_i -
-\hat{\mu}_k)^T}{\sum_{i = 1}^{n} P(z_i = k \vert x_i,
-\theta^{old})}\)</span></td>
+P(z_i = k \vert x_i, \theta^{old})
+(x_i-\hat{\mu}_k)(x_i-\hat{\mu}_k)^T}{\sum_{i = 1}^{n} P(z_i = k \vert
+x_i, \theta^{old})}\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -1696,11 +1699,11 @@ class="math inline">\(z_t\)</span>已知，<span
 class="math inline">\(\mathbf{x}_t\)</span>与其它状态独立。</li>
 <li><span class="math inline">\(t\)</span>时刻的状态变量<span
 class="math inline">\(z_t\)</span>的取值仅依赖于<span
-class="math inline">\(t - 1\)</span>时刻的状态变量<span
-class="math inline">\(z_{t - 1}\)</span>。当<span
-class="math inline">\(z_{t - 1}\)</span>已知，<span
-class="math inline">\(z_t\)</span>与其余<span class="math inline">\(t -
-2\)</span>个状态独立。即<span
+class="math inline">\(t-1\)</span>时刻的状态变量<span
+class="math inline">\(z_{t-1}\)</span>。当<span
+class="math inline">\(z_{t-1}\)</span>已知，<span
+class="math inline">\(z_t\)</span>与其余<span
+class="math inline">\(t-2\)</span>个状态独立。即<span
 class="math inline">\(\{z_t\}\)</span>构成马尔可夫链，系统下一刻的状态仅由当前状态决定，不依赖于以往任何状态。</li>
 </ul>
 <p><strong>HMM中的条件独立性</strong>: <span class="math display">\[
@@ -1745,8 +1748,8 @@ K\)</span></td>
 <tr class="even">
 <td>状态转移概率矩阵<span class="math inline">\(A\in R^{K\times
 K}\)</span></td>
-<td><span class="math inline">\(A_{i,j}=P(z_t = j\vert z_{t -
-1}=i),\quad 1\leq i,j\leq K\)</span></td>
+<td><span class="math inline">\(A_{i,j}=P(z_t = j\vert z_{t-1}=i),\quad
+1\leq i,j\leq K\)</span></td>
 </tr>
 <tr class="odd">
 <td>发射概率矩阵<span class="math inline">\(B\in R^{K\times
@@ -1763,9 +1766,9 @@ src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250101152142714
 <h4 id="三个基本问题">三个基本问题</h4>
 <table>
 <colgroup>
-<col style="width: 33%" />
-<col style="width: 32%" />
-<col style="width: 33%" />
+<col style="width: 34%" />
+<col style="width: 31%" />
+<col style="width: 34%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1798,7 +1801,7 @@ class="math inline">\(\mathbf{x}=\{\mathbf{x}_1,\mathbf{x}_2,\cdots,\mathbf{x}_n
 class="math inline">\([A,B,\pi]\)</span>使该序列出现的概率<span
 class="math inline">\(P(\mathbf{x}\vert
 A,B,\pi)\)</span>最大？</strong></td>
-<td>如何模型使其能够最好地描述观测数据。(参数估计 - 学习问题)</td>
+<td>如何模型使其能够最好地描述观测数据。(参数估计-学习问题)</td>
 <td>在大多数实际应用中，人工指定参数已变得不可行，需要根据训练样本学习最优模型。</td>
 </tr>
 </tbody>
@@ -1829,8 +1832,8 @@ class="math inline">\(\theta\)</span></h5>
 <blockquote>
 <p><span
 class="math inline">\(p_{\theta}(\mathbf{x}_1,\cdots,\mathbf{x}_n,z_1,\cdots,z_n)=
-p_{\theta}(z_1)\prod_{t = 2}^{n} p_{\theta}(z_t\vert z_{t - 1})\prod_{t
-= 1}^{n} p_{\theta}(\mathbf{x}_t\vert z_t)\)</span></p>
+p_{\theta}(z_1)\prod_{t = 2}^{n} p_{\theta}(z_t\vert z_{t-1})\prod_{t =
+1}^{n} p_{\theta}(\mathbf{x}_t\vert z_t)\)</span></p>
 </blockquote>
 <p><span class="math display">\[
 \begin{align*}
@@ -1876,13 +1879,14 @@ B_{z_t,x_t}
 </tr>
 <tr class="even">
 <td><span class="math inline">\(A\)</span></td>
-<td><span class="math inline">\(\arg\max_{A} \sum_{t = 2}^{n} \sum_{z_{t
-- 1},z_t = 1}^{K} q(z_{t - 1},z_t) \ln A_{z_{t - 1},z_t}\)</span></td>
+<td><span class="math inline">\(\arg\max_{A} \sum_{t = 2}^{n}
+\sum_{z_{t-1},z_t = 1}^{K} q(z_{t-1},z_t) \ln
+A_{z_{t-1},z_t}\)</span></td>
 <td><span class="math inline">\(\forall i \sum_{j = 1}^{K} A_{i,j} =
 1\)</span></td>
-<td><span class="math inline">\(A_{i,j} = \frac{\sum_{t = 2}^{n} q(z_{t
-- 1}=i,z_t = j)}{\sum_{t = 2}^{n} \sum_{k = 1}^{K} q(z_{t - 1}=i,z_t =
-k)}\)</span></td>
+<td><span class="math inline">\(A_{i,j} = \frac{\sum_{t = 2}^{n}
+q(z_{t-1}=i,z_t = j)}{\sum_{t = 2}^{n} \sum_{k = 1}^{K} q(z_{t-1}=i,z_t
+= k)}\)</span></td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">\(B\)</span></td>
@@ -1936,8 +1940,9 @@ q(z_{t -
 1})}{p(\mathbf{x}_1,\mathbf{x}_2,\cdots,\mathbf{x}_n)}
 \end{align}
 \]</span></p>
-<h5 id="前向---后向算法forward---backward-algorithm">前向 -
-后向算法(forward - backward algorithm)</h5>
+<h5
+id="前向-后向算法forward-backward-algorithm">前向-后向算法(forward-backward
+algorithm)</h5>
 <p><span class="math display">\[
 q(z_t) =
 \frac{p(\mathbf{x}_1,\mathbf{x}_2,\cdots,\mathbf{x}_t,z_t)p(\mathbf{x}_{t
@@ -1980,8 +1985,8 @@ class="math inline">\(t = 1,\cdots,n\)</span></h5>
 1})p(z_t|z_{t - 1})
 \end{align*}
 \]</span></p>
-<h5 id="从后向前计算t-nn---1cdots1">从后向前计算，<span
-class="math inline">\(t = n,n - 1,\cdots,1\)</span></h5>
+<h5 id="从后向前计算t-nn-1cdots1">从后向前计算，<span
+class="math inline">\(t = n,n-1,\cdots,1\)</span></h5>
 <p><span class="math display">\[
 \begin{align*}
 \beta_t(z_t)&amp;=p(\mathbf{x}_{t +
@@ -2071,8 +2076,8 @@ K\}} \{w_{t - 1}(z_{t - 1}) + \ln p(z_t | z_{t - 1})\}
 (Expectation-Maximization, EM)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%BC%95%E5%85%A5"><span class="toc-content-number">1.6.1.</span> <span class="toc-content-text">引入</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%95%B0%E6%8D%AE%E5%AE%8C%E6%95%B4%E6%83%85%E5%86%B5%E4%B8%8B%E4%BE%8B%E5%AD%90"><span class="toc-content-number">1.6.1.1.</span> <span class="toc-content-text">数据完整情况下例子</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E6%95%B0%E6%8D%AE%E4%B8%8D%E5%AE%8C%E6%95%B4%E6%83%85%E5%86%B5%E4%B8%8B%E4%BE%8B%E5%AD%90"><span class="toc-content-number">1.6.1.2.</span> <span class="toc-content-text">数据不完整情况下例子</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E4%B8%80%E8%88%AC%E6%83%85%E5%86%B5"><span class="toc-content-number">1.6.2.</span> <span class="toc-content-text">一般情况</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4"><span class="toc-content-number">1.6.2.1.</span> <span class="toc-content-text">算法步骤</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E5%8F%A6%E4%B8%80%E7%A7%8D%E7%AD%89%E4%BB%B7%E8%A1%A8%E8%BF%B0"><span class="toc-content-number">1.6.2.1.1.</span> <span class="toc-content-text">另一种等价表述</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#em-for-gaussian-mixture"><span class="toc-content-number">1.6.3.</span> <span class="toc-content-text">EM for Gaussian Mixture</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E9%AB%98%E6%96%AF%E6%B7%B7%E5%90%88%E6%A8%A1%E5%9E%8Bgaussian-mixture-modelgmm"><span class="toc-content-number">1.6.3.1.</span> <span class="toc-content-text">高斯混合模型（Gaussian
 Mixture Model，GMM）</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%BC%95%E5%85%A5%E9%9A%90%E5%8F%98%E9%87%8F%E5%88%86%E6%9E%90%E6%B7%B7%E5%90%88%E5%AF%86%E5%BA%A6%E6%A8%A1%E5%9E%8B"><span class="toc-content-number">1.6.3.2.</span> <span class="toc-content-text">引入隐变量分析混合密度模型</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#em%E6%95%B0%E6%8D%AE%E7%BC%BA%E5%A4%B1%E6%83%85%E5%86%B5%E4%B8%8B%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%B0%E8%AE%A1"><span class="toc-content-number">1.6.4.</span> <span class="toc-content-text">EM：数据缺失情况下的参数估计</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B2-d%E9%AB%98%E6%96%AFem"><span class="toc-content-number">1.6.4.1.</span> <span class="toc-content-text">例：2-D高斯EM</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#em%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4"><span class="toc-content-number">1.6.4.1.1.</span> <span class="toc-content-text">EM算法步骤</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#em%E7%AE%97%E6%B3%95%E7%9A%84%E7%90%86%E8%AE%BA%E8%A7%A3%E9%87%8A"><span class="toc-content-number">1.6.5.</span> <span class="toc-content-text">EM算法的理论解释</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8Bhmm"><span class="toc-content-number">1.7.</span> <span class="toc-content-text">隐马尔可夫模型(HMM)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%AF%B9px%E7%9A%84%E5%81%87%E5%AE%9A"><span class="toc-content-number">1.7.0.1.</span> <span class="toc-content-text">对\(P(X)\)的假定</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#hmm%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="toc-content-number">1.7.1.</span> <span class="toc-content-text">HMM的表示</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#markov%E9%93%BE"><span class="toc-content-number">1.7.1.1.</span> <span class="toc-content-text">Markov链</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-content-number">1.7.1.2.</span> <span class="toc-content-text">例子</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#hmm%E7%AE%80%E4%BB%8B"><span class="toc-content-number">1.7.2.</span> <span class="toc-content-text">HMM简介</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#hmm%E7%9A%84%E5%9B%BE%E7%BB%93%E6%9E%84"><span class="toc-content-number">1.7.2.1.</span> <span class="toc-content-text">HMM的图结构</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%BE%8B%E5%AD%90-1"><span class="toc-content-number">1.7.2.2.</span> <span class="toc-content-text">例子</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#hmm%E7%9A%84%E5%AD%A6%E4%B9%A0"><span class="toc-content-number">1.7.3.</span> <span class="toc-content-text">HMM的学习</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E4%B8%89%E4%B8%AA%E5%9F%BA%E6%9C%AC%E9%97%AE%E9%A2%98"><span class="toc-content-number">1.7.3.1.</span> <span class="toc-content-text">三个基本问题</span></a></li><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E5%8F%82%E6%95%B0%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BB%BB%E5%8A%A1"><span class="toc-content-number">1.7.3.2.</span> <span class="toc-content-text">参数学习的基本任务</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#m-step-%E6%9B%B4%E6%96%B0theta"><span class="toc-content-number">1.7.3.2.1.</span> <span class="toc-content-text">M step: 更新\(\theta\)</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#e-step-%E5%AF%B9%E7%BB%99%E5%AE%9A%E7%9A%84theta%E4%BC%B0%E8%AE%A1qz_1cdotsz_np_thetaz_1cdotsz_nvert-mathbfx_1cdotsmathbfx_n"><span class="toc-content-number">1.7.3.2.2.</span> <span class="toc-content-text">E
 Step: 对给定的\(\theta\)，估计\(q(z_1,\cdots,z_n)&#x3D;p_{\theta}(z_1,\cdots,z_n\vert
-\mathbf{x}_1,\cdots,\mathbf{x}_n)\)</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E5%89%8D%E5%90%91---%E5%90%8E%E5%90%91%E7%AE%97%E6%B3%95forward---backward-algorithm"><span class="toc-content-number">1.7.3.2.3.</span> <span class="toc-content-text">前向 -
-后向算法(forward - backward algorithm)</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E4%BB%8E%E5%89%8D%E5%90%91%E5%90%8E%E8%AE%A1%E7%AE%97t-1cdotsn"><span class="toc-content-number">1.7.3.2.4.</span> <span class="toc-content-text">从前向后计算，\(t &#x3D; 1,\cdots,n\)</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E4%BB%8E%E5%90%8E%E5%90%91%E5%89%8D%E8%AE%A1%E7%AE%97t-nn---1cdots1"><span class="toc-content-number">1.7.3.2.5.</span> <span class="toc-content-text">从后向前计算，\(t &#x3D; n,n - 1,\cdots,1\)</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#hmm%E7%9A%84%E8%A7%A3%E7%A0%81"><span class="toc-content-number">1.7.4.</span> <span class="toc-content-text">HMM的解码</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#hmm%E7%9A%84%E8%A7%A3%E7%A0%81%E7%AE%97%E6%B3%95%E7%BB%B4%E7%89%B9%E6%AF%94%E7%AE%97%E6%B3%95viterbi-1967"><span class="toc-content-number">1.7.4.1.</span> <span class="toc-content-text">HMM的解码算法：维特比算法（Viterbi,
+\mathbf{x}_1,\cdots,\mathbf{x}_n)\)</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E5%89%8D%E5%90%91-%E5%90%8E%E5%90%91%E7%AE%97%E6%B3%95forward-backward-algorithm"><span class="toc-content-number">1.7.3.2.3.</span> <span class="toc-content-text">前向-后向算法(forward-backward
+algorithm)</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E4%BB%8E%E5%89%8D%E5%90%91%E5%90%8E%E8%AE%A1%E7%AE%97t-1cdotsn"><span class="toc-content-number">1.7.3.2.4.</span> <span class="toc-content-text">从前向后计算，\(t &#x3D; 1,\cdots,n\)</span></a></li><li class="toc-content-item toc-content-level-5"><a class="toc-content-link" href="#%E4%BB%8E%E5%90%8E%E5%90%91%E5%89%8D%E8%AE%A1%E7%AE%97t-nn-1cdots1"><span class="toc-content-number">1.7.3.2.5.</span> <span class="toc-content-text">从后向前计算，\(t &#x3D; n,n-1,\cdots,1\)</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#hmm%E7%9A%84%E8%A7%A3%E7%A0%81"><span class="toc-content-number">1.7.4.</span> <span class="toc-content-text">HMM的解码</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#hmm%E7%9A%84%E8%A7%A3%E7%A0%81%E7%AE%97%E6%B3%95%E7%BB%B4%E7%89%B9%E6%AF%94%E7%AE%97%E6%B3%95viterbi-1967"><span class="toc-content-number">1.7.4.1.</span> <span class="toc-content-text">HMM的解码算法：维特比算法（Viterbi,
 1967）</span></a></li></ol></li></ol></li></ol></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
   tex2jax: {
     inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
