@@ -6,7 +6,7 @@
 <meta property="og:description" content="Ch3 参数估计-最大似然和贝叶斯参数估计 [TOC] 基本概念 贝叶斯分类器: 已知类先验概率\(P(w_j)\)和类条件概率密度\(p(\mathbf{x}\vert w_j)\)，按某决策规则确定判别函数和决策面。  但类先验概率和类条件概率密度在实际中往往是未知的。 因此，我们要换一种处理问题的方式：“从样本出发来设计分类器”。根据设计方法，可以将分类器分为两类：  估">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-01-05T08:17:04.000Z">
-<meta property="article:modified_time" content="2025-01-06T06:25:27.341Z">
+<meta property="article:modified_time" content="2025-01-06T06:28:04.272Z">
 <meta property="article:author" content="Schwertlilien">
 <meta property="article:tag" content="笔记">
 <meta property="article:tag" content="模式识别">
@@ -25,7 +25,7 @@
 <div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>模式识别-Ch3-参数估计</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2025-01-05</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2025-01-06</time></div>
 
 <div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/">模式识别</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
-<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约1.4W字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch3-参数估计-最大似然和贝叶斯参数估计">Ch3
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约1.5W字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="ch3-参数估计-最大似然和贝叶斯参数估计">Ch3
 参数估计-最大似然和贝叶斯参数估计</h1>
 <p>[TOC]</p>
 <h2 id="基本概念">基本概念</h2>
@@ -63,7 +63,7 @@ w_j)\)</span>，按某决策规则确定判别函数和决策面。</p>
 <td>目标是由已知类别的样本集估计类条件概率密度函数本身。</td>
 </tr>
 <tr class="odd">
-<td>例如，知道样本所属总体为正态分布，而正态分布的参数未知 <span
+<td>例如，知道样本所属总体为正态分布，而正态分布的参数未知<span
 class="math inline">\(p(\mathbf{x}\vert\mu,\sigma)=\frac{1}{\sqrt{2\pi}\sigma}\exp\left(-\frac{1}{2}\left(\frac{\mathbf{x}-\mu}{\sigma}\right)^2\right)\)</span></td>
 <td>---</td>
 </tr>
@@ -87,7 +87,8 @@ class="math inline">\(p(\mathbf{x}\vert\mu,\sigma)=\frac{1}{\sqrt{2\pi}\sigma}\e
 <td>统计量</td>
 <td>样本中包含总体的信息，我们希望通过样本集将有关信息估计出来。根据不同要求构造出有关样本的某种函数，在统计学中称为统计量<span
 class="math inline">\(d(\mathbf{x}_1,\mathbf{x}_2,\ldots,\mathbf{x}_n)\)</span>。</td>
-<td>$=_{i = 1}^{n}_i $</td>
+<td><span class="math inline">\(\mu=\frac{1}{n}\sum_{i =
+1}^{n}\mathbf{x}_i\)</span></td>
 </tr>
 <tr class="even">
 <td>参数空间</td>
@@ -103,7 +104,9 @@ class="math inline">\(\Theta\)</span>。</td>
 class="math inline">\(d(\mathbf{x}_1,\mathbf{x}_2,\ldots,\mathbf{x}_n)\)</span>作为参数<span
 class="math inline">\(\theta\)</span>的估计<span
 class="math inline">\(\hat{\theta}\)</span>。</td>
-<td>常用的均值估计： $=_{i = 1}^{n} _i $</td>
+<td>常用的均值估计：<span
+class="math inline">\(\hat{\mu}=\frac{1}{n}\sum_{i = 1}^{n}
+\mathbf{x}_i\)</span></td>
 </tr>
 <tr class="even">
 <td>区间估计</td>
@@ -173,7 +176,7 @@ class="math inline">\(\Theta\)</span>中能使<span
 class="math inline">\(l(\theta)\)</span>极大化的<span
 class="math inline">\(\theta\)</span>值，那么<span
 class="math inline">\(\theta\)</span>就是<span
-class="math inline">\(\theta\)</span>的最大似然估计量，即 <span
+class="math inline">\(\theta\)</span>的最大似然估计量，即<span
 class="math inline">\(\hat{\theta}=\arg\max_{\theta\in\Theta}l(\theta)\)</span></p>
 <p>为计算方便，通常采用对数似然函数： <span class="math display">\[
 H(\theta)=\ln(l(\theta))=\ln(\prod_{i =
@@ -189,7 +192,7 @@ H(\theta)=\ln(l(\theta))=\ln(\prod_{i =
 1}^{n}\ln(p(\mathbf{x}_i|\theta))\\
 \hat{\theta}=\text{arg max}_{\theta\in\Theta}l(\theta)
 \]</span></p>
-<p>当<span class="math inline">\(l(\theta)\)</span>可微时： <span
+<p>当<span class="math inline">\(l(\theta)\)</span>可微时：<span
 class="math inline">\(\frac{\partial l(\theta)}{\partial\theta}=0,\text{
 or }\frac{\partial
 H(\theta)}{\partial\theta}=0\)</span>对于多维情形<span
@@ -374,7 +377,7 @@ class="math inline">\(\theta\)</span>的分布情况（根据领域知识或经�
 p(D|\theta)=p(\mathbf{x}_1,\mathbf{x}_2,\cdots,\mathbf{x}_n|\theta)=\prod_{i
 = 1}^{n}p(\mathbf{x}_i|\theta)
 \]</span> 利用贝叶斯公式计算参数的后验分布<span
-class="math inline">\(p(\theta\vert D)\)</span>： <span
+class="math inline">\(p(\theta\vert D)\)</span>：<span
 class="math inline">\(p(\theta\vert
 D)\)</span>中融合了先验知识和数据信息。 <span class="math display">\[
 p(\theta|D)=\frac{p(D|\theta)p(\theta)}{p(D)}
@@ -484,7 +487,7 @@ alt="image-20250102145728416" />
 class="math inline">\(X\sim N(\mu,\sigma^2)\)</span>且仅<span
 class="math inline">\(\mu\)</span>未知</h3>
 <p>假定参数<span
-class="math inline">\(\mu\)</span>的先验概率也服从正态分布： <span
+class="math inline">\(\mu\)</span>的先验概率也服从正态分布：<span
 class="math inline">\(\mu\sim N(\mu_0,\sigma_0^2)\)</span> <span
 class="math display">\[
 p(x\vert \mu)=N(\mu,\sigma^2),\
@@ -652,9 +655,9 @@ class="math inline">\(D\)</span>中样本的增多，<span
 class="math inline">\(p(\mathbf{x}\vert D)\)</span>收敛于<span
 class="math inline">\(p(\mathbf{x})\)</span>吗？</p>
 <blockquote>
-<p>根据贝叶斯学习的性质，当数据量 <span class="math inline">\(n \to
-\infty\)</span>时，后验分布 <span class="math inline">\(p(\theta\vert
-D)\)</span>会集中在最大似然估计值附近，即： <span
+<p>根据贝叶斯学习的性质，当数据量<span class="math inline">\(n \to
+\infty\)</span>时，后验分布<span class="math inline">\(p(\theta\vert
+D)\)</span>会集中在最大似然估计值附近，即：<span
 class="math inline">\(p(\theta\vert D) \to \delta(\theta -
 \theta_{\text{MLE}})\)</span>这意味着后验分布的方差会逐渐缩小，预测分布
 p(∣D)p(D) 也会趋近于真实分布。</p>
@@ -819,7 +822,7 @@ r^{2}=(\mu_{1}-\mu_{2})^{T}\Sigma^{-1}(\mu_{1}-\mu_{2})
 \end{align}
 \]</span></p>
 <h3 id="高斯分布两类问题-1">高斯分布（两类问题）</h3>
-<p>Conditionally independent case（条件独立情况） <span
+<p>Conditionally independent case（条件独立情况）<span
 class="math inline">\(\Sigma=\text{diag}(\sigma_{1}^{2},\sigma_{1}^{2},\cdots,\sigma_{d}^{2})\)</span>每</p>
 <ul>
 <li><p>一维的二类均值之间距离反映区分度，从而决定错误率。</p></li>
@@ -947,7 +950,7 @@ class="math inline">\(0.61^{3}×(1 - 0.61)^{7}=0.0003\)</span>。<br />
 <li>第五步：根据猜测的<span
 class="math inline">\(C\)</span>值来更新<span
 class="math inline">\(p_{A}\)</span>和<span
-class="math inline">\(p_{B}\)</span>的值： <span
+class="math inline">\(p_{B}\)</span>的值：<span
 class="math inline">\(p_{A}=5/20 = 0.25,\ p_{B}=0.61\)</span></li>
 <li>第六步：根据第三次掷硬币<span
 class="math inline">\(C\)</span>后进行的10次试验，来猜测<span
@@ -969,7 +972,7 @@ class="math inline">\(0.61^{6}×(1 - 0.61)^{4}=0.0012\)</span>。<br />
 <li>第七步：根据猜测的<span
 class="math inline">\(C\)</span>值来更新<span
 class="math inline">\(p_{A}\)</span>和<span
-class="math inline">\(p_{B}\)</span>的值： - <span
+class="math inline">\(p_{B}\)</span>的值： -<span
 class="math inline">\(p_{A}=0.25,\ p_{B}=6/10 = 0.6\)</span></li>
 <li>第八步：根据第四次掷硬币<span
 class="math inline">\(C\)</span>后进行的10次试验，来猜测<span
@@ -1163,13 +1166,18 @@ class="math inline">\(p(\mathbf{x}\vert \theta_k)\)</span></td>
 </tr>
 <tr class="odd">
 <td>混合密度模型公式</td>
-<td>$p(x,)=_{k = 1}^{K}_k p(x_k) <span
-class="math inline">\(其中，\)</span>= {_1,_2,,_K}<span
-class="math inline">\(，\)</span>={_1,_2,,_K}<span
-class="math inline">\(是混合密度模型的参数 | | 混合密度模型的参数估计 |
-已知样本集\)</span>D = {x_1,x_2,,x_n}<span
-class="math inline">\(，且样本是从以上混合密度函数中独立抽取的，通过\)</span>D<span
-class="math inline">\(估计\)</span>(,)$</td>
+<td><span class="math inline">\(p(\mathbf x\vert \pi,\theta)=\sum_{k =
+1}^{K}\pi_k p(\mathbf x\vert \theta_k)\)</span>其中，<span
+class="math inline">\(\theta =
+\{\theta_1,\theta_2,\cdots,\theta_K\}\)</span>，<span
+class="math inline">\(\pi=\{\pi_1,\pi_2,\cdots,\pi_K\}\)</span>是混合密度模型的参数</td>
+</tr>
+<tr class="even">
+<td>混合密度模型的参数估计</td>
+<td>已知样本集<span class="math inline">\(D =
+\{x_1,x_2,\cdots,x_n\}\)</span>，且样本是从以上混合密度函数中独立抽取的，通过<span
+class="math inline">\(D\)</span>估计<span
+class="math inline">\((\pi,\theta)\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -1232,7 +1240,9 @@ k)P(z = k)=\pi_k\mathcal{N}(\mathbf x\vert \mu_k,\Sigma_k)\)</span></td>
 <tr class="odd">
 <td>观测变量<span class="math inline">\(\mathbf
 x\)</span>的边缘分布</td>
-<td>$p(x)=<em>{z = 1}^{K}p(x,z)=</em>{k = 1}^{K}_k(x_k,_k) $</td>
+<td><span class="math inline">\(p(\mathbf x)=\sum_{z = 1}^{K}p(\mathbf
+x,z)=\sum_{k = 1}^{K}\pi_k\mathcal{N}(\mathbf x\vert
+\mu_k,\Sigma_k)\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -1243,10 +1253,11 @@ class="math inline">\(z\)</span>的概率密度函数，从而用EM算法估计�
 <li><p><strong>不完全数据<span
 class="math inline">\(X\)</span>，完全数据<span
 class="math inline">\(\{X,Z\}\)</span></strong>：Missing the latent
-value <span class="math inline">\(z\)</span> for each sample <span
+value<span class="math inline">\(z\)</span>$ for each sample<span
 class="math inline">\(z\in\{1,2,\cdots,K\}\)</span>。</p></li>
-<li><p><strong>完全数据对数似然期望</strong>：
-$Q(,<sup>{old})=<em>{i}</em>{z}p(ZX,</sup>{old})(p(X,Z)) $</p>
+<li><p><strong>完全数据对数似然期望</strong>：<span
+class="math inline">\(Q(\theta,\theta^{old})=\sum_{i}\sum_{z}p(Z\vert
+X,\theta^{old})\ln(p(X,Z\vert \theta))\)</span></p>
 <ol type="1">
 <li><strong>选择初始参数集<span
 class="math inline">\(\theta^{old}\)</span></strong></li>
@@ -1318,11 +1329,14 @@ x_i,\theta^{old})\ln(\pi_{z_i})\quad\text{s.t.}\quad\sum_{k =
 <tbody>
 <tr class="odd">
 <td>成分权重<span class="math inline">\(\hat{\pi}_k\)</span></td>
-<td>$<em>k = </em>{i = 1}^{n} P(z_i = k $</td>
+<td><span class="math inline">\(\hat{\pi}_k = \frac{1}{n} \sum_{i =
+1}^{n} P(z_i = k\)</span></td>
 </tr>
 <tr class="even">
 <td>成分均值<span class="math inline">\(\hat{\mu}_k\)</span></td>
-<td>$_k = $</td>
+<td><span class="math inline">\(\hat{\mu}_k = \frac{\sum_{i = 1}^{n}
+P(z_i = k \vert x_i, \theta^{old}) x_i}{\sum_{i = 1}^{n} P(z_i = k \vert
+x_i, \theta^{old})}\)</span></td>
 </tr>
 <tr class="odd">
 <td>成分协方差矩阵<span
@@ -1365,8 +1379,8 @@ Model，GMM）进行拟合的过程。图中的每个子图对应不同的迭代
 </ol>
 <h3 id="em数据缺失情况下的参数估计">EM：数据缺失情况下的参数估计</h3>
 <p><span
-class="math inline">\(\mathbf{x}=\{\mathbf{x_{ig}},\mathbf{x_{ib}}\}\)</span>:
-<span class="math inline">\(\mathbf{x}\)</span>包含<span
+class="math inline">\(\mathbf{x}=\{\mathbf{x_{ig}},\mathbf{x_{ib}}\}\)</span>:<span
+class="math inline">\(\mathbf{x}\)</span>包含<span
 class="math inline">\(\mathbf{x_{ig}}\)</span> (good
 features,没有缺失的数据部分)、以及<span
 class="math inline">\(\mathbf{x_{ib}}\)</span>(bad features,
@@ -1384,8 +1398,7 @@ E_{p(\mathbf{x}_{ib}\vert
 \mathbf{x}_{ig},\theta^{old})}\left[\ln(p(\mathbf{x}_{ig},\mathbf{x}_{ib}\vert
 \theta))\right]\)</span>
 <ul>
-<li>用已有的参数 <span
-class="math inline">\(\theta^{\text{old}}\)</span>
+<li>用已有的参数<span class="math inline">\(\theta^{\text{old}}\)</span>
 预测缺失数据可能的取值(隐变量（缺失数据）的期望)。</li>
 </ul></li>
 <li><strong>M 步（最大化步骤）</strong>：<span
@@ -1399,33 +1412,33 @@ Q(\theta,\theta^{old})\)</span>
 </ol>
 <h4 id="例2-d高斯em">例：2-D高斯EM</h4>
 <ul>
-<li><p>数据集 <span class="math inline">\(D = \{x_1, x_2, x_3,
-x_4\}\)</span> 是 2D 高斯分布的一部分，其中有一个样本 x4x_4 的第一个维度
-<span class="math inline">\(x_{41}\)</span> 缺失（用 * 表示）。 <span
-class="math display">\[
+<li><p>数据集<span class="math inline">\(D = \{x_1, x_2, x_3,
+x_4\}\)</span> 是 2D 高斯分布的一部分，其中有一个样本 x4x_4
+的第一个维度<span class="math inline">\(x_{41}\)</span> 缺失（用 *
+表示）。 <span class="math display">\[
 D = \{x_1, x_2, x_3, x_4\}=\left\{\begin{pmatrix}0\\ 2\end{pmatrix},
 \begin{pmatrix}1\\0\end{pmatrix},
 \begin{pmatrix}2\\2\end{pmatrix},\begin{pmatrix}*\\4\end{pmatrix}\right\}
 \]</span></p></li>
-<li><p>高斯分布的参数为 <span class="math inline">\(\theta = (\mu_1,
+<li><p>高斯分布的参数为<span class="math inline">\(\theta = (\mu_1,
 \mu_2, \sigma_1, \sigma_2)\)</span>，即两维数据的均值和方差。 <span
 class="math display">\[
 p(x_i | \theta) = \frac{1}{2\pi\sigma_1\sigma_2}
 \exp\left(-\frac{1}{2}\left(\frac{(x_{i1} - \mu_1)^2}{\sigma_1^2} +
 \frac{(x_{i2} - \mu_2)^2}{\sigma_2^2}\right)\right)
 \]</span></p></li>
-<li><p>我们的目标是：在部分数据缺失的情况下，通过迭代的方法估计参数
-<span class="math inline">\(\theta\)</span>。</p></li>
-<li><p><strong>挑战</strong>：缺失数据 <span
+<li><p>我们的目标是：在部分数据缺失的情况下，通过迭代的方法估计参数<span
+class="math inline">\(\theta\)</span>。</p></li>
+<li><p><strong>挑战</strong>：缺失数据<span
 class="math inline">\(x_{41}\)</span>
 使得直接用最大似然估计参数变得困难，需要引入 EM 算法</p></li>
 </ul>
 <h5 id="em算法步骤">EM算法步骤</h5>
 <ol type="1">
-<li><p>初始化参数为 <span class="math inline">\(\theta^{\text{old}} =
-(0, 0, 1, 1)^T\)</span>。</p></li>
-<li><p>E 步：计算缺失数据的期望：第四个样本 <span
-class="math inline">\(x_4 = (*, 4)^T\)</span>，假设其分布为： <span
+<li><p>初始化参数为<span class="math inline">\(\theta^{\text{old}} = (0,
+0, 1, 1)^T\)</span>。</p></li>
+<li><p>E 步：计算缺失数据的期望：第四个样本<span
+class="math inline">\(x_4 = (*, 4)^T\)</span>，假设其分布为：<span
 class="math inline">\(p(x_{41} \vert x_{42} = 4,
 \theta^{\text{old}})\)</span> 根据条件高斯分布公式，计算<span
 class="math inline">\(x_{41}\)</span>
@@ -1456,7 +1469,7 @@ x_{41}\\4\end{array}\right)|\theta\right)\frac{1}{2\pi\begin{vmatrix}1&amp;0\\0&
 \]</span></p></li>
 <li><p>M 步：最大化对数似然<span
 class="math inline">\(\theta=(0.75,2.0,0.938,2.0)^T\)</span></p></li>
-<li><p>重复 E 步和 M 步: 迭代 3 次后，收敛到： <span
+<li><p>重复 E 步和 M 步: 迭代 3 次后，收敛到：<span
 class="math inline">\(\mu = \begin{pmatrix} 1.0 \\2.0 \end{pmatrix},
 \quad \Sigma = \begin{pmatrix} 0.667 &amp; 0 \\ 0 &amp; 2.0
 \end{pmatrix}\)</span></p></li>
@@ -1713,8 +1726,8 @@ p(z_t|z_{t - 1})\prod_{t = 1}^n p(\mathbf{x}_t|z_t)
 \]</span></p>
 <table>
 <colgroup>
-<col style="width: 38%" />
-<col style="width: 61%" />
+<col style="width: 37%" />
+<col style="width: 62%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1724,19 +1737,19 @@ p(z_t|z_{t - 1})\prod_{t = 1}^n p(\mathbf{x}_t|z_t)
 </thead>
 <tbody>
 <tr class="odd">
-<td>初始状态概率向量 <span class="math inline">\(\pi \in
+<td>初始状态概率向量<span class="math inline">\(\pi \in
 R^K\)</span></td>
 <td><span class="math inline">\(\pi_k = P(z_1 = k),\quad 1\leq k\leq
 K\)</span></td>
 </tr>
 <tr class="even">
-<td>状态转移概率矩阵 <span class="math inline">\(A\in R^{K\times
+<td>状态转移概率矩阵<span class="math inline">\(A\in R^{K\times
 K}\)</span></td>
 <td><span class="math inline">\(A_{i,j}=P(z_t = j\vert z_{t -
 1}=i),\quad 1\leq i,j\leq K\)</span></td>
 </tr>
 <tr class="odd">
-<td>发射概率矩阵 <span class="math inline">\(B\in R^{K\times
+<td>发射概率矩阵<span class="math inline">\(B\in R^{K\times
 M}\)</span></td>
 <td>离散：<span class="math inline">\(B_{i,j}=P(\mathbf{x}_t = j\vert
 z_t = i),\quad 1\leq i\leq K,1\leq j\leq M\)</span></td>
@@ -1792,7 +1805,7 @@ A,B,\pi)\)</span>最大？</strong></td>
 </table>
 <h4 id="参数学习的基本任务">参数学习的基本任务</h4>
 <blockquote>
-<p>通过拟合观测序列，确定HMM中的参数: <span
+<p>通过拟合观测序列，确定HMM中的参数:<span
 class="math inline">\(\theta=(\pi,A,B)\)</span></p>
 </blockquote>
 <p><strong>EM算法步骤</strong>:</p>
@@ -2039,12 +2052,12 @@ z^* = \arg\max_{z} p_{\theta}(z_1, \cdots, z_n | \mathbf{x}_1, \cdots,
 \]</span></p></li>
 <li><p>动态规划算法</p>
 <ul>
-<li>For <span class="math inline">\(z_1 = 1, \cdots, K\)</span>：<span
+<li>For<span class="math inline">\(z_1 = 1, \cdots, K\)</span>：<span
 class="math inline">\(w_1(z_1) = \ln p(z_1) + \ln p(\mathbf{x}_1 \vert
 z_1)\)</span></li>
-<li>For <span class="math inline">\(t = 2, \cdots, n\)</span>：
+<li>For<span class="math inline">\(t = 2, \cdots, n\)</span>：
 <ul>
-<li>For <span class="math inline">\(z_t = 1, \cdots, K\)</span>： <span
+<li>For<span class="math inline">\(z_t = 1, \cdots, K\)</span>： <span
 class="math display">\[
 w_t(z_t) = \ln p(\mathbf{x}_t | z_t) + \max_{z_{t - 1} \in \{1, \cdots,
 K\}} \{w_{t - 1}(z_{t - 1}) + \ln p(z_t | z_{t - 1})\}
