@@ -1,0 +1,1063 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="高级软件工程复习 下面是老师说的考试重点。   Ruby编程语言的一些特征需要了解 要能读得懂Ruby程序 Git的基本命令操作知道 Rails的MVC工作机理需要清楚，Model, Controller, View各司什么职责明白 BDD的User Story需要会写，SMART要求能理解 TDD的Rspec读得懂，会补充 重点：最常用的几种设计模式知道、理解、会用；SO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高级软件工程-复习+习题回忆">
+<meta property="og:url" content="http://example.com/2025/01/10/%E9%AB%98%E7%BA%A7%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B-%E5%A4%8D%E4%B9%A0-%E4%B9%A0%E9%A2%98%E5%9B%9E%E5%BF%86/index.html">
+<meta property="og:site_name" content="Schwertlilien">
+<meta property="og:description" content="高级软件工程复习 下面是老师说的考试重点。   Ruby编程语言的一些特征需要了解 要能读得懂Ruby程序 Git的基本命令操作知道 Rails的MVC工作机理需要清楚，Model, Controller, View各司什么职责明白 BDD的User Story需要会写，SMART要求能理解 TDD的Rspec读得懂，会补充 重点：最常用的几种设计模式知道、理解、会用；SO">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-10T14:33:20.000Z">
+<meta property="article:modified_time" content="2025-01-10T14:39:54.820Z">
+<meta property="article:author" content="Schwertlilien">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary"><title>高级软件工程-复习+习题回忆 - Schwertlilien - -----personal blog-----</title><link rel="shortcut icon" href="/img/site-icon.png">
+<link rel="stylesheet" href="/css/style.css" id="dm-light">
+
+
+<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>高级软件工程-复习+习题回忆</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2025-01-10</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2025-01-10</time></div>
+
+<div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约4.5K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><h1 id="高级软件工程复习">高级软件工程复习</h1>
+<p>下面是老师说的考试重点。</p>
+<blockquote>
+<ol type="1">
+<li>Ruby编程语言的一些特征需要了解</li>
+<li>要能<strong>读得懂</strong>Ruby程序</li>
+<li>Git的基本命令操作知道</li>
+<li>Rails的MVC工作机理需要清楚，Model, Controller,
+View各司什么职责明白</li>
+<li>BDD的User
+Story需要会<strong>写</strong>，SMART要求能<strong>理解</strong></li>
+<li>TDD的Rspec<strong>读得懂</strong>，<strong>会补充</strong></li>
+<li>重点：最常用的几种设计模式知道、<strong>理解、会用</strong>；SOLID原则是什么？什么情况下是违背的。</li>
+</ol>
+</blockquote>
+<hr />
+<p>SOA(Service Oriented
+Architecture)面向服务架构：所有组件都设计为服务、且服务可以组合的软件架构。</p>
+<p><strong>特点：</strong>一个服务直接访问另外一个服务的数据时可能出现不稳定。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105222415157.png"
+alt="image-20250105222415157" />
+<figcaption aria-hidden="true">image-20250105222415157</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105222731906.png"
+alt="4" />
+<figcaption aria-hidden="true">4</figcaption>
+</figure>
+<h3 id="软件质量quality-assurance">软件质量(Quality Assurance)</h3>
+<p>软件质量保障(QA):确保软件开发的质量，改进优化过程，提高效率。</p>
+<p><strong>一般通过测试来保证软件质量</strong></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105223053228.png"
+alt="image-20250105223053228" />
+<figcaption aria-hidden="true">image-20250105223053228</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105223104016.png"
+alt="image-20250105223104016" />
+<figcaption aria-hidden="true">image-20250105223104016</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105223612569.png"
+alt="image-20250105223612569" />
+<figcaption aria-hidden="true">image-20250105223612569</figcaption>
+</figure>
+<p>这个题的24，怎么选</p>
+<p>提高开发者生产力:简洁性、合成、重用和工具</p>
+<p>4种技术</p>
+<ol type="1">
+<li>通过表达的简洁化：语法更短更易读、抽象级别提高（高级程序设计语言、自动内存管理、动态脚本语言：计算反射和元编程）</li>
+<li>程序合成（Program Synthesis）：生成代码以适应情境和删除条件测试</li>
+<li>重用 (Reuse)：重用旧代码vs.编写新代码
+<ul>
+<li>重用技术(按历史顺序排列)
+<ul>
+<li>过程和函数-procedure, function</li>
+<li>标准化库(重用单一任务)-standard library</li>
+<li>面向对象编程-Object Oriented Porgramming: 重用和管理任务集合</li>
+<li>设计模式-Design Pattern: 实现可以不同， 但重用的是通用策略</li>
+</ul></li>
+</ul></li>
+<li>自动化和工具 (Automation &amp; Tools)</li>
+</ol>
+<h3 id="dry-dont-repeat-yourself">DRY-Don't Repeat Yourself</h3>
+<p>在一个系统中，每一知识必须有一个<strong>单一的、明确的、权威的</strong>表示。</p>
+<h3 id="pd软件过程模型">P&amp;D软件过程模型</h3>
+<p>P&amp;D: 计划与文档</p>
+<ol type="1">
+<li>编码前，项目经理制定计划</li>
+<li>撰写计划各阶段的详细文档</li>
+<li>根据计划来度量进展</li>
+<li>项目的变更必须反映在文档中，并可能反映在计划中</li>
+</ol>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>瀑布模型</th>
+<th>螺旋模型</th>
+<th>Rational统一软件开发过程，RUP</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105224414183.png"
+alt="image-20250105224414183" /></td>
+<td><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105224447980.png"
+alt="image-20250105224447980" /></td>
+<td><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105224610698.png"
+alt="image-20250105224610698" /></td>
+</tr>
+<tr class="even">
+<td>缺点：当客户看到开发出来的产品时，通常想要对软件产品进行改变，这时就会遇到麻烦。</td>
+<td><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105224638912.png"
+alt="image-20250105224638912" /></td>
+<td><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105224626865.png"
+alt="image-20250105224626865" /></td>
+</tr>
+<tr class="odd">
+<td>---</td>
+<td><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105224545598.png"
+alt="image-20250105224545598" /></td>
+<td><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105224620339.png"
+alt="image-20250105224620339" /></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>P&amp;D需要大量的文件和计划，并依赖于经验丰富的经理。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105224840820.png"
+alt="image-20250105224840820" />
+<figcaption aria-hidden="true">image-20250105224840820</figcaption>
+</figure>
+</blockquote>
+<h3 id="aglie敏捷开发">Aglie敏捷开发</h3>
+<p>个体与交互 vs过程 &amp; 工具</p>
+<p>工作软件vs全面文档化</p>
+<p>客户协作vs合同谈判</p>
+<p>响应变更vs遵从计划</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105225016936.png"
+alt="image-20250105225016936" />
+<figcaption aria-hidden="true">image-20250105225016936</figcaption>
+</figure>
+<p>敏捷强调测试<strong>驱动开发(TDD)</strong>来减少错误，记录<strong>用户故事</strong>来验证客户需求，用速度来度量进展。</p>
+<p>设计模式：捕捉/刻画重复出现问题的常见结构化解决方法。</p>
+<p>Client/Server: 架构级设计模式，Web是C/S架构，面向请求/应答方式。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105225641483.png"
+alt="image-20250105225641483" />
+<figcaption aria-hidden="true">image-20250105225641483</figcaption>
+</figure>
+<p>Ruby/Rails框架中，Rails复杂管理<strong>防止篡改cookie</strong></p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105225827811.png"
+alt="2" />
+<figcaption aria-hidden="true">2</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105230001028.png"
+alt="image-20250105230001028" />
+<figcaption aria-hidden="true">image-20250105230001028</figcaption>
+</figure>
+<p>三层架构：表示层-逻辑(应用)层-持久层</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105230143422.png"
+alt="image-20250105230143422" />
+<figcaption aria-hidden="true">image-20250105230143422</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105230215458.png"
+alt="image-20250105230215458" />
+<figcaption aria-hidden="true">image-20250105230215458</figcaption>
+</figure>
+<h3 id="mvcmodel-view-controller">MVC(Model-View-Controller)</h3>
+<p>提倡痩视图和控制器、不要在视图中添加功能代码。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105230256794.png"
+alt="image-20250105230256794" />
+<figcaption aria-hidden="true">image-20250105230256794</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105230313058.png"
+alt="image-20250105230313058" />
+<figcaption aria-hidden="true">image-20250105230313058</figcaption>
+</figure>
+<p><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105231650683.png"
+alt="image-20250105231650683" /><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105230409050.png"
+alt="2,比如嵌入式系统" /></p>
+<p>在MVC中，用户可以进行的每个交互都是由<strong>控制器</strong>中的动作来处理的</p>
+<p>Ruby语言中的方法(method)处理这种交互。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105230935122.png"
+alt="image-20250105230935122" />
+<figcaption aria-hidden="true">image-20250105230935122</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105231000999.png"
+alt="image-20250105231000999" />
+<figcaption aria-hidden="true">image-20250105231000999</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105231028015.png"
+alt="image-20250105231028015" />
+<figcaption aria-hidden="true">image-20250105231028015</figcaption>
+</figure>
+<h2 id="git">Git</h2>
+<p>使用版本控制系统</p>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>checkout</code></td>
+<td>从库中拷贝一个版本的代码</td>
+</tr>
+<tr class="even">
+<td><code>commit</code></td>
+<td>将代码写回仓库</td>
+</tr>
+</tbody>
+</table>
+<h3 id="git基础">Git基础</h3>
+<table>
+<colgroup>
+<col style="width: 81%" />
+<col style="width: 18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>git init</code></td>
+<td>创建仓库</td>
+</tr>
+<tr class="even">
+<td><code>git config</code></td>
+<td>配置仓库</td>
+</tr>
+<tr class="odd">
+<td><code>git clone &lt;url&gt;</code></td>
+<td>获取一个仓库</td>
+</tr>
+<tr class="even">
+<td><img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250105232206795.png"
+alt="image-20250105232206795" /></td>
+<td>将变更录入仓库</td>
+</tr>
+<tr class="odd">
+<td><code>git log</code></td>
+<td>查看变更历史</td>
+</tr>
+<tr class="even">
+<td><code>git push</code>，<code>git pull</code></td>
+<td>与远程仓库同步</td>
+</tr>
+<tr class="odd">
+<td><code>git branch &lt;branch_name&gt;</code>，<code>git checkout &lt;branch_name&gt;</code></td>
+<td>创建分支</td>
+</tr>
+<tr class="even">
+<td><code>git merge</code>，<code>git rebase (branch 1)</code>在branch2上执行</td>
+<td>合并分支</td>
+</tr>
+<tr class="odd">
+<td><code>git rest --hard &lt;commit_id&gt;</code></td>
+<td>回退</td>
+</tr>
+<tr class="even">
+<td><code>git revert &lt;commit_id&gt;</code></td>
+<td>撤销</td>
+</tr>
+</tbody>
+</table>
+<p>Git配置</p>
+<table>
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 36%" />
+<col style="width: 28%" />
+<col style="width: 12%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Cit配置</th>
+<th>配置用户信息</th>
+<th>配置文本编辑器</th>
+<th>查看配置信息</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>git  config  --global /  -- local</code></td>
+<td><code>git  config  --global  user.name  "John Doe"</code></td>
+<td><code>git  config  --global  core.editor  emacs</code></td>
+<td><code>git config --list</code></td>
+</tr>
+<tr class="even">
+<td>---</td>
+<td><code>git  config  --global  user.email  johndoe@example.com</code></td>
+<td>---</td>
+<td>---</td>
+</tr>
+</tbody>
+</table>
+<h1 id="rails">Rails</h1>
+<p>Rails是使用Ruby语言建立的流行编程框架。</p>
+<p>Ruby：现代动态脚本编程语言。</p>
+<p><code>面向对象</code>，<code>函数式</code>，<code>自动内存管理</code>，<code>动态类型</code>，<code>mix-in</code>，<code>闭包用于重用、元编程、程序合成</code></p>
+<p>Rails遵守：（依赖于Ruby的语言特性：<code>自省和元编程</code>，<code>闭包</code>，<code>模块（混合）</code>）</p>
+<ol type="1">
+<li>约定优于配置：命名遵守某些约定、不需要配置文件</li>
+<li>DRY：提取公共功能的开发原则："在一个系统中，每一知识必须有一个<strong>单一的、明确的、权威的</strong>表示。"</li>
+</ol>
+<p>CRUD: create, read, update, delete</p>
+<h2 id="ruby-database">Ruby-&gt;Database</h2>
+<p>从<code>ActiveRecord::Base</code>子类化。--将模型连接到数据库+CRUD</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250106234738821.png"
+alt="image-20250106234738821" />
+<figcaption aria-hidden="true">image-20250106234738821</figcaption>
+</figure>
+<p><code>ActiveRecord</code>上<code>create</code>
+方法是<code>new</code>方法与<code>save</code>方法的组合。</p>
+<ul>
+<li><code>save!</code>操作失败会抛出异常。</li>
+</ul>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250106234905336.png"
+alt="image-20250106234905336" />
+<figcaption aria-hidden="true">image-20250106234905336</figcaption>
+</figure>
+<p>Rails解决方案: 开发、测试和生产环境都有自己的数据库。</p>
+<p><strong>迁移：</strong>用脚本描述更改，可以跨数据库类型进行安全快速移植。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250106235136067.png"
+alt="image-20250106235136067" />
+<figcaption aria-hidden="true">image-20250106235136067</figcaption>
+</figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建迁移</span></span><br><span class="line">rails generate migration <span class="title class_">CreateMovies</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将迁移应用于开发环境</span></span><br><span class="line">rake <span class="symbol">db:</span>migrate</span><br><span class="line"></span><br><span class="line"><span class="comment"># 完成代码测试后，将迁移应用于生产环境,应用迁移还包括在数据库中记录哪些迁移脚本已经用过了</span></span><br><span class="line">heroku rake <span class="symbol">db:</span>migrate</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新模型，创建模型文件</span></span><br><span class="line">app/models/model.rb</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更新测试数据库schema</span></span><br><span class="line">rake <span class="symbol">db:</span><span class="symbol">test:</span>prepare</span><br><span class="line"></span><br><span class="line"><span class="comment"># 最终部署</span></span><br><span class="line">heroku rake <span class="symbol">db:</span>migrate</span><br></pre></td></tr></table></figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250106235739842.png"
+alt="RUD" />
+<figcaption aria-hidden="true">RUD</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250106235806802.png"
+alt="image-20250106235806802" />
+<figcaption aria-hidden="true">image-20250106235806802</figcaption>
+</figure>
+<h2 id="ruby-routes">Ruby-&gt;Routes</h2>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250106235958231.png"
+alt="image-20250106235958231" />
+<figcaption aria-hidden="true">image-20250106235958231</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250107000020038.png"
+alt="image-20250107000020038" />
+<figcaption aria-hidden="true">image-20250107000020038</figcaption>
+</figure>
+<hr />
+<h2 id="ruby-views">Ruby-&gt;Views</h2>
+<p>创建表单---</p>
+<h1 id="bdd行为驱动设计">BDD(行为驱动设计)</h1>
+<p>BDD：在<strong>开发之前</strong>和<strong>开发期间</strong>询问有关应用行为的问题，以减少误解。</p>
+<p>需求以<strong>用户故事</strong>的方法记录。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250107000422401.png"
+alt="image-20250107000422401" />
+<figcaption aria-hidden="true">image-20250107000422401</figcaption>
+</figure>
+<h2 id="创建用户故事">创建用户故事</h2>
+<h4 id="smart故事">SMART故事</h4>
+<table>
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 83%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>SMART</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Specific</code></td>
+<td>明确：每个场景可测试</td>
+</tr>
+<tr class="even">
+<td><code>Measurable</code></td>
+<td>可度量：已知合理输入，预期结果存在</td>
+</tr>
+<tr class="odd">
+<td><code>Achievable</code></td>
+<td>可达成（理想情况：一个迭代下完成）</td>
+</tr>
+<tr class="even">
+<td><code>Relevant</code></td>
+<td>相关性（5个为什么）<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250107000911118.png"
+alt="image-20250107000911118" /></td>
+</tr>
+<tr class="odd">
+<td><code>Timeboxed</code></td>
+<td>时间框（知道何时放弃）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cucumber测试">Cucumber测试</h3>
+<p><strong>通过Cucumber，用户故事成为验收测试和集成测试用例</strong></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 运行一个功能特征测试</span></span><br><span class="line">cucumber filename</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行所有测试</span></span><br><span class="line">rake cucumber</span><br></pre></td></tr></table></figure>
+<p>绿：通过的步骤</p>
+<p>黄：还未实现的</p>
+<p>红：失败的--然后步骤是蓝色的</p>
+<p>目标：使所有步骤通过</p>
+<h3 id="显式隐式命令式声明式场景">显式/隐式、命令式/声明式场景</h3>
+<p><strong>显式需求</strong>：验收测试的一部分</p>
+<p><strong>隐式需求</strong>：显式需求的逻辑结果、集成测试</p>
+<blockquote>
+<ol type="1">
+<li>将电影列表</li>
+<li>电影按时间顺序还是字母顺序排列？</li>
+</ol>
+</blockquote>
+<p><strong>命令式场景：</strong>初始用户故事，有许多步骤，指定逻辑顺序，直达所需结果。</p>
+<blockquote>
+<p>如果很多用户故事是命令式，那就不DRY</p>
+</blockquote>
+<p><strong>声明式场景：</strong>描述状态而不是序列。（更少的步骤）</p>
+<p>声明式步骤：描述应用程序应该处于的状态</p>
+<p>命令式步骤：将当前状态改变表示为期望状态的步骤序列</p>
+<h1 id="tdd测试驱动开发">TDD(测试驱动开发)</h1>
+<p><strong>在代码本身之前，先为代码编写单元和功能测试</strong></p>
+<p>Rspec测试被称为specs或者例子</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">respec filename</span><br><span class="line"><span class="comment"># 运行测试</span></span><br></pre></td></tr></table></figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250108090244624.png"
+alt="image-20250108090244624" />
+<figcaption aria-hidden="true">image-20250108090244624</figcaption>
+</figure>
+<h2 id="单元测试-first原则">单元测试-FIRST原则</h2>
+<table>
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 71%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>FIRST</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Fast（快）</td>
+<td>快速运行测试子集、因为将一直运行它们</td>
+</tr>
+<tr class="even">
+<td>Independent（独立）</td>
+<td>没有测试依赖于其他测试、远程可以<strong>以任何顺序运行任何子集</strong></td>
+</tr>
+<tr class="odd">
+<td>Repeatable（可重复）</td>
+<td>运行N次，得到相同的结果(以帮助隔离bug并启动自动化)</td>
+</tr>
+<tr class="even">
+<td>Self-checking（自检查）</td>
+<td>测试可以自动检测是否通过</td>
+</tr>
+<tr class="odd">
+<td>Timely（及时）</td>
+<td>与被测试的代码同时编写（使用TDD需要先编写测试）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tdd周期红-绿-重构">TDD周期：红-绿-重构</h2>
+<p>以“始终拥有工作代码”为目标。考虑代码应该完成的一件事(功能)</p>
+<p>红：在失败的测试中记录/步骤这种想法</p>
+<p>绿：编写尽可能简单的代码使测试通过</p>
+<p>重构：与其他测试一起来提炼共性、改进代码。</p>
+<p>继续完成代码应该做的下一件事。</p>
+<h2 id="接缝seam">接缝(Seam)</h2>
+<p>接缝：可以唉不改变源代码的情况下改变应用程序行为的位置。</p>
+<p>对测试有用：将某些代码的行为与其所依赖的其他代码隔离开来。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250108091402582.png"
+alt="image-20250108091402582" />
+<figcaption aria-hidden="true">image-20250108091402582</figcaption>
+</figure>
+<p>每个seam仅为测试中地某些特定行为提供足够地支撑。</p>
+<table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 85%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Seam概念</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>存根(stub)</td>
+<td>类似<code>should_receive</code>,但没有期望；<code>add_return</code>可选地控制返回值.</td>
+</tr>
+<tr class="even">
+<td>模拟(mock)</td>
+<td>“特技替身”对象，常用于行为验证(让某方法被调用)、字其上为单个方法创建存根.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rspec">RSpec</h3>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250108091820081.png"
+alt="image-20250108091820081" />
+<figcaption aria-hidden="true">image-20250108091820081</figcaption>
+</figure>
+<h2 id="装置工厂">装置/工厂</h2>
+<p>从何获取真实对象？</p>
+<table>
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 48%" />
+<col style="width: 43%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>装置(Fixture)</th>
+<th>工厂(Factory)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>说明</td>
+<td>静态地将一些已知数据预加载到数据库表中</td>
+<td>只创建每次测试所需要的内容<code>动态创建</code></td>
+</tr>
+<tr class="even">
+<td>需求</td>
+<td>每次测试之前，db需要擦除和重新载入</td>
+<td>根据测试需要，设置<code>helper</code>来快速创建带有默认属性的对象</td>
+</tr>
+<tr class="odd">
+<td>赞成的原因</td>
+<td>真正的静态数据(e.g.永远不变的配置线性)，恒容易在一个地方看到所有测试数据</td>
+<td>保持测试的独立性：不受它们不关心对象的影响</td>
+</tr>
+<tr class="even">
+<td>反对的原因</td>
+<td>可能会引入对装置数据的依赖</td>
+<td>复杂的关系可能很难建立（但可能表明代码耦合过紧）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="测试覆盖单元测试集成测试">测试覆盖、单元测试、集成测试</h2>
+<h3 id="覆盖度量">覆盖度量</h3>
+<table>
+<thead>
+<tr class="header">
+<th>覆盖度量</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>S0</td>
+<td>方法覆盖</td>
+</tr>
+<tr class="even">
+<td>S1</td>
+<td>调用覆盖</td>
+</tr>
+<tr class="odd">
+<td>C0</td>
+<td>语句覆盖</td>
+</tr>
+<tr class="even">
+<td>C1</td>
+<td>分支覆盖</td>
+</tr>
+<tr class="odd">
+<td>C1+</td>
+<td>判定覆盖：条件中的美国个子表达式</td>
+</tr>
+<tr class="even">
+<td>C2</td>
+<td>路径覆盖（苦难，价值如何有很大分歧）</td>
+</tr>
+</tbody>
+</table>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250108092733364.png"
+alt="image-20250108092733364" />
+<figcaption aria-hidden="true">image-20250108092733364</figcaption>
+</figure>
+<h2 id="测试与调试">测试与调试</h2>
+<p>变异测试：在代码中引入故意的错误、是否会有一些测试失败？</p>
+<p>模糊测试：1万只猴子向你的代码扔随机输入：1.发现了MS~20%
+bug,崩溃了~25%的Unix应用工具2.以应用程序不应该被使用的方式来测试它</p>
+<p>DU-覆盖率：每一对<code>&lt;define x/use x&gt;</code>执行了吗？</p>
+<p>黑盒测试/集成测试：不依赖于对应用程序结构的理解</p>
+<p>白盒测试</p>
+<h2 id="代码坏味-sofa">代码坏味-SOFA</h2>
+<p>通过捕获哪些白哦是代码坏味的症状。</p>
+<ol type="1">
+<li>Short：短的</li>
+<li>One：只做一件事</li>
+<li>Few：不多的参数</li>
+<li>Abstraction：一致的抽象级别</li>
+</ol>
+<h3 id="定量abc复杂度">定量：ABC复杂度</h3>
+<p>Assignment,Brach,Condition赋值+分支+条件，检查ABC复杂度</p>
+<h1 id="agile敏捷开发">Agile敏捷开发</h1>
+<hr />
+<h1 id="pd">P&amp;D</h1>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250108085726511.png"
+alt="image-20250108085726511" />
+<figcaption aria-hidden="true">image-20250108085726511</figcaption>
+</figure>
+<p>需求抽取：抽取非功能/功能需求</p>
+<blockquote>
+<p>面谈、合作创建场景（快乐/悲伤路径流）、创建用例(UML描述)</p>
+</blockquote>
+<p>需求文档（软件需求规范记录需求）</p>
+<p>需求检查：有效性、一致性、完整性、可行性</p>
+<h2 id="pd维护">PD维护</h2>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250108111236483.png"
+alt="image-20250108111236483" />
+<figcaption aria-hidden="true">image-20250108111236483</figcaption>
+</figure>
+<h2 id="pd中设计模式">PD中设计模式</h2>
+<p>将软件需求规范(SRS)分解为问题（任务）：</p>
+<ol type="1">
+<li>对每个任务寻找匹配的设计模式、然后是子问题的某事</li>
+<li>设计评审将有所帮助</li>
+</ol>
+<h2 id="pd中测试方法">P&amp;D中测试方法</h2>
+<p>将软件需求规范(SRS)划分为编程单元、开发人员编写单元代码+执行编程测试。</p>
+<p><strong>独立的质量保证(QA)</strong>团队进行更改级别的测试：模块、集成、系统、验收测试。</p>
+<h3 id="qa集成选项">QA集成选项</h3>
+<table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 39%" />
+<col style="width: 32%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>自顶向下</th>
+<th>自底向上</th>
+<th>三明治集成</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>从依赖关系图的顶部开始</td>
+<td>从依赖关系图的底部开始</td>
+<td>两全其美？</td>
+</tr>
+<tr class="even">
+<td>高级功能(UI)很快就能开始工作</td>
+<td>没有stub，吧所有的集成在一个模块中</td>
+<td>通过自底向上集成一些单元来减少stub构造</td>
+</tr>
+<tr class="odd">
+<td>构建许多存根Stub让应用程序“工作”</td>
+<td>不能看到应用程序工作，知道所有的代码和集成完成</td>
+<td>通过自顶向下集成一些单元，让UI可操作</td>
+</tr>
+</tbody>
+</table>
+<h3 id="qa团队测试">QA团队测试</h3>
+<p>QA团队进行系统测试：</p>
+<ol type="1">
+<li>完成的应用程序可以运行</li>
+<li>测试非功能需求+功能需求</li>
+</ol>
+<p>何时系统测试？--看机构的政策</p>
+<blockquote>
+<ul>
+<li>测试覆盖级别（C0类似）</li>
+<li>所有测试要输入好的/坏的数据</li>
+</ul>
+</blockquote>
+<p>最后一步是：用户/客户验收测试(UAT)--确认&amp;验证</p>
+<h3 id="性能">性能</h3>
+<p>可以是验收测试的一部分。PD周期忽略了性能。</p>
+<p>版本管理：</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250108094249320.png"
+alt="image-20250108094249320" />
+<figcaption aria-hidden="true">image-20250108094249320</figcaption>
+</figure>
+<h1 id="saas">SaaS</h1>
+<h3 id="saassoftware-as-a-service">SaaS：Software as a Service</h3>
+<p>SaaS通过运行在客户端设备上的瘦程序(浏览器、APP)，访问Internet上以服务形式提供的软件(包括数据)。</p>
+<p>优点：</p>
+<ol type="1">
+<li>无需安装、不用担心硬件与OS差异</li>
+<li>无需担心数据丢失(数据远程存储)</li>
+<li>便于团队共享和分享数据</li>
+<li>如果数据很大/频繁更改，在中心站点保存一份副本更简单</li>
+<li>软件单一拷贝、单一部署硬件/软件环境</li>
+</ol>
+<p>SaaS对基础设施的需求：</p>
+<ol type="1">
+<li>通讯：：允许客户与服务互动</li>
+<li>可扩展性：需求波动满足新服务快速引入、增加用户</li>
+<li>可靠性：服务和通信7*24h可用</li>
+</ol>
+<h2 id="saas类的设计模式">SaaS类的设计模式</h2>
+<p><strong>GoF</strong>：结构化、创建型、行为型</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250108100846478.png"
+alt="image-20250108100846478" />
+<figcaption aria-hidden="true">image-20250108100846478</figcaption>
+</figure>
+<p>模式不是单独的类或者库，也不是完整的设计（更像是设计的蓝图）</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250108094922290.png"
+alt="image-20250108094922290" />
+<figcaption aria-hidden="true">image-20250108094922290</figcaption>
+</figure>
+<p><strong>元模式：</strong>把变与不变的东西分开。</p>
+<ol type="1">
+<li>针对接口百年城而不是针对实现编程。</li>
+<li>比起继承，更倾向组合和委托：委托是接口共享、继承是关于实现代码共享。</li>
+</ol>
+<h3 id="soild面向对象编程原则">SOILD面向对象编程原则</h3>
+<p>动机：将变更的代价最小化。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250108095424916.png"
+alt="image-20250108095424916" />
+<figcaption aria-hidden="true">image-20250108095424916</figcaption>
+</figure>
+<table>
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>SOLID原则</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>单一职责(Single Responsibility, SRP)</td>
+<td>一个类应该有且只有一个改变的理由、每一项职责可能是变化的轴心、对一个轴的更改不应该影响其他轴。</td>
+</tr>
+<tr class="even">
+<td>开闭(Open/Close, OCP)</td>
+<td>类应该对功能扩展开发、对源代码修改关闭。--抽象工厂模式(提炼构造)</td>
+</tr>
+<tr class="odd">
+<td>里氏替换(Liskov substitution)</td>
+<td>子类型可以i替代基类型。</td>
+</tr>
+<tr class="even">
+<td>依赖注入(injection of dependencied, DIP)</td>
+<td>需求:a依赖于b，但b的接口和实现可以改变，即使功能稳定;
+解决方案:“注入”a和b所依赖的抽象接口</td>
+</tr>
+<tr class="odd">
+<td>迪米特(Demeter,DP)</td>
+<td>只和朋友交谈而不是陌生人。1.用委托替换直接方法调用，2.将遍历与计算分离(Visitor模式)，3.在不了解实现细节的情况下只关注重要事件
+(Observer模式）</td>
+</tr>
+</tbody>
+</table>
+<h4 id="观察者模式observer">观察者模式Observer</h4>
+<p>实体Observer想hi到何时某些事情发生在实体Subject上。</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250108100413028.png"
+alt="image-20250108100413028" />
+<figcaption aria-hidden="true">image-20250108100413028</figcaption>
+</figure>
+<h2 id="非功能需求">非功能需求</h2>
+<h3 id="服务水平目标sloservice-level-oeject">服务水平目标(SLO,service
+level oeject)</h3>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250108094026951.png"
+alt="image-20250108094026951" />
+<figcaption aria-hidden="true">image-20250108094026951</figcaption>
+</figure>
+<h1 id="考试回忆版">考试回忆版</h1>
+<blockquote>
+<p>哈哈终于考完了，我为期1个多月的考试周终于宣告结束了。</p>
+<p>考之前，一直在想，老师会不会根据给的题库然后做一些变动。但实际情况是：<strong>完全没有</strong>.</p>
+<p>让我们说：谢谢老师！</p>
+<p>此外，虽然老师给了部分的重点，但是还是和我自己复习的有一些出入，比如，我以为概念应该会考SOLID或者BDD/TDD,像单元测试的SMART，TDD周期的红-绿-重构这些。但其实都没考，反倒是后面出了一个SaaS的概念，但是考前就看了两眼，觉得不会考..</p>
+<p>再一个有出入的就是，我以为会考点读Ruby程序给输出的题，毕竟简单，但也完全没有（）</p>
+<p>所以大家复习的时候，建议还是复习的全面一点，基本上给的题库要全部过一遍，然后根据老师给出重点，再过一遍重要的。因为如果万一没有命中的话，至少之前做过一遍，还是会有印象，至少不会是0分(?)</p>
+<p>当然，要是有时间能够全面复习，那就太好辣！</p>
+</blockquote>
+<p>概念题：(20分，5题)</p>
+<ol type="1">
+<li>敏捷开发方法与Scrum方法</li>
+<li>DRY(Don't Repeat Yourslef)</li>
+<li>Ruby的迭代器：each,collect</li>
+<li>分布式版本控制</li>
+<li>什么是螺旋软件开发模型？它有什么特点？</li>
+</ol>
+<p>选择判断: (20分，20题)--好像忘记了一个，问题不大</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250110221804060.png"
+alt="image-20250110221804060" />
+<figcaption aria-hidden="true">image-20250110221804060</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250110221818216.png"
+alt="image-20250110221818216" />
+<figcaption aria-hidden="true">image-20250110221818216</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250110221838186.png"
+alt="image-20250110221838186" />
+<figcaption aria-hidden="true">image-20250110221838186</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250110222333893.png"
+alt="image-20250110222333893" />
+<figcaption aria-hidden="true">image-20250110222333893</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250110221909408.png"
+alt="image-20250110221909408" />
+<figcaption aria-hidden="true">image-20250110221909408</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250110221927025.png"
+alt="image-20250110221927025" />
+<figcaption aria-hidden="true">image-20250110221927025</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250110221955744.png"
+alt="image-20250110221955744" />
+<figcaption aria-hidden="true">image-20250110221955744</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250110222015045.png"
+alt="image-20250110222015045" />
+<figcaption aria-hidden="true">image-20250110222015045</figcaption>
+</figure>
+<p>下面是判断，有些不确定忘记了（2/11左右）。但是可以从出题中窥见大概考点。</p>
+<ol type="1">
+<li>BDD和TDD可以结合使用。</li>
+<li>依赖注入原则表示将对象所依赖的外部对象以传递的方式注入。</li>
+<li>软件测试效果的取决如何选择高效的测试用例，以便用尽量少的测试用例覆盖尽可能多的测试情况，从而提高测试效率。</li>
+<li>模块化就是把程序划分成独立命名且可独立访问的模块，每个模块完成一个子功能。</li>
+<li>在聊天系统开发中，开发人员将对用户输入的判断（图片或文字）功能实现在图片聊天模型中，是比较规范的开发。</li>
+<li>TDD: 在代码本身之前，先为代码编写单元和功能测试。</li>
+<li>好的单元测试是每个测试只关注逻辑的一个方面，这样有利于排错。</li>
+<li>在Ruby中，实例变量@var是在self（当前对象）中查找的。</li>
+<li>观察者模式在被观察者和观察者之间建立抽象耦合，被观察者会向所有登记过的观察者发出通知。</li>
+<li>软件模块之间的耦合性越强越好</li>
+<li>与应用代码相比，如果测试代码特别简短，倾向于先编写测试</li>
+</ol>
+<p>简答题：(40分，5题)</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250110221518455.png"
+alt="10分" />
+<figcaption aria-hidden="true">10分</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250110221551240.png"
+alt="6分" />
+<figcaption aria-hidden="true">6分</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250110221700627.png"
+alt="6分" />
+<figcaption aria-hidden="true">6分</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250110221711696.png"
+alt="x" />
+<figcaption aria-hidden="true">x</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250110221733532.png"
+alt="image-20250110221733532" />
+<figcaption aria-hidden="true">image-20250110221733532</figcaption>
+</figure>
+<p>设计题: (20分,4题)</p>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250110221402508.png"
+alt="8分" />
+<figcaption aria-hidden="true">8分</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250110221326655.png"
+alt="x" />
+<figcaption aria-hidden="true">x</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250110221351299.png"
+alt="image-20250110221351299" />
+<figcaption aria-hidden="true">image-20250110221351299</figcaption>
+</figure>
+<figure>
+<img
+src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250110221430439.png"
+alt="8分" />
+<figcaption aria-hidden="true">8分</figcaption>
+</figure>
+<p>下面是我自己根据题库做的一些答案，基本保证正确。有不确定的用了不同的颜色笔进行标注。</p>
+
+
+	<div class="row">
+    <embed src="https://cdn.jsdelivr.net/gh/SchwertLin/Pic/Pdf/SE2024.pdf" width="100%" height="550" type="application/pdf">
+	</div>
+
+
+
+</div><div class="post-end"><div class="post-prev"></div><div class="post-next"><a href="/2025/01/07/2025-1-7-%E6%83%B3%E6%B3%95-2/" title="下一篇文章"><i class="fa-solid fa-chevron-right fa-lg"></i></a></div></div></article><div class="comment" id="comment"><script src="https://giscus.app/client.js" data-repo="SchwertLin/SwertLin_Blog_Comment" data-repo-id="R_kgDONXjrCQ" data-category="Announcements" data-category-id="DIC_kwDONXjrCc4Cky9X" data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="zh-CN" crossorigin="anonymous" async="async"></script></div><div id="post-toc"><aside class="toc-aside"><div class="toc-title"><span><i class="fa-solid fa-paw"></i>目录</span></div><div class="toc-container" id="toc-body"><ol class="toc-content"><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#%E9%AB%98%E7%BA%A7%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B%E5%A4%8D%E4%B9%A0"><span class="toc-content-number">1.</span> <span class="toc-content-text">高级软件工程复习</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E8%BD%AF%E4%BB%B6%E8%B4%A8%E9%87%8Fquality-assurance"><span class="toc-content-number">1.0.1.</span> <span class="toc-content-text">软件质量(Quality Assurance)</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#dry-dont-repeat-yourself"><span class="toc-content-number">1.0.2.</span> <span class="toc-content-text">DRY-Don&#39;t Repeat Yourself</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#pd%E8%BD%AF%E4%BB%B6%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="toc-content-number">1.0.3.</span> <span class="toc-content-text">P&amp;D软件过程模型</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#aglie%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91"><span class="toc-content-number">1.0.4.</span> <span class="toc-content-text">Aglie敏捷开发</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#mvcmodel-view-controller"><span class="toc-content-number">1.0.5.</span> <span class="toc-content-text">MVC(Model-View-Controller)</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#git"><span class="toc-content-number">1.1.</span> <span class="toc-content-text">Git</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#git%E5%9F%BA%E7%A1%80"><span class="toc-content-number">1.1.1.</span> <span class="toc-content-text">Git基础</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#rails"><span class="toc-content-number">2.</span> <span class="toc-content-text">Rails</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ruby-database"><span class="toc-content-number">2.1.</span> <span class="toc-content-text">Ruby-&gt;Database</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ruby-routes"><span class="toc-content-number">2.2.</span> <span class="toc-content-text">Ruby-&gt;Routes</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#ruby-views"><span class="toc-content-number">2.3.</span> <span class="toc-content-text">Ruby-&gt;Views</span></a></li></ol></li><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#bdd%E8%A1%8C%E4%B8%BA%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1"><span class="toc-content-number">3.</span> <span class="toc-content-text">BDD(行为驱动设计)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%88%9B%E5%BB%BA%E7%94%A8%E6%88%B7%E6%95%85%E4%BA%8B"><span class="toc-content-number">3.1.</span> <span class="toc-content-text">创建用户故事</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#smart%E6%95%85%E4%BA%8B"><span class="toc-content-number">3.1.0.1.</span> <span class="toc-content-text">SMART故事</span></a></li></ol></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#cucumber%E6%B5%8B%E8%AF%95"><span class="toc-content-number">3.1.1.</span> <span class="toc-content-text">Cucumber测试</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%98%BE%E5%BC%8F%E9%9A%90%E5%BC%8F%E5%91%BD%E4%BB%A4%E5%BC%8F%E5%A3%B0%E6%98%8E%E5%BC%8F%E5%9C%BA%E6%99%AF"><span class="toc-content-number">3.1.2.</span> <span class="toc-content-text">显式&#x2F;隐式、命令式&#x2F;声明式场景</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#tdd%E6%B5%8B%E8%AF%95%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91"><span class="toc-content-number">4.</span> <span class="toc-content-text">TDD(测试驱动开发)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-first%E5%8E%9F%E5%88%99"><span class="toc-content-number">4.1.</span> <span class="toc-content-text">单元测试-FIRST原则</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#tdd%E5%91%A8%E6%9C%9F%E7%BA%A2-%E7%BB%BF-%E9%87%8D%E6%9E%84"><span class="toc-content-number">4.2.</span> <span class="toc-content-text">TDD周期：红-绿-重构</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%8E%A5%E7%BC%9Dseam"><span class="toc-content-number">4.3.</span> <span class="toc-content-text">接缝(Seam)</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#rspec"><span class="toc-content-number">4.3.1.</span> <span class="toc-content-text">RSpec</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E8%A3%85%E7%BD%AE%E5%B7%A5%E5%8E%82"><span class="toc-content-number">4.4.</span> <span class="toc-content-text">装置&#x2F;工厂</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%B5%8B%E8%AF%95%E8%A6%86%E7%9B%96%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95"><span class="toc-content-number">4.5.</span> <span class="toc-content-text">测试覆盖、单元测试、集成测试</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E8%A6%86%E7%9B%96%E5%BA%A6%E9%87%8F"><span class="toc-content-number">4.5.1.</span> <span class="toc-content-text">覆盖度量</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E6%B5%8B%E8%AF%95%E4%B8%8E%E8%B0%83%E8%AF%95"><span class="toc-content-number">4.6.</span> <span class="toc-content-text">测试与调试</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E4%BB%A3%E7%A0%81%E5%9D%8F%E5%91%B3-sofa"><span class="toc-content-number">4.7.</span> <span class="toc-content-text">代码坏味-SOFA</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E5%AE%9A%E9%87%8Fabc%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="toc-content-number">4.7.1.</span> <span class="toc-content-text">定量：ABC复杂度</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#agile%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91"><span class="toc-content-number">5.</span> <span class="toc-content-text">Agile敏捷开发</span></a></li><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#pd"><span class="toc-content-number">6.</span> <span class="toc-content-text">P&amp;D</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#pd%E7%BB%B4%E6%8A%A4"><span class="toc-content-number">6.1.</span> <span class="toc-content-text">PD维护</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#pd%E4%B8%AD%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-content-number">6.2.</span> <span class="toc-content-text">PD中设计模式</span></a></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#pd%E4%B8%AD%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95"><span class="toc-content-number">6.3.</span> <span class="toc-content-text">P&amp;D中测试方法</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#qa%E9%9B%86%E6%88%90%E9%80%89%E9%A1%B9"><span class="toc-content-number">6.3.1.</span> <span class="toc-content-text">QA集成选项</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#qa%E5%9B%A2%E9%98%9F%E6%B5%8B%E8%AF%95"><span class="toc-content-number">6.3.2.</span> <span class="toc-content-text">QA团队测试</span></a></li><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%80%A7%E8%83%BD"><span class="toc-content-number">6.3.3.</span> <span class="toc-content-text">性能</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#saas"><span class="toc-content-number">7.</span> <span class="toc-content-text">SaaS</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#saassoftware-as-a-service"><span class="toc-content-number">7.0.1.</span> <span class="toc-content-text">SaaS：Software as a Service</span></a></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#saas%E7%B1%BB%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="toc-content-number">7.1.</span> <span class="toc-content-text">SaaS类的设计模式</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#soild%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B%E5%8E%9F%E5%88%99"><span class="toc-content-number">7.1.1.</span> <span class="toc-content-text">SOILD面向对象编程原则</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-4"><a class="toc-content-link" href="#%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8Fobserver"><span class="toc-content-number">7.1.1.1.</span> <span class="toc-content-text">观察者模式Observer</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-2"><a class="toc-content-link" href="#%E9%9D%9E%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82"><span class="toc-content-number">7.2.</span> <span class="toc-content-text">非功能需求</span></a><ol class="toc-content-child"><li class="toc-content-item toc-content-level-3"><a class="toc-content-link" href="#%E6%9C%8D%E5%8A%A1%E6%B0%B4%E5%B9%B3%E7%9B%AE%E6%A0%87sloservice-level-oeject"><span class="toc-content-number">7.2.1.</span> <span class="toc-content-text">服务水平目标(SLO,service
+level oeject)</span></a></li></ol></li></ol></li><li class="toc-content-item toc-content-level-1"><a class="toc-content-link" href="#%E8%80%83%E8%AF%95%E5%9B%9E%E5%BF%86%E7%89%88"><span class="toc-content-number">8.</span> <span class="toc-content-text">考试回忆版</span></a></li></ol></div></aside><div class="toc-blank" onclick="tocToggle()"></div></div><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+});
+MathJax.Hub.Queue(function() {
+  var all = MathJax.Hub.getAllJax(), i;
+  for(i=0; i < all.length; i += 1) {
+    all[i].SourceElement().parentNode.className += ' has-jax';
+  }
+});
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async="async"></script></div></div><div id="tool-bar"><div id="tool-bar-main"><div id="tool-toggle" onclick="toolToggle()" title="设置"><i class="fa-solid fa-gear"></i></div><div id="toc-toggle" onclick="tocToggle()" title="目录"><i class="fa-solid fa-list-ul"></i></div><div id="go-to-comment" onclick="gotoComment()" title="评论"><i class="fa-regular fa-message fa-flip-horizontal"></i></div><div id="back-to-top" onclick="scrollToTop()" title="返回顶部"><i class="fa-solid fa-chevron-up"></i></div></div><div id="tool-bar-more" style="display: none;"><div id="darkmode-switch" onclick="darkmodeSwitch()" title="深色模式"><i class="fa-solid fa-circle-half-stroke"></i></div><div id="font-size-increase" onclick="fontSizeIncrease()" title="放大字体"><i class="fa-solid fa-plus"></i></div><div id="font-size-decrease" onclick="fontSizeDecrease()" title="缩小字体"><i class="fa-solid fa-minus"></i></div></div></div><div id="search-panel"><div class="search-container"><div class="search-head"><div class="search-title"><span><i class="fa-solid fa-paw"></i>搜索</span></div><div class="search-close-btn" onclick="toggleSearchWindow()"><i class="fa-regular fa-circle-xmark"></i></div></div><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="search-input" type="text" placeholder="请输入需要搜索的内容……" value=""/></div><div class="search-body"><div id="search-count">匹配结果数: </div><div id="search-result"></div><div id="search-result-empty">未搜索到匹配的文章。</div></div></div></div><footer><div class="footer-content"><div class="copyright-info"><i class="fa-regular fa-copyright fa-xs"></i><span>2022 - 2025 </span><a href="/about">Schwertlilien</a><i class="fa-solid fa-cat fa-sm"></i><span>Powered by </span><a href="https://hexo.io/" target="_blank">Hexo</a><span> &amp; </span><a href="https://github.com/chanwj/hexo-theme-meow" target="_blank" title="v2.1.0">Theme Meow</a></div><div class="pageview-site"><span id="busuanzi_container_site_pv">总访问量 : <span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner"></i></span></span><span id="busuanzi_container_site_uv">总访客数 : <span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner"></i></span></span></div></div></footer>
+<script>const GLOBAL_CONFIG = {
+  comment: { theme: 'preferred_color_scheme'}
+}
+</script>
+<script src="/js/third-party/darkmode.js"></script>
+<script>var options = {
+  dark: '/css/darkmode.css',
+  startAt: '24:00',
+  endAt: '06:00',
+  checkSystemScheme: 'false',
+  saveOnToggle: 'true'
+};
+var darkMode = new DarkMode(options);
+// change comment theme synchronously 同步修改评论区主题
+if (darkMode.getMode() == "dark" && (true || true)) {
+  if (document.getElementById('comment')) {
+    document.getElementById('comment').getElementsByTagName('script')[0].setAttribute('data-theme', 'noborder_dark');
+  }
+}
+</script><script>if (localStorage.getItem('font-size')) {
+  document.querySelector('.post-content').style.fontSize = localStorage.getItem('font-size') + 'px';
+}
+</script>
+<script src="/js/theme/tool-bar.js"></script>
+
+
+<script src="/js/theme/menu.js"></script>
+
+
+<script src="/js/third-party/clipboard.min.js"></script>
+
+
+<script src="/js/theme/copy.js"></script>
+<script>copyCode();
+</script>
+<script src="/js/jquery-3.7.1.min.js"></script>
+
+
+<script src="/js/theme/search.js"></script>
+<script>searchFunc('/search.xml', 'search-input', 'search-result');
+</script></body></html>
