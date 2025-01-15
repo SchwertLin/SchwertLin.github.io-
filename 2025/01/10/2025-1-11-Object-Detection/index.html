@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="1.11的任务：  看综述*2：od,然后写相关的阅读报告，规划一下怎么做那个事儿。 规划一下SE大作业的提交 日语课*5：先复习一下初日上的课开始吧 入党材料整理归档：主要还剩下什么材料需要弄？  Object Detection   image-20250111224456852   one-stage: CNN网络进行回归，YOLO系列 two-stage：Fas">
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="author" content="Schwertlilien"/><meta name="keyword"/><meta name="description" content="1.11的任务：  看综述*2：od,然后写相关的阅读报告，规划一下怎么做那个事儿。 规划一下SE大作业的提交 日语课*5：先复习一下初日上的课开始吧 入党材料整理归档：主要还剩下什么材料需要弄？--弄完了1.14花了一个下午555，5h左右  就是在不停的写、写错、用刚擦擦、按红手印、写、打印、打错、重新打印... Object Detection   image-2025">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2025-1-11-Object_Detection">
 <meta property="og:url" content="http://example.com/2025/01/10/2025-1-11-Object-Detection/index.html">
 <meta property="og:site_name" content="Schwertlilien">
-<meta property="og:description" content="1.11的任务：  看综述*2：od,然后写相关的阅读报告，规划一下怎么做那个事儿。 规划一下SE大作业的提交 日语课*5：先复习一下初日上的课开始吧 入党材料整理归档：主要还剩下什么材料需要弄？  Object Detection   image-20250111224456852   one-stage: CNN网络进行回归，YOLO系列 two-stage：Fas">
+<meta property="og:description" content="1.11的任务：  看综述*2：od,然后写相关的阅读报告，规划一下怎么做那个事儿。 规划一下SE大作业的提交 日语课*5：先复习一下初日上的课开始吧 入党材料整理归档：主要还剩下什么材料需要弄？--弄完了1.14花了一个下午555，5h左右  就是在不停的写、写错、用刚擦擦、按红手印、写、打印、打错、重新打印... Object Detection   image-2025">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/SchwertLin/Pic@main/img/image-20250113104859576.png">
 <meta property="article:published_time" content="2025-01-10T15:22:26.000Z">
-<meta property="article:modified_time" content="2025-01-13T05:11:38.603Z">
+<meta property="article:modified_time" content="2025-01-15T08:50:18.454Z">
 <meta property="article:author" content="Schwertlilien">
 <meta property="article:tag" content="论文阅读">
 <meta property="article:tag" content="目标检测">
@@ -24,19 +24,20 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
 <!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body><header><div class="top-nav" ondblclick="scrollToTop()"><div class="nav-info"><div class="nav-icon"><img id="nav-icon" src="/img/site-icon.png"/></div><div class="nav-title"><a id="nav-title" href="/" title="主页">Schwertlilien</a></div></div><div class="nav-ribbon"><div class="top-menu-expanded"><a class="top-menu-item" href="/archives"><span>归档</span></a><a class="top-menu-item" href="/categories"><span>分类</span></a><a class="top-menu-item" href="/tags"><span>标签</span></a><a class="top-menu-item" href="/about"><span>关于</span></a></div><div class="top-search" onclick="toggleSearchWindow()"><div id="top-search-btn" title="搜索"><i class="icon fa-solid fa-magnifying-glass"></i><span>搜索</span></div></div><div id="top-menu-btn" onclick="openTopMenu()" title="打开菜单"><i class="fa-solid fa-bars fa-lg"></i></div></div></div></header><div id="top-menu-hidden"><div class="menu-hidden-content"><div class="menu-hidden-nav"><a class="menu-hidden-item" href="/archives"><i class="fa-solid fa-box-archive fa-sm"></i><span>归档</span></a><a class="menu-hidden-item" href="/categories"><i class="fa-regular fa-folder-open fa-sm"></i><span>分类</span></a><a class="menu-hidden-item" href="/tags"><i class="fa-solid fa-tags fa-sm"></i><span>标签</span></a><a class="menu-hidden-item" href="/about"><i class="fa-solid fa-paw fa-sm"></i><span>关于</span></a></div></div><div class="menu-hidden-blank" onclick="closeTopMenu()"></div></div>
-<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>2025-1-11-Object_Detection</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2025-01-10</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2025-01-13</time></div>
+<div class="blog-info"><div class="blog-pic"><img id="blog-pic" src="/img/site-icon.png"/></div><div class="blog-title"><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i><span>Schwertlilien</span><i class="fa-solid fa-paw fa-2xs fa-rotate-by"></i></div><div class="blog-desc">As a recoder: notes and ideas.</div></div><div class="main"><div class="main-content"><article class="post"><div class="post-title"><h1><i class="fa-solid fa-paw"></i>2025-1-11-Object_Detection</h1></div><div class="post-info"><div class="post-info-first-line"><div class="post-date"><i class="icon fa-regular fa-calendar-plus" title="发布日期"></i><time class="publish-time">2025-01-10</time><i class="icon fa-regular fa-calendar-check" title="更新日期"></i><time class="update-time">2025-01-15</time></div>
 <div class="post-categories"><i class="icon fa-regular fa-folder-open" title="分类"></i><a class="post-category" href="/categories/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a></div>
 <div class="post-tags"><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a><i class="icon fa-solid fa-tags" title="标签"></i><a class="post-tag" href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/">目标检测</a></div></div><div class="post-info-second-line"><div class="post-copyright"><i class="icon fa-brands fa-creative-commons" title="版权声明"></i><span>版权声明: </span><a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh-hans" title="CC BY-NC-ND 4.0">署名-非商业性使用-禁止演绎 4.0</a></div>
-<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约5.1K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><p>1.11的任务：</p>
+<div class="post-word-count"><i class="icon fa-solid fa-pen-to-square"></i><span>全文约5.2K字</span></div><div class="pageview-post"><i class="icon fa-regular fa-eye"></i><span id="busuanzi_container_page_pv">阅读次数: <span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner"></i></span></span></div></div></div><div class="post-content"><p>1.11的任务：</p>
 <ul class="task-list">
-<li><input
-type="checkbox" />看综述*2：od,然后写相关的阅读报告，规划一下怎么做那个事儿。</li>
-<li><input type="checkbox" />规划一下SE大作业的提交</li>
+<li><input type="checkbox"
+checked="" />看综述*2：od,然后写相关的阅读报告，规划一下怎么做那个事儿。</li>
+<li><input type="checkbox" checked="" />规划一下SE大作业的提交</li>
 <li><input type="checkbox"
 checked="" />日语课*5：先复习一下初日上的课开始吧</li>
-<li><input
-type="checkbox" />入党材料整理归档：主要还剩下什么材料需要弄？</li>
+<li><input type="checkbox"
+checked="" />入党材料整理归档：主要还剩下什么材料需要弄？--弄完了1.14花了一个下午555，5h左右</li>
 </ul>
+<p>就是在不停的写、写错、用刚擦擦、按红手印、写、打印、打错、重新打印...</p>
 <h1 id="object-detection">Object Detection</h1>
 <figure>
 <img
